@@ -16,7 +16,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class NaturalistEntityTypes {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, Naturalist.MOD_ID);
 
-    public static final RegistryObject<EntityType<Snail>> SNAIL = ENTITY_TYPES.register("snail", () -> EntityType.Builder.of(Snail::new, MobCategory.CREATURE).sized(0.3F, 0.3F).clientTrackingRange(10).build(new ResourceLocation(Naturalist.MOD_ID, "snail").toString()));
+    public static final RegistryObject<EntityType<Snail>> SNAIL = ENTITY_TYPES.register("snail", () -> EntityType.Builder.of(Snail::new, MobCategory.CREATURE).sized(0.4F, 0.4F).clientTrackingRange(10).build(new ResourceLocation(Naturalist.MOD_ID, "snail").toString()));
 
     @SubscribeEvent
     public static void createAttributes(EntityAttributeCreationEvent event) {

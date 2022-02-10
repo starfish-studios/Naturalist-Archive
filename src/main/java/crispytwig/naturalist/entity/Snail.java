@@ -52,7 +52,7 @@ public class Snail extends Animal implements IAnimatable {
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (event.isMoving()) {
+        if (this.getDeltaMovement().horizontalDistance() != 0) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("snail.crawl", true));
             return PlayState.CONTINUE;
         }
