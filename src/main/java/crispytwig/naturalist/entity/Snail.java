@@ -1,7 +1,9 @@
 package crispytwig.naturalist.entity;
 
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -9,10 +11,11 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -30,7 +33,7 @@ public class Snail extends Animal implements IAnimatable {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 2.0D).add(Attributes.MOVEMENT_SPEED, 0.08F);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 2.0D).add(Attributes.MOVEMENT_SPEED, 0.05F);
     }
 
     @Override
@@ -51,8 +54,19 @@ public class Snail extends Animal implements IAnimatable {
         return false;
     }
 
+    @Override
+    public void tick() {
+        super.tick();
+        for (Player player : level.getEntitiesOfClass(Player.class, this.getBoundingBox())) {
+            if (!player.isOnGround()) {
+                this.hurt(DamageSource.playerAttack(player), 5.0F);
+                level.playSound(null, this.blockPosition(), SoundEvents.TURTLE_EGG_CRACK, SoundSource.NEUTRAL, 1.0F, 1.2F);
+            }
+        }
+    }
+
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (this.getDeltaMovement().horizontalDistance() != 0) {
+        if (Math.abs(this.getDeltaMovement().horizontalDistance()) > 0) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("snail.crawl", true));
             return PlayState.CONTINUE;
         }
