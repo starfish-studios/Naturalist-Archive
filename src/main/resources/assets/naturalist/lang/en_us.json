@@ -1,3 +1,5 @@
 {
-  "entity.naturalist.snail": "Snail"
+  "itemGroup.naturalist": "Naturalist",
+  "entity.naturalist.snail": "Snail",
+  "item.naturalist.snail_spawn_egg": "Snail Spawn Egg"
 }
