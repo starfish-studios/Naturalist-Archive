@@ -11,6 +11,6 @@ import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 public class CrocodileRenderer extends GeoEntityRenderer<Crocodile> {
     public CrocodileRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new CrocodileModel());
-        this.shadowRadius = 0.2F;
+        this.shadowRadius = 0.8F;
     }
 }

@@ -18,7 +18,7 @@ public class NaturalistEntityTypes {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, Naturalist.MOD_ID);
 
     public static final RegistryObject<EntityType<Snail>> SNAIL = ENTITY_TYPES.register("snail", () -> EntityType.Builder.of(Snail::new, MobCategory.CREATURE).sized(0.4F, 0.4F).clientTrackingRange(10).build(new ResourceLocation(Naturalist.MOD_ID, "snail").toString()));
-    public static final RegistryObject<EntityType<Crocodile>> CROCODILE = ENTITY_TYPES.register("crocodile", () -> EntityType.Builder.of(Crocodile::new, MobCategory.CREATURE).sized(0.4F, 0.4F).clientTrackingRange(10).build(new ResourceLocation(Naturalist.MOD_ID, "crocodile").toString()));
+    public static final RegistryObject<EntityType<Crocodile>> CROCODILE = ENTITY_TYPES.register("crocodile", () -> EntityType.Builder.of(Crocodile::new, MobCategory.CREATURE).sized(1.5F, 0.7F).clientTrackingRange(10).build(new ResourceLocation(Naturalist.MOD_ID, "crocodile").toString()));
 
     @SubscribeEvent
     public static void createAttributes(EntityAttributeCreationEvent event) {
