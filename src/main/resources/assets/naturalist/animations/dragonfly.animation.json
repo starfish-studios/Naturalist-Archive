@@ -1,0 +1,209 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"dragonfly.fly": {
+			"loop": true,
+			"animation_length": 0.45833,
+			"bones": {
+				"main": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.2083": {
+							"vector": [-5, 0, 0],
+							"easing": "easeInOutSine"
+						},
+						"0.4583": {
+							"vector": [0, 0, 0],
+							"easing": "easeInOutSine"
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.2083": {
+							"vector": [0, 1, 0],
+							"easing": "easeOutSine"
+						},
+						"0.4583": {
+							"vector": [0, 0, 0],
+							"easing": "easeOutSine"
+						}
+					}
+				},
+				"left_back_wing": {
+					"rotation": {
+						"0.0": {
+							"vector": [22.5, 0, 67.5]
+						},
+						"0.0417": {
+							"vector": [-45, 0, 0],
+							"easing": "linear"
+						},
+						"0.0833": {
+							"vector": [22.5, 0, 67.5]
+						},
+						"0.125": {
+							"vector": [-45, 0, 0],
+							"easing": "linear"
+						},
+						"0.1667": {
+							"vector": [22.5, 0, 67.5]
+						},
+						"0.2083": {
+							"vector": [-45, 0, 0],
+							"easing": "linear"
+						},
+						"0.25": {
+							"vector": [22.5, 0, 67.5]
+						},
+						"0.2917": {
+							"vector": [-45, 0, 0],
+							"easing": "linear"
+						},
+						"0.3333": {
+							"vector": [22.5, 0, 67.5]
+						},
+						"0.375": {
+							"vector": [-45, 0, 0],
+							"easing": "linear"
+						}
+					}
+				},
+				"left_front_wing": {
+					"rotation": {
+						"0.0": {
+							"vector": [-22.5, 0, -22.5]
+						},
+						"0.0417": {
+							"vector": [22.5, 0, 45],
+							"easing": "linear"
+						},
+						"0.0833": {
+							"vector": [-22.5, 0, -22.5]
+						},
+						"0.125": {
+							"vector": [22.5, 0, 45],
+							"easing": "linear"
+						},
+						"0.1667": {
+							"vector": [-22.5, 0, -22.5]
+						},
+						"0.2083": {
+							"vector": [22.5, 0, 45],
+							"easing": "linear"
+						},
+						"0.25": {
+							"vector": [-22.5, 0, -22.5]
+						},
+						"0.2917": {
+							"vector": [22.5, 0, 45],
+							"easing": "linear"
+						},
+						"0.3333": {
+							"vector": [-22.5, 0, -22.5]
+						},
+						"0.375": {
+							"vector": [22.5, 0, 45],
+							"easing": "linear"
+						},
+						"0.4167": {
+							"vector": [-22.5, 0, -22.5]
+						},
+						"0.4583": {
+							"vector": [22.5, 0, 45],
+							"easing": "linear"
+						}
+					}
+				},
+				"right_back_wing": {
+					"rotation": {
+						"0.0": {
+							"vector": [22.5, 0, -67.5]
+						},
+						"0.0417": {
+							"vector": [-22.5, 0, 0],
+							"easing": "linear"
+						},
+						"0.0833": {
+							"vector": [22.5, 0, -67.5]
+						},
+						"0.125": {
+							"vector": [-22.5, 0, 0],
+							"easing": "linear"
+						},
+						"0.1667": {
+							"vector": [22.5, 0, -67.5]
+						},
+						"0.2083": {
+							"vector": [-22.5, 0, 0],
+							"easing": "linear"
+						},
+						"0.25": {
+							"vector": [22.5, 0, -67.5]
+						},
+						"0.2917": {
+							"vector": [-22.5, 0, 0],
+							"easing": "linear"
+						},
+						"0.3333": {
+							"vector": [22.5, 0, -67.5]
+						},
+						"0.375": {
+							"vector": [-22.5, 0, 0],
+							"easing": "linear"
+						}
+					}
+				},
+				"right_front_wing": {
+					"rotation": {
+						"0.0": {
+							"vector": [-22.5, 0, 22.5]
+						},
+						"0.0417": {
+							"vector": [22.5, 0, -45],
+							"easing": "linear"
+						},
+						"0.0833": {
+							"vector": [-22.5, 0, 22.5]
+						},
+						"0.125": {
+							"vector": [22.5, 0, -45],
+							"easing": "linear"
+						},
+						"0.1667": {
+							"vector": [-22.5, 0, 22.5]
+						},
+						"0.2083": {
+							"vector": [22.5, 0, -45],
+							"easing": "linear"
+						},
+						"0.25": {
+							"vector": [-22.5, 0, 22.5]
+						},
+						"0.2917": {
+							"vector": [22.5, 0, -45],
+							"easing": "linear"
+						},
+						"0.3333": {
+							"vector": [-22.5, 0, 22.5]
+						},
+						"0.375": {
+							"vector": [22.5, 0, -45],
+							"easing": "linear"
+						},
+						"0.4167": {
+							"vector": [-22.5, 0, 22.5]
+						},
+						"0.4583": {
+							"vector": [22.5, 0, -45],
+							"easing": "linear"
+						}
+					}
+				}
+			}
+		}
+	}
+}

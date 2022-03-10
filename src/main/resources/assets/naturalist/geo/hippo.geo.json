@@ -1,0 +1,84 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.hippo",
+				"texture_width": 128,
+				"texture_height": 128,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 3.5,
+				"visible_bounds_offset": [0, 1.25, 0]
+			},
+			"bones": [
+				{
+					"name": "body",
+					"pivot": [1.5, 20, -16.5],
+					"cubes": [
+						{"origin": [-9, 7, -15], "size": [20, 20, 26], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "head",
+					"parent": "body",
+					"pivot": [1.5, 20, -14.5]
+				},
+				{
+					"name": "topjaw",
+					"parent": "head",
+					"pivot": [1.5, 20, -16.5],
+					"cubes": [
+						{"origin": [-6.5, 16, -30], "size": [15, 8, 15], "uv": [45, 54]},
+						{"origin": [-3.5, 24, -20], "size": [9, 2, 5], "uv": [45, 46]},
+						{"origin": [4.5, 26, -18], "size": [2, 2, 1], "uv": [16, 13], "mirror": true},
+						{"origin": [2.5, 14, -29], "size": [3, 7, 3], "pivot": [-1, 17.5, -27.5], "rotation": [180, 0, 0], "uv": [41, 82]},
+						{"origin": [-3.5, 14, -29], "size": [3, 7, 3], "pivot": [3, 17.5, -27.5], "rotation": [180, 0, 0], "uv": [41, 82], "mirror": true},
+						{"origin": [-4.5, 26, -18], "size": [2, 2, 1], "uv": [16, 13]}
+					]
+				},
+				{
+					"name": "botjaw",
+					"parent": "head",
+					"pivot": [1, 20, -15],
+					"cubes": [
+						{"origin": [-6.5, 13, -30], "size": [15, 8, 15], "uv": [0, 46]},
+						{"origin": [-5.5, 13, -29], "size": [3, 7, 3], "uv": [41, 82], "mirror": true},
+						{"origin": [4.5, 13, -29], "size": [3, 7, 3], "uv": [41, 82]}
+					]
+				},
+				{
+					"name": "larm",
+					"parent": "body",
+					"pivot": [-4.5, 7, -12],
+					"cubes": [
+						{"origin": [-7, 1, -15], "size": [5, 6, 6], "uv": [12, 80], "mirror": true}
+					]
+				},
+				{
+					"name": "rarm",
+					"parent": "body",
+					"pivot": [6.5, 7, -12],
+					"cubes": [
+						{"origin": [4, 1, -15], "size": [5, 6, 6], "uv": [12, 80]}
+					]
+				},
+				{
+					"name": "lleg",
+					"parent": "body",
+					"pivot": [-4.5, 7, 9],
+					"cubes": [
+						{"origin": [-7, 1, 6], "size": [5, 6, 6], "uv": [12, 80], "mirror": true}
+					]
+				},
+				{
+					"name": "rleg",
+					"parent": "body",
+					"pivot": [6.5, 7, 9],
+					"cubes": [
+						{"origin": [4, 1, 6], "size": [5, 6, 6], "uv": [12, 80]}
+					]
+				}
+			]
+		}
+	]
+}
