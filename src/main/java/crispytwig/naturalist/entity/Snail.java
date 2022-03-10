@@ -54,8 +54,8 @@ public class Snail extends Animal implements IAnimatable {
     }
 
     @Override
-    public void tick() {
-        super.tick();
+    public void aiStep() {
+        super.aiStep();
         for (Player player : level.getEntitiesOfClass(Player.class, this.getBoundingBox())) {
             if (!player.isOnGround()) {
                 this.hurt(DamageSource.playerAttack(player), 5.0F);
