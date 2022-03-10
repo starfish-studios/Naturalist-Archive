@@ -1,0 +1,55 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.Catfish",
+				"texture_width": 128,
+				"texture_height": 128,
+				"visible_bounds_width": 4,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "body",
+					"pivot": [0, 14.5, 2],
+					"cubes": [
+						{"origin": [-3, 7, 1], "size": [6, 4, 14], "uv": [0, 27]},
+						{"origin": [-5, 9, -4], "size": [10, 9, 16], "uv": [0, 0]},
+						{"origin": [-4, 3.75, -5.5], "size": [8, 5, 7], "inflate": 0.01, "pivot": [0, 6.25, -2], "rotation": [-10, 0, 0], "uv": [56, 19]},
+						{"origin": [-4, 9, -8], "size": [8, 6, 4], "uv": [40, 38]},
+						{"origin": [0, 18, -1], "size": [0, 5, 6], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "tail",
+					"parent": "body",
+					"pivot": [0, 15.2, 11],
+					"cubes": [
+						{"origin": [-2, 11, 12], "size": [4, 6, 8], "uv": [36, 0]},
+						{"origin": [0, 10, 10], "size": [0, 11, 14], "uv": [26, 13]}
+					]
+				},
+				{
+					"name": "rfin",
+					"parent": "body",
+					"pivot": [5, 11, 0],
+					"rotation": [0, -45.00011, 0],
+					"cubes": [
+						{"origin": [4.58579, 7, 0], "size": [5, 4, 0], "uv": [0, 0], "mirror": true}
+					]
+				},
+				{
+					"name": "rfin2",
+					"parent": "body",
+					"pivot": [-5, 11, 0],
+					"rotation": [0, 45.00011, 0],
+					"cubes": [
+						{"origin": [-9.58579, 7, 0], "size": [5, 4, 0], "uv": [0, 0]}
+					]
+				}
+			]
+		}
+	]
+}
