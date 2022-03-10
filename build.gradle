@@ -102,7 +102,7 @@ repositories {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    implementation fg.deobf('software.bernie.geckolib:geckolib-1.18-forge:3.0.11')
+    implementation fg.deobf('software.bernie.geckolib:geckolib-1.18-forge:3.0.12')
 }
 
 def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta']
