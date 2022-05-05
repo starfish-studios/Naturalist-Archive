@@ -74,7 +74,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         this.goalSelector.addGoal(5, new BearRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new BearLookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(7, new BearRandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(1, new BearHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new BearAttackPlayerNearBabiesGoal(this, Player.class, 20, true, true, null));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
         this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, AbstractSchoolingFish.class, 10, true, false, (entity) -> entity.getType().is(NaturalistTags.BEAR_HOSTILES) && !this.isSleeping()));
@@ -211,6 +211,31 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
                 return false;
             }
             return super.canUse();
+        }
+    }
+
+    static class BearHurtByTargetGoal extends HurtByTargetGoal {
+        private final Bear bear;
+
+        public BearHurtByTargetGoal(Bear pMob, Class<?>... pToIgnoreDamage) {
+            super(pMob, pToIgnoreDamage);
+            this.bear = pMob;
+        }
+
+        @Override
+        public void start() {
+            super.start();
+            if (bear.isBaby()) {
+                this.alertOthers();
+                this.stop();
+            }
+        }
+
+        @Override
+        protected void alertOther(Mob pMob, LivingEntity pTarget) {
+            if (pMob instanceof PolarBear && !pMob.isBaby()) {
+                super.alertOther(pMob, pTarget);
+            }
         }
     }
 

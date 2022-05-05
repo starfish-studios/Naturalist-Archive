@@ -23,7 +23,12 @@ public class BearModel extends AnimatedGeoModel<Bear> {
 
     @Override
     public ResourceLocation getTextureLocation(Bear bear) {
-        return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/bear.png");
+        if (bear.isAngry()) {
+            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/bear/bear_angry.png");
+        } else if (bear.isSleeping()) {
+            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/bear/bear_sleep.png");
+        }
+        return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/bear/bear.png");
     }
 
     @Override
