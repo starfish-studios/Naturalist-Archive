@@ -1,6 +1,7 @@
 package crispytwig.naturalist.registry;
 
 import crispytwig.naturalist.Naturalist;
+import crispytwig.naturalist.entity.Bear;
 import crispytwig.naturalist.entity.Crocodile;
 import crispytwig.naturalist.entity.Snail;
 import net.minecraft.resources.ResourceLocation;
@@ -19,10 +20,12 @@ public class NaturalistEntityTypes {
 
     public static final RegistryObject<EntityType<Snail>> SNAIL = ENTITY_TYPES.register("snail", () -> EntityType.Builder.of(Snail::new, MobCategory.CREATURE).sized(0.4F, 0.4F).clientTrackingRange(10).build(new ResourceLocation(Naturalist.MOD_ID, "snail").toString()));
     public static final RegistryObject<EntityType<Crocodile>> CROCODILE = ENTITY_TYPES.register("crocodile", () -> EntityType.Builder.of(Crocodile::new, MobCategory.CREATURE).sized(1.5F, 0.7F).clientTrackingRange(10).build(new ResourceLocation(Naturalist.MOD_ID, "crocodile").toString()));
+    public static final RegistryObject<EntityType<Bear>> BEAR = ENTITY_TYPES.register("bear", () -> EntityType.Builder.of(Bear::new, MobCategory.CREATURE).sized(1.4F, 1.4F).clientTrackingRange(10).build(new ResourceLocation(Naturalist.MOD_ID, "bear").toString()));
 
     @SubscribeEvent
     public static void createAttributes(EntityAttributeCreationEvent event) {
         event.put(NaturalistEntityTypes.SNAIL.get(), Snail.createAttributes().build());
         event.put(NaturalistEntityTypes.CROCODILE.get(), Crocodile.createAttributes().build());
+        event.put(NaturalistEntityTypes.BEAR.get(), Bear.createAttributes().build());
     }
 }

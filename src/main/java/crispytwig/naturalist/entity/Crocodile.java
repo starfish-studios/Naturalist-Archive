@@ -1,6 +1,6 @@
 package crispytwig.naturalist.entity;
 
-import crispytwig.naturalist.entity.goal.CloseMeleeAttackGoal;
+import crispytwig.naturalist.entity.ai.goal.CloseMeleeAttackGoal;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;

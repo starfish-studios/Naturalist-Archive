@@ -1,4 +1,4 @@
-package crispytwig.naturalist.entity.goal;
+package crispytwig.naturalist.entity.ai.goal;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
