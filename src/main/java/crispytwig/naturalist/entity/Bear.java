@@ -32,12 +32,13 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
+import java.util.EnumSet;
 import java.util.UUID;
 import java.util.function.Predicate;
 
 public class Bear extends Animal implements NeutralMob, IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
-    private static final Ingredient FOOD_ITEMS = Ingredient.of(Items.SALMON, Items.COOKED_SALMON);
+    private static final Ingredient FOOD_ITEMS = Ingredient.of(NaturalistTags.Items.BEAR_TEMPT_ITEMS);
     private static final EntityDataAccessor<Boolean> SLEEPING = SynchedEntityData.defineId(Bear.class, EntityDataSerializers.BOOLEAN);
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
     private static final EntityDataAccessor<Integer> REMAINING_ANGER_TIME = SynchedEntityData.defineId(Bear.class, EntityDataSerializers.INT);
@@ -67,18 +68,20 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new TemptGoal(this, 1.0D, FOOD_ITEMS, false));
-        this.goalSelector.addGoal(2, new CloseMeleeAttackGoal(this, 1.25D, true));
-        this.goalSelector.addGoal(2, new BearPanicGoal(this, 2.0D));
-        this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
-        this.goalSelector.addGoal(5, new BearRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(6, new BearLookAtPlayerGoal(this, Player.class, 6.0F));
-        this.goalSelector.addGoal(7, new BearRandomLookAroundGoal(this));
+        this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(2, new TemptGoal(this, 1.0D, FOOD_ITEMS, false));
+        this.goalSelector.addGoal(3, new CloseMeleeAttackGoal(this, 1.25D, true));
+        this.goalSelector.addGoal(3, new BearPanicGoal(this, 2.0D));
+        this.goalSelector.addGoal(4, new BearSleepGoal(this));
+        this.goalSelector.addGoal(5, new FollowParentGoal(this, 1.25D));
+        this.goalSelector.addGoal(6, new RandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new BearHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new BearAttackPlayerNearBabiesGoal(this, Player.class, 20, true, true, null));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
-        this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, AbstractSchoolingFish.class, 10, true, false, (entity) -> entity.getType().is(NaturalistTags.BEAR_HOSTILES) && !this.isSleeping()));
-        this.targetSelector.addGoal(3, new ResetUniversalAngerTargetGoal<>(this, false));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, AbstractSchoolingFish.class, 10, true, false, (entity) -> entity.getType().is(NaturalistTags.EntityTypes.BEAR_HOSTILES) && !this.isSleeping()));
+        this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, false));
     }
 
     // ENTITY DATA
@@ -142,25 +145,16 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         if (!this.level.isClientSide) {
             this.updatePersistentAnger((ServerLevel)this.level, true);
         }
-        long dayTime = this.getLevel().getDayTime();
-        if ((dayTime > 12000 && dayTime < 18000) || dayTime > 23000 || dayTime < 6000 || this.isAngry()) {
-            this.setSleeping(false);
-        } else {
-            this.sleep();
+        if (this.isSleeping() || this.isImmobile()) {
+            this.jumping = false;
+            this.xxa = 0.0F;
+            this.zza = 0.0F;
         }
-//        Naturalist.LOGGER.debug("Sleeping: " + this.isSleeping() + ", Angry: " + this.isAngry());
-    }
-
-    private void sleep() {
-        this.setJumping(false);
-        this.setSleeping(true);
-        this.getNavigation().stop();
-        this.getMoveControl().setWantedPosition(this.getX(), this.getY(), this.getZ(), 0.0D);
     }
 
     @Override
     protected float getWaterSlowDown() {
-        return 0.9F;
+        return 0.85F;
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -194,23 +188,6 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         @Override
         protected boolean shouldPanic() {
             return this.mob.getLastHurtByMob() != null && this.mob.isBaby() || this.mob.isOnFire();
-        }
-    }
-
-    static class BearRandomStrollGoal extends RandomStrollGoal {
-        private final Bear bear;
-
-        public BearRandomStrollGoal(Bear pMob, double pSpeedModifier) {
-            super(pMob, pSpeedModifier);
-            this.bear = pMob;
-        }
-
-        @Override
-        public boolean canUse() {
-            if (bear.isSleeping()) {
-                return false;
-            }
-            return super.canUse();
         }
     }
 
@@ -263,42 +240,55 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         }
 
         @Override
+        public void start() {
+            bear.setLastHurtByMob(target);
+            this.stop();
+        }
+
+        @Override
         protected double getFollowDistance() {
             return super.getFollowDistance() * 0.5D;
         }
     }
 
-    static class BearLookAtPlayerGoal extends LookAtPlayerGoal {
+    static class BearSleepGoal extends Goal {
         private final Bear bear;
 
-        public BearLookAtPlayerGoal(Bear pMob, Class<? extends LivingEntity> pLookAtType, float pLookDistance) {
-            super(pMob, pLookAtType, pLookDistance);
-            this.bear = pMob;
+        public BearSleepGoal(Bear bear) {
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK, Goal.Flag.JUMP));
+            this.bear = bear;
         }
 
         @Override
         public boolean canUse() {
-            if (bear.isSleeping()) {
+            if (bear.xxa == 0.0F && bear.yya == 0.0F && bear.zza == 0.0F) {
+                return this.canSleep() || bear.isSleeping();
+            } else {
                 return false;
             }
-            return super.canUse();
-        }
-    }
-
-    static class BearRandomLookAroundGoal extends RandomLookAroundGoal {
-        private final Bear bear;
-
-        public BearRandomLookAroundGoal(Bear pMob) {
-            super(pMob);
-            this.bear = pMob;
         }
 
         @Override
-        public boolean canUse() {
-            if (bear.isSleeping()) {
-                return false;
-            }
-            return super.canUse();
+        public boolean canContinueToUse() {
+            return this.canSleep();
+        }
+
+        private boolean canSleep() {
+            long dayTime = bear.getLevel().getDayTime();
+            return (dayTime < 12000 || dayTime > 18000) && dayTime < 23000 && dayTime > 6000 && !bear.isAngry();
+        }
+
+        @Override
+        public void start() {
+            bear.setJumping(false);
+            bear.setSleeping(true);
+            bear.getNavigation().stop();
+            bear.getMoveControl().setWantedPosition(bear.getX(), bear.getY(), bear.getZ(), 0.0D);
+        }
+
+        @Override
+        public void stop() {
+            bear.setSleeping(false);
         }
     }
 }
