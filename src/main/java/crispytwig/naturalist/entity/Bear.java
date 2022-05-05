@@ -74,10 +74,9 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         this.goalSelector.addGoal(5, new BearRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(7, new BearRandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new BearAttackPlayersGoal(this, Player.class, 20, true, true, null));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
-        this.targetSelector.addGoal(4, new ResetUniversalAngerTargetGoal<>(this, false));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
+        this.targetSelector.addGoal(3, new ResetUniversalAngerTargetGoal<>(this, false));
     }
 
     // ENTITY DATA
@@ -138,14 +137,17 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
     @Override
     public void aiStep() {
         super.aiStep();
-        long time = this.getLevel().getDayTime();
-        if ((time > 12000 && time < 18000) || time > 23000 || time < 6000 || this.isAngry()) {
+        if (!this.level.isClientSide) {
+            this.updatePersistentAnger((ServerLevel)this.level, true);
+        }
+        long dayTime = this.getLevel().getDayTime();
+        if ((dayTime > 12000 && dayTime < 18000) || dayTime > 23000 || dayTime < 6000 || this.isAngry()) {
             this.setSleeping(false);
         } else {
             this.goalSelector.tickRunningGoals(true);
             this.setSleeping(true);
         }
-        Naturalist.LOGGER.debug("Sleeping: " + this.isSleeping() + ", Angry: " + this.isAngry());
+//        Naturalist.LOGGER.debug("Sleeping: " + this.isSleeping() + ", Angry: " + this.isAngry());
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
