@@ -2,11 +2,8 @@ package crispytwig.naturalist.entity;
 
 import crispytwig.naturalist.entity.goal.CloseMeleeAttackGoal;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -93,6 +90,7 @@ public class Crocodile extends PathfinderMob implements IAnimatable, NeutralMob 
         super.aiStep();
         for (Player player : level.getEntitiesOfClass(Player.class, this.getBoundingBox().inflate(0.0D, 1.0D, 0.0D))) {
             this.setLastHurtByPlayer(player);
+            this.setTarget(player);
         }
     }
 
