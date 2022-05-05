@@ -3,11 +3,15 @@ package crispytwig.naturalist.entity;
 import crispytwig.naturalist.entity.ai.goal.CloseMeleeAttackGoal;
 import crispytwig.naturalist.registry.NaturalistEntityTypes;
 import crispytwig.naturalist.registry.NaturalistTags;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.*;
@@ -23,6 +27,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.event.ForgeEventFactory;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -74,6 +82,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         this.goalSelector.addGoal(3, new BearPanicGoal(this, 2.0D));
         this.goalSelector.addGoal(4, new BearSleepGoal(this));
         this.goalSelector.addGoal(5, new FollowParentGoal(this, 1.25D));
+        this.goalSelector.addGoal(5, new BearHarvestHoneyGoal(this, 1.2F, 12, 3));
         this.goalSelector.addGoal(6, new RandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
@@ -187,7 +196,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
 
         @Override
         protected boolean shouldPanic() {
-            return this.mob.getLastHurtByMob() != null && this.mob.isBaby() || this.mob.isOnFire();
+            return mob.getLastHurtByMob() != null && mob.isBaby() || mob.isOnFire();
         }
     }
 
@@ -289,6 +298,77 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         @Override
         public void stop() {
             bear.setSleeping(false);
+        }
+    }
+
+    public class BearHarvestHoneyGoal extends MoveToBlockGoal {
+        protected int ticksWaited;
+
+        public BearHarvestHoneyGoal(PathfinderMob pMob, double pSpeedModifier, int pSearchRange, int pVerticalSearchRange) {
+            super(pMob, pSpeedModifier, pSearchRange, pVerticalSearchRange);
+        }
+
+        @Override
+        public double acceptedDistance() {
+            return 3.0D;
+        }
+
+        public boolean shouldRecalculatePath() {
+            return this.tryTicks % 100 == 0;
+        }
+
+        @Override
+        protected boolean isValidTarget(LevelReader pLevel, BlockPos pPos) {
+            BlockState state = pLevel.getBlockState(pPos);
+            return state.getBlock() instanceof BeehiveBlock && state.getValue(BeehiveBlock.HONEY_LEVEL) >= 5;
+        }
+
+        @Override
+        public void tick() {
+            if (this.isReachedTarget()) {
+                if (this.ticksWaited >= 40) {
+                    this.onReachedTarget();
+                } else {
+                    ++this.ticksWaited;
+                }
+            } else if (!this.isReachedTarget() && mob.getRandom().nextFloat() < 0.05F) {
+                mob.playSound(SoundEvents.FOX_SNIFF, 1.0F, 1.0F);
+            }
+
+            super.tick();
+        }
+        
+        protected void onReachedTarget() {
+            if (ForgeEventFactory.getMobGriefingEvent(level, mob)) {
+                BlockState state = level.getBlockState(blockPos);
+                if (state.getBlock() instanceof BeehiveBlock && state.getValue(BeehiveBlock.HONEY_LEVEL) >= 5) {
+                    this.harvestHoney(state);
+                }
+            }
+        }
+
+        private void harvestHoney(BlockState state) {
+            if (mob.getRandom().nextInt(5) > 0) {
+                state.setValue(BeehiveBlock.HONEY_LEVEL, 0);
+                BeehiveBlock.dropHoneycomb(level, blockPos);
+                mob.playSound(SoundEvents.BEEHIVE_SHEAR, 1.0F, 1.0F);
+                level.setBlock(blockPos, state.setValue(BeehiveBlock.HONEY_LEVEL, 0), 2);
+            } else {
+                level.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 2);
+                level.destroyBlock(blockPos, false, mob);
+                level.playSound(null, blockPos, SoundEvents.WOOD_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
+            }
+        }
+
+        @Override
+        public boolean canUse() {
+            return !mob.isBaby() && super.canUse();
+        }
+        
+        @Override
+        public void start() {
+            this.ticksWaited = 0;
+            super.start();
         }
     }
 }
