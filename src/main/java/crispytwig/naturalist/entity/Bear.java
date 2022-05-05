@@ -1,8 +1,8 @@
 package crispytwig.naturalist.entity;
 
-import crispytwig.naturalist.Naturalist;
 import crispytwig.naturalist.entity.ai.goal.CloseMeleeAttackGoal;
 import crispytwig.naturalist.registry.NaturalistEntityTypes;
+import crispytwig.naturalist.registry.NaturalistTags;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -60,7 +60,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.FOLLOW_RANGE, 20.0D).add(Attributes.MOVEMENT_SPEED, 0.25D).add(Attributes.ATTACK_DAMAGE, 6.0D);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.FOLLOW_RANGE, 20.0D).add(Attributes.MOVEMENT_SPEED, 0.25D).add(Attributes.ATTACK_DAMAGE, 6.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.6D);
     }
 
     @Override
@@ -72,10 +72,12 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         this.goalSelector.addGoal(2, new BearPanicGoal(this, 2.0D));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
         this.goalSelector.addGoal(5, new BearRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(6, new BearLookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(7, new BearRandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new BearAttackPlayerNearBabiesGoal(this, Player.class, 20, true, true, null));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
+        this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, AbstractSchoolingFish.class, 10, true, false, (entity) -> entity.getType().is(NaturalistTags.BEAR_HOSTILES) && !this.isSleeping()));
         this.targetSelector.addGoal(3, new ResetUniversalAngerTargetGoal<>(this, false));
     }
 
@@ -144,10 +146,21 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         if ((dayTime > 12000 && dayTime < 18000) || dayTime > 23000 || dayTime < 6000 || this.isAngry()) {
             this.setSleeping(false);
         } else {
-            this.goalSelector.tickRunningGoals(true);
-            this.setSleeping(true);
+            this.sleep();
         }
 //        Naturalist.LOGGER.debug("Sleeping: " + this.isSleeping() + ", Angry: " + this.isAngry());
+    }
+
+    private void sleep() {
+        this.setJumping(false);
+        this.setSleeping(true);
+        this.getNavigation().stop();
+        this.getMoveControl().setWantedPosition(this.getX(), this.getY(), this.getZ(), 0.0D);
+    }
+
+    @Override
+    protected float getWaterSlowDown() {
+        return 0.9F;
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -201,17 +214,17 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         }
     }
 
-    static class BearAttackPlayersGoal extends NearestAttackableTargetGoal<Player> {
+    static class BearAttackPlayerNearBabiesGoal extends NearestAttackableTargetGoal<Player> {
         private final Bear bear;
 
-        public BearAttackPlayersGoal(Bear pMob, Class<Player> pTargetType, int pRandomInterval, boolean pMustSee, boolean pMustReach, @org.jetbrains.annotations.Nullable Predicate<LivingEntity> pTargetPredicate) {
+        public BearAttackPlayerNearBabiesGoal(Bear pMob, Class<Player> pTargetType, int pRandomInterval, boolean pMustSee, boolean pMustReach, @org.jetbrains.annotations.Nullable Predicate<LivingEntity> pTargetPredicate) {
             super(pMob, pTargetType, pRandomInterval, pMustSee, pMustReach, pTargetPredicate);
             this.bear = pMob;
         }
 
         @Override
         public boolean canUse() {
-            if (!bear.isBaby()) {
+            if (!bear.isBaby() && !bear.isSleeping()) {
                 if (super.canUse()) {
                     for (Bear bear : bear.level.getEntitiesOfClass(Bear.class, bear.getBoundingBox().inflate(8.0D, 4.0D, 8.0D))) {
                         if (bear.isBaby()) {
@@ -227,6 +240,23 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         @Override
         protected double getFollowDistance() {
             return super.getFollowDistance() * 0.5D;
+        }
+    }
+
+    static class BearLookAtPlayerGoal extends LookAtPlayerGoal {
+        private final Bear bear;
+
+        public BearLookAtPlayerGoal(Bear pMob, Class<? extends LivingEntity> pLookAtType, float pLookDistance) {
+            super(pMob, pLookAtType, pLookDistance);
+            this.bear = pMob;
+        }
+
+        @Override
+        public boolean canUse() {
+            if (bear.isSleeping()) {
+                return false;
+            }
+            return super.canUse();
         }
     }
 
