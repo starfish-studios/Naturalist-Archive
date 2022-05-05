@@ -1,5 +1,6 @@
 package crispytwig.naturalist.entity;
 
+import crispytwig.naturalist.Naturalist;
 import crispytwig.naturalist.entity.ai.goal.CloseMeleeAttackGoal;
 import crispytwig.naturalist.registry.NaturalistEntityTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -16,10 +17,7 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
-import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.Fox;
-import net.minecraft.world.entity.animal.PolarBear;
-import net.minecraft.world.entity.animal.Salmon;
+import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -42,7 +40,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
     private static final Ingredient FOOD_ITEMS = Ingredient.of(Items.SALMON, Items.COOKED_SALMON);
     private static final EntityDataAccessor<Boolean> SLEEPING = SynchedEntityData.defineId(Bear.class, EntityDataSerializers.BOOLEAN);
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
-    private int remainingPersistentAngerTime;
+    private static final EntityDataAccessor<Integer> REMAINING_ANGER_TIME = SynchedEntityData.defineId(Bear.class, EntityDataSerializers.INT);
     @Nullable
     private UUID persistentAngerTarget;
 
@@ -82,10 +80,13 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         this.targetSelector.addGoal(4, new ResetUniversalAngerTargetGoal<>(this, false));
     }
 
+    // ENTITY DATA
+
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(SLEEPING, false);
+        this.entityData.define(REMAINING_ANGER_TIME, 0);
     }
 
     @Override
@@ -109,31 +110,18 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
     }
 
     @Override
-    public void aiStep() {
-        super.aiStep();
-        long time = this.getLevel().getDayTime();
-        if (this.isAngry()) {
-            this.setSleeping(false);
-        } else if ((time > 12000 && time < 18000) || time > 23000 || time < 6000) {
-            this.setSleeping(false);
-        } else {
-            this.setSleeping(true);
-        }
-    }
-
-    @Override
     public void startPersistentAngerTimer() {
         this.setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(this.random));
     }
 
     @Override
     public void setRemainingPersistentAngerTime(int pTime) {
-        this.remainingPersistentAngerTime = pTime;
+        this.entityData.set(REMAINING_ANGER_TIME, pTime);
     }
 
     @Override
     public int getRemainingPersistentAngerTime() {
-        return this.remainingPersistentAngerTime;
+        return this.entityData.get(REMAINING_ANGER_TIME);
     }
 
     @Override
@@ -147,11 +135,24 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         return this.persistentAngerTarget;
     }
 
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        long time = this.getLevel().getDayTime();
+        if ((time > 12000 && time < 18000) || time > 23000 || time < 6000 || this.isAngry()) {
+            this.setSleeping(false);
+        } else {
+            this.goalSelector.tickRunningGoals(true);
+            this.setSleeping(true);
+        }
+        Naturalist.LOGGER.debug("Sleeping: " + this.isSleeping() + ", Angry: " + this.isAngry());
+    }
+
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.isSleeping()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("bear.sleep", true));
             return PlayState.CONTINUE;
-        } else if (event.isMoving() && !this.isSleeping()) {
+        } else if (event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("bear.walk", true));
             return PlayState.CONTINUE;
         }
@@ -237,7 +238,10 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
 
         @Override
         public boolean canUse() {
-            return !bear.isSleeping();
+            if (bear.isSleeping()) {
+                return false;
+            }
+            return super.canUse();
         }
     }
 }
