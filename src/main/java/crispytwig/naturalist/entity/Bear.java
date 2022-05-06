@@ -9,7 +9,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.TimeUtil;
@@ -82,7 +81,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         this.goalSelector.addGoal(3, new BearPanicGoal(this, 2.0D));
         this.goalSelector.addGoal(4, new BearSleepGoal(this));
         this.goalSelector.addGoal(5, new FollowParentGoal(this, 1.25D));
-        this.goalSelector.addGoal(5, new BearHarvestHoneyGoal(this, 1.2F, 12, 3));
+        this.goalSelector.addGoal(5, new BearHarvestFoodGoal(this, 1.2F, 12, 3));
         this.goalSelector.addGoal(6, new RandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
@@ -301,10 +300,10 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         }
     }
 
-    public class BearHarvestHoneyGoal extends MoveToBlockGoal {
+    public class BearHarvestFoodGoal extends MoveToBlockGoal {
         protected int ticksWaited;
 
-        public BearHarvestHoneyGoal(PathfinderMob pMob, double pSpeedModifier, int pSearchRange, int pVerticalSearchRange) {
+        public BearHarvestFoodGoal(PathfinderMob pMob, double pSpeedModifier, int pSearchRange, int pVerticalSearchRange) {
             super(pMob, pSpeedModifier, pSearchRange, pVerticalSearchRange);
         }
 
@@ -320,7 +319,12 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         @Override
         protected boolean isValidTarget(LevelReader pLevel, BlockPos pPos) {
             BlockState state = pLevel.getBlockState(pPos);
-            return state.getBlock() instanceof BeehiveBlock && state.getValue(BeehiveBlock.HONEY_LEVEL) >= 5;
+            if (state.getBlock() instanceof BeehiveBlock) {
+                return state.getValue(BeehiveBlock.HONEY_LEVEL) >= 5;
+            } else if (state.is(Blocks.SWEET_BERRY_BUSH)) {
+                return state.getValue(SweetBerryBushBlock.AGE) >= 2;
+            }
+            return false;
         }
 
         @Override
@@ -343,6 +347,8 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
                 BlockState state = level.getBlockState(blockPos);
                 if (state.getBlock() instanceof BeehiveBlock && state.getValue(BeehiveBlock.HONEY_LEVEL) >= 5) {
                     this.harvestHoney(state);
+                } else if (state.is(Blocks.SWEET_BERRY_BUSH) && state.getValue(SweetBerryBushBlock.AGE) >= 2) {
+                    this.pickSweetBerries(state);
                 }
             }
         }
@@ -358,6 +364,15 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
                 level.destroyBlock(blockPos, false, mob);
                 level.playSound(null, blockPos, SoundEvents.WOOD_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
             }
+        }
+
+        private void pickSweetBerries(BlockState state) {
+            int age = state.getValue(SweetBerryBushBlock.AGE);
+            state.setValue(SweetBerryBushBlock.AGE, 1);
+            int berryAmount = 1 + level.random.nextInt(2) + (age == 3 ? 1 : 0);
+            Block.popResource(level, this.blockPos, new ItemStack(Items.SWEET_BERRIES, berryAmount));
+            mob.playSound(SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, 1.0F, 1.0F);
+            level.setBlock(this.blockPos, state.setValue(SweetBerryBushBlock.AGE, 1), 2);
         }
 
         @Override
