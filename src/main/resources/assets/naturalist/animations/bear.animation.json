@@ -137,6 +137,54 @@
 				}
 			}
 		},
+		"bear.sleep": {
+			"loop": true,
+			"animation_length": 2,
+			"bones": {
+				"head": {
+					"rotation": {
+						"vector": [12.5, 10, 27.5]
+					}
+				},
+				"left_front_leg": {
+					"rotation": {
+						"vector": [-87.5, 25, 0]
+					},
+					"position": {
+						"vector": [2.25, 0, -5]
+					}
+				},
+				"right_front_leg": {
+					"rotation": {
+						"vector": [-87.5, -20, 0]
+					},
+					"position": {
+						"vector": [-2.25, 0, 0]
+					}
+				},
+				"left_back_leg": {
+					"rotation": {
+						"vector": [-90, -12.5, 0]
+					},
+					"position": {
+						"vector": [2.75, 0, 2]
+					}
+				},
+				"right_back_leg": {
+					"rotation": {
+						"vector": [-90, 12.5, 0]
+					},
+					"position": {
+						"vector": [-2.75, 0, 2]
+					}
+				},
+				"root": {
+					"position": {
+						"vector": [0, -7, 0]
+					}
+				}
+			}
+		},
 		"bear.sit": {
 			"loop": true,
 			"bones": {
@@ -184,62 +232,6 @@
 						"vector": [-90, 0, 0],
 						"easing": "easeInOutQuad"
 					},
-					"position": {
-						"vector": [0, -7, 0]
-					}
-				}
-			}
-		},
-		"bear.sleep": {
-			"loop": true,
-			"animation_length": 2,
-			"bones": {
-				"body": {
-					"position": {
-						"vector": [0, "Math.sin((query.anim_time - 0.0) * 180) * 0.3", 0]
-					}
-				},
-				"head": {
-					"rotation": {
-						"vector": [12.5, 10, 27.5]
-					},
-					"position": {
-						"vector": [-1, "-1 + Math.cos((query.anim_time - 0.0) * 180) * -0.3", 0]
-					}
-				},
-				"left_front_leg": {
-					"rotation": {
-						"vector": [-87.5, 25, 0]
-					},
-					"position": {
-						"vector": [2.25, 0, -5]
-					}
-				},
-				"right_front_leg": {
-					"rotation": {
-						"vector": [-87.5, -20, 0]
-					},
-					"position": {
-						"vector": [-2.25, 0, 0]
-					}
-				},
-				"left_back_leg": {
-					"rotation": {
-						"vector": [-90, -12.5, 0]
-					},
-					"position": {
-						"vector": [2.75, 0, 2]
-					}
-				},
-				"right_back_leg": {
-					"rotation": {
-						"vector": [-90, 12.5, 0]
-					},
-					"position": {
-						"vector": [-2.75, 0, 2]
-					}
-				},
-				"root": {
 					"position": {
 						"vector": [0, -7, 0]
 					}
