@@ -200,11 +200,16 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         return PlayState.STOP;
     }
 
-    private <E extends IAnimatable> PlayState actionPredicate(AnimationEvent<E> event) {
+    private <E extends IAnimatable> PlayState sniffPredicate(AnimationEvent<E> event) {
         if (this.isSniffing()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("bear.sniff", true));
             return PlayState.CONTINUE;
         }
+        event.getController().markNeedsReload();
+        return PlayState.STOP;
+    }
+
+    private <E extends IAnimatable> PlayState swingPredicate(AnimationEvent<E> event) {
         if (this.swinging) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("bear.swing", false));
             return PlayState.CONTINUE;
@@ -213,11 +218,13 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         return PlayState.STOP;
     }
 
+
     @Override
     public void registerControllers(AnimationData data) {
         data.setResetSpeedInTicks(10);
         data.addAnimationController(new AnimationController<>(this, "controller", 10, this::predicate));
-        data.addAnimationController(new AnimationController<>(this, "actionController", 0, this::actionPredicate));
+        data.addAnimationController(new AnimationController<>(this, "swingController", 0, this::sniffPredicate));
+        data.addAnimationController(new AnimationController<>(this, "sniffController", 0, this::swingPredicate));
     }
 
     @Override
