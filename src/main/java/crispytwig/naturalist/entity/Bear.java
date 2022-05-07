@@ -192,6 +192,9 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         } else if (event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("bear.walk", true));
             return PlayState.CONTINUE;
+        } else if (!this.isSniffing()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("bear.idle", true));
+            return PlayState.CONTINUE;
         }
         event.getController().markNeedsReload();
         return PlayState.STOP;
