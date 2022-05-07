@@ -23,11 +23,11 @@ public class BearRenderer extends GeoEntityRenderer<Bear> {
     }
 
     @Override
-    public void render(Bear entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource bufferIn, int packedLightIn) {
-        if (entity.isBaby()) {
-            stack.scale(0.6F, 0.6F, 0.6F);
+    public void renderEarly(Bear animatable, PoseStack stackIn, float ticks, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float partialTicks) {
+        super.renderEarly(animatable, stackIn, ticks, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, partialTicks);
+        if (animatable.isBaby()) {
+            stackIn.scale(0.5F, 0.5F, 0.5F);
         }
-        super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
     }
 
     @Override

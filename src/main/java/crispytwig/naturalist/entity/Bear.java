@@ -132,6 +132,9 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
             }
         }
         this.handleEating();
+        if (!this.getMainHandItem().isEmpty()) {
+            this.setSniffing(false);
+        }
     }
 
     @Override
