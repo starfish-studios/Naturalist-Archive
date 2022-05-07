@@ -75,7 +75,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(0, new BearFloatGoal(this));
         this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(2, new TemptGoal(this, 1.0D, FOOD_ITEMS, false));
         this.goalSelector.addGoal(3, new CloseMeleeAttackGoal(this, 1.25D, true));
@@ -114,6 +114,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         this.addPersistentAngerSaveData(pCompound);
     }
 
+    @Override
     public boolean isSleeping() {
         return this.entityData.get(SLEEPING);
     }
@@ -158,6 +159,13 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
             this.jumping = false;
             this.xxa = 0.0F;
             this.zza = 0.0F;
+        }
+        if (this.getTarget() != null) {
+            if (this.getTarget() instanceof Player player) {
+                if (FOOD_ITEMS.test(player.getMainHandItem()) || FOOD_ITEMS.test(player.getOffhandItem())) {
+                    this.stopBeingAngry();
+                }
+            }
         }
     }
 
@@ -249,12 +257,6 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         }
 
         @Override
-        public void start() {
-            bear.setLastHurtByMob(target);
-            this.stop();
-        }
-
-        @Override
         protected double getFollowDistance() {
             return super.getFollowDistance() * 0.5D;
         }
@@ -301,7 +303,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         }
     }
 
-    public class BearHarvestHoneyGoal extends MoveToBlockGoal {
+    static class BearHarvestFoodGoal extends MoveToBlockGoal {
         protected int ticksWaited;
 
         public BearHarvestHoneyGoal(PathfinderMob pMob, double pSpeedModifier, int pSearchRange, int pVerticalSearchRange) {
@@ -337,10 +339,10 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
 
             super.tick();
         }
-        
+
         protected void onReachedTarget() {
-            if (ForgeEventFactory.getMobGriefingEvent(level, mob)) {
-                BlockState state = level.getBlockState(blockPos);
+            if (ForgeEventFactory.getMobGriefingEvent(mob.level, mob)) {
+                BlockState state = mob.level.getBlockState(blockPos);
                 if (state.getBlock() instanceof BeehiveBlock && state.getValue(BeehiveBlock.HONEY_LEVEL) >= 5) {
                     this.harvestHoney(state);
                 }
@@ -350,14 +352,23 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         private void harvestHoney(BlockState state) {
             if (mob.getRandom().nextInt(5) > 0) {
                 state.setValue(BeehiveBlock.HONEY_LEVEL, 0);
-                BeehiveBlock.dropHoneycomb(level, blockPos);
+                BeehiveBlock.dropHoneycomb(mob.level, blockPos);
                 mob.playSound(SoundEvents.BEEHIVE_SHEAR, 1.0F, 1.0F);
-                level.setBlock(blockPos, state.setValue(BeehiveBlock.HONEY_LEVEL, 0), 2);
+                mob.level.setBlock(blockPos, state.setValue(BeehiveBlock.HONEY_LEVEL, 0), 2);
             } else {
-                level.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 2);
-                level.destroyBlock(blockPos, false, mob);
-                level.playSound(null, blockPos, SoundEvents.WOOD_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
+                mob.level.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 2);
+                mob.level.destroyBlock(blockPos, false, mob);
+                mob.level.playSound(null, blockPos, SoundEvents.WOOD_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
             }
+        }
+
+        private void pickSweetBerries(BlockState state) {
+            int age = state.getValue(SweetBerryBushBlock.AGE);
+            state.setValue(SweetBerryBushBlock.AGE, 1);
+            int berryAmount = 1 + mob.level.random.nextInt(2) + (age == 3 ? 1 : 0);
+            Block.popResource(mob.level, this.blockPos, new ItemStack(Items.SWEET_BERRIES, berryAmount));
+            mob.playSound(SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, 1.0F, 1.0F);
+            mob.level.setBlock(this.blockPos, state.setValue(SweetBerryBushBlock.AGE, 1), 2);
         }
 
         @Override
@@ -369,6 +380,20 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         public void start() {
             this.ticksWaited = 0;
             super.start();
+        }
+    }
+
+    static class BearFloatGoal extends FloatGoal {
+        private final Bear bear;
+
+        public BearFloatGoal(Bear pMob) {
+            super(pMob);
+            this.bear = pMob;
+        }
+
+        @Override
+        public boolean canUse() {
+            return bear.level.isWaterAt(bear.blockPosition().below()) && super.canUse();
         }
     }
 }
