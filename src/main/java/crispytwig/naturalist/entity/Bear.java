@@ -31,6 +31,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.ForgeEventFactory;
+import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -210,14 +211,13 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
     }
 
     private <E extends IAnimatable> PlayState swingPredicate(AnimationEvent<E> event) {
-        if (this.swinging) {
+        if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
+            event.getController().markNeedsReload();
             event.getController().setAnimation(new AnimationBuilder().addAnimation("bear.swing", false));
-            return PlayState.CONTINUE;
+            this.swinging = false;
         }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
+        return PlayState.CONTINUE;
     }
-
 
     @Override
     public void registerControllers(AnimationData data) {
