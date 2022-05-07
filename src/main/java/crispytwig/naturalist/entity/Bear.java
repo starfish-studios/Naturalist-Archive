@@ -74,7 +74,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(0, new BearFloatGoal(this));
         this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(2, new TemptGoal(this, 1.0D, FOOD_ITEMS, false));
         this.goalSelector.addGoal(3, new CloseMeleeAttackGoal(this, 1.25D, true));
@@ -113,6 +113,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         this.addPersistentAngerSaveData(pCompound);
     }
 
+    @Override
     public boolean isSleeping() {
         return this.entityData.get(SLEEPING);
     }
@@ -342,7 +343,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
 
             super.tick();
         }
-        
+
         protected void onReachedTarget() {
             if (ForgeEventFactory.getMobGriefingEvent(mob.level, mob)) {
                 BlockState state = mob.level.getBlockState(blockPos);
@@ -385,6 +386,20 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         public void start() {
             this.ticksWaited = 0;
             super.start();
+        }
+    }
+
+    static class BearFloatGoal extends FloatGoal {
+        private final Bear bear;
+
+        public BearFloatGoal(Bear pMob) {
+            super(pMob);
+            this.bear = pMob;
+        }
+
+        @Override
+        public boolean canUse() {
+            return bear.level.isWaterAt(bear.blockPosition().below()) && super.canUse();
         }
     }
 }
