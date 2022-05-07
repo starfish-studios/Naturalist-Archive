@@ -9,11 +9,11 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -48,6 +48,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
     private static final Ingredient FOOD_ITEMS = Ingredient.of(NaturalistTags.Items.BEAR_TEMPT_ITEMS);
     private static final EntityDataAccessor<Boolean> SLEEPING = SynchedEntityData.defineId(Bear.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> SNIFFING = SynchedEntityData.defineId(Bear.class, EntityDataSerializers.BOOLEAN);
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
     private static final EntityDataAccessor<Integer> REMAINING_ANGER_TIME = SynchedEntityData.defineId(Bear.class, EntityDataSerializers.INT);
     @Nullable
@@ -55,6 +56,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
 
     public Bear(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
+        this.maxUpStep = 1.0F;
     }
 
     @Nullable
@@ -77,12 +79,12 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         super.registerGoals();
         this.goalSelector.addGoal(0, new BearFloatGoal(this));
         this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(2, new TemptGoal(this, 1.0D, FOOD_ITEMS, false));
+        this.goalSelector.addGoal(2, new BearTemptGoal(this, 1.0D, FOOD_ITEMS, false));
         this.goalSelector.addGoal(3, new CloseMeleeAttackGoal(this, 1.25D, true));
         this.goalSelector.addGoal(3, new BearPanicGoal(this, 2.0D));
         this.goalSelector.addGoal(4, new BearSleepGoal(this));
         this.goalSelector.addGoal(5, new FollowParentGoal(this, 1.25D));
-        this.goalSelector.addGoal(5, new BearHarvestHoneyGoal(this, 1.2F, 12, 3));
+        this.goalSelector.addGoal(5, new BearHarvestFoodGoal(this, 1.2F, 12, 3));
         this.goalSelector.addGoal(6, new RandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
@@ -99,6 +101,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(SLEEPING, false);
+        this.entityData.define(SNIFFING, false);
         this.entityData.define(REMAINING_ANGER_TIME, 0);
     }
 
@@ -121,6 +124,14 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
 
     public void setSleeping(boolean sleeping) {
         this.entityData.set(SLEEPING, sleeping);
+    }
+
+    public boolean isSniffing() {
+        return this.entityData.get(SNIFFING);
+    }
+
+    public void setSniffing(boolean sniffing) {
+        this.entityData.set(SNIFFING, sniffing);
     }
 
     @Override
@@ -186,10 +197,24 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         return PlayState.STOP;
     }
 
+    private <E extends IAnimatable> PlayState actionPredicate(AnimationEvent<E> event) {
+        if (this.isSniffing()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("bear.sniff", true));
+            return PlayState.CONTINUE;
+        }
+        if (this.swinging) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("bear.swing", false));
+            return PlayState.CONTINUE;
+        }
+        event.getController().markNeedsReload();
+        return PlayState.STOP;
+    }
+
     @Override
     public void registerControllers(AnimationData data) {
         data.setResetSpeedInTicks(10);
         data.addAnimationController(new AnimationController<>(this, "controller", 10, this::predicate));
+        data.addAnimationController(new AnimationController<>(this, "actionController", 0, this::actionPredicate));
     }
 
     @Override
@@ -305,9 +330,11 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
 
     static class BearHarvestFoodGoal extends MoveToBlockGoal {
         protected int ticksWaited;
+        private final Bear bear;
 
-        public BearHarvestHoneyGoal(PathfinderMob pMob, double pSpeedModifier, int pSearchRange, int pVerticalSearchRange) {
+        public BearHarvestFoodGoal(Bear pMob, double pSpeedModifier, int pSearchRange, int pVerticalSearchRange) {
             super(pMob, pSpeedModifier, pSearchRange, pVerticalSearchRange);
+            this.bear = pMob;
         }
 
         @Override
@@ -322,7 +349,12 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         @Override
         protected boolean isValidTarget(LevelReader pLevel, BlockPos pPos) {
             BlockState state = pLevel.getBlockState(pPos);
-            return state.getBlock() instanceof BeehiveBlock && state.getValue(BeehiveBlock.HONEY_LEVEL) >= 5;
+            if (state.getBlock() instanceof BeehiveBlock) {
+                return state.getValue(BeehiveBlock.HONEY_LEVEL) >= 5;
+            } else if (state.is(Blocks.SWEET_BERRY_BUSH)) {
+                return state.getValue(SweetBerryBushBlock.AGE) >= 2;
+            }
+            return false;
         }
 
         @Override
@@ -333,47 +365,53 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
                 } else {
                     ++this.ticksWaited;
                 }
-            } else if (!this.isReachedTarget() && mob.getRandom().nextFloat() < 0.05F) {
-                mob.playSound(SoundEvents.FOX_SNIFF, 1.0F, 1.0F);
+            } else if (!this.isReachedTarget() && bear.getRandom().nextFloat() < 0.05F) {
+                bear.playSound(SoundEvents.FOX_SNIFF, 1.0F, 1.0F);
+                bear.setSniffing(true);
             }
 
             super.tick();
         }
 
         protected void onReachedTarget() {
-            if (ForgeEventFactory.getMobGriefingEvent(mob.level, mob)) {
-                BlockState state = mob.level.getBlockState(blockPos);
+            if (ForgeEventFactory.getMobGriefingEvent(bear.level, bear)) {
+                BlockState state = bear.level.getBlockState(blockPos);
+                bear.setSniffing(false);
                 if (state.getBlock() instanceof BeehiveBlock && state.getValue(BeehiveBlock.HONEY_LEVEL) >= 5) {
                     this.harvestHoney(state);
+                } else if (state.is(Blocks.SWEET_BERRY_BUSH) && state.getValue(SweetBerryBushBlock.AGE) >= 2) {
+                    this.pickSweetBerries(state);
                 }
             }
         }
 
         private void harvestHoney(BlockState state) {
-            if (mob.getRandom().nextInt(5) > 0) {
+            if (bear.getRandom().nextInt(5) > 0) {
                 state.setValue(BeehiveBlock.HONEY_LEVEL, 0);
-                BeehiveBlock.dropHoneycomb(mob.level, blockPos);
-                mob.playSound(SoundEvents.BEEHIVE_SHEAR, 1.0F, 1.0F);
-                mob.level.setBlock(blockPos, state.setValue(BeehiveBlock.HONEY_LEVEL, 0), 2);
+                BeehiveBlock.dropHoneycomb(bear.level, blockPos);
+                bear.playSound(SoundEvents.BEEHIVE_SHEAR, 1.0F, 1.0F);
+                bear.level.setBlock(blockPos, state.setValue(BeehiveBlock.HONEY_LEVEL, 0), 2);
             } else {
-                mob.level.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 2);
-                mob.level.destroyBlock(blockPos, false, mob);
-                mob.level.playSound(null, blockPos, SoundEvents.WOOD_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
+                bear.level.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 2);
+                bear.level.destroyBlock(blockPos, false, bear);
+                bear.level.playSound(null, blockPos, SoundEvents.WOOD_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
             }
+            bear.swing(InteractionHand.MAIN_HAND);
         }
 
         private void pickSweetBerries(BlockState state) {
             int age = state.getValue(SweetBerryBushBlock.AGE);
             state.setValue(SweetBerryBushBlock.AGE, 1);
-            int berryAmount = 1 + mob.level.random.nextInt(2) + (age == 3 ? 1 : 0);
-            Block.popResource(mob.level, this.blockPos, new ItemStack(Items.SWEET_BERRIES, berryAmount));
-            mob.playSound(SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, 1.0F, 1.0F);
-            mob.level.setBlock(this.blockPos, state.setValue(SweetBerryBushBlock.AGE, 1), 2);
+            int berryAmount = 1 + bear.level.random.nextInt(2) + (age == 3 ? 1 : 0);
+            Block.popResource(bear.level, this.blockPos, new ItemStack(Items.SWEET_BERRIES, berryAmount));
+            bear.playSound(SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, 1.0F, 1.0F);
+            bear.level.setBlock(this.blockPos, state.setValue(SweetBerryBushBlock.AGE, 1), 2);
+            bear.swing(InteractionHand.MAIN_HAND);
         }
 
         @Override
         public boolean canUse() {
-            return !mob.isBaby() && super.canUse();
+            return !bear.isBaby() && super.canUse();
         }
         
         @Override
@@ -394,6 +432,35 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         @Override
         public boolean canUse() {
             return bear.level.isWaterAt(bear.blockPosition().below()) && super.canUse();
+        }
+    }
+
+    static class BearTemptGoal extends TemptGoal {
+        private final Bear bear;
+
+        public BearTemptGoal(Bear pMob, double pSpeedModifier, Ingredient pItems, boolean pCanScare) {
+            super(pMob, pSpeedModifier, pItems, pCanScare);
+            this.bear = pMob;
+        }
+
+        @Override
+        public void start() {
+            super.start();
+            bear.setSniffing(true);
+        }
+
+        @Override
+        public void tick() {
+            super.tick();
+            if (bear.getRandom().nextFloat() < 0.05F) {
+                bear.playSound(SoundEvents.FOX_SNIFF, 1.0F, 1.0F);
+            }
+        }
+
+        @Override
+        public void stop() {
+            super.stop();
+            bear.setSniffing(false);
         }
     }
 }
