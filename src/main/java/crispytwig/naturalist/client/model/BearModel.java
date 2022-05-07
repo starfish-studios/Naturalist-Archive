@@ -40,7 +40,7 @@ public class BearModel extends AnimatedGeoModel<Bear> {
     public void setLivingAnimations(Bear bear, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
         super.setLivingAnimations(bear, uniqueID, customPredicate);
 
-        if (customPredicate == null || bear.isSleeping()) return;
+        if (customPredicate == null || bear.isSleeping() || bear.isEating()) return;
 
         List<EntityModelData> extraDataOfType = customPredicate.getExtraDataOfType(EntityModelData.class);
 

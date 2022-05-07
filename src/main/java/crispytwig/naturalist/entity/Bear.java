@@ -16,6 +16,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -96,15 +97,15 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         this.goalSelector.addGoal(0, new BearFloatGoal(this));
         this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(2, new BearTemptGoal(this, 1.0D, FOOD_ITEMS, false));
-        this.goalSelector.addGoal(2, new BearPickupFoodAndSitGoal(this));
         this.goalSelector.addGoal(3, new CloseMeleeAttackGoal(this, 1.25D, true));
         this.goalSelector.addGoal(3, new BearPanicGoal(this, 2.0D));
         this.goalSelector.addGoal(4, new BearSleepGoal(this));
         this.goalSelector.addGoal(5, new FollowParentGoal(this, 1.25D));
         this.goalSelector.addGoal(5, new BearHarvestFoodGoal(this, 1.2F, 12, 3));
-        this.goalSelector.addGoal(6, new RandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0F));
-        this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(6, new BearPickupFoodAndSitGoal(this));
+        this.goalSelector.addGoal(7, new RandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new BearHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new BearAttackPlayerNearBabiesGoal(this, Player.class, 20, true, true, null));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
@@ -131,6 +132,11 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
             }
         }
         this.handleEating();
+    }
+
+    @Override
+    public boolean isInvulnerableTo(DamageSource pSource) {
+        return pSource.equals(DamageSource.SWEET_BERRY_BUSH) || super.isInvulnerableTo(pSource);
     }
 
     // ENTITY DATA
@@ -467,6 +473,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         public void start() {
             bear.setJumping(false);
             bear.setSleeping(true);
+            bear.setSniffing(false);
             bear.getNavigation().stop();
             bear.getMoveControl().setWantedPosition(bear.getX(), bear.getY(), bear.getZ(), 0.0D);
         }
@@ -560,9 +567,14 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
 
         @Override
         public boolean canUse() {
-            return !bear.isBaby() && super.canUse();
+            return !bear.isBaby() && bear.getMainHandItem().isEmpty() && super.canUse();
         }
-        
+
+        @Override
+        public boolean canContinueToUse() {
+            return bear.getMainHandItem().isEmpty() && super.canContinueToUse();
+        }
+
         @Override
         public void start() {
             this.ticksWaited = 0;
@@ -590,6 +602,11 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         public BearTemptGoal(Bear pMob, double pSpeedModifier, Ingredient pItems, boolean pCanScare) {
             super(pMob, pSpeedModifier, pItems, pCanScare);
             this.bear = pMob;
+        }
+
+        @Override
+        public boolean canUse() {
+            return bear.getMainHandItem().isEmpty() && super.canUse();
         }
 
         @Override
