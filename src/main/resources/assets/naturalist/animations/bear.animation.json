@@ -252,7 +252,7 @@
 						"vector": ["-107.8348 + Math.cos((query.anim_time - 0.2) * 1440) * 10", -15, 0]
 					},
 					"position": {
-						"vector": [0, -2, -4]
+						"vector": [0, 1, -4]
 					}
 				},
 				"head": {
@@ -261,6 +261,35 @@
 					},
 					"position": {
 						"vector": [0, 3, 2]
+					}
+				},
+				"right_back_leg": {
+					"rotation": {
+						"vector": [-90, 0, 0]
+					},
+					"position": {
+						"vector": [0, -7, 0]
+					}
+				},
+				"left_back_leg": {
+					"rotation": {
+						"vector": [-90, 0, 0]
+					},
+					"position": {
+						"vector": [0, -7, 0]
+					}
+				},
+				"left_front_leg": {
+					"rotation": {
+						"vector": [-22.5, 0, 0]
+					}
+				},
+				"body": {
+					"rotation": {
+						"vector": [-30, 0, 0]
+					},
+					"position": {
+						"vector": [0, -2, 0]
 					}
 				}
 			}
