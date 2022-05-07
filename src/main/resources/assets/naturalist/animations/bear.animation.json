@@ -162,6 +162,7 @@
 			}
 		},
 		"bear.sniff": {
+			"loop": true,
 			"animation_length": 0.5,
 			"override_previous_animation": true,
 			"bones": {
@@ -204,13 +205,12 @@
 						"vector": [-30, 0, 0]
 					},
 					"position": {
-						"vector": [0, -2, 0]
+						"vector": [0, -3, 0]
 					}
 				},
 				"head": {
 					"rotation": {
-						"vector": [30, 0, 0],
-						"easing": "easeOutQuad"
+						"vector": ["easeOutQuad", "easeOutQuad", "easeOutQuad"]
 					},
 					"position": {
 						"vector": [0, -2, 2]
@@ -245,6 +245,7 @@
 			}
 		},
 		"bear.eat": {
+			"loop": true,
 			"animation_length": 2,
 			"bones": {
 				"right_front_leg": {
@@ -252,7 +253,7 @@
 						"vector": ["-107.8348 + Math.cos((query.anim_time - 0.2) * 1440) * 10", -15, 0]
 					},
 					"position": {
-						"vector": [0, 1, -4]
+						"vector": [0, 0, -4]
 					}
 				},
 				"head": {
@@ -260,7 +261,7 @@
 						"vector": ["35 + Math.cos((query.anim_time - 0.2) * 1440) * -5", 0, 0]
 					},
 					"position": {
-						"vector": [0, 3, 2]
+						"vector": [0, -2, 2]
 					}
 				},
 				"right_back_leg": {
@@ -289,7 +290,7 @@
 						"vector": [-30, 0, 0]
 					},
 					"position": {
-						"vector": [0, -2, 0]
+						"vector": [0, -3, 0]
 					}
 				}
 			}

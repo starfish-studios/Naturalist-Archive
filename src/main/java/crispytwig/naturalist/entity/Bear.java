@@ -326,7 +326,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         } else if (event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("bear.walk", true));
             return PlayState.CONTINUE;
-        } else if (!this.isSniffing() && !this.isSitting()) {
+        } else if (!this.isSniffing()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("bear.idle", true));
             return PlayState.CONTINUE;
         }
@@ -356,9 +356,6 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         if (this.isEating()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("bear.eat", true));
             return PlayState.CONTINUE;
-        } else if (this.isSitting()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("bear.sit", true));
-            return PlayState.CONTINUE;
         }
         event.getController().markNeedsReload();
         return PlayState.STOP;
@@ -370,7 +367,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         data.addAnimationController(new AnimationController<>(this, "controller", 10, this::predicate));
         data.addAnimationController(new AnimationController<>(this, "sniffController", 0, this::sniffPredicate));
         data.addAnimationController(new AnimationController<>(this, "swingController", 0, this::swingPredicate));
-        data.addAnimationController(new AnimationController<>(this, "eatController", 10, this::eatPredicate));
+        data.addAnimationController(new AnimationController<>(this, "eatController", 5, this::eatPredicate));
     }
 
     @Override

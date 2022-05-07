@@ -2,8 +2,8 @@
   "itemGroup.naturalist": "Naturalist",
   "entity.naturalist.snail": "Snail",
   "entity.naturalist.crocodile": "Crocodile",
-  "entity.naturalist.bear": "Brown Bear",
+  "entity.naturalist.bear": "Grizzly Bear",
   "item.naturalist.snail_spawn_egg": "Snail Spawn Egg",
   "item.naturalist.crocodile_spawn_egg": "Crocodile Spawn Egg",
-  "item.naturalist.bear_spawn_egg": "Brown Bear Spawn Egg"
+  "item.naturalist.bear_spawn_egg": "Grizzly Bear Spawn Egg"
 }

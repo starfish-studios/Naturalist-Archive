@@ -4,6 +4,7 @@ import crispytwig.naturalist.Naturalist;
 import crispytwig.naturalist.entity.Bear;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
@@ -27,6 +28,12 @@ public class BearModel extends AnimatedGeoModel<Bear> {
             return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/bear/bear_angry.png");
         } else if (bear.isSleeping()) {
             return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/bear/bear_sleep.png");
+        } else if (bear.isEating()) {
+            if (bear.getMainHandItem().is(Items.SWEET_BERRIES)) {
+                return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/bear/bear_berries.png");
+            } else if (bear.getMainHandItem().is(Items.HONEYCOMB)) {
+                return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/bear/bear_honey.png");
+            }
         }
         return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/bear/bear.png");
     }
