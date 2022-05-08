@@ -70,9 +70,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
     public Bear(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
         this.maxUpStep = 1.0F;
-        if (!this.isBaby()) {
-            this.setCanPickUpLoot(true);
-        }
+        this.setCanPickUpLoot(true);
     }
 
     // BREEDING
@@ -279,7 +277,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
     @Override
     public boolean canTakeItem(ItemStack pItemstack) {
         EquipmentSlot slot = Mob.getEquipmentSlotForItem(pItemstack);
-        if (!this.getItemBySlot(slot).isEmpty()) {
+        if (!this.getItemBySlot(slot).isEmpty() || this.isBaby()) {
             return false;
         } else {
             return slot == EquipmentSlot.MAINHAND && super.canTakeItem(pItemstack);
@@ -289,7 +287,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
     @Override
     protected void pickUpItem(ItemEntity pItemEntity) {
         ItemStack stack = pItemEntity.getItem();
-        if (this.getMainHandItem().isEmpty() && FOOD_ITEMS.test(stack)) {
+        if (this.getMainHandItem().isEmpty() && FOOD_ITEMS.test(stack) && !this.isBaby()) {
             this.onItemPickup(pItemEntity);
             this.setItemSlot(EquipmentSlot.MAINHAND, stack);
             this.handDropChances[EquipmentSlot.MAINHAND.getIndex()] = 2.0F;
