@@ -303,15 +303,19 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
 
     @Override
     protected float getWaterSlowDown() {
-        return 0.85F;
+        return 0.98F;
     }
 
     void tryToSit() {
-        if (!this.isInWater()) {
+        if (!this.isTouchingWater()) {
             this.setZza(0.0F);
             this.getNavigation().stop();
             this.setSitting(true);
         }
+    }
+
+    boolean isTouchingWater() {
+        return this.level.isWaterAt(this.blockPosition());
     }
 
     // SOUNDS
@@ -689,7 +693,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
 
         @Override
         public boolean canUse() {
-            if (this.cooldown <= bear.tickCount && !bear.isBaby() && !bear.isInWater() && !bear.isSleeping() && !bear.isSitting()) {
+            if (this.cooldown <= bear.tickCount && !bear.isBaby() && !bear.isTouchingWater() && !bear.isSleeping() && !bear.isSitting()) {
                 List<ItemEntity> list = bear.level.getEntitiesOfClass(ItemEntity.class, bear.getBoundingBox().inflate(6.0D, 6.0D, 6.0D), itemEntity -> FOOD_ITEMS.test(itemEntity.getItem()));
                 return !list.isEmpty() || !bear.getMainHandItem().isEmpty();
             } else {
@@ -699,7 +703,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
 
         @Override
         public boolean canContinueToUse() {
-            return !bear.isInWater();
+            return !bear.isTouchingWater();
         }
 
         @Override
