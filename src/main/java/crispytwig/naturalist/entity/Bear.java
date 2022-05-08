@@ -96,8 +96,8 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         super.registerGoals();
         this.goalSelector.addGoal(0, new BearFloatGoal(this));
         this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(2, new BearTemptGoal(this, 1.0D, FOOD_ITEMS, false));
-        this.goalSelector.addGoal(3, new CloseMeleeAttackGoal(this, 1.25D, true));
+        this.goalSelector.addGoal(2, new BearMeleeAttackGoal(this, 1.25D, true));
+        this.goalSelector.addGoal(3, new BearTemptGoal(this, 1.0D, FOOD_ITEMS, false));
         this.goalSelector.addGoal(3, new BearPanicGoal(this, 2.0D));
         this.goalSelector.addGoal(4, new BearSleepGoal(this));
         this.goalSelector.addGoal(5, new FollowParentGoal(this, 1.25D));
@@ -124,15 +124,11 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
             this.xxa = 0.0F;
             this.zza = 0.0F;
         }
-        if (this.getTarget() != null) {
-            if (this.getTarget() instanceof Player player) {
-                if (FOOD_ITEMS.test(player.getMainHandItem()) || FOOD_ITEMS.test(player.getOffhandItem())) {
-                    this.stopBeingAngry();
-                }
-            }
-        }
         this.handleEating();
         if (!this.getMainHandItem().isEmpty()) {
+            if (this.isAngry()) {
+                this.stopBeingAngry();
+            }
             this.setSniffing(false);
         }
     }
@@ -688,6 +684,23 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
             }
 
             bear.setSitting(false);
+        }
+    }
+
+    static class BearMeleeAttackGoal extends CloseMeleeAttackGoal {
+
+        public BearMeleeAttackGoal(PathfinderMob pMob, double pSpeedModifier, boolean pFollowingTargetEvenIfNotSeen) {
+            super(pMob, pSpeedModifier, pFollowingTargetEvenIfNotSeen);
+        }
+
+        @Override
+        public boolean canUse() {
+            return mob.getMainHandItem().isEmpty() && super.canUse();
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return mob.getMainHandItem().isEmpty() && super.canContinueToUse();
         }
     }
 }
