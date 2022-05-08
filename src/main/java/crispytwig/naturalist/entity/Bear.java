@@ -13,7 +13,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.Containers;
@@ -109,7 +108,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         this.targetSelector.addGoal(1, new BearHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new BearAttackPlayerNearBabiesGoal(this, Player.class, 20, true, true, null));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, AbstractSchoolingFish.class, 10, true, false, (entity) -> entity.getType().is(NaturalistTags.EntityTypes.BEAR_HOSTILES) && !this.isSleeping()));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, AbstractSchoolingFish.class, 10, true, false, (entity) -> entity.getType().is(NaturalistTags.EntityTypes.BEAR_HOSTILES) && !this.isSleeping() && !this.isBaby()));
         this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, false));
     }
 
@@ -638,7 +637,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         @Override
         public boolean canUse() {
             if (!bear.isBaby()) {
-                return bear.level.isWaterAt(bear.blockPosition().below()) && super.canUse();
+                return (bear.level.isWaterAt(bear.blockPosition().below()) || bear.level.isWaterAt(bear.blockPosition().above())) && super.canUse();
             } else {
                 return super.canUse();
             }
