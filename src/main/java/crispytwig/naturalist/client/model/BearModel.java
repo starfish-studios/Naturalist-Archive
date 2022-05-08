@@ -47,17 +47,20 @@ public class BearModel extends AnimatedGeoModel<Bear> {
     public void setLivingAnimations(Bear bear, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
         super.setLivingAnimations(bear, uniqueID, customPredicate);
 
-        if (customPredicate == null || bear.isSleeping() || bear.isEating()) return;
+        if (customPredicate == null) return;
 
         List<EntityModelData> extraDataOfType = customPredicate.getExtraDataOfType(EntityModelData.class);
-
         IBone head = this.getAnimationProcessor().getBone("head");
-        head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD);
-        head.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD);
+
         if (bear.isBaby()) {
             head.setScaleX(2.0F);
             head.setScaleY(2.0F);
             head.setScaleZ(2.0F);
+        }
+
+        if (!bear.isSleeping() && !bear.isEating()) {
+            head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD);
+            head.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD);
         }
     }
 }
