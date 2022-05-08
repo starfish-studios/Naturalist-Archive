@@ -138,6 +138,11 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         return pSource.equals(DamageSource.SWEET_BERRY_BUSH) || super.isInvulnerableTo(pSource);
     }
 
+    @Override
+    protected float getStandingEyeHeight(Pose pPose, EntityDimensions pSize) {
+        return pSize.height * 0.75F;
+    }
+
     // ENTITY DATA
 
     @Override
@@ -632,7 +637,11 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
 
         @Override
         public boolean canUse() {
-            return bear.level.isWaterAt(bear.blockPosition().below()) && super.canUse();
+            if (!bear.isBaby()) {
+                return bear.level.isWaterAt(bear.blockPosition().below()) && super.canUse();
+            } else {
+                return super.canUse();
+            }
         }
     }
 
