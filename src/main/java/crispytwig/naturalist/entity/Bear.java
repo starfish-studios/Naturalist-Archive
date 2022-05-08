@@ -491,7 +491,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
 
         private boolean canSleep() {
             long dayTime = bear.getLevel().getDayTime();
-            return (dayTime < 12000 || dayTime > 18000) && dayTime < 23000 && dayTime > 6000 && !bear.isAngry();
+            return (dayTime < 12000 || dayTime > 18000) && dayTime < 23000 && dayTime > 6000 && !bear.isAngry() && !bear.level.isWaterAt(bear.blockPosition());
         }
 
         @Override
