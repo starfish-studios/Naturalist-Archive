@@ -101,7 +101,6 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         this.goalSelector.addGoal(3, new BearTemptGoal(this, 1.0D, FOOD_ITEMS, false));
         this.goalSelector.addGoal(3, new BearPanicGoal(this, 2.0D));
         this.goalSelector.addGoal(4, new BearSleepGoal(this));
-        this.goalSelector.addGoal(5, new FollowParentGoal(this, 1.25D));
         this.goalSelector.addGoal(5, new BearHarvestFoodGoal(this, 1.2F, 12, 3));
         this.goalSelector.addGoal(6, new BearPickupFoodAndSitGoal(this));
         this.goalSelector.addGoal(7, new RandomStrollGoal(this, 1.0D));
@@ -242,8 +241,8 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         }
         if (this.isEating()) {
             this.addEatingParticles();
-            if (!this.level.isClientSide && this.getEatCounter() > 80 && this.random.nextInt(20) == 1) {
-                if (this.getEatCounter() > 100 && this.isFood(this.getItemBySlot(EquipmentSlot.MAINHAND))) {
+            if (!this.level.isClientSide && this.getEatCounter() > 40) {
+                if (this.isFood(this.getItemBySlot(EquipmentSlot.MAINHAND))) {
                     if (!this.level.isClientSide) {
                         this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
                         this.gameEvent(GameEvent.EAT, this.eyeBlockPosition());
