@@ -15,6 +15,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -33,6 +34,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.CampfireBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
@@ -505,6 +507,8 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
                 return state.getValue(BeehiveBlock.HONEY_LEVEL) >= 5;
             } else if (state.is(Blocks.SWEET_BERRY_BUSH)) {
                 return state.getValue(SweetBerryBushBlock.AGE) >= 2;
+            } else if (state.is(Blocks.CAMPFIRE) && pLevel.getBlockEntity(pPos) instanceof CampfireBlockEntity campfire) {
+                return campfireIsTempting(campfire);
             }
             return false;
         }
@@ -533,21 +537,38 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
                     this.harvestHoney(state);
                 } else if (state.is(Blocks.SWEET_BERRY_BUSH) && state.getValue(SweetBerryBushBlock.AGE) >= 2) {
                     this.pickSweetBerries(state);
+                } else if (state.is(Blocks.CAMPFIRE) && bear.level.getBlockEntity(blockPos) instanceof CampfireBlockEntity campfire && campfireIsTempting(campfire)) {
+                    this.stealCampfireFood(state, campfire);
                 }
             }
         }
 
-        private void harvestHoney(BlockState state) {
-            if (bear.getRandom().nextInt(5) > 0) {
-                state.setValue(BeehiveBlock.HONEY_LEVEL, 0);
-                BeehiveBlock.dropHoneycomb(bear.level, blockPos);
-                bear.playSound(SoundEvents.BEEHIVE_SHEAR, 1.0F, 1.0F);
-                bear.level.setBlock(blockPos, state.setValue(BeehiveBlock.HONEY_LEVEL, 0), 2);
-            } else {
-                bear.level.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 2);
-                bear.level.destroyBlock(blockPos, false, bear);
-                bear.level.playSound(null, blockPos, SoundEvents.WOOD_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
+        private void stealCampfireFood(BlockState state, CampfireBlockEntity campfire) {
+            for (int i = 0; i < campfire.getItems().size(); i++) {
+                if (FOOD_ITEMS.test(campfire.getItems().get(i))) {
+                    Containers.dropItemStack(bear.level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), campfire.getItems().get(i));
+                    campfire.getItems().set(i, ItemStack.EMPTY);
+                    bear.level.sendBlockUpdated(blockPos, state, state, 3);
+                    campfire.setChanged();
+                    break;
+                }
             }
+        }
+
+        private boolean campfireIsTempting(CampfireBlockEntity campfire) {
+            for (int i = 0; i < campfire.getItems().size(); i++) {
+                if (FOOD_ITEMS.test(campfire.getItems().get(i))) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void harvestHoney(BlockState state) {
+            state.setValue(BeehiveBlock.HONEY_LEVEL, 0);
+            BeehiveBlock.dropHoneycomb(bear.level, blockPos);
+            bear.playSound(SoundEvents.BEEHIVE_SHEAR, 1.0F, 1.0F);
+            bear.level.setBlock(blockPos, state.setValue(BeehiveBlock.HONEY_LEVEL, 0), 2);
             bear.swing(InteractionHand.MAIN_HAND);
         }
 
@@ -647,11 +668,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
 
         @Override
         public boolean canContinueToUse() {
-            if (!bear.isInWater() && bear.random.nextInt(reducedTickDelay(600)) != 1) {
-                return bear.random.nextInt(reducedTickDelay(2000)) != 1;
-            } else {
-                return false;
-            }
+            return !bear.isInWater();
         }
 
         @Override
