@@ -210,7 +210,7 @@
 				},
 				"head": {
 					"rotation": {
-						"vector": ["easeOutQuad", "easeOutQuad", "easeOutQuad"]
+						"vector": [35, 0, 0]
 					},
 					"position": {
 						"vector": [0, -2, 2]
