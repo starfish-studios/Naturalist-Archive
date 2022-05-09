@@ -1,6 +1,7 @@
 package crispytwig.naturalist.entity;
 
 import crispytwig.naturalist.entity.ai.goal.CloseMeleeAttackGoal;
+import crispytwig.naturalist.entity.ai.goal.DistancedFollowParentGoal;
 import crispytwig.naturalist.registry.NaturalistEntityTypes;
 import crispytwig.naturalist.registry.NaturalistTags;
 import net.minecraft.core.BlockPos;
@@ -100,6 +101,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         this.goalSelector.addGoal(3, new BearTemptGoal(this, 1.0D, FOOD_ITEMS, false));
         this.goalSelector.addGoal(3, new BearPanicGoal(this, 2.0D));
         this.goalSelector.addGoal(4, new BearSleepGoal(this));
+        this.goalSelector.addGoal(5, new DistancedFollowParentGoal(this, 1.25D, 48.0D, 8.0D, 12.0D));
         this.goalSelector.addGoal(5, new BearHarvestFoodGoal(this, 1.2F, 12, 3));
         this.goalSelector.addGoal(6, new BearPickupFoodAndSitGoal(this));
         this.goalSelector.addGoal(7, new RandomStrollGoal(this, 1.0D));
