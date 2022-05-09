@@ -741,7 +741,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         }
     }
 
-    static class BearMeleeAttackGoal extends CloseMeleeAttackGoal {
+    static class BearMeleeAttackGoal extends MeleeAttackGoal {
 
         public BearMeleeAttackGoal(PathfinderMob pMob, double pSpeedModifier, boolean pFollowingTargetEvenIfNotSeen) {
             super(pMob, pSpeedModifier, pFollowingTargetEvenIfNotSeen);
@@ -755,6 +755,11 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         @Override
         public boolean canContinueToUse() {
             return mob.getMainHandItem().isEmpty() && super.canContinueToUse();
+        }
+
+        @Override
+        protected double getAttackReachSqr(LivingEntity pAttackTarget) {
+            return pAttackTarget instanceof AbstractSchoolingFish ? super.getAttackReachSqr(pAttackTarget) : 4.0F + pAttackTarget.getBbWidth();
         }
     }
 }
