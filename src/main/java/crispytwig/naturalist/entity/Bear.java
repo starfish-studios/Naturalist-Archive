@@ -301,6 +301,19 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         }
     }
 
+    @Override
+    public boolean hurt(DamageSource pSource, float pAmount) {
+        if (!this.getMainHandItem().isEmpty() && !this.level.isClientSide) {
+            ItemEntity itemEntity = new ItemEntity(this.level, this.getX() + this.getLookAngle().x, this.getY() + 1.0D, this.getZ() + this.getLookAngle().z, this.getMainHandItem());
+            itemEntity.setPickUpDelay(80);
+            itemEntity.setThrower(this.getUUID());
+            this.playSound(SoundEvents.FOX_SPIT, 1.0F, 1.0F);
+            this.level.addFreshEntity(itemEntity);
+            this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+        }
+        return super.hurt(pSource, pAmount);
+    }
+
     // MOVEMENT
 
     @Override
