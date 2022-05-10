@@ -3,77 +3,44 @@
 	"animations": {
 		"butterfly.fly": {
 			"loop": true,
-			"animation_length": 0.33333,
+			"animation_length": 2,
 			"bones": {
 				"main": {
 					"rotation": {
-						"0.0": {
-							"vector": [0, 0, 0]
-						},
-						"0.125": {
-							"vector": [-7.5, 0, 0]
-						},
-						"0.3333": {
-							"vector": [0, 0, 0]
-						}
+						"vector": ["Math.cos((query.anim_time - 0.5) * 720) * 4", 0, 0]
 					},
 					"position": {
-						"0.0": {
-							"vector": [0, 0, 0]
-						},
-						"0.125": {
-							"vector": [0, 1, 0],
-							"easing": "easeInOutCubic"
-						},
-						"0.3333": {
-							"vector": [0, 0, 0],
-							"easing": "easeInOutCubic"
-						}
+						"vector": [0, "Math.cos((query.anim_time - 0.5) * 720) * -1", 0]
 					}
 				},
 				"right_wing": {
 					"rotation": {
-						"0.0": {
-							"vector": [-45, 0, 0]
-						},
-						"0.125": {
-							"vector": [0, 0, -90],
-							"easing": "easeInOutCubic"
-						},
-						"0.3333": {
-							"vector": [-45, 0, 0],
-							"easing": "easeInCubic"
-						}
-					}
-				},
-				"antennae": {
-					"rotation": {
-						"0.0417": {
-							"vector": [0, 0, 0]
-						},
-						"0.1667": {
-							"vector": [22.5, 0, 0],
-							"easing": "easeInSine"
-						},
-						"0.3333": {
-							"vector": [0, 0, 0],
-							"easing": "easeInOutSine"
-						}
+						"vector": ["Math.cos((query.anim_time - 0.1) * 720) * 15", 0, "Math.cos((query.anim_time - 0.2) * 720) * -60"]
 					}
 				},
 				"left_wing": {
 					"rotation": {
-						"0.0": {
-							"vector": [-45, 0, 0]
-						},
-						"0.125": {
-							"vector": [0, 0, 90],
-							"easing": "easeInOutCubic"
-						},
-						"0.3333": {
-							"vector": [-45, 0, 0],
-							"easing": "easeInCubic"
-						}
+						"vector": ["Math.cos((query.anim_time - 0.1) * 720) * 15", 0, "Math.cos((query.anim_time - 0.2) * 720) * 60"]
+					}
+				},
+				"antennae": {
+					"rotation": {
+						"vector": ["Math.cos((query.anim_time - 0.5) * 720) * -16", 0, 0]
+					}
+				},
+				"front_legs": {
+					"rotation": {
+						"vector": ["Math.cos((query.anim_time - 0.5) * 720) * -8", 0, 0]
+					}
+				},
+				"middle_legs": {
+					"rotation": {
+						"vector": ["Math.cos((query.anim_time - 0.3) * 720) * -8", 0, 0]
+					}
+				},
+				"back_legs": {
+					"rotation": {
+						"vector": ["Math.cos((query.anim_time - 0.1) * 720) * -8", 0, 0]
 					}
 				}
 			}

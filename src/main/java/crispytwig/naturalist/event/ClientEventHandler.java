@@ -2,6 +2,7 @@ package crispytwig.naturalist.event;
 
 import crispytwig.naturalist.Naturalist;
 import crispytwig.naturalist.client.renderer.BearRenderer;
+import crispytwig.naturalist.client.renderer.ButterflyRenderer;
 import crispytwig.naturalist.client.renderer.CrocodileRenderer;
 import crispytwig.naturalist.client.renderer.SnailRenderer;
 import crispytwig.naturalist.registry.NaturalistEntityTypes;
@@ -18,5 +19,6 @@ public class ClientEventHandler {
         event.registerEntityRenderer(NaturalistEntityTypes.SNAIL.get(), SnailRenderer::new);
         event.registerEntityRenderer(NaturalistEntityTypes.CROCODILE.get(), CrocodileRenderer::new);
         event.registerEntityRenderer(NaturalistEntityTypes.BEAR.get(), BearRenderer::new);
+        event.registerEntityRenderer(NaturalistEntityTypes.BUTTERFLY.get(), ButterflyRenderer::new);
     }
 }
