@@ -1,10 +1,7 @@
 package crispytwig.naturalist.event;
 
 import crispytwig.naturalist.Naturalist;
-import crispytwig.naturalist.client.renderer.BearRenderer;
-import crispytwig.naturalist.client.renderer.ButterflyRenderer;
-import crispytwig.naturalist.client.renderer.CrocodileRenderer;
-import crispytwig.naturalist.client.renderer.SnailRenderer;
+import crispytwig.naturalist.client.renderer.*;
 import crispytwig.naturalist.registry.NaturalistEntityTypes;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -20,5 +17,6 @@ public class ClientEventHandler {
         event.registerEntityRenderer(NaturalistEntityTypes.CROCODILE.get(), CrocodileRenderer::new);
         event.registerEntityRenderer(NaturalistEntityTypes.BEAR.get(), BearRenderer::new);
         event.registerEntityRenderer(NaturalistEntityTypes.BUTTERFLY.get(), ButterflyRenderer::new);
+        event.registerEntityRenderer(NaturalistEntityTypes.FIREFLY.get(), FireflyRenderer::new);
     }
 }
