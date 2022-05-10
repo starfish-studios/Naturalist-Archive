@@ -19,6 +19,8 @@ import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
+import net.minecraft.world.entity.ai.util.HoverRandomPos;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.item.ItemStack;
@@ -28,6 +30,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -37,6 +40,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
+import java.util.EnumSet;
 
 public class Butterfly extends Animal implements IAnimatable, FlyingAnimal {
     private final AnimationFactory factory = new AnimationFactory(this);
@@ -113,7 +117,7 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal {
         this.goalSelector.addGoal(3, new FollowParentGoal(this, 1.25D));
         this.goalSelector.addGoal(4, new ButterflyGrowCropGoal(this, 1.0D, 16, 4));
         this.goalSelector.addGoal(5, new ButterflyPollinateGoal(this, 1.0D, 16, 4));
-        this.goalSelector.addGoal(6, new WaterAvoidingRandomFlyingGoal(this, 1.0D));
+        this.goalSelector.addGoal(6, new ButterflyWanderGoal());
         this.goalSelector.addGoal(7, new FloatGoal(this));
     }
 
@@ -285,6 +289,38 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal {
         @Override
         public boolean canContinueToUse() {
             return butterfly.hasNectar() && super.canContinueToUse();
+        }
+    }
+
+    class ButterflyWanderGoal extends Goal {
+        ButterflyWanderGoal() {
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+        }
+
+        @Override
+        public boolean canUse() {
+            return Butterfly.this.navigation.isDone() && Butterfly.this.random.nextInt(10) == 0;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return Butterfly.this.navigation.isInProgress();
+        }
+
+        @Override
+        public void start() {
+            Vec3 vec3 = this.findPos();
+            if (vec3 != null) {
+                Butterfly.this.navigation.moveTo(Butterfly.this.navigation.createPath(new BlockPos(vec3), 1), 1.0D);
+            }
+
+        }
+
+        @Nullable
+        private Vec3 findPos() {
+            Vec3 viewVector = Butterfly.this.getViewVector(0.0F);
+            Vec3 hoverPos = HoverRandomPos.getPos(Butterfly.this, 8, 7, viewVector.x, viewVector.z, ((float)Math.PI / 2F), 3, 1);
+            return hoverPos != null ? hoverPos : AirAndWaterRandomPos.getPos(Butterfly.this, 8, 4, -2, viewVector.x, viewVector.z, (float)Math.PI / 2F);
         }
     }
 }
