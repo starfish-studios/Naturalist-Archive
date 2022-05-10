@@ -1,0 +1,71 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"wyvern.fly": {
+			"loop": true,
+			"animation_length": 2,
+			"bones": {
+				"right_wing": {
+					"rotation": {
+						"vector": ["Math.cos((query.anim_time - -0.2) * 720) * 5", 0, "Math.cos((query.anim_time - 0.5) * 720) * -30"]
+					}
+				},
+				"right_wing2": {
+					"rotation": {
+						"vector": [0, 0, "Math.cos((query.anim_time - 0.6) * 720) * -45"]
+					}
+				},
+				"left_leg": {
+					"rotation": {
+						"vector": ["45 + Math.cos((query.anim_time - -0.6) * 360) * 5", 0, 0]
+					}
+				},
+				"tail": {
+					"rotation": {
+						"vector": ["Math.cos((query.anim_time - 0.6) * 360) * 5", 0, 0]
+					}
+				},
+				"tail2": {
+					"rotation": {
+						"vector": ["Math.cos((query.anim_time - 0.4) * 360) * -10", 0, 0]
+					}
+				},
+				"left_wing": {
+					"rotation": {
+						"vector": ["Math.cos((query.anim_time - -0.2) * 720) * 5", 0, "Math.cos((query.anim_time - 0.5) * 720) * 30"]
+					}
+				},
+				"left_wing2": {
+					"rotation": {
+						"vector": [0, 0, "Math.cos((query.anim_time - 0.6) * 720) * 45"]
+					}
+				},
+				"head": {
+					"rotation": {
+						"vector": ["Math.sin((query.anim_time - 0.3) * 360) * 4", 0, 0]
+					}
+				},
+				"root": {
+					"rotation": {
+						"vector": ["Math.sin((query.anim_time - -0.1) * 360) * -2", 0, 0]
+					}
+				},
+				"left_foot": {
+					"rotation": {
+						"vector": ["67.5 + Math.cos((query.anim_time - 0.4) * 360) * -10", 0, 0]
+					}
+				},
+				"right_leg": {
+					"rotation": {
+						"vector": ["45 + Math.cos((query.anim_time - -0.6) * 360) * 5", 0, 0]
+					}
+				},
+				"right_foot": {
+					"rotation": {
+						"vector": ["67.5 + Math.cos((query.anim_time - 0.4) * 360) * -10", 0, 0]
+					}
+				}
+			}
+		}
+	}
+}
