@@ -16,11 +16,7 @@ public class FireflyModel extends AnimatedGeoModel<Firefly> {
 
     @Override
     public ResourceLocation getTextureLocation(Firefly firefly) {
-        if (firefly.isGlowing()) {
-            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/firefly/firefly_glow.png");
-        } else {
-            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/firefly/firefly.png");
-        }
+        return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/firefly/firefly.png");
     }
 
     @Override

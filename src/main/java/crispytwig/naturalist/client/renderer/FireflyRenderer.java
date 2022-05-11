@@ -1,6 +1,7 @@
 package crispytwig.naturalist.client.renderer;
 
 import crispytwig.naturalist.client.model.FireflyModel;
+import crispytwig.naturalist.client.renderer.layers.FireflyGlowLayer;
 import crispytwig.naturalist.entity.Firefly;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.BlockPos;
@@ -15,9 +16,6 @@ public class FireflyRenderer extends GeoEntityRenderer<Firefly> {
     public FireflyRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new FireflyModel());
         this.shadowRadius = 0.4F;
-    }
-
-    protected int getBlockLightLevel(Firefly firefly, BlockPos pPos) {
-        return firefly.isGlowing() ? 15 : super.getBlockLightLevel(firefly, pPos);
+        this.addLayer(new FireflyGlowLayer(this));
     }
 }
