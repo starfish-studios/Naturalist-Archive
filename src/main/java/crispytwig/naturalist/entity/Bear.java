@@ -1,6 +1,7 @@
 package crispytwig.naturalist.entity;
 
 import crispytwig.naturalist.entity.ai.goal.DistancedFollowParentGoal;
+import crispytwig.naturalist.entity.ai.goal.SleepGoal;
 import crispytwig.naturalist.registry.NaturalistEntityTypes;
 import crispytwig.naturalist.registry.NaturalistTags;
 import net.minecraft.core.BlockPos;
@@ -59,7 +60,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class Bear extends Animal implements NeutralMob, IAnimatable {
+public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAnimal {
     private final AnimationFactory factory = new AnimationFactory(this);
     private static final Ingredient FOOD_ITEMS = Ingredient.of(NaturalistTags.Items.BEAR_TEMPT_ITEMS);
     private static final EntityDataAccessor<Boolean> SLEEPING = SynchedEntityData.defineId(Bear.class, EntityDataSerializers.BOOLEAN);
@@ -177,6 +178,13 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         return this.entityData.get(SLEEPING);
     }
 
+    @Override
+    public boolean canSleep() {
+        long dayTime = this.level.getDayTime();
+        return (dayTime < 12000 || dayTime > 18000) && dayTime < 23000 && dayTime > 6000 && !this.isAngry() && !this.level.isWaterAt(this.blockPosition());
+    }
+
+    @Override
     public void setSleeping(boolean sleeping) {
         this.entityData.set(SLEEPING, sleeping);
     }
@@ -490,45 +498,15 @@ public class Bear extends Animal implements NeutralMob, IAnimatable {
         }
     }
 
-    static class BearSleepGoal extends Goal {
-        private final Bear bear;
-
-        public BearSleepGoal(Bear bear) {
-            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK, Goal.Flag.JUMP));
-            this.bear = bear;
-        }
-
-        @Override
-        public boolean canUse() {
-            if (bear.xxa == 0.0F && bear.yya == 0.0F && bear.zza == 0.0F) {
-                return this.canSleep() || bear.isSleeping();
-            } else {
-                return false;
-            }
-        }
-
-        @Override
-        public boolean canContinueToUse() {
-            return this.canSleep();
-        }
-
-        private boolean canSleep() {
-            long dayTime = bear.getLevel().getDayTime();
-            return (dayTime < 12000 || dayTime > 18000) && dayTime < 23000 && dayTime > 6000 && !bear.isAngry() && !bear.level.isWaterAt(bear.blockPosition());
+    class BearSleepGoal extends SleepGoal<Bear> {
+        public BearSleepGoal(Bear animal) {
+            super(animal);
         }
 
         @Override
         public void start() {
-            bear.setJumping(false);
-            bear.setSleeping(true);
-            bear.setSniffing(false);
-            bear.getNavigation().stop();
-            bear.getMoveControl().setWantedPosition(bear.getX(), bear.getY(), bear.getZ(), 0.0D);
-        }
-
-        @Override
-        public void stop() {
-            bear.setSleeping(false);
+            Bear.this.setSniffing(false);
+            super.start();
         }
     }
 
