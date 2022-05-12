@@ -40,10 +40,15 @@ public class SnakeModel extends AnimatedGeoModel<Snake> {
 
         List<EntityModelData> extraDataOfType = customPredicate.getExtraDataOfType(EntityModelData.class);
         IBone head = this.getAnimationProcessor().getBone("head");
+        IBone tail2 = this.getAnimationProcessor().getBone("tail2");
 
         if (!snake.isSleeping()) {
             head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD);
             head.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD);
+        }
+        if (!snake.getMainHandItem().isEmpty()) {
+            tail2.setScaleX(1.5F);
+            tail2.setScaleY(1.5F);
         }
     }
 }

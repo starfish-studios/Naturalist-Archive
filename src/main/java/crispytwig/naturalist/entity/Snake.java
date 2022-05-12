@@ -2,30 +2,33 @@ package crispytwig.naturalist.entity;
 
 import crispytwig.naturalist.entity.ai.goal.CloseMeleeAttackGoal;
 import crispytwig.naturalist.entity.ai.goal.SleepGoal;
+import crispytwig.naturalist.registry.NaturalistTags;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.NeutralMob;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WallClimberNavigation;
+import net.minecraft.world.entity.animal.AbstractSchoolingFish;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.Fox;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -36,11 +39,14 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
+import java.util.EnumSet;
+import java.util.List;
 import java.util.UUID;
 
 public class Snake extends PathfinderMob implements SleepingAnimal, NeutralMob, IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
-    private static final EntityDataAccessor<Integer> SNAKE_TYPE_ID = SynchedEntityData.defineId(Snake.class, EntityDataSerializers.INT);
+    private static final Ingredient FOOD_ITEMS = Ingredient.of(Items.CHICKEN, Items.COOKED_CHICKEN, Items.RABBIT, Items.COOKED_RABBIT, Items.RABBIT_FOOT);
+    private static final EntityDataAccessor<Byte> SNAKE_TYPE_ID = SynchedEntityData.defineId(Snake.class, EntityDataSerializers.BYTE);
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
     private static final EntityDataAccessor<Integer> REMAINING_ANGER_TIME = SynchedEntityData.defineId(Snake.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> SLEEPING = SynchedEntityData.defineId(Snake.class, EntityDataSerializers.BOOLEAN);
@@ -50,7 +56,6 @@ public class Snake extends PathfinderMob implements SleepingAnimal, NeutralMob, 
 
     public Snake(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
-        this.maxUpStep = 0.5F;
         this.setCanPickUpLoot(true);
     }
 
@@ -64,20 +69,22 @@ public class Snake extends PathfinderMob implements SleepingAnimal, NeutralMob, 
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new CloseMeleeAttackGoal(this, 1.0D, true));
-        this.goalSelector.addGoal(2, new SleepGoal<>(this));
-        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0F));
-        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(1, new SnakeSearchForItemsGoal());
+        this.goalSelector.addGoal(2, new SnakeMeleeAttackGoal(this, 1.75D, true));
+        this.goalSelector.addGoal(3, new SleepGoal<>(this));
+        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
-        this.targetSelector.addGoal(3, new ResetUniversalAngerTargetGoal<>(this, false));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Mob.class, 5, true, false, livingEntity -> livingEntity.getType().is(NaturalistTags.EntityTypes.SNAKE_HOSTILES)));
+        this.targetSelector.addGoal(4, new ResetUniversalAngerTargetGoal<>(this, false));
     }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(SNAKE_TYPE_ID, 0);
+        this.entityData.define(SNAKE_TYPE_ID, (byte)0);
         this.entityData.define(DATA_FLAGS_ID, (byte)0);
         this.entityData.define(SLEEPING, false);
         this.entityData.define(REMAINING_ANGER_TIME, 0);
@@ -99,7 +106,7 @@ public class Snake extends PathfinderMob implements SleepingAnimal, NeutralMob, 
         return this.entityData.get(SNAKE_TYPE_ID);
     }
 
-    private void setSnakeType(int typeId) {
+    private void setSnakeType(byte typeId) {
         this.entityData.set(SNAKE_TYPE_ID, typeId);
     }
 
@@ -109,6 +116,56 @@ public class Snake extends PathfinderMob implements SleepingAnimal, NeutralMob, 
         if (!this.level.isClientSide) {
             this.updatePersistentAnger((ServerLevel)this.level, true);
         }
+        if (this.isSleeping() || this.isImmobile()) {
+            this.jumping = false;
+            this.xxa = 0.0F;
+            this.zza = 0.0F;
+        }
+        if (!this.getMainHandItem().isEmpty()) {
+            if (this.isAngry()) {
+                this.stopBeingAngry();
+            }
+            if (this.random.nextInt(2000) == 0) {
+                this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+            }
+        }
+    }
+
+    // EATING
+
+    @Override
+    public boolean canTakeItem(ItemStack pItemstack) {
+        EquipmentSlot slot = Mob.getEquipmentSlotForItem(pItemstack);
+        if (!this.getItemBySlot(slot).isEmpty()) {
+            return false;
+        } else {
+            return slot == EquipmentSlot.MAINHAND && super.canTakeItem(pItemstack);
+        }
+    }
+
+    @Override
+    protected void pickUpItem(ItemEntity pItemEntity) {
+        ItemStack stack = pItemEntity.getItem();
+        if (this.getMainHandItem().isEmpty() && FOOD_ITEMS.test(stack)) {
+            this.onItemPickup(pItemEntity);
+            this.setItemSlot(EquipmentSlot.MAINHAND, stack);
+            this.handDropChances[EquipmentSlot.MAINHAND.getIndex()] = 2.0F;
+            this.take(pItemEntity, stack.getCount());
+            pItemEntity.discard();
+        }
+    }
+
+    @Override
+    public boolean hurt(DamageSource pSource, float pAmount) {
+        if (!this.getMainHandItem().isEmpty() && !this.level.isClientSide) {
+            ItemEntity itemEntity = new ItemEntity(this.level, this.getX() + this.getLookAngle().x, this.getY() + 1.0D, this.getZ() + this.getLookAngle().z, this.getMainHandItem());
+            itemEntity.setPickUpDelay(80);
+            itemEntity.setThrower(this.getUUID());
+            this.playSound(SoundEvents.FOX_SPIT, 1.0F, 1.0F);
+            this.level.addFreshEntity(itemEntity);
+            this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+        }
+        return super.hurt(pSource, pAmount);
     }
 
     // MOVEMENT
@@ -144,12 +201,6 @@ public class Snake extends PathfinderMob implements SleepingAnimal, NeutralMob, 
         }
 
         this.entityData.set(DATA_FLAGS_ID, flag);
-    }
-
-
-    @Override
-    public boolean causeFallDamage(float pFallDistance, float pMultiplier, DamageSource pSource) {
-        return false;
     }
 
     // SLEEPING
@@ -226,5 +277,61 @@ public class Snake extends PathfinderMob implements SleepingAnimal, NeutralMob, 
     @Override
     public AnimationFactory getFactory() {
         return factory;
+    }
+
+    class SnakeSearchForItemsGoal extends Goal {
+        public SnakeSearchForItemsGoal() {
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+        }
+
+        @Override
+        public boolean canUse() {
+            if (Snake.this.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty()) {
+                List<ItemEntity> list = Snake.this.level.getEntitiesOfClass(ItemEntity.class, Snake.this.getBoundingBox().inflate(8.0D, 8.0D, 8.0D), itemEntity -> FOOD_ITEMS.test(itemEntity.getItem()));
+                return !list.isEmpty() && Snake.this.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty();
+            }
+            return false;
+        }
+
+        @Override
+        public void tick() {
+            List<ItemEntity> list = Snake.this.level.getEntitiesOfClass(ItemEntity.class, Snake.this.getBoundingBox().inflate(8.0D, 8.0D, 8.0D), itemEntity -> FOOD_ITEMS.test(itemEntity.getItem()));
+            ItemStack itemstack = Snake.this.getItemBySlot(EquipmentSlot.MAINHAND);
+            if (itemstack.isEmpty() && !list.isEmpty()) {
+                Snake.this.getNavigation().moveTo(list.get(0), 1.2F);
+            }
+
+        }
+
+        @Override
+        public void start() {
+            List<ItemEntity> list = Snake.this.level.getEntitiesOfClass(ItemEntity.class, Snake.this.getBoundingBox().inflate(8.0D, 8.0D, 8.0D), itemEntity -> FOOD_ITEMS.test(itemEntity.getItem()));
+            if (!list.isEmpty()) {
+                Snake.this.getNavigation().moveTo(list.get(0), 1.2F);
+            }
+
+        }
+    }
+
+    static class SnakeMeleeAttackGoal extends MeleeAttackGoal {
+
+        public SnakeMeleeAttackGoal(PathfinderMob pMob, double pSpeedModifier, boolean pFollowingTargetEvenIfNotSeen) {
+            super(pMob, pSpeedModifier, pFollowingTargetEvenIfNotSeen);
+        }
+
+        @Override
+        public boolean canUse() {
+            return mob.getMainHandItem().isEmpty() && super.canUse();
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return mob.getMainHandItem().isEmpty() && super.canContinueToUse();
+        }
+
+        @Override
+        protected double getAttackReachSqr(LivingEntity pAttackTarget) {
+            return 4.0F + pAttackTarget.getBbWidth();
+        }
     }
 }
