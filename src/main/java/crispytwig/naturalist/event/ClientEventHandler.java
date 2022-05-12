@@ -18,5 +18,6 @@ public class ClientEventHandler {
         event.registerEntityRenderer(NaturalistEntityTypes.BEAR.get(), BearRenderer::new);
         event.registerEntityRenderer(NaturalistEntityTypes.BUTTERFLY.get(), ButterflyRenderer::new);
         event.registerEntityRenderer(NaturalistEntityTypes.FIREFLY.get(), FireflyRenderer::new);
+        event.registerEntityRenderer(NaturalistEntityTypes.SNAKE.get(), SnakeRenderer::new);
     }
 }
