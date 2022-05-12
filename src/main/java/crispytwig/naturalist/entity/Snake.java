@@ -1,6 +1,5 @@
 package crispytwig.naturalist.entity;
 
-import crispytwig.naturalist.entity.ai.goal.CloseMeleeAttackGoal;
 import crispytwig.naturalist.entity.ai.goal.SleepGoal;
 import crispytwig.naturalist.registry.NaturalistTags;
 import net.minecraft.nbt.CompoundTag;
@@ -21,15 +20,13 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WallClimberNavigation;
-import net.minecraft.world.entity.animal.AbstractSchoolingFish;
-import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.Fox;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -51,6 +48,7 @@ public class Snake extends PathfinderMob implements SleepingAnimal, NeutralMob, 
     private static final EntityDataAccessor<Integer> REMAINING_ANGER_TIME = SynchedEntityData.defineId(Snake.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> SLEEPING = SynchedEntityData.defineId(Snake.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(Snake.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Integer> EAT_COUNTER = SynchedEntityData.defineId(Snake.class, EntityDataSerializers.INT);
     @Nullable
     private UUID persistentAngerTarget;
 
@@ -87,6 +85,7 @@ public class Snake extends PathfinderMob implements SleepingAnimal, NeutralMob, 
         this.entityData.define(SNAKE_TYPE_ID, (byte)0);
         this.entityData.define(DATA_FLAGS_ID, (byte)0);
         this.entityData.define(SLEEPING, false);
+        this.entityData.define(EAT_COUNTER, 0);
         this.entityData.define(REMAINING_ANGER_TIME, 0);
     }
 
@@ -110,6 +109,22 @@ public class Snake extends PathfinderMob implements SleepingAnimal, NeutralMob, 
         this.entityData.set(SNAKE_TYPE_ID, typeId);
     }
 
+    public boolean isEating() {
+        return this.entityData.get(EAT_COUNTER) > 0;
+    }
+
+    public void eat(boolean eat) {
+        this.entityData.set(EAT_COUNTER, eat ? 1 : 0);
+    }
+
+    private int getEatCounter() {
+        return this.entityData.get(EAT_COUNTER);
+    }
+
+    private void setEatCounter(int amount) {
+        this.entityData.set(EAT_COUNTER, amount);
+    }
+
     @Override
     public void aiStep() {
         super.aiStep();
@@ -121,6 +136,7 @@ public class Snake extends PathfinderMob implements SleepingAnimal, NeutralMob, 
             this.xxa = 0.0F;
             this.zza = 0.0F;
         }
+        this.handleEating();
         if (!this.getMainHandItem().isEmpty()) {
             if (this.isAngry()) {
                 this.stopBeingAngry();
@@ -130,6 +146,28 @@ public class Snake extends PathfinderMob implements SleepingAnimal, NeutralMob, 
             }
         }
     }
+
+    private void handleEating() {
+        if (!this.isEating() && !this.isSleeping() && !this.getMainHandItem().isEmpty() && this.random.nextInt(80) == 1) {
+            this.eat(true);
+        } else if (this.getMainHandItem().isEmpty()) {
+            this.eat(false);
+        }
+        if (this.isEating()) {
+            if (!this.level.isClientSide && this.getEatCounter() > 80) {
+                if (!this.getMainHandItem().isEmpty()) {
+                    if (!this.level.isClientSide) {
+                        this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+                        this.gameEvent(GameEvent.EAT, this.eyeBlockPosition());
+                    }
+                }
+                this.eat(false);
+                return;
+            }
+            this.setEatCounter(this.getEatCounter() + 1);
+        }
+    }
+
 
     // EATING
 
@@ -208,7 +246,7 @@ public class Snake extends PathfinderMob implements SleepingAnimal, NeutralMob, 
     @Override
     public boolean canSleep() {
         long dayTime = this.level.getDayTime();
-        if (!this.isAngry() && !this.level.isWaterAt(this.blockPosition())) {
+        if (this.isAngry() || this.level.isWaterAt(this.blockPosition())) {
             return false;
         } else if (dayTime > 18000 && dayTime < 23000) {
             return false;
