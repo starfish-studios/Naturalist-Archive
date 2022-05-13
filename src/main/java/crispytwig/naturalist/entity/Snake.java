@@ -141,20 +141,17 @@ public class Snake extends PathfinderMob implements SleepingAnimal, NeutralMob, 
             if (this.isAngry()) {
                 this.stopBeingAngry();
             }
-            if (this.random.nextInt(2000) == 0) {
-                this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
-            }
         }
     }
 
     private void handleEating() {
-        if (!this.isEating() && !this.isSleeping() && !this.getMainHandItem().isEmpty() && this.random.nextInt(80) == 1) {
+        if (!this.isEating() && !this.isSleeping() && !this.getMainHandItem().isEmpty()) {
             this.eat(true);
         } else if (this.getMainHandItem().isEmpty()) {
             this.eat(false);
         }
         if (this.isEating()) {
-            if (!this.level.isClientSide && this.getEatCounter() > 80) {
+            if (!this.level.isClientSide && this.getEatCounter() > 6000) {
                 if (!this.getMainHandItem().isEmpty()) {
                     if (!this.level.isClientSide) {
                         this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
