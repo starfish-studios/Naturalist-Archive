@@ -1,12 +1,15 @@
 package crispytwig.naturalist.entity;
 
+import crispytwig.naturalist.entity.ai.goal.SearchForItemsGoal;
 import crispytwig.naturalist.entity.ai.goal.SleepGoal;
+import crispytwig.naturalist.registry.NaturalistSoundEvents;
 import crispytwig.naturalist.registry.NaturalistTags;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -36,8 +39,6 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
-import java.util.EnumSet;
-import java.util.List;
 import java.util.UUID;
 
 public class Snake extends PathfinderMob implements SleepingAnimal, NeutralMob, IAnimatable {
@@ -68,7 +69,7 @@ public class Snake extends PathfinderMob implements SleepingAnimal, NeutralMob, 
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new SnakeMeleeAttackGoal(this, 1.75D, true));
-        this.goalSelector.addGoal(2, new SnakeSearchForItemsGoal());
+        this.goalSelector.addGoal(2, new SearchForItemsGoal(this, 1.2F, FOOD_ITEMS, 8.0D, 8.0D));
         this.goalSelector.addGoal(3, new SleepGoal<>(this));
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
@@ -164,7 +165,6 @@ public class Snake extends PathfinderMob implements SleepingAnimal, NeutralMob, 
             this.setEatCounter(this.getEatCounter() + 1);
         }
     }
-
 
     // EATING
 
@@ -293,6 +293,22 @@ public class Snake extends PathfinderMob implements SleepingAnimal, NeutralMob, 
         return this.persistentAngerTarget;
     }
 
+    // SOUNDS
+
+    @Nullable
+    @Override
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+        return NaturalistSoundEvents.SNAKE_HURT.get();
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return NaturalistSoundEvents.SNAKE_HISS.get();
+    }
+
+    // ANIMATION
+
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.isSleeping()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("snake.sleep", true));
@@ -317,11 +333,21 @@ public class Snake extends PathfinderMob implements SleepingAnimal, NeutralMob, 
         return PlayState.CONTINUE;
     }
 
+    private <E extends IAnimatable> PlayState tonguePredicate(AnimationEvent<E> event) {
+        if (this.isAngry()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("snake.tongue", true));
+            return PlayState.CONTINUE;
+        }
+        event.getController().markNeedsReload();
+        return PlayState.STOP;
+    }
+
     @Override
     public void registerControllers(AnimationData data) {
         data.setResetSpeedInTicks(10);
         data.addAnimationController(new AnimationController<>(this, "controller", 10, this::predicate));
         data.addAnimationController(new AnimationController<>(this, "attackController", 0, this::attackPredicate));
+        data.addAnimationController(new AnimationController<>(this, "tongueController", 0, this::tonguePredicate));
     }
 
     @Override
@@ -329,39 +355,7 @@ public class Snake extends PathfinderMob implements SleepingAnimal, NeutralMob, 
         return factory;
     }
 
-    class SnakeSearchForItemsGoal extends Goal {
-        public SnakeSearchForItemsGoal() {
-            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
-        }
-
-        @Override
-        public boolean canUse() {
-            if (Snake.this.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty()) {
-                List<ItemEntity> list = Snake.this.level.getEntitiesOfClass(ItemEntity.class, Snake.this.getBoundingBox().inflate(8.0D, 8.0D, 8.0D), itemEntity -> FOOD_ITEMS.test(itemEntity.getItem()));
-                return !list.isEmpty() && Snake.this.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty();
-            }
-            return false;
-        }
-
-        @Override
-        public void tick() {
-            List<ItemEntity> list = Snake.this.level.getEntitiesOfClass(ItemEntity.class, Snake.this.getBoundingBox().inflate(8.0D, 8.0D, 8.0D), itemEntity -> FOOD_ITEMS.test(itemEntity.getItem()));
-            ItemStack itemstack = Snake.this.getItemBySlot(EquipmentSlot.MAINHAND);
-            if (itemstack.isEmpty() && !list.isEmpty()) {
-                Snake.this.getNavigation().moveTo(list.get(0), 1.2F);
-            }
-
-        }
-
-        @Override
-        public void start() {
-            List<ItemEntity> list = Snake.this.level.getEntitiesOfClass(ItemEntity.class, Snake.this.getBoundingBox().inflate(8.0D, 8.0D, 8.0D), itemEntity -> FOOD_ITEMS.test(itemEntity.getItem()));
-            if (!list.isEmpty()) {
-                Snake.this.getNavigation().moveTo(list.get(0), 1.2F);
-            }
-
-        }
-    }
+    // GOALS
 
     static class SnakeMeleeAttackGoal extends MeleeAttackGoal {
 

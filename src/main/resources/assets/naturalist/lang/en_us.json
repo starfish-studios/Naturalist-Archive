@@ -11,5 +11,8 @@
   "item.naturalist.bear_spawn_egg": "Grizzly Bear Spawn Egg",
   "item.naturalist.butterfly_spawn_egg": "Butterfly Spawn Egg",
   "item.naturalist.firefly_spawn_egg": "Firefly Spawn Egg",
-  "item.naturalist.snake_spawn_egg": "Snake Spawn Egg"
+  "item.naturalist.snake_spawn_egg": "Snake Spawn Egg",
+  "naturalist.subtitles.entity.snake.hiss": "Snake hisses",
+  "naturalist.subtitles.entity.snake.hurt": "Snake hurts",
+  "naturalist.subtitles.entity.snake.rattle": "Snake rattles"
 }
