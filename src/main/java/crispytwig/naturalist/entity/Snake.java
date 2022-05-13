@@ -42,7 +42,7 @@ import java.util.UUID;
 
 public class Snake extends PathfinderMob implements SleepingAnimal, NeutralMob, IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
-    private static final Ingredient FOOD_ITEMS = Ingredient.of(Items.CHICKEN, Items.COOKED_CHICKEN, Items.RABBIT, Items.COOKED_RABBIT, Items.RABBIT_FOOT);
+    private static final Ingredient FOOD_ITEMS = Ingredient.of(NaturalistTags.Items.SNAKE_TEMPT_ITEMS);
     private static final EntityDataAccessor<Byte> SNAKE_TYPE_ID = SynchedEntityData.defineId(Snake.class, EntityDataSerializers.BYTE);
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
     private static final EntityDataAccessor<Integer> REMAINING_ANGER_TIME = SynchedEntityData.defineId(Snake.class, EntityDataSerializers.INT);
@@ -239,6 +239,11 @@ public class Snake extends PathfinderMob implements SleepingAnimal, NeutralMob, 
         }
 
         this.entityData.set(DATA_FLAGS_ID, flag);
+    }
+
+    @Override
+    protected float getJumpPower() {
+        return 0.0F;
     }
 
     // SLEEPING

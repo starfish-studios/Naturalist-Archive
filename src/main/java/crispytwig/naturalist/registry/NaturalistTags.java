@@ -11,6 +11,7 @@ import net.minecraft.world.item.Item;
 public class NaturalistTags {
     public static class Items {
         public static final TagKey<Item> BEAR_TEMPT_ITEMS = tag("bear_tempt_items");
+        public static final TagKey<Item> SNAKE_TEMPT_ITEMS = tag("snake_tempt_items");
 
         private static TagKey<Item> tag(String name) {
             return ItemTags.create(new ResourceLocation(Naturalist.MOD_ID, name));
