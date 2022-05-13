@@ -84,7 +84,6 @@
 			}
 		},
 		"snake.tongue": {
-			"loop": true,
 			"animation_length": 1,
 			"bones": {
 				"tongue": {
@@ -101,6 +100,10 @@
 				},
 				"head": {
 					"rotation": ["Math.cos((query.anim_time - 0.0) * 1440) * 64", 0, 0]
+				},
+				"tongue": {
+					"rotation": ["Math.sin((query.anim_time - 0.2) * 2880) * 16", 0, "Math.cos((query.anim_time - 0.4) * 1440) * 8"],
+					"position": [0, 0, -4]
 				}
 			}
 		}

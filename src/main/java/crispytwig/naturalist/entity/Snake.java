@@ -334,8 +334,8 @@ public class Snake extends PathfinderMob implements SleepingAnimal, NeutralMob, 
     }
 
     private <E extends IAnimatable> PlayState tonguePredicate(AnimationEvent<E> event) {
-        if (this.isAngry()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("snake.tongue", true));
+        if (this.random.nextInt(1000) < this.ambientSoundTime && !this.isSleeping()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("snake.tongue", false));
             return PlayState.CONTINUE;
         }
         event.getController().markNeedsReload();
