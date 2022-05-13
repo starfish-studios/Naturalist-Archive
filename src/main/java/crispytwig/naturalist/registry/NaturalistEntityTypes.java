@@ -22,6 +22,7 @@ public class NaturalistEntityTypes {
     public static final RegistryObject<EntityType<Butterfly>> BUTTERFLY = ENTITY_TYPES.register("butterfly", () -> EntityType.Builder.of(Butterfly::new, MobCategory.CREATURE).sized(0.7F, 0.6F).clientTrackingRange(8).build(new ResourceLocation(Naturalist.MOD_ID, "butterfly").toString()));
     public static final RegistryObject<EntityType<Firefly>> FIREFLY = ENTITY_TYPES.register("firefly", () -> EntityType.Builder.of(Firefly::new, MobCategory.CREATURE).sized(0.7F, 0.6F).clientTrackingRange(8).build(new ResourceLocation(Naturalist.MOD_ID, "firefly").toString()));
     public static final RegistryObject<EntityType<Snake>> SNAKE = ENTITY_TYPES.register("snake", () -> EntityType.Builder.of(Snake::new, MobCategory.CREATURE).sized(0.6F, 0.7F).clientTrackingRange(8).build(new ResourceLocation(Naturalist.MOD_ID, "snake").toString()));
+    public static final RegistryObject<EntityType<Deer>> DEER = ENTITY_TYPES.register("deer", () -> EntityType.Builder.of(Deer::new, MobCategory.CREATURE).sized(1.3F, 1.6F).clientTrackingRange(10).build(new ResourceLocation(Naturalist.MOD_ID, "deer").toString()));
 
     @SubscribeEvent
     public static void createAttributes(EntityAttributeCreationEvent event) {
@@ -31,5 +32,6 @@ public class NaturalistEntityTypes {
         event.put(NaturalistEntityTypes.BUTTERFLY.get(), Butterfly.createAttributes().build());
         event.put(NaturalistEntityTypes.FIREFLY.get(), Firefly.createAttributes().build());
         event.put(NaturalistEntityTypes.SNAKE.get(), Snake.createAttributes().build());
+        event.put(NaturalistEntityTypes.DEER.get(), Deer.createAttributes().build());
     }
 }
