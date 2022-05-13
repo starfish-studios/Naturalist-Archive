@@ -24,6 +24,9 @@ public class SnakeModel extends AnimatedGeoModel<Snake> {
 
     @Override
     public ResourceLocation getTextureLocation(Snake snake) {
+        if (snake.isSleeping()) {
+            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/snake/snake_sleep.png");
+        }
         return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/snake/snake.png");
     }
 

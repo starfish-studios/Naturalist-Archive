@@ -23,10 +23,10 @@ import net.minecraft.world.entity.ai.navigation.WallClimberNavigation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
+import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -67,8 +67,8 @@ public class Snake extends PathfinderMob implements SleepingAnimal, NeutralMob, 
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new SnakeSearchForItemsGoal());
-        this.goalSelector.addGoal(2, new SnakeMeleeAttackGoal(this, 1.75D, true));
+        this.goalSelector.addGoal(1, new SnakeMeleeAttackGoal(this, 1.75D, true));
+        this.goalSelector.addGoal(2, new SnakeSearchForItemsGoal());
         this.goalSelector.addGoal(3, new SleepGoal<>(this));
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
@@ -308,10 +308,20 @@ public class Snake extends PathfinderMob implements SleepingAnimal, NeutralMob, 
         return PlayState.STOP;
     }
 
+    private <E extends IAnimatable> PlayState attackPredicate(AnimationEvent<E> event) {
+        if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
+            event.getController().markNeedsReload();
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("snake.attack", false));
+            this.swinging = false;
+        }
+        return PlayState.CONTINUE;
+    }
+
     @Override
     public void registerControllers(AnimationData data) {
-        data.setResetSpeedInTicks(5);
-        data.addAnimationController(new AnimationController<>(this, "controller", 5, this::predicate));
+        data.setResetSpeedInTicks(10);
+        data.addAnimationController(new AnimationController<>(this, "controller", 10, this::predicate));
+        data.addAnimationController(new AnimationController<>(this, "attackController", 0, this::attackPredicate));
     }
 
     @Override
