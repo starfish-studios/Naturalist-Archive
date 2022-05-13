@@ -1,9 +1,12 @@
 package crispytwig.naturalist.entity;
 
-import crispytwig.naturalist.Naturalist;
+import crispytwig.naturalist.entity.ai.goal.AlertOthersPanicGoal;
 import crispytwig.naturalist.registry.NaturalistEntityTypes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -45,7 +48,7 @@ public class Deer extends Animal implements IAnimatable {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new PanicGoal(this, 2.0D));
+        this.goalSelector.addGoal(1, new AlertOthersPanicGoal(this, 2.0D));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Player.class, 16.0F, 1.5D, 2.0D, livingEntity -> EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingEntity) && !livingEntity.isDiscrete()));
         this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Monster.class, 16.0F, 1.5D, 2.0D));
@@ -74,11 +77,6 @@ public class Deer extends Animal implements IAnimatable {
     @Override
     public float getStepHeight() {
         return 2.0F;
-    }
-
-    @Override
-    protected float getJumpPower() {
-        return 0.1F + super.getJumpPower();
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
