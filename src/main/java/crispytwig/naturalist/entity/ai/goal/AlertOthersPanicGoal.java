@@ -3,10 +3,9 @@ package crispytwig.naturalist.entity.ai.goal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -31,7 +30,7 @@ public class AlertOthersPanicGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (!this.shouldPanic()) {
+        if (this.mob.getLastHurtByMob() == null || !this.mob.getLastHurtByMob().isAlive()) {
             return false;
         } else {
             if (this.mob.isOnFire()) {
@@ -43,20 +42,31 @@ public class AlertOthersPanicGoal extends Goal {
                     return true;
                 }
             }
-            List<? extends Mob> mobs = this.mob.level.getEntitiesOfClass(this.mob.getClass(), AABB.unitCubeFromLowerCorner(this.mob.position()).inflate(8.0D, 4.0D, 8.0D));
-            for (Mob mob : mobs) {
-                mob.setLastHurtByMob(this.mob.getLastHurtByMob());
+            if (this.mob.getLastHurtByMob() != null) {
+                List<? extends PathfinderMob> mobs = this.mob.level.getEntitiesOfClass(this.mob.getClass(), AABB.unitCubeFromLowerCorner(this.mob.position()).inflate(8.0D, 8.0D, 8.0D));
+                for (PathfinderMob mob : mobs) {
+                    mob.setLastHurtByMob(this.mob.getLastHurtByMob());
+                }
+                return this.findRandomPosAway();
             }
             return this.findRandomPosition();
         }
     }
 
-    protected boolean shouldPanic() {
-        return this.mob.getLastHurtByMob() != null || this.mob.isFreezing() || this.mob.isOnFire();
+    private boolean findRandomPosAway() {
+        Vec3 vec3 = LandRandomPos.getPosAway(this.mob, 16, 7, this.mob.getLastHurtByMob().position());
+        if (vec3 == null) {
+            return false;
+        } else {
+            this.posX = vec3.x;
+            this.posY = vec3.y;
+            this.posZ = vec3.z;
+            return true;
+        }
     }
 
     protected boolean findRandomPosition() {
-        Vec3 vec3 = DefaultRandomPos.getPos(this.mob, 5, 4);
+        Vec3 vec3 = LandRandomPos.getPos(this.mob, 5, 4);
         if (vec3 == null) {
             return false;
         } else {
