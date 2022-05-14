@@ -29,10 +29,14 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class Deer extends Animal implements IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
+    private int eatAnimationTick;
+    private EatBlockGoal eatBlockGoal;
 
     public Deer(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
     }
+
+    // GOALS/ATTRIBUTES/BREEDING
 
     @Nullable
     @Override
@@ -54,10 +58,11 @@ public class Deer extends Animal implements IAnimatable {
         this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Monster.class, 16.0F, 1.5D, 2.0D));
         this.goalSelector.addGoal(5, new TemptGoal(this, 1.25D, Ingredient.of(Items.APPLE), true));
         this.goalSelector.addGoal(6, new FollowParentGoal(this, 1.25D));
-        this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 6.0F));
-        this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
+        this.eatBlockGoal = new EatBlockGoal(this);
+        this.goalSelector.addGoal(7, this.eatBlockGoal);
+        this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
     }
 
     @Override
@@ -65,13 +70,47 @@ public class Deer extends Animal implements IAnimatable {
         return pStack.is(Items.APPLE);
     }
 
+    // EATING
+
+    @Override
+    public void aiStep() {
+        if (this.level.isClientSide) {
+            this.eatAnimationTick = Math.max(0, this.eatAnimationTick - 1);
+        }
+        super.aiStep();
+    }
+
+    @Override
+    public void handleEntityEvent(byte pId) {
+        if (pId == 10) {
+            this.eatAnimationTick = 40;
+        } else {
+            super.handleEntityEvent(pId);
+        }
+    }
+
+    private boolean isEating() {
+        return this.eatAnimationTick > 0;
+    }
+
+    @Override
+    public void ate() {
+        if (this.isBaby()) {
+            this.ageUp(60);
+        }
+    }
+
+    // MOVEMENT
+
     @Override
     public void customServerAiStep() {
+        this.eatAnimationTick = this.eatBlockGoal.getEatAnimationTick();
         if (this.getMoveControl().hasWanted()) {
             this.setSprinting(this.getMoveControl().getSpeedModifier() >= 1.5D);
         } else {
             this.setSprinting(false);
         }
+        super.customServerAiStep();
     }
 
     @Override
@@ -79,8 +118,14 @@ public class Deer extends Animal implements IAnimatable {
         return 2.0F;
     }
 
+    // ANIMATION
+
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (event.isMoving()) {
+        if (this.isEating()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("deer.eat", true));
+            event.getController().setAnimationSpeed(1.0D);
+            return PlayState.CONTINUE;
+        } else if (event.isMoving()) {
             if (this.isSprinting()) {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("deer.run", true));
                 event.getController().setAnimationSpeed(2.0D);

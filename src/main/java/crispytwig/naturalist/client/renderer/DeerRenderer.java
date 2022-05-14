@@ -14,7 +14,7 @@ import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 public class DeerRenderer extends GeoEntityRenderer<Deer> {
     public DeerRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new DeerModel());
-        this.shadowRadius = 1.0F;
+        this.shadowRadius = 0.8F;
     }
 
     @Override
