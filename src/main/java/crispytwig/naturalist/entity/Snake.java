@@ -23,6 +23,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WallClimberNavigation;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -41,7 +42,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-public class Snake extends PathfinderMob implements SleepingAnimal, NeutralMob, IAnimatable {
+public class Snake extends Animal implements SleepingAnimal, NeutralMob, IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
     private static final Ingredient FOOD_ITEMS = Ingredient.of(NaturalistTags.Items.SNAKE_TEMPT_ITEMS);
     private static final EntityDataAccessor<Byte> SNAKE_TYPE_ID = SynchedEntityData.defineId(Snake.class, EntityDataSerializers.BYTE);
@@ -53,7 +54,7 @@ public class Snake extends PathfinderMob implements SleepingAnimal, NeutralMob, 
     @Nullable
     private UUID persistentAngerTarget;
 
-    public Snake(EntityType<? extends PathfinderMob> entityType, Level level) {
+    public Snake(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
         this.setCanPickUpLoot(true);
     }
@@ -78,6 +79,17 @@ public class Snake extends PathfinderMob implements SleepingAnimal, NeutralMob, 
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Mob.class, 5, true, false, livingEntity -> livingEntity.getType().is(NaturalistTags.EntityTypes.SNAKE_HOSTILES)));
         this.targetSelector.addGoal(4, new ResetUniversalAngerTargetGoal<>(this, false));
+    }
+
+    @Nullable
+    @Override
+    public AgeableMob getBreedOffspring(ServerLevel p_146743_, AgeableMob p_146744_) {
+        return null;
+    }
+
+    @Override
+    public boolean isFood(ItemStack pStack) {
+        return false;
     }
 
     @Override
