@@ -15,8 +15,8 @@ public class CommonEventHandler {
     public static void onBiomeLoad(BiomeLoadingEvent event) {
         switch (event.getCategory()) {
             case FOREST -> {
-                event.getSpawns().addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.BEAR.get(), 1, 1, 2));
-                event.getSpawns().addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.DEER.get(), 1, 2, 4));
+                event.getSpawns().addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.BEAR.get(), 4, 1, 2));
+                event.getSpawns().addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.DEER.get(), 4, 2, 4));
             }
         }
     }
