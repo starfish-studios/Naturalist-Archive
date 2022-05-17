@@ -3,6 +3,7 @@ package crispytwig.naturalist.entity.ai.goal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
@@ -47,14 +48,14 @@ public class AlertOthersPanicGoal extends Goal {
                 for (PathfinderMob mob : mobs) {
                     mob.setLastHurtByMob(this.mob.getLastHurtByMob());
                 }
-                return this.findRandomPosAway();
+                return this.findRandomPosAway(this.mob.getLastHurtByMob());
             }
             return this.findRandomPosition();
         }
     }
 
-    private boolean findRandomPosAway() {
-        Vec3 vec3 = LandRandomPos.getPosAway(this.mob, 16, 7, this.mob.getLastHurtByMob().position());
+    protected boolean findRandomPosAway(LivingEntity entity) {
+        Vec3 vec3 = LandRandomPos.getPosAway(this.mob, 16, 7, entity.position());
         if (vec3 == null) {
             return false;
         } else {
