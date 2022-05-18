@@ -52,8 +52,6 @@ public class SnakeModel extends AnimatedGeoModel<Snake> {
             tail2.setScaleX(1.5F);
             tail2.setScaleY(1.5F);
         }
-        if (!snake.getType().equals(NaturalistEntityTypes.SNAKE.get())) {
-            tail4.setHidden(true);
-        }
+        tail4.setHidden(true);
     }
 }

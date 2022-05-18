@@ -63,7 +63,7 @@
 				"main": {
 					"rotation": [0, 135, 0],
 					"position": [4, 0, 0],
-					"scale": [1, "1 + Math.sin((query.anim_time - 0.0) * 180) * .1", 1]
+					"scale": [1, "1 + Math.sin((query.anim_time - 0.0) * 180) * 0.1", 1]
 				},
 				"neck": {
 					"rotation": [90, 0, 0],
