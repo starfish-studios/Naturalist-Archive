@@ -3,7 +3,7 @@
 	"minecraft:geometry": [
 		{
 			"description": {
-				"identifier": "geometry.unknown",
+				"identifier": "geometry.firefly",
 				"texture_width": 64,
 				"texture_height": 64,
 				"visible_bounds_width": 3,
@@ -38,16 +38,14 @@
 					"name": "left_wing",
 					"parent": "body",
 					"pivot": [1.5, 7, 0],
-					"mirror": true,
 					"cubes": [
-						{"origin": [1.5, 7, -1], "size": [9, 0, 6], "uv": [-2, 15]}
+						{"origin": [1.5, 7, -1], "size": [9, 0, 6], "uv": [-2, 15], "mirror": true}
 					]
 				},
 				{
 					"name": "right_wing",
 					"parent": "body",
 					"pivot": [-1.5, 7, 0],
-					"mirror": true,
 					"cubes": [
 						{"origin": [-10.5, 7, -1], "size": [9, 0, 6], "uv": [-2, 15], "mirror": false}
 					]
