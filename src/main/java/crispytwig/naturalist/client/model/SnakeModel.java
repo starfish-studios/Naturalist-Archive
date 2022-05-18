@@ -2,6 +2,7 @@ package crispytwig.naturalist.client.model;
 
 import crispytwig.naturalist.Naturalist;
 import crispytwig.naturalist.entity.Snake;
+import crispytwig.naturalist.registry.NaturalistEntityTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Items;
@@ -24,9 +25,6 @@ public class SnakeModel extends AnimatedGeoModel<Snake> {
 
     @Override
     public ResourceLocation getTextureLocation(Snake snake) {
-        if (snake.isSleeping()) {
-            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/snake/snake_sleep.png");
-        }
         return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/snake/snake.png");
     }
 
@@ -44,6 +42,7 @@ public class SnakeModel extends AnimatedGeoModel<Snake> {
         List<EntityModelData> extraDataOfType = customPredicate.getExtraDataOfType(EntityModelData.class);
         IBone head = this.getAnimationProcessor().getBone("head");
         IBone tail2 = this.getAnimationProcessor().getBone("tail2");
+        IBone tail4 = this.getAnimationProcessor().getBone("tail4");
 
         if (!snake.isSleeping()) {
             head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD);
@@ -52,6 +51,9 @@ public class SnakeModel extends AnimatedGeoModel<Snake> {
         if (!snake.getMainHandItem().isEmpty()) {
             tail2.setScaleX(1.5F);
             tail2.setScaleY(1.5F);
+        }
+        if (!snake.getType().equals(NaturalistEntityTypes.SNAKE.get())) {
+            tail4.setHidden(true);
         }
     }
 }

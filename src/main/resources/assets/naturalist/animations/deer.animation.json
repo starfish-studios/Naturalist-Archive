@@ -249,6 +249,37 @@
 					}
 				}
 			}
+		},
+		"deer.idle": {
+			"loop": true,
+			"animation_length": 2,
+			"bones": {
+				"body": {
+					"position": {
+						"vector": [0, "Math.sin((query.anim_time - 0.0) * 180) * 0.6", 0]
+					}
+				},
+				"head": {
+					"position": {
+						"vector": [0, "Math.cos((query.anim_time - 0.0) * 180) * -0.3", 0]
+					}
+				}
+			}
+		},
+		"deer.ear_flick": {
+			"animation_length": 0.5,
+			"bones": {
+				"right_ear": {
+					"rotation": {
+						"vector": ["Math.sin((query.anim_time - 0.2) * 1440) * 32", 0, "Math.cos((query.anim_time - 0.4) * 1440) * 16"]
+					}
+				},
+				"left_ear": {
+					"rotation": {
+						"vector": ["Math.sin((query.anim_time - 0.2) * 1440) * 32", 0, "Math.cos((query.anim_time - 0.4) * 1440) * -16"]
+					}
+				}
+			}
 		}
 	},
 	"geckolib_format_version": 2

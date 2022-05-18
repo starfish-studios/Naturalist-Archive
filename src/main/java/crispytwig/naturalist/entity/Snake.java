@@ -11,6 +11,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.damagesource.DamageSource;
@@ -45,7 +46,6 @@ import java.util.UUID;
 public class Snake extends Animal implements SleepingAnimal, NeutralMob, IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
     private static final Ingredient FOOD_ITEMS = Ingredient.of(NaturalistTags.Items.SNAKE_TEMPT_ITEMS);
-    private static final EntityDataAccessor<Byte> SNAKE_TYPE_ID = SynchedEntityData.defineId(Snake.class, EntityDataSerializers.BYTE);
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
     private static final EntityDataAccessor<Integer> REMAINING_ANGER_TIME = SynchedEntityData.defineId(Snake.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> SLEEPING = SynchedEntityData.defineId(Snake.class, EntityDataSerializers.BOOLEAN);
@@ -95,7 +95,6 @@ public class Snake extends Animal implements SleepingAnimal, NeutralMob, IAnimat
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(SNAKE_TYPE_ID, (byte)0);
         this.entityData.define(DATA_FLAGS_ID, (byte)0);
         this.entityData.define(SLEEPING, false);
         this.entityData.define(EAT_COUNTER, 0);
@@ -112,14 +111,6 @@ public class Snake extends Animal implements SleepingAnimal, NeutralMob, IAnimat
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         this.addPersistentAngerSaveData(pCompound);
-    }
-
-    public int getSnakeType() {
-        return this.entityData.get(SNAKE_TYPE_ID);
-    }
-
-    private void setSnakeType(byte typeId) {
-        this.entityData.set(SNAKE_TYPE_ID, typeId);
     }
 
     public boolean isEating() {
@@ -347,7 +338,7 @@ public class Snake extends Animal implements SleepingAnimal, NeutralMob, IAnimat
 
     private <E extends IAnimatable> PlayState tonguePredicate(AnimationEvent<E> event) {
         if (this.random.nextInt(1000) < this.ambientSoundTime && !this.isSleeping()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("snake.tongue", false));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("snake.tongue", true));
             return PlayState.CONTINUE;
         }
         event.getController().markNeedsReload();

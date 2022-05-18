@@ -31,9 +31,23 @@
 					"mirror": true,
 					"cubes": [
 						{"origin": [-2, 25, -16], "size": [4, 3, 4], "uv": [44, 5], "mirror": false},
-						{"origin": [-3, 15, -12], "size": [6, 15, 6], "uv": [41, 29], "mirror": false},
-						{"origin": [3, 27, -9], "size": [3, 2, 1], "uv": [1, 6], "mirror": false},
-						{"origin": [-6, 27, -9], "size": [3, 2, 1], "uv": [1, 6]}
+						{"origin": [-3, 15, -12], "size": [6, 15, 6], "uv": [41, 29], "mirror": false}
+					]
+				},
+				{
+					"name": "left_ear",
+					"parent": "head",
+					"pivot": [3, 28, -8.5],
+					"cubes": [
+						{"origin": [3, 27, -9], "size": [3, 2, 1], "uv": [1, 6]}
+					]
+				},
+				{
+					"name": "right_ear",
+					"parent": "head",
+					"pivot": [-3, 28, -8.5],
+					"cubes": [
+						{"origin": [-6, 27, -9], "size": [3, 2, 1], "uv": [1, 6], "mirror": true}
 					]
 				},
 				{

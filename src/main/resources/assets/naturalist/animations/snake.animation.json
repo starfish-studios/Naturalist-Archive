@@ -22,6 +22,9 @@
 				},
 				"main": {
 					"position": ["Math.cos((query.anim_time - 0.1) * 360 ) * -1", 0, 0]
+				},
+				"tail4": {
+					"rotation": [0, "Math.cos((query.anim_time - 0.5) * 360 ) * 30", 0]
 				}
 			}
 		},
@@ -46,7 +49,10 @@
 				},
 				"main": {
 					"rotation": [-90, 0, 0],
-					"position": ["Math.cos((query.anim_time - 0.1) * 360 ) * -1", 8, -4]
+					"position": ["Math.cos((query.anim_time - 0.1) * 360 ) * -1", 8, -2]
+				},
+				"tail4": {
+					"rotation": [0, "Math.cos((query.anim_time - 0.5) * 360 ) * 30", 0]
 				}
 			}
 		},
@@ -57,7 +63,7 @@
 				"main": {
 					"rotation": [0, 135, 0],
 					"position": [4, 0, 0],
-					"scale": [1, "1 + Math.sin((query.anim_time - 0.0) * 180) * 0.1", 1]
+					"scale": [1, "1 + Math.sin((query.anim_time - 0.0) * 180) * .1", 1]
 				},
 				"neck": {
 					"rotation": [90, 0, 0],
@@ -104,6 +110,15 @@
 				"tongue": {
 					"rotation": ["Math.sin((query.anim_time - 0.2) * 2880) * 16", 0, "Math.cos((query.anim_time - 0.4) * 1440) * 8"],
 					"position": [0, 0, -4]
+				}
+			}
+		},
+		"snake.rattle": {
+			"loop": true,
+			"animation_length": 1,
+			"bones": {
+				"tail4": {
+					"rotation": [0, "Math.sin((query.anim_time - 0.2) * 2880) * 16", "Math.cos((query.anim_time - 0.4) * 1440) * 8"]
 				}
 			}
 		}
