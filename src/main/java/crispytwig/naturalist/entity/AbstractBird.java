@@ -282,7 +282,7 @@ public abstract class AbstractBird extends ShoulderRidingEntity implements Flyin
         private final AbstractBird bird;
 
         public BirdAvoidEntityGoal(AbstractBird bird, Class<T> pEntityClassToAvoid, float pMaxDistance, double pWalkSpeedModifier, double pSprintSpeedModifier) {
-            super(bird, pEntityClassToAvoid, pMaxDistance, pWalkSpeedModifier, pSprintSpeedModifier, livingEntity -> EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingEntity) && !livingEntity.isHolding(TAME_FOOD));
+            super(bird, pEntityClassToAvoid, pMaxDistance, pWalkSpeedModifier, pSprintSpeedModifier, EntitySelector.NO_CREATIVE_OR_SPECTATOR::test);
             this.bird = bird;
         }
 
