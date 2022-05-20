@@ -9,6 +9,7 @@
   "entity.naturalist.coral_snake": "Coral Snake",
   "entity.naturalist.rattlesnake": "Rattlesnake",
   "entity.naturalist.deer": "Deer",
+  "entity.naturalist.bluejay": "Bluejay",
   "item.naturalist.snail_spawn_egg": "Snail Spawn Egg",
   "item.naturalist.crocodile_spawn_egg": "Crocodile Spawn Egg",
   "item.naturalist.bear_spawn_egg": "Grizzly Bear Spawn Egg",
@@ -18,6 +19,7 @@
   "item.naturalist.coral_snake_spawn_egg": "Coral Snake Spawn Egg",
   "item.naturalist.rattlesnake_spawn_egg": "Rattlesnake Spawn Egg",
   "item.naturalist.deer_spawn_egg": "Deer Spawn Egg",
+  "item.naturalist.bluejay_spawn_egg": "Bluejay Spawn Egg",
   "naturalist.subtitles.entity.snake.hiss": "Snake hisses",
   "naturalist.subtitles.entity.snake.hurt": "Snake hurts",
   "naturalist.subtitles.entity.snake.rattle": "Snake rattles"

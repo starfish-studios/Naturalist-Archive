@@ -19,7 +19,7 @@ import java.util.List;
 @OnlyIn(Dist.CLIENT)
 public class SnakeModel extends AnimatedGeoModel<Snake> {
     @Override
-    public ResourceLocation getModelLocation(Snake crocodile) {
+    public ResourceLocation getModelLocation(Snake snake) {
         return new ResourceLocation(Naturalist.MOD_ID, "geo/snake.geo.json");
     }
 

@@ -8,14 +8,14 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class DistancedFollowParentGoal extends Goal {
-    private final Animal animal;
+    protected final Animal animal;
     @Nullable
-    private Animal parent;
+    protected Animal parent;
     private final double speedModifier;
     private int timeToRecalcPath;
-    private final double horizontalScanRange;
-    private final double verticalScanRange;
-    private final double followDistanceThreshold;
+    protected final double horizontalScanRange;
+    protected final double verticalScanRange;
+    protected final double followDistanceThreshold;
 
     public DistancedFollowParentGoal(Animal animal, double speedModifier, double horizontalScanRange, double verticalScanRange, double followDistanceThreshold) {
         this.animal = animal;
