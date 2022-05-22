@@ -9,8 +9,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -41,9 +39,9 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.Random;
 
-public abstract class AbstractBird extends ShoulderRidingEntity implements FlyingAnimal, IAnimatable {
+public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
-
+    private BirdAvoidEntityGoal<Player> avoidPlayersGoal;
     private static final Ingredient TAME_FOOD = Ingredient.of(Tags.Items.SEEDS);
     public float flap;
     public float flapSpeed;
@@ -52,7 +50,7 @@ public abstract class AbstractBird extends ShoulderRidingEntity implements Flyin
     private float flapping = 1.0F;
     private float nextFlap = 1.0F;
 
-    protected AbstractBird(EntityType<? extends ShoulderRidingEntity> entityType, Level level) {
+    public Bird(EntityType<? extends ShoulderRidingEntity> entityType, Level level) {
         super(entityType, level);
         this.moveControl = new FlyingMoveControl(this, 10, false);
         this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
@@ -62,23 +60,20 @@ public abstract class AbstractBird extends ShoulderRidingEntity implements Flyin
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new PanicGoal(this, 1.25D));
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new TemptGoal(this, 1.0D, TAME_FOOD, true));
-        this.goalSelector.addGoal(2, new BirdAvoidEntityGoal<>(this, Player.class, 8.0F, 2.0D, 2.0D));
-        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(4, new SitWhenOrderedToGoal(this));
-        this.goalSelector.addGoal(4, new FollowOwnerGoal(this, 1.0D, 5.0F, 1.0F, true));
+        this.goalSelector.addGoal(1, new BirdTemptGoal(this, 1.0D, TAME_FOOD, true));
+        this.goalSelector.addGoal(3, new SitWhenOrderedToGoal(this));
+        this.goalSelector.addGoal(3, new FollowOwnerGoal(this, 1.5D, 5.0F, 1.0F, true));
         this.goalSelector.addGoal(4, new BirdWanderGoal(this, 1.0D));
-        this.goalSelector.addGoal(5, new LandOnOwnersShoulderGoal(this));
-        this.goalSelector.addGoal(5, new FollowMobGoal(this, 1.0D, 3.0F, 7.0F));
+        this.goalSelector.addGoal(5, new BirdFlockGoal(this, 1.0D, 3.0F, 7.0F));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 6.0D).add(Attributes.FLYING_SPEED, 0.8F).add(Attributes.MOVEMENT_SPEED, 0.2D);
     }
 
-    public static boolean checkParrotSpawnRules(EntityType<AbstractBird> entityType, LevelAccessor state, MobSpawnType type, BlockPos pos, Random random) {
+    public static boolean checkBirdSpawnRules(EntityType<Bird> entityType, LevelAccessor state, MobSpawnType type, BlockPos pos, Random random) {
         return state.getBlockState(pos.below()).is(BlockTags.PARROTS_SPAWNABLE_ON) && isBrightEnoughToSpawn(state, pos);
     }
 
@@ -147,6 +142,19 @@ public abstract class AbstractBird extends ShoulderRidingEntity implements Flyin
     @Override
     public boolean isFood(ItemStack pStack) {
         return false;
+    }
+
+    @Override
+    protected void reassessTameGoals() {
+        if (this.avoidPlayersGoal == null) {
+            this.avoidPlayersGoal = new BirdAvoidEntityGoal<>(this, Player.class, 16.0F, 2.0D, 2.0D);
+        }
+
+        this.goalSelector.removeGoal(this.avoidPlayersGoal);
+        if (!this.isTame()) {
+            this.goalSelector.addGoal(2, this.avoidPlayersGoal);
+        }
+
     }
 
     @Override
@@ -220,7 +228,10 @@ public abstract class AbstractBird extends ShoulderRidingEntity implements Flyin
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (this.isFlying()) {
+        if (this.isInSittingPose()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("bird.sit", true));
+            return PlayState.CONTINUE;
+        } else if (this.isFlying()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("bird.fly", true));
             return PlayState.CONTINUE;
         }
@@ -230,8 +241,7 @@ public abstract class AbstractBird extends ShoulderRidingEntity implements Flyin
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.setResetSpeedInTicks(5);
-        data.addAnimationController(new AnimationController<>(this, "controller", 5, this::predicate));
+        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
     @Override
@@ -240,8 +250,11 @@ public abstract class AbstractBird extends ShoulderRidingEntity implements Flyin
     }
 
     static class BirdWanderGoal extends WaterAvoidingRandomFlyingGoal {
-        public BirdWanderGoal(PathfinderMob mob, double speedModifier) {
+        private final Bird bird;
+
+        public BirdWanderGoal(Bird mob, double speedModifier) {
             super(mob, speedModifier);
+            this.bird = mob;
         }
 
         @Nullable
@@ -276,13 +289,74 @@ public abstract class AbstractBird extends ShoulderRidingEntity implements Flyin
 
             return null;
         }
+
+
+        @Override
+        public boolean canUse() {
+            return !this.bird.isTame() && super.canUse();
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return !this.bird.isTame() && super.canContinueToUse();
+        }
+    }
+
+    static class BirdFlockGoal extends FollowMobGoal {
+        private final Bird bird;
+
+        public BirdFlockGoal(Bird pMob, double pSpeedModifier, float pStopDistance, float pAreaSize) {
+            super(pMob, pSpeedModifier, pStopDistance, pAreaSize);
+            this.bird = pMob;
+        }
+
+        @Override
+        public boolean canUse() {
+            return !this.bird.isTame() && super.canUse();
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return !this.bird.isTame() && super.canContinueToUse();
+        }
+    }
+
+    static class BirdTemptGoal extends TemptGoal {
+        @Nullable
+        private Player selectedPlayer;
+        private final Bird bird;
+
+        public BirdTemptGoal(Bird bird, double speedModifier, Ingredient temptItems, boolean canScare) {
+            super(bird, speedModifier, temptItems, canScare);
+            this.bird = bird;
+        }
+
+        @Override
+        public void tick() {
+            super.tick();
+            if (this.selectedPlayer == null && this.mob.getRandom().nextInt(this.adjustedTickDelay(600)) == 0) {
+                this.selectedPlayer = this.player;
+            } else if (this.mob.getRandom().nextInt(this.adjustedTickDelay(500)) == 0) {
+                this.selectedPlayer = null;
+            }
+        }
+
+        @Override
+        protected boolean canScare() {
+            return this.selectedPlayer != null && this.selectedPlayer.equals(this.player) ? false : super.canScare();
+        }
+
+        @Override
+        public boolean canUse() {
+            return super.canUse() && !this.bird.isTame();
+        }
     }
 
     static class BirdAvoidEntityGoal<T extends LivingEntity> extends AvoidEntityGoal<T> {
-        private final AbstractBird bird;
+        private final Bird bird;
 
-        public BirdAvoidEntityGoal(AbstractBird bird, Class<T> pEntityClassToAvoid, float pMaxDistance, double pWalkSpeedModifier, double pSprintSpeedModifier) {
-            super(bird, pEntityClassToAvoid, pMaxDistance, pWalkSpeedModifier, pSprintSpeedModifier, EntitySelector.NO_CREATIVE_OR_SPECTATOR::test);
+        public BirdAvoidEntityGoal(Bird bird, Class<T> toAvoid, float maxDistance, double walkSpeed, double sprintSpeed) {
+            super(bird, toAvoid, maxDistance, walkSpeed, sprintSpeed, EntitySelector.NO_CREATIVE_OR_SPECTATOR::test);
             this.bird = bird;
         }
 

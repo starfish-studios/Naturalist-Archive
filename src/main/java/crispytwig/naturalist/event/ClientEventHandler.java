@@ -22,6 +22,9 @@ public class ClientEventHandler {
         event.registerEntityRenderer(NaturalistEntityTypes.CORAL_SNAKE.get(), CoralSnakeRenderer::new);
         event.registerEntityRenderer(NaturalistEntityTypes.RATTLESNAKE.get(), RattleSnakeRenderer::new);
         event.registerEntityRenderer(NaturalistEntityTypes.DEER.get(), DeerRenderer::new);
-        event.registerEntityRenderer(NaturalistEntityTypes.BLUEJAY.get(), BluejayRenderer::new);
+        event.registerEntityRenderer(NaturalistEntityTypes.BLUEJAY.get(), BirdRenderer::new);
+        event.registerEntityRenderer(NaturalistEntityTypes.CARDINAL.get(), BirdRenderer::new);
+        event.registerEntityRenderer(NaturalistEntityTypes.CANARY.get(), BirdRenderer::new);
+        event.registerEntityRenderer(NaturalistEntityTypes.ROBIN.get(), BirdRenderer::new);
     }
 }

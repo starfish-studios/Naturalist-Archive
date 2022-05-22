@@ -2,7 +2,6 @@ package crispytwig.naturalist.registry;
 
 import crispytwig.naturalist.Naturalist;
 import crispytwig.naturalist.entity.*;
-import crispytwig.naturalist.entity.Bluejay;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -26,7 +25,10 @@ public class NaturalistEntityTypes {
     public static final RegistryObject<EntityType<CoralSnake>> CORAL_SNAKE = ENTITY_TYPES.register("coral_snake", () -> EntityType.Builder.of(CoralSnake::new, MobCategory.CREATURE).sized(0.6F, 0.7F).clientTrackingRange(8).build(new ResourceLocation(Naturalist.MOD_ID, "coral_snake").toString()));
     public static final RegistryObject<EntityType<RattleSnake>> RATTLESNAKE = ENTITY_TYPES.register("rattlesnake", () -> EntityType.Builder.of(RattleSnake::new, MobCategory.CREATURE).sized(0.6F, 0.7F).clientTrackingRange(8).build(new ResourceLocation(Naturalist.MOD_ID, "rattlesnake").toString()));
     public static final RegistryObject<EntityType<Deer>> DEER = ENTITY_TYPES.register("deer", () -> EntityType.Builder.of(Deer::new, MobCategory.CREATURE).sized(1.3F, 1.6F).clientTrackingRange(10).build(new ResourceLocation(Naturalist.MOD_ID, "deer").toString()));
-    public static final RegistryObject<EntityType<Bluejay>> BLUEJAY = ENTITY_TYPES.register("bluejay", () -> EntityType.Builder.of(Bluejay::new, MobCategory.CREATURE).sized(0.5F, 0.9F).clientTrackingRange(8).build(new ResourceLocation(Naturalist.MOD_ID, "bluejay").toString()));
+    public static final RegistryObject<EntityType<Bird>> BLUEJAY = ENTITY_TYPES.register("bluejay", () -> EntityType.Builder.of(Bird::new, MobCategory.CREATURE).sized(0.5F, 0.9F).clientTrackingRange(8).build(new ResourceLocation(Naturalist.MOD_ID, "bluejay").toString()));
+    public static final RegistryObject<EntityType<Bird>> CANARY = ENTITY_TYPES.register("canary", () -> EntityType.Builder.of(Bird::new, MobCategory.CREATURE).sized(0.5F, 0.9F).clientTrackingRange(8).build(new ResourceLocation(Naturalist.MOD_ID, "canary").toString()));
+    public static final RegistryObject<EntityType<Bird>> CARDINAL = ENTITY_TYPES.register("cardinal", () -> EntityType.Builder.of(Bird::new, MobCategory.CREATURE).sized(0.5F, 0.9F).clientTrackingRange(8).build(new ResourceLocation(Naturalist.MOD_ID, "cardinal").toString()));
+    public static final RegistryObject<EntityType<Bird>> ROBIN = ENTITY_TYPES.register("robin", () -> EntityType.Builder.of(Bird::new, MobCategory.CREATURE).sized(0.5F, 0.9F).clientTrackingRange(8).build(new ResourceLocation(Naturalist.MOD_ID, "robin").toString()));
 
     @SubscribeEvent
     public static void createAttributes(EntityAttributeCreationEvent event) {
@@ -39,6 +41,9 @@ public class NaturalistEntityTypes {
         event.put(NaturalistEntityTypes.CORAL_SNAKE.get(), Snake.createAttributes().build());
         event.put(NaturalistEntityTypes.RATTLESNAKE.get(), Snake.createAttributes().build());
         event.put(NaturalistEntityTypes.DEER.get(), Deer.createAttributes().build());
-        event.put(NaturalistEntityTypes.BLUEJAY.get(), AbstractBird.createAttributes().build());
+        event.put(NaturalistEntityTypes.BLUEJAY.get(), Bird.createAttributes().build());
+        event.put(NaturalistEntityTypes.CANARY.get(), Bird.createAttributes().build());
+        event.put(NaturalistEntityTypes.CARDINAL.get(), Bird.createAttributes().build());
+        event.put(NaturalistEntityTypes.ROBIN.get(), Bird.createAttributes().build());
     }
 }

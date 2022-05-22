@@ -20,5 +20,8 @@ public class NaturalistItems {
     public static final RegistryObject<Item> RATTLESNAKE_SPAWN_EGG = ITEMS.register("rattlesnake_spawn_egg", () -> new ForgeSpawnEggItem(() -> NaturalistEntityTypes.RATTLESNAKE.get(), 16039772, 7293214, new Item.Properties().tab(Naturalist.TAB)));
     public static final RegistryObject<Item> DEER_SPAWN_EGG = ITEMS.register("deer_spawn_egg", () -> new ForgeSpawnEggItem(() -> NaturalistEntityTypes.DEER.get(), 10318165, 14531208, new Item.Properties().tab(Naturalist.TAB)));
     public static final RegistryObject<Item> BLUEJAY_SPAWN_EGG = ITEMS.register("bluejay_spawn_egg", () -> new ForgeSpawnEggItem(() -> NaturalistEntityTypes.BLUEJAY.get(), 3960484, 38835, new Item.Properties().tab(Naturalist.TAB)));
+    public static final RegistryObject<Item> CARDINAL_SPAWN_EGG = ITEMS.register("cardinal_spawn_egg", () -> new ForgeSpawnEggItem(() -> NaturalistEntityTypes.CARDINAL.get(), 9765900, 16739600, new Item.Properties().tab(Naturalist.TAB)));
+    public static final RegistryObject<Item> CANARY_SPAWN_EGG = ITEMS.register("canary_spawn_egg", () -> new ForgeSpawnEggItem(() -> NaturalistEntityTypes.CANARY.get(), 14979584, 16769792, new Item.Properties().tab(Naturalist.TAB)));
+    public static final RegistryObject<Item> ROBIN_SPAWN_EGG = ITEMS.register("robin_spawn_egg", () -> new ForgeSpawnEggItem(() -> NaturalistEntityTypes.ROBIN.get(), 5327440, 16746770, new Item.Properties().tab(Naturalist.TAB)));
 
 }
