@@ -1,6 +1,7 @@
 package crispytwig.naturalist.entity;
 
 import crispytwig.naturalist.entity.ai.goal.DistancedFollowParentGoal;
+import crispytwig.naturalist.entity.ai.goal.SearchForItemsGoal;
 import crispytwig.naturalist.entity.ai.goal.SleepGoal;
 import crispytwig.naturalist.registry.NaturalistEntityTypes;
 import crispytwig.naturalist.registry.NaturalistTags;
@@ -118,11 +119,12 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
         this.goalSelector.addGoal(3, new BearPanicGoal(this, 2.0D));
         this.goalSelector.addGoal(4, new BearSleepGoal(this));
         this.goalSelector.addGoal(5, new DistancedFollowParentGoal(this, 1.25D, 48.0D, 8.0D, 12.0D));
-        this.goalSelector.addGoal(5, new BearHarvestFoodGoal(this, 1.2F, 12, 3));
-        this.goalSelector.addGoal(6, new BearPickupFoodAndSitGoal(this));
-        this.goalSelector.addGoal(7, new RandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 6.0F));
-        this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(5, new SearchForItemsGoal(this, 1.2F, FOOD_ITEMS, 8, 2));
+        this.goalSelector.addGoal(6, new BearHarvestFoodGoal(this, 1.2F, 12, 3));
+        this.goalSelector.addGoal(7, new BearPickupFoodAndSitGoal(this));
+        this.goalSelector.addGoal(8, new RandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new BearHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new BearAttackPlayerNearBabiesGoal(this, Player.class, 20, false, true, null));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
@@ -148,6 +150,15 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
             }
             this.setSniffing(false);
         }
+        this.level.getProfiler().push("looting");
+        if (!this.level.isClientSide && this.canPickUpLoot() && this.isAlive() && !this.dead && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
+            for(ItemEntity itementity : this.level.getEntitiesOfClass(ItemEntity.class, this.getBoundingBox().inflate(1.0D, 0.0D, 1.0D))) {
+                if (!itementity.isRemoved() && !itementity.getItem().isEmpty() && this.wantsToPickUp(itementity.getItem())) {
+                    this.pickUpItem(itementity);
+                }
+            }
+        }
+        this.level.getProfiler().pop();
     }
 
     @Override
@@ -702,8 +713,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
         @Override
         public boolean canUse() {
             if (this.cooldown <= bear.tickCount && !bear.isBaby() && !bear.isTouchingWater() && !bear.isSleeping() && !bear.isSitting()) {
-                List<ItemEntity> list = bear.level.getEntitiesOfClass(ItemEntity.class, bear.getBoundingBox().inflate(6.0D, 6.0D, 6.0D), itemEntity -> FOOD_ITEMS.test(itemEntity.getItem()));
-                return !list.isEmpty() || !bear.getMainHandItem().isEmpty();
+                return !bear.getMainHandItem().isEmpty();
             } else {
                 return false;
             }
@@ -723,10 +733,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
 
         @Override
         public void start() {
-            List<ItemEntity> list = bear.level.getEntitiesOfClass(ItemEntity.class, bear.getBoundingBox().inflate(8.0D, 8.0D, 8.0D), itemEntity -> FOOD_ITEMS.test(itemEntity.getItem()));
-            if (!list.isEmpty() && bear.getMainHandItem().isEmpty()) {
-                bear.getNavigation().moveTo(list.get(0), 1.2F);
-            } else if (!bear.getMainHandItem().isEmpty()) {
+            if (!bear.getMainHandItem().isEmpty()) {
                 bear.tryToSit();
             }
 
@@ -735,14 +742,13 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
 
         @Override
         public void stop() {
-            ItemStack itemstack = bear.getItemBySlot(EquipmentSlot.MAINHAND);
-            if (!itemstack.isEmpty()) {
-                bear.spawnAtLocation(itemstack);
+            ItemStack stack = bear.getItemBySlot(EquipmentSlot.MAINHAND);
+            if (!stack.isEmpty()) {
+                bear.spawnAtLocation(stack);
                 bear.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
                 int cooldownSeconds = bear.random.nextInt(150) + 10;
                 this.cooldown = bear.tickCount + cooldownSeconds * 20;
             }
-
             bear.setSitting(false);
         }
     }
