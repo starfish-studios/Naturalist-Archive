@@ -66,7 +66,7 @@ public class Snail extends Animal implements IAnimatable {
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (!(event.getLimbSwingAmount() > -0.01F && event.getLimbSwingAmount() < 0.01F)) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("snail.crawl", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("snail.move", true));
             return PlayState.CONTINUE;
         }
         event.getController().markNeedsReload();
