@@ -1,6 +1,7 @@
 package crispytwig.naturalist.event;
 
 import crispytwig.naturalist.Naturalist;
+import crispytwig.naturalist.registry.NaturalistConfig;
 import crispytwig.naturalist.registry.NaturalistEntityTypes;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings;
@@ -13,14 +14,19 @@ public class CommonEventHandler {
 
     @SubscribeEvent
     public static void onBiomeLoad(BiomeLoadingEvent event) {
-        final MobSpawnSettings.SpawnerData snake = new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.SNAKE.get(), 4, 1, 1);
-        final MobSpawnSettings.SpawnerData bear = new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.BEAR.get(), 4, 1, 2);
-        final MobSpawnSettings.SpawnerData deer = new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.DEER.get(), 4, 2, 4);
-        final MobSpawnSettings.SpawnerData snail = new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.SNAIL.get(), 4, 1, 3);
-        final MobSpawnSettings.SpawnerData firefly = new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.FIREFLY.get(), 5, 3, 6);
-        final MobSpawnSettings.SpawnerData butterfly = new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.BUTTERFLY.get(), 4, 1, 3);
-        final MobSpawnSettings.SpawnerData rattlesnake = new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.RATTLESNAKE.get(), 4, 1, 1);
-        final MobSpawnSettings.SpawnerData coralsnake = new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.CORAL_SNAKE.get(), 4, 1, 1);
+        MobSpawnSettings.SpawnerData bear = new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.BEAR.get(), NaturalistConfig.BEAR_SPAWN_WEIGHT.get(), 1, 2);
+        MobSpawnSettings.SpawnerData deer = new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.DEER.get(), NaturalistConfig.DEER_SPAWN_WEIGHT.get(), 1, 3);
+        MobSpawnSettings.SpawnerData snail = new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.SNAIL.get(), NaturalistConfig.SNAIL_SPAWN_WEIGHT.get(), 1, 3);
+        MobSpawnSettings.SpawnerData firefly = new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.FIREFLY.get(), NaturalistConfig.FIREFLY_SPAWN_WEIGHT.get(), 3, 6);
+        MobSpawnSettings.SpawnerData butterfly = new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.BUTTERFLY.get(), NaturalistConfig.BUTTERFLY_SPAWN_WEIGHT.get(), 1, 3);
+        MobSpawnSettings.SpawnerData snake = new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.SNAKE.get(), NaturalistConfig.SNAKE_SPAWN_WEIGHT.get(), 1, 1);
+        MobSpawnSettings.SpawnerData rattlesnake = new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.RATTLESNAKE.get(), NaturalistConfig.RATTLESNAKE_SPAWN_WEIGHT.get(), 1, 1);
+        MobSpawnSettings.SpawnerData coralsnake = new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.CORAL_SNAKE.get(), NaturalistConfig.CORAL_SNAKE_SPAWN_WEIGHT.get(), 1, 1);
+        MobSpawnSettings.SpawnerData bluejay = new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.BLUEJAY.get(), NaturalistConfig.BIRD_SPAWN_WEIGHT.get(), 1, 4);
+        MobSpawnSettings.SpawnerData canary = new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.CANARY.get(), NaturalistConfig.BIRD_SPAWN_WEIGHT.get(), 1, 4);
+        MobSpawnSettings.SpawnerData cardinal = new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.CARDINAL.get(), NaturalistConfig.BIRD_SPAWN_WEIGHT.get(), 1, 4);
+        MobSpawnSettings.SpawnerData robin = new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.ROBIN.get(), NaturalistConfig.BIRD_SPAWN_WEIGHT.get(), 1, 4);
+
         switch (event.getCategory()) {
             case FOREST -> {
                 event.getSpawns().addSpawn(MobCategory.CREATURE, bear);
@@ -29,20 +35,25 @@ public class CommonEventHandler {
                 event.getSpawns().addSpawn(MobCategory.CREATURE, snail);
                 event.getSpawns().addSpawn(MobCategory.AMBIENT, firefly);
                 event.getSpawns().addSpawn(MobCategory.CREATURE, butterfly);
+                event.getSpawns().addSpawn(MobCategory.CREATURE, cardinal);
+                event.getSpawns().addSpawn(MobCategory.CREATURE, robin);
             }
             case TAIGA -> {
                 event.getSpawns().addSpawn(MobCategory.CREATURE, bear);
+                event.getSpawns().addSpawn(MobCategory.CREATURE, bluejay);
             }
             case PLAINS -> {
                 event.getSpawns().addSpawn(MobCategory.CREATURE, snake);
                 event.getSpawns().addSpawn(MobCategory.CREATURE, snail);
                 event.getSpawns().addSpawn(MobCategory.AMBIENT, firefly);
                 event.getSpawns().addSpawn(MobCategory.CREATURE, butterfly);
+                event.getSpawns().addSpawn(MobCategory.CREATURE, robin);
             }
             case SWAMP -> {
                 event.getSpawns().addSpawn(MobCategory.CREATURE, snake);
                 event.getSpawns().addSpawn(MobCategory.CREATURE, snail);
                 event.getSpawns().addSpawn(MobCategory.AMBIENT, firefly);
+                event.getSpawns().addSpawn(MobCategory.CREATURE, cardinal);
             }
             case MESA -> {
                 event.getSpawns().addSpawn(MobCategory.CREATURE, rattlesnake);
@@ -50,9 +61,11 @@ public class CommonEventHandler {
             case SAVANNA -> {
                 event.getSpawns().addSpawn(MobCategory.CREATURE, rattlesnake);
                 event.getSpawns().addSpawn(MobCategory.CREATURE, snail);
+                event.getSpawns().addSpawn(MobCategory.CREATURE, cardinal);
             }
             case DESERT -> {
                 event.getSpawns().addSpawn(MobCategory.CREATURE, rattlesnake);
+                event.getSpawns().addSpawn(MobCategory.CREATURE, cardinal);
             }
             case JUNGLE -> {
                 event.getSpawns().addSpawn(MobCategory.CREATURE, coralsnake);
@@ -66,6 +79,9 @@ public class CommonEventHandler {
             }
             case EXTREME_HILLS -> {
                 event.getSpawns().addSpawn(MobCategory.CREATURE, snail);
+                event.getSpawns().addSpawn(MobCategory.CREATURE, bluejay);
+                event.getSpawns().addSpawn(MobCategory.CREATURE, canary);
+                event.getSpawns().addSpawn(MobCategory.CREATURE, canary);
             }
             case MUSHROOM -> {
                 event.getSpawns().addSpawn(MobCategory.CREATURE, snail);
@@ -76,6 +92,11 @@ public class CommonEventHandler {
             }
             case MOUNTAIN -> {
                 event.getSpawns().addSpawn(MobCategory.CREATURE, snail);
+                event.getSpawns().addSpawn(MobCategory.CREATURE, canary);
+                event.getSpawns().addSpawn(MobCategory.CREATURE, robin);
+            }
+            case ICY -> {
+                event.getSpawns().addSpawn(MobCategory.CREATURE, bluejay);
             }
         }
     }

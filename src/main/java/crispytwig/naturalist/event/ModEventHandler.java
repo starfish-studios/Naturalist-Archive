@@ -1,6 +1,7 @@
 package crispytwig.naturalist.event;
 
 import crispytwig.naturalist.Naturalist;
+import crispytwig.naturalist.entity.Bird;
 import crispytwig.naturalist.entity.Firefly;
 import crispytwig.naturalist.entity.Snake;
 import crispytwig.naturalist.registry.NaturalistEntityTypes;
@@ -41,6 +42,10 @@ public class ModEventHandler {
             SpawnPlacements.register(NaturalistEntityTypes.CORAL_SNAKE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, Snake::checkSnakeSpawnRules);
             SpawnPlacements.register(NaturalistEntityTypes.RATTLESNAKE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, Snake::checkSnakeSpawnRules);
             SpawnPlacements.register(NaturalistEntityTypes.DEER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, Animal::checkAnimalSpawnRules);
+            SpawnPlacements.register(NaturalistEntityTypes.BLUEJAY.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, Bird::checkBirdSpawnRules);
+            SpawnPlacements.register(NaturalistEntityTypes.CANARY.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, Bird::checkBirdSpawnRules);
+            SpawnPlacements.register(NaturalistEntityTypes.CARDINAL.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, Bird::checkBirdSpawnRules);
+            SpawnPlacements.register(NaturalistEntityTypes.ROBIN.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, Bird::checkBirdSpawnRules);
         });
     }
 }

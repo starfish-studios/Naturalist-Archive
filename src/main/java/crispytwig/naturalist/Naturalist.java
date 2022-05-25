@@ -1,15 +1,14 @@
 package crispytwig.naturalist;
 
-import crispytwig.naturalist.registry.NaturalistEntityTypes;
-import crispytwig.naturalist.registry.NaturalistItems;
-import crispytwig.naturalist.registry.NaturalistPotions;
-import crispytwig.naturalist.registry.NaturalistSoundEvents;
+import crispytwig.naturalist.registry.*;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,6 +26,8 @@ public class Naturalist {
     };
 
     public Naturalist() {
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, NaturalistConfig.COMMON_CONFIG);
+
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 
         NaturalistEntityTypes.ENTITY_TYPES.register(bus);
