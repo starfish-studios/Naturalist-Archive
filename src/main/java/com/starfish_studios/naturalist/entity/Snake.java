@@ -46,6 +46,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -60,13 +61,12 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-public class Snake extends Animal implements SleepingAnimal, NeutralMob, IAnimatable {
+public class Snake extends ClimbingAnimal implements SleepingAnimal, NeutralMob, IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
     private static final Ingredient FOOD_ITEMS = Ingredient.of(NaturalistTags.Items.SNAKE_TEMPT_ITEMS);
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
     private static final EntityDataAccessor<Integer> REMAINING_ANGER_TIME = SynchedEntityData.defineId(Snake.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> SLEEPING = SynchedEntityData.defineId(Snake.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(Snake.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Integer> EAT_COUNTER = SynchedEntityData.defineId(Snake.class, EntityDataSerializers.INT);
     @Nullable
     private UUID persistentAngerTarget;
@@ -143,7 +143,6 @@ public class Snake extends Animal implements SleepingAnimal, NeutralMob, IAnimat
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(DATA_FLAGS_ID, (byte)0);
         this.entityData.define(SLEEPING, false);
         this.entityData.define(EAT_COUNTER, 0);
         this.entityData.define(REMAINING_ANGER_TIME, 0);
@@ -260,41 +259,8 @@ public class Snake extends Animal implements SleepingAnimal, NeutralMob, IAnimat
     // MOVEMENT
 
     @Override
-    protected PathNavigation createNavigation(Level pLevel) {
-        return new WallClimberNavigation(this, pLevel);
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
-        if (!this.level.isClientSide) {
-            this.setClimbing(this.horizontalCollision);
-        }
-    }
-
-    @Override
-    public boolean onClimbable() {
-        return this.isClimbing();
-    }
-
-    public boolean isClimbing() {
-        return (this.entityData.get(DATA_FLAGS_ID) & 1) != 0;
-    }
-
-    public void setClimbing(boolean pClimbing) {
-        byte flag = this.entityData.get(DATA_FLAGS_ID);
-        if (pClimbing) {
-            flag = (byte)(flag | 1);
-        } else {
-            flag = (byte)(flag & -2);
-        }
-
-        this.entityData.set(DATA_FLAGS_ID, flag);
-    }
-
-    @Override
-    protected float getJumpPower() {
-        return 0.0F;
+    protected float getClimbSpeedMultiplier() {
+        return 0.5F;
     }
 
     @Override
