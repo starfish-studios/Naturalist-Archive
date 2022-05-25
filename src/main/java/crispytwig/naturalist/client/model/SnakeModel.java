@@ -25,7 +25,13 @@ public class SnakeModel extends AnimatedGeoModel<Snake> {
 
     @Override
     public ResourceLocation getTextureLocation(Snake snake) {
-        return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/snake/snake.png");
+        if (snake.getType().equals(NaturalistEntityTypes.CORAL_SNAKE.get())) {
+            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/snake/coral_snake.png");
+        } else if (snake.getType().equals(NaturalistEntityTypes.RATTLESNAKE.get())) {
+            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/snake/rattlesnake.png");
+        } else {
+            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/snake/snake.png");
+        }
     }
 
     @Override
@@ -52,6 +58,6 @@ public class SnakeModel extends AnimatedGeoModel<Snake> {
             tail2.setScaleX(1.5F);
             tail2.setScaleY(1.5F);
         }
-        tail4.setHidden(true);
+        tail4.setHidden(!snake.getType().equals(NaturalistEntityTypes.RATTLESNAKE.get()));
     }
 }

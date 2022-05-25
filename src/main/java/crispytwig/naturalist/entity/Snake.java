@@ -2,8 +2,10 @@ package crispytwig.naturalist.entity;
 
 import crispytwig.naturalist.entity.ai.goal.SearchForItemsGoal;
 import crispytwig.naturalist.entity.ai.goal.SleepGoal;
+import crispytwig.naturalist.registry.NaturalistEntityTypes;
 import crispytwig.naturalist.registry.NaturalistSoundEvents;
 import crispytwig.naturalist.registry.NaturalistTags;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -11,10 +13,12 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -24,12 +28,15 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WallClimberNavigation;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.Rabbit;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -41,6 +48,8 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 public class Snake extends Animal implements SleepingAnimal, NeutralMob, IAnimatable {
@@ -85,6 +94,10 @@ public class Snake extends Animal implements SleepingAnimal, NeutralMob, IAnimat
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_146743_, AgeableMob p_146744_) {
         return null;
+    }
+
+    public static boolean checkSnakeSpawnRules(EntityType<Snake> entityType, LevelAccessor level, MobSpawnType type, BlockPos pos, Random random) {
+        return level.getBlockState(pos.below()).is(BlockTags.RABBITS_SPAWNABLE_ON) && isBrightEnoughToSpawn(level, pos);
     }
 
     @Override
@@ -145,6 +158,9 @@ public class Snake extends Animal implements SleepingAnimal, NeutralMob, IAnimat
             if (this.isAngry()) {
                 this.stopBeingAngry();
             }
+        }
+        if (this.canRattle() && !this.isSleeping()) {
+            this.playSound(NaturalistSoundEvents.SNAKE_RATTLE.get(), 0.15F, 1.0F);
         }
     }
 
@@ -296,6 +312,26 @@ public class Snake extends Animal implements SleepingAnimal, NeutralMob, IAnimat
         return this.persistentAngerTarget;
     }
 
+    // SNAKE VARIANTS
+
+    @Override
+    public boolean doHurtTarget(Entity pEntity) {
+        if (this.getType().equals(NaturalistEntityTypes.CORAL_SNAKE.get()) && pEntity instanceof LivingEntity living) {
+            living.addEffect(new MobEffectInstance(MobEffects.POISON, 40));
+        }
+        return super.doHurtTarget(pEntity);
+    }
+
+    private boolean canRattle() {
+        List<Player> players = this.getLevel().getNearbyPlayers(TargetingConditions.forNonCombat().range(4.0D), this, this.getBoundingBox().inflate(4.0D, 2.0D, 4.0D));
+        return !players.isEmpty() && this.getType().equals(NaturalistEntityTypes.RATTLESNAKE.get());
+    }
+
+    @Override
+    protected float getSoundVolume() {
+        return 0.15F;
+    }
+
     // SOUNDS
 
     @Nullable
@@ -345,12 +381,22 @@ public class Snake extends Animal implements SleepingAnimal, NeutralMob, IAnimat
         return PlayState.STOP;
     }
 
+    private <E extends IAnimatable> PlayState rattlePredicate(AnimationEvent<E> event) {
+        if (this.canRattle() && !this.isSleeping()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("snake.rattle", true));
+            return PlayState.CONTINUE;
+        }
+        event.getController().markNeedsReload();
+        return PlayState.STOP;
+    }
+
     @Override
     public void registerControllers(AnimationData data) {
         data.setResetSpeedInTicks(10);
         data.addAnimationController(new AnimationController<>(this, "controller", 10, this::predicate));
         data.addAnimationController(new AnimationController<>(this, "attackController", 0, this::attackPredicate));
         data.addAnimationController(new AnimationController<>(this, "tongueController", 0, this::tonguePredicate));
+        data.addAnimationController(new AnimationController<>(this, "rattleController", 0, this::rattlePredicate));
     }
 
     @Override
