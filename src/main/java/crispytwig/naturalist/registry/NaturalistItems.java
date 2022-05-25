@@ -29,5 +29,5 @@ public class NaturalistItems {
     public static final RegistryObject<Item> COOKED_VENISON = ITEMS.register("cooked_venison", () -> new Item(new Item.Properties().tab(Naturalist.TAB).food(Foods.COOKED_MUTTON)));
     public static final RegistryObject<Item> ANTLER = ITEMS.register("antler", () -> new Item(new Item.Properties().tab(Naturalist.TAB)));
     public static final RegistryObject<Item> GLOW_GOOP = ITEMS.register("glow_goop", () -> new Item(new Item.Properties().tab(Naturalist.TAB)));
-
+    public static final RegistryObject<Item> SNAIL_SHELL = ITEMS.register("snail_shell", () -> new Item(new Item.Properties().tab(Naturalist.TAB)));
 }
