@@ -3,19 +3,52 @@
 	"animations": {
 		"snail.move": {
 			"loop": true,
-			"animation_length": 2,
+			"animation_length": 1.5,
 			"bones": {
 				"body": {
-					"position": [0, 0, "Math.cos((query.anim_time - 0.1) * 180) * -0.25"],
-					"scale": [1, 1, "1 + Math.cos((query.anim_time - 0.2) * 180) * -0.1"]
-				},
-				"eyes": {
-					"rotation": ["1 + Math.cos((query.anim_time - 0.1) * 180) * 8", 0, 1],
-					"position": [0, 0, "Math.cos((query.anim_time - 0.2) * 180) * 0.1"],
-					"scale": [1, 1, "1 + Math.cos((query.anim_time - 0.2) * 180) * 0.1"]
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"0.75": {
+							"vector": [1, 1, 1.2],
+							"easing": "easeInOutCubic"
+						},
+						"1.4583": {
+							"vector": [1, 1, 1],
+							"easing": "easeInOutCubic"
+						}
+					}
 				},
 				"shell": {
-					"position": [0, 0, "-1 + Math.cos((query.anim_time - 0.2) * 180) * 0.25"]
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.75": {
+							"vector": [0, 0, 0.6],
+							"easing": "easeInOutCubic"
+						},
+						"1.4583": {
+							"vector": [0, 0, 0],
+							"easing": "easeInOutCubic"
+						}
+					}
+				},
+				"eyes": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.75": {
+							"vector": [-22.5, 0, 0],
+							"easing": "easeInOutCubic"
+						},
+						"1.5": {
+							"vector": [0, 0, 0],
+							"easing": "easeInOutCubic"
+						}
+					}
 				}
 			}
 		},

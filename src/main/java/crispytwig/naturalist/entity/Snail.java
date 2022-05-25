@@ -7,10 +7,12 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -23,6 +25,9 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+
+import java.util.EnumSet;
+import java.util.List;
 
 public class Snail extends Animal implements IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
@@ -38,8 +43,8 @@ public class Snail extends Animal implements IAnimatable {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(0, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(1, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(0, new HideGoal(this));
+        this.goalSelector.addGoal(1, new SnailStrollGoal(this, 1.0D, 0.0F));
     }
 
     @Nullable
@@ -64,8 +69,16 @@ public class Snail extends Animal implements IAnimatable {
         }
     }
 
+    private boolean canHide() {
+        List<Player> players = this.level.getNearbyPlayers(TargetingConditions.forNonCombat().range(5.0D), this, this.getBoundingBox().inflate(5.0D, 3.0D, 5.0D));
+        return !players.isEmpty();
+    }
+
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (!(event.getLimbSwingAmount() > -0.01F && event.getLimbSwingAmount() < 0.01F)) {
+        if (this.canHide()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("snail.retreat", true));
+            return PlayState.CONTINUE;
+        } else if (!(event.getLimbSwingAmount() > -0.01F && event.getLimbSwingAmount() < 0.01F)) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("snail.move", true));
             return PlayState.CONTINUE;
         }
@@ -75,12 +88,41 @@ public class Snail extends Animal implements IAnimatable {
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.setResetSpeedInTicks(5);
-        data.addAnimationController(new AnimationController<>(this, "controller", 5, this::predicate));
+        data.setResetSpeedInTicks(10);
+        data.addAnimationController(new AnimationController<>(this, "controller", 10, this::predicate));
     }
 
     @Override
     public AnimationFactory getFactory() {
         return factory;
+    }
+
+    static class HideGoal extends Goal {
+        private final Snail snail;
+
+        public HideGoal(Snail mob) {
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.JUMP));
+            this.snail = mob;
+        }
+
+        @Override
+        public boolean canUse() {
+            return snail.canHide();
+        }
+
+        @Override
+        public void start() {
+            snail.setJumping(false);
+            snail.getNavigation().stop();
+            snail.getMoveControl().setWantedPosition(snail.getX(), snail.getY(), snail.getZ(), 0.0D);
+        }
+    }
+
+    static class SnailStrollGoal extends WaterAvoidingRandomStrollGoal {
+        public SnailStrollGoal(PathfinderMob pMob, double pSpeedModifier, float pProbability) {
+            super(pMob, pSpeedModifier, pProbability);
+            this.forceTrigger = true;
+            this.interval = 1;
+        }
     }
 }
