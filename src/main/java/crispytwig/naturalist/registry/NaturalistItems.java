@@ -1,6 +1,8 @@
 package crispytwig.naturalist.registry;
 
 import crispytwig.naturalist.Naturalist;
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
@@ -23,5 +25,9 @@ public class NaturalistItems {
     public static final RegistryObject<Item> CARDINAL_SPAWN_EGG = ITEMS.register("cardinal_spawn_egg", () -> new ForgeSpawnEggItem(() -> NaturalistEntityTypes.CARDINAL.get(), 9765900, 16739600, new Item.Properties().tab(Naturalist.TAB)));
     public static final RegistryObject<Item> CANARY_SPAWN_EGG = ITEMS.register("canary_spawn_egg", () -> new ForgeSpawnEggItem(() -> NaturalistEntityTypes.CANARY.get(), 14979584, 16769792, new Item.Properties().tab(Naturalist.TAB)));
     public static final RegistryObject<Item> ROBIN_SPAWN_EGG = ITEMS.register("robin_spawn_egg", () -> new ForgeSpawnEggItem(() -> NaturalistEntityTypes.ROBIN.get(), 5327440, 16746770, new Item.Properties().tab(Naturalist.TAB)));
+    public static final RegistryObject<Item> VENISON = ITEMS.register("venison", () -> new Item(new Item.Properties().tab(Naturalist.TAB).food(Foods.MUTTON)));
+    public static final RegistryObject<Item> COOKED_VENISON = ITEMS.register("cooked_venison", () -> new Item(new Item.Properties().tab(Naturalist.TAB).food(Foods.COOKED_MUTTON)));
+    public static final RegistryObject<Item> ANTLER = ITEMS.register("antler", () -> new Item(new Item.Properties().tab(Naturalist.TAB)));
+    public static final RegistryObject<Item> GLOW_GOOP = ITEMS.register("glow_goop", () -> new Item(new Item.Properties().tab(Naturalist.TAB)));
 
 }

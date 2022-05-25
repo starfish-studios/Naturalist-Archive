@@ -2,6 +2,7 @@ package crispytwig.naturalist;
 
 import crispytwig.naturalist.registry.NaturalistEntityTypes;
 import crispytwig.naturalist.registry.NaturalistItems;
+import crispytwig.naturalist.registry.NaturalistPotions;
 import crispytwig.naturalist.registry.NaturalistSoundEvents;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -30,6 +31,7 @@ public class Naturalist {
 
         NaturalistEntityTypes.ENTITY_TYPES.register(bus);
         NaturalistItems.ITEMS.register(bus);
+        NaturalistPotions.POTIONS.register(bus);
         NaturalistSoundEvents.SOUND_EVENTS.register(bus);
 
         GeckoLib.initialize();
