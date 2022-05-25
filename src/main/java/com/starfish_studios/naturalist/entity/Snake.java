@@ -3,9 +3,11 @@ package com.starfish_studios.naturalist.entity;
 import com.starfish_studios.naturalist.entity.ai.goal.SleepGoal;
 import com.starfish_studios.naturalist.entity.ai.goal.SearchForItemsGoal;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
+import com.starfish_studios.naturalist.registry.NaturalistItems;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -15,7 +17,9 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.TimeUtil;
+import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -30,12 +34,17 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WallClimberNavigation;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.Fox;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.gameevent.GameEvent;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -97,6 +106,33 @@ public class Snake extends Animal implements SleepingAnimal, NeutralMob, IAnimat
 
     public static boolean checkSnakeSpawnRules(EntityType<Snake> entityType, LevelAccessor level, MobSpawnType type, BlockPos pos, Random random) {
         return level.getBlockState(pos.below()).is(BlockTags.RABBITS_SPAWNABLE_ON) && isBrightEnoughToSpawn(level, pos);
+    }
+
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
+        this.populateDefaultEquipmentSlots(pDifficulty);
+        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+    }
+
+    @Override
+    protected void populateDefaultEquipmentSlots(DifficultyInstance pDifficulty) {
+        if (this.random.nextFloat() < 0.2F) {
+            float chance = this.random.nextFloat();
+            ItemStack stack;
+            if (chance < 0.05F) {
+                stack = new ItemStack(Items.RABBIT_FOOT);
+            } else if (chance < 0.1F) {
+                stack = new ItemStack(Items.SLIME_BALL);
+            } else if (chance < 0.15F) {
+                stack = new ItemStack(Items.FEATHER);
+            } else if (chance < 0.3F) {
+                stack = new ItemStack(NaturalistItems.SNAIL_SHELL.get());
+            } else {
+                stack = new ItemStack(Items.CHICKEN);
+            }
+
+            this.setItemSlot(EquipmentSlot.MAINHAND, stack);
+        }
     }
 
     @Override
@@ -261,6 +297,11 @@ public class Snake extends Animal implements SleepingAnimal, NeutralMob, IAnimat
         return 0.0F;
     }
 
+    @Override
+    public float getSpeed() {
+        return this.getMainHandItem().isEmpty() ? super.getSpeed() : super.getSpeed() * 0.5F;
+    }
+
     // SLEEPING
 
     @Override
@@ -354,7 +395,7 @@ public class Snake extends Animal implements SleepingAnimal, NeutralMob, IAnimat
         } else if (this.isClimbing()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("snake.climb", true));
             return PlayState.CONTINUE;
-        } else if (event.isMoving()) {
+        } else if (!(event.getLimbSwingAmount() > -0.04F && event.getLimbSwingAmount() < 0.04F)) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("snake.move", true));
             return PlayState.CONTINUE;
         }

@@ -6,6 +6,7 @@
     "minecraft:rabbit",
     "minecraft:cooked_rabbit",
     "minecraft:rabbit_foot",
-    "minecraft:slime_ball"
+    "minecraft:slime_ball",
+    "naturalist:snail_shell"
   ]
 }
