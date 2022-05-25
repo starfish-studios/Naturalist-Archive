@@ -16,6 +16,8 @@ import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -62,7 +64,7 @@ public class Snail extends Animal implements IAnimatable {
     public void aiStep() {
         super.aiStep();
         for (Player player : level.getEntitiesOfClass(Player.class, this.getBoundingBox())) {
-            if (!player.isOnGround()) {
+            if (!player.isOnGround() && EnchantmentHelper.getEnchantmentLevel(Enchantments.FALL_PROTECTION, player) == 0) {
                 this.hurt(DamageSource.playerAttack(player), 5.0F);
                 level.playSound(null, this.blockPosition(), SoundEvents.TURTLE_EGG_CRACK, SoundSource.NEUTRAL, 1.0F, 1.2F);
             }
