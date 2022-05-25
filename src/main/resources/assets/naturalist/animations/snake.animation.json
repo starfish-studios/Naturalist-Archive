@@ -49,7 +49,7 @@
 				},
 				"main": {
 					"rotation": [-90, 0, 0],
-					"position": ["Math.cos((query.anim_time - 0.1) * 360 ) * -1", 8, -2]
+					"position": ["Math.cos((query.anim_time - 0.1) * 360 ) * -1", 8, -4]
 				},
 				"tail4": {
 					"rotation": [0, "Math.cos((query.anim_time - 0.5) * 360 ) * 30", 0]

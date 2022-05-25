@@ -6,28 +6,16 @@
 			"animation_length": 2,
 			"bones": {
 				"body": {
-					"position": {
-						"vector": [0, 0, "Math.cos((query.anim_time - 0.1) * 180) * -0.25"]
-					},
-					"scale": {
-						"vector": [1, 1, "1 + Math.cos((query.anim_time - 0.2) * 180) * -0.1"]
-					}
+					"position": [0, 0, "Math.cos((query.anim_time - 0.1) * 180) * -0.25"],
+					"scale": [1, 1, "1 + Math.cos((query.anim_time - 0.2) * 180) * -0.1"]
 				},
 				"eyes": {
-					"rotation": {
-						"vector": ["1 + Math.cos((query.anim_time - 0.1) * 180) * 8", 0, 1]
-					},
-					"position": {
-						"vector": [0, 0, "Math.cos((query.anim_time - 0.2) * 180) * 0.1"]
-					},
-					"scale": {
-						"vector": [1, 1, "1 + Math.cos((query.anim_time - 0.2) * 180) * 0.1"]
-					}
+					"rotation": ["1 + Math.cos((query.anim_time - 0.1) * 180) * 8", 0, 1],
+					"position": [0, 0, "Math.cos((query.anim_time - 0.2) * 180) * 0.1"],
+					"scale": [1, 1, "1 + Math.cos((query.anim_time - 0.2) * 180) * 0.1"]
 				},
 				"shell": {
-					"position": {
-						"vector": [0, 0, "-1+ Math.cos((query.anim_time - 0.2) * 180) * 0.25"]
-					}
+					"position": [0, 0, "-1 + Math.cos((query.anim_time - 0.2) * 180) * 0.25"]
 				}
 			}
 		},
@@ -69,53 +57,31 @@
 			"animation_length": 2,
 			"bones": {
 				"body": {
-					"position": {
-						"vector": [0, 0, "Math.cos((query.anim_time - 0.1) * 180) * -0.25"]
-					},
-					"scale": {
-						"vector": [1, 1, "1 + Math.cos((query.anim_time - 0.2) * 180) * -0.1"]
-					}
+					"position": [0, 0, "Math.cos((query.anim_time - 0.1) * 180) * -0.25"],
+					"scale": [1, 1, "1 + Math.cos((query.anim_time - 0.2) * 180) * -0.1"]
 				},
 				"eyes": {
-					"rotation": {
-						"vector": ["1 + Math.cos((query.anim_time - 0.1) * 180) * 8", 0, 1]
-					},
-					"position": {
-						"vector": [0, 0, "Math.cos((query.anim_time - 0.2) * 180) * 0.1"]
-					},
-					"scale": {
-						"vector": [1, 1, "1 + Math.cos((query.anim_time - 0.2) * 180) * 0.1"]
-					}
+					"rotation": ["1 + Math.cos((query.anim_time - 0.1) * 180) * 8", 0, 1],
+					"position": [0, 0, "Math.cos((query.anim_time - 0.2) * 180) * 0.1"],
+					"scale": [1, 1, "1 + Math.cos((query.anim_time - 0.2) * 180) * 0.1"]
 				},
 				"shell": {
-					"rotation": {
-						"vector": [0, 0, -180]
-					},
-					"position": {
-						"vector": [0, 13.75, "-1+ Math.cos((query.anim_time - 0.2) * 180) * 0.25"]
-					}
+					"rotation": [0, 0, -180],
+					"position": [0, 13.75, "-1 + Math.cos((query.anim_time - 0.2) * 180) * 0.25"]
 				}
 			}
 		},
 		"snail.retreat": {
 			"loop": true,
-			"animation_length": 1,
+			"animation_length": 2,
 			"bones": {
 				"body": {
-					"position": {
-						"vector": [0, 1, 0]
-					},
-					"scale": {
-						"vector": [0, 0, 0]
-					}
+					"position": [0, 1, 0],
+					"scale": 0
 				},
 				"shell": {
-					"rotation": {
-						"vector": [10, 0, 0]
-					},
-					"position": {
-						"vector": [0, -1, -1]
-					}
+					"rotation": [10, 0, 0],
+					"position": [0, -1, -1]
 				}
 			}
 		}
