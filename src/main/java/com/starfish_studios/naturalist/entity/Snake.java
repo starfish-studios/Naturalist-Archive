@@ -52,6 +52,7 @@ import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.SoundKeyframeEvent;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
@@ -346,12 +347,6 @@ public class Snake extends ClimbingAnimal implements SleepingAnimal, NeutralMob,
         return NaturalistSoundEvents.SNAKE_HURT.get();
     }
 
-    @Nullable
-    @Override
-    protected SoundEvent getAmbientSound() {
-        return NaturalistSoundEvents.SNAKE_HISS.get();
-    }
-
     // ANIMATION
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -379,12 +374,11 @@ public class Snake extends ClimbingAnimal implements SleepingAnimal, NeutralMob,
     }
 
     private <E extends IAnimatable> PlayState tonguePredicate(AnimationEvent<E> event) {
-        if (this.random.nextInt(1000) < this.ambientSoundTime && !this.isSleeping()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("snake.tongue", true));
-            return PlayState.CONTINUE;
+        if (this.random.nextInt(1000) < this.ambientSoundTime && !this.isSleeping() && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
+            event.getController().markNeedsReload();
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("snake.tongue", false));
         }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
+        return PlayState.CONTINUE;
     }
 
     private <E extends IAnimatable> PlayState rattlePredicate(AnimationEvent<E> event) {
@@ -396,12 +390,23 @@ public class Snake extends ClimbingAnimal implements SleepingAnimal, NeutralMob,
         return PlayState.STOP;
     }
 
+    private void soundListener(SoundKeyframeEvent<Snake> event) {
+        Snake snake = event.getEntity();
+        if (snake.level.isClientSide) {
+            if (event.sound.equals("hiss")) {
+                snake.level.playLocalSound(snake.getX(), snake.getY(), snake.getZ(), NaturalistSoundEvents.SNAKE_HISS.get(), snake.getSoundSource(), snake.getSoundVolume(), snake.getVoicePitch(), false);
+            }
+        }
+    }
+
     @Override
     public void registerControllers(AnimationData data) {
         data.setResetSpeedInTicks(10);
         data.addAnimationController(new AnimationController<>(this, "controller", 10, this::predicate));
         data.addAnimationController(new AnimationController<>(this, "attackController", 0, this::attackPredicate));
-        data.addAnimationController(new AnimationController<>(this, "tongueController", 0, this::tonguePredicate));
+        AnimationController<Snake> tongueController = new AnimationController<>(this, "tongueController", 0, this::tonguePredicate);
+        tongueController.registerSoundListener(this::soundListener);
+        data.addAnimationController(tongueController);
         data.addAnimationController(new AnimationController<>(this, "rattleController", 0, this::rattlePredicate));
     }
 

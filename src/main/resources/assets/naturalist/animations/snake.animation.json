@@ -90,11 +90,34 @@
 			}
 		},
 		"snake.tongue": {
-			"animation_length": 1,
+			"animation_length": 0.75,
 			"bones": {
 				"tongue": {
-					"rotation": ["Math.sin((query.anim_time - 0.2) * 2880) * 16", 0, "Math.cos((query.anim_time - 0.4) * 1440) * 8"],
-					"position": [0, 0, -4]
+					"rotation": {
+						"vector": ["Math.sin((query.anim_time - 0.2) * 2880) * 16", 0, "Math.cos((query.anim_time - 0.4) * 1440) * 8"]
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.125": {
+							"vector": [0, 0, -4],
+							"easing": "easeInQuad"
+						},
+						"0.625": {
+							"vector": [0, 0, -4],
+							"easing": "easeInQuad"
+						},
+						"0.75": {
+							"vector": [0, 0, 0],
+							"easing": "easeOutQuad"
+						}
+					}
+				}
+			},
+			"sound_effects": {
+				"0.125": {
+					"effect": "hiss"
 				}
 			}
 		},
