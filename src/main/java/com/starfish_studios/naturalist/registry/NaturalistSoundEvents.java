@@ -24,5 +24,13 @@ public class NaturalistSoundEvents {
     public static final RegistryObject<SoundEvent> BEAR_SNIFF = SOUND_EVENTS.register("bear_sniff", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.bear.sniff")));
     public static final RegistryObject<SoundEvent> BEAR_SPIT = SOUND_EVENTS.register("bear_spit", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.bear.spit")));
     public static final RegistryObject<SoundEvent> BEAR_EAT = SOUND_EVENTS.register("bear_eat", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.bear.eat")));
+    public static final RegistryObject<SoundEvent> BIRD_HURT = SOUND_EVENTS.register("bird_hurt", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.bird.hurt")));
+    public static final RegistryObject<SoundEvent> BIRD_DEATH = SOUND_EVENTS.register("bird_death", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.bird.death")));
+    public static final RegistryObject<SoundEvent> BIRD_EAT = SOUND_EVENTS.register("bird_eat", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.bird.eat")));
+    public static final RegistryObject<SoundEvent> BIRD_FLY = SOUND_EVENTS.register("bird_fly", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.bird.fly")));
+    public static final RegistryObject<SoundEvent> BIRD_AMBIENT_BLUEJAY = SOUND_EVENTS.register("bird_ambient_bluejay", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.bird.ambient_bluejay")));
+    public static final RegistryObject<SoundEvent> BIRD_AMBIENT_CANARY = SOUND_EVENTS.register("bird_ambient_canary", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.bird.ambient_canary")));
+    public static final RegistryObject<SoundEvent> BIRD_AMBIENT_ROBIN = SOUND_EVENTS.register("bird_ambient_robin", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.bird.ambient_robin")));
+    public static final RegistryObject<SoundEvent> BIRD_AMBIENT_CARDINAL = SOUND_EVENTS.register("bird_ambient_cardinal", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.bird.ambient_cardinal")));
 
 }

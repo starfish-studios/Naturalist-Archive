@@ -1,8 +1,13 @@
 package com.starfish_studios.naturalist.entity;
 
+import com.starfish_studios.naturalist.Naturalist;
+import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
+import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
@@ -101,7 +106,7 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
             }
 
             if (!this.isSilent()) {
-                this.level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.PARROT_EAT, this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
+                this.level.playSound(null, this.getX(), this.getY(), this.getZ(), NaturalistSoundEvents.BIRD_EAT.get(), this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
             }
 
             if (!this.level.isClientSide) {
@@ -202,7 +207,7 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
 
     @Override
     protected void onFlap() {
-        this.playSound(SoundEvents.PARROT_FLY, 0.15F, 1.0F);
+        this.playSound(NaturalistSoundEvents.BIRD_FLY.get(), 0.15F, 1.0F);
         this.nextFlap = this.flyDist + this.flapSpeed / 2.0F;
     }
 
@@ -224,6 +229,32 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
     protected void doPush(Entity pEntity) {
         if (!(pEntity instanceof Player)) {
             super.doPush(pEntity);
+        }
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+        return NaturalistSoundEvents.BIRD_HURT.get();
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getDeathSound() {
+        return NaturalistSoundEvents.BIRD_DEATH.get();
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getAmbientSound() {
+        if (this.getType().equals(NaturalistEntityTypes.BLUEJAY.get())) {
+            return NaturalistSoundEvents.BIRD_AMBIENT_BLUEJAY.get();
+        } else if (this.getType().equals(NaturalistEntityTypes.CANARY.get())) {
+            return NaturalistSoundEvents.BIRD_AMBIENT_CANARY.get();
+        } else if (this.getType().equals(NaturalistEntityTypes.CARDINAL.get())) {
+            return NaturalistSoundEvents.BIRD_AMBIENT_CARDINAL.get();
+        } else {
+            return NaturalistSoundEvents.BIRD_AMBIENT_ROBIN.get();
         }
     }
 

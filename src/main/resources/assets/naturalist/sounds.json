@@ -117,5 +117,69 @@
       "minecraft:mob/panda/eat12"
     ],
     "subtitle": "naturalist.subtitles.entity.bear.eat"
+  },
+  "entity.bird.hurt": {
+    "sounds": [
+      "minecraft:mob/parrot/hurt1",
+      "minecraft:mob/parrot/hurt2"
+    ],
+    "subtitle": "naturalist.subtitles.entity.bird.hurt"
+  },
+  "entity.bird.death": {
+    "sounds": [
+      "minecraft:mob/parrot/death1",
+      "minecraft:mob/parrot/death2",
+      "minecraft:mob/parrot/death3",
+      "minecraft:mob/parrot/death4"
+    ],
+    "subtitle": "naturalist.subtitles.entity.bird.death"
+  },
+  "entity.bird.eat": {
+    "sounds": [
+      "minecraft:mob/parrot/eat1",
+      "minecraft:mob/parrot/eat2",
+      "minecraft:mob/parrot/eat3"
+    ],
+    "subtitle": "naturalist.subtitles.entity.bird.eat"
+  },
+  "entity.bird.fly": {
+    "sounds": [
+      "minecraft:mob/parrot/fly1",
+      "minecraft:mob/parrot/fly2",
+      "minecraft:mob/parrot/fly3",
+      "minecraft:mob/parrot/fly4",
+      "minecraft:mob/parrot/fly5",
+      "minecraft:mob/parrot/fly6",
+      "minecraft:mob/parrot/fly7"
+    ],
+    "subtitle": "naturalist.subtitles.entity.bird.fly"
+  },
+  "entity.bird.ambient_bluejay": {
+    "sounds": [
+      "naturalist:bluejay_idle_1",
+      "naturalist:bluejay_idle_2"
+    ],
+    "subtitle": "naturalist.subtitles.entity.bird.ambient_bluejay"
+  },
+  "entity.bird.ambient_canary": {
+    "sounds": [
+      "naturalist:canary_idle",
+      "naturalist:canary_song"
+    ],
+    "subtitle": "naturalist.subtitles.entity.bird.ambient_canary"
+  },
+  "entity.bird.ambient_robin": {
+    "sounds": [
+      "naturalist:robin_idle_1",
+      "naturalist:robin_idle_2"
+    ],
+    "subtitle": "naturalist.subtitles.entity.bird.ambient_robin"
+  },
+  "entity.bird.ambient_cardinal": {
+    "sounds": [
+      "naturalist:robin_idle_1",
+      "naturalist:robin_idle_2"
+    ],
+    "subtitle": "naturalist.subtitles.entity.bird.ambient_cardinal"
   }
 }
