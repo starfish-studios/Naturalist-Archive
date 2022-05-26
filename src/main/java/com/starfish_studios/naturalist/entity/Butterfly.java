@@ -144,7 +144,7 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mob) {
-        return NaturalistEntityTypes.BUTTERFLY.get().create(level);
+        return NaturalistEntityTypes.CATERPILLAR.get().create(level);
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {

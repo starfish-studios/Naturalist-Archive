@@ -29,6 +29,7 @@ public class NaturalistEntityTypes {
     public static final RegistryObject<EntityType<Bird>> CANARY = ENTITY_TYPES.register("canary", () -> EntityType.Builder.of(Bird::new, MobCategory.CREATURE).sized(0.5F, 0.9F).clientTrackingRange(8).build(new ResourceLocation(Naturalist.MOD_ID, "canary").toString()));
     public static final RegistryObject<EntityType<Bird>> CARDINAL = ENTITY_TYPES.register("cardinal", () -> EntityType.Builder.of(Bird::new, MobCategory.CREATURE).sized(0.5F, 0.9F).clientTrackingRange(8).build(new ResourceLocation(Naturalist.MOD_ID, "cardinal").toString()));
     public static final RegistryObject<EntityType<Bird>> ROBIN = ENTITY_TYPES.register("robin", () -> EntityType.Builder.of(Bird::new, MobCategory.CREATURE).sized(0.5F, 0.9F).clientTrackingRange(8).build(new ResourceLocation(Naturalist.MOD_ID, "robin").toString()));
+    public static final RegistryObject<EntityType<Caterpillar>> CATERPILLAR = ENTITY_TYPES.register("caterpillar", () -> EntityType.Builder.of(Caterpillar::new, MobCategory.CREATURE).sized(0.4F, 0.4F).clientTrackingRange(10).build(new ResourceLocation(Naturalist.MOD_ID, "caterpillar").toString()));
 
     @SubscribeEvent
     public static void createAttributes(EntityAttributeCreationEvent event) {
@@ -45,5 +46,6 @@ public class NaturalistEntityTypes {
         event.put(NaturalistEntityTypes.CANARY.get(), Bird.createAttributes().build());
         event.put(NaturalistEntityTypes.CARDINAL.get(), Bird.createAttributes().build());
         event.put(NaturalistEntityTypes.ROBIN.get(), Bird.createAttributes().build());
+        event.put(NaturalistEntityTypes.CATERPILLAR.get(), Caterpillar.createAttributes().build());
     }
 }

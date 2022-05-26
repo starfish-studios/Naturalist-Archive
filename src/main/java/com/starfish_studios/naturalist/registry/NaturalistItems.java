@@ -24,6 +24,7 @@ public class NaturalistItems {
     public static final RegistryObject<Item> CARDINAL_SPAWN_EGG = ITEMS.register("cardinal_spawn_egg", () -> new ForgeSpawnEggItem(() -> NaturalistEntityTypes.CARDINAL.get(), 9765900, 16739600, new Item.Properties().tab(Naturalist.TAB)));
     public static final RegistryObject<Item> CANARY_SPAWN_EGG = ITEMS.register("canary_spawn_egg", () -> new ForgeSpawnEggItem(() -> NaturalistEntityTypes.CANARY.get(), 14979584, 16769792, new Item.Properties().tab(Naturalist.TAB)));
     public static final RegistryObject<Item> ROBIN_SPAWN_EGG = ITEMS.register("robin_spawn_egg", () -> new ForgeSpawnEggItem(() -> NaturalistEntityTypes.ROBIN.get(), 5327440, 16746770, new Item.Properties().tab(Naturalist.TAB)));
+    public static final RegistryObject<Item> CATERPILLAR_SPAWN_EGG = ITEMS.register("caterpillar_spawn_egg", () -> new ForgeSpawnEggItem(() -> NaturalistEntityTypes.CATERPILLAR.get(), 3815473, 15647488, new Item.Properties().tab(Naturalist.TAB)));
     public static final RegistryObject<Item> VENISON = ITEMS.register("venison", () -> new Item(new Item.Properties().tab(Naturalist.TAB).food(Foods.MUTTON)));
     public static final RegistryObject<Item> COOKED_VENISON = ITEMS.register("cooked_venison", () -> new Item(new Item.Properties().tab(Naturalist.TAB).food(Foods.COOKED_MUTTON)));
     public static final RegistryObject<Item> ANTLER = ITEMS.register("antler", () -> new Item(new Item.Properties().tab(Naturalist.TAB)));
