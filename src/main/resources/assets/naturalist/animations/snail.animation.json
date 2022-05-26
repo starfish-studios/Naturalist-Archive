@@ -54,25 +54,36 @@
 		},
 		"snail.wall": {
 			"loop": true,
-			"animation_length": 2,
+			"animation_length": 1.5,
 			"bones": {
 				"body": {
-					"position": {
-						"vector": [0, 0, "Math.cos((query.anim_time - 0.1) * 180) * -0.25"]
-					},
 					"scale": {
-						"vector": [1, 1, "1 + Math.cos((query.anim_time - 0.2) * 180) * -0.1"]
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"0.75": {
+							"vector": [1, 1, 1.2],
+							"easing": "easeInOutCubic"
+						},
+						"1.4583": {
+							"vector": [1, 1, 1],
+							"easing": "easeInOutCubic"
+						}
 					}
 				},
 				"eyes": {
 					"rotation": {
-						"vector": ["1 + Math.cos((query.anim_time - 0.1) * 180) * 8", 0, 1]
-					},
-					"position": {
-						"vector": [0, 0, "Math.cos((query.anim_time - 0.2) * 180) * 0.1"]
-					},
-					"scale": {
-						"vector": [1, 1, "1 + Math.cos((query.anim_time - 0.2) * 180) * 0.1"]
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.75": {
+							"vector": [-22.5, 0, 0],
+							"easing": "easeInOutCubic"
+						},
+						"1.5": {
+							"vector": [0, 0, 0],
+							"easing": "easeInOutCubic"
+						}
 					}
 				},
 				"shell": {
@@ -80,27 +91,18 @@
 						"vector": [-90, 0, 0]
 					},
 					"position": {
-						"vector": [0, "Math.cos((query.anim_time - 0.2) * 180) * -0.25", -7.75]
+						"0.0": {
+							"vector": [0, 0, -3.6]
+						},
+						"0.75": {
+							"vector": [0, 0, -3],
+							"easing": "easeInOutCubic"
+						},
+						"1.4583": {
+							"vector": [0, 0, -3.6],
+							"easing": "easeInOutCubic"
+						}
 					}
-				}
-			}
-		},
-		"snail.ceiling": {
-			"loop": true,
-			"animation_length": 2,
-			"bones": {
-				"body": {
-					"position": [0, 0, "Math.cos((query.anim_time - 0.1) * 180) * -0.25"],
-					"scale": [1, 1, "1 + Math.cos((query.anim_time - 0.2) * 180) * -0.1"]
-				},
-				"eyes": {
-					"rotation": ["1 + Math.cos((query.anim_time - 0.1) * 180) * 8", 0, 1],
-					"position": [0, 0, "Math.cos((query.anim_time - 0.2) * 180) * 0.1"],
-					"scale": [1, 1, "1 + Math.cos((query.anim_time - 0.2) * 180) * 0.1"]
-				},
-				"shell": {
-					"rotation": [0, 0, -180],
-					"position": [0, 13.75, "-1 + Math.cos((query.anim_time - 0.2) * 180) * 0.25"]
 				}
 			}
 		},

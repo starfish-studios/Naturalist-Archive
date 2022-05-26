@@ -31,7 +31,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import java.util.EnumSet;
 import java.util.List;
 
-public class Snail extends ClimbingAnimal implements IAnimatable {
+public class Snail extends Animal implements IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
 
     public Snail(EntityType<? extends Animal> type, Level level) {
@@ -71,11 +71,6 @@ public class Snail extends ClimbingAnimal implements IAnimatable {
         }
     }
 
-    @Override
-    protected float getClimbSpeedMultiplier() {
-        return this.canHide() ? 0.0F : 0.05F;
-    }
-
     private boolean canHide() {
         List<Player> players = this.level.getNearbyPlayers(TargetingConditions.forNonCombat().range(5.0D), this, this.getBoundingBox().inflate(5.0D, 3.0D, 5.0D));
         return !players.isEmpty();
@@ -84,14 +79,10 @@ public class Snail extends ClimbingAnimal implements IAnimatable {
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.canHide()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("snail.retreat", true));
-            return PlayState.CONTINUE;
-        } else if (this.isClimbing()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("snail.wall", true));
-            return PlayState.CONTINUE;
         } else {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("snail.move", true));
-            return PlayState.CONTINUE;
         }
+        return PlayState.CONTINUE;
     }
 
     @Override
@@ -121,7 +112,6 @@ public class Snail extends ClimbingAnimal implements IAnimatable {
         @Override
         public void start() {
             snail.setJumping(false);
-            snail.setClimbing(false);
             snail.getNavigation().stop();
             snail.getMoveControl().setWantedPosition(snail.getX(), snail.getY(), snail.getZ(), 0.0D);
         }
