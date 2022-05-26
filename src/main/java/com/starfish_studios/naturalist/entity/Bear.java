@@ -4,6 +4,7 @@ import com.starfish_studios.naturalist.entity.ai.goal.SleepGoal;
 import com.starfish_studios.naturalist.entity.ai.goal.DistancedFollowParentGoal;
 import com.starfish_studios.naturalist.entity.ai.goal.SearchForItemsGoal;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
+import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -297,7 +298,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
 
     private void addEatingParticles() {
         if (this.getEatCounter() % 5 == 0) {
-            this.playSound(SoundEvents.PANDA_EAT, 0.5F + 0.5F * (float)this.random.nextInt(2), (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
+            this.playSound(NaturalistSoundEvents.BEAR_EAT.get(), 0.5F + 0.5F * (float)this.random.nextInt(2), (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
 
             for(int i = 0; i < 6; ++i) {
                 Vec3 speedVec = new Vec3(((double)this.random.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, ((double)this.random.nextFloat() - 0.5D) * 0.1D);
@@ -340,7 +341,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
             ItemEntity itemEntity = new ItemEntity(this.level, this.getX() + this.getLookAngle().x, this.getY() + 1.0D, this.getZ() + this.getLookAngle().z, this.getMainHandItem());
             itemEntity.setPickUpDelay(80);
             itemEntity.setThrower(this.getUUID());
-            this.playSound(SoundEvents.FOX_SPIT, 1.0F, 1.0F);
+            this.playSound(NaturalistSoundEvents.BEAR_SPIT.get(), 1.0F, 1.0F);
             this.level.addFreshEntity(itemEntity);
             this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
         }
@@ -371,19 +372,24 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
     @Nullable
     @Override
     protected SoundEvent getHurtSound(DamageSource pDamageSource) {
-        return SoundEvents.POLAR_BEAR_HURT;
+        return NaturalistSoundEvents.BEAR_HURT.get();
     }
 
     @Nullable
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.POLAR_BEAR_DEATH;
+        return NaturalistSoundEvents.BEAR_DEATH.get();
     }
 
     @Nullable
     @Override
     protected SoundEvent getAmbientSound() {
-        return this.isSleeping() ? SoundEvents.FOX_SLEEP : SoundEvents.POLAR_BEAR_AMBIENT;
+        return this.isSleeping() ? NaturalistSoundEvents.BEAR_SLEEP.get() : this.isBaby() ? NaturalistSoundEvents.BEAR_AMBIENT_BABY.get() : NaturalistSoundEvents.BEAR_AMBIENT.get();
+    }
+
+    @Override
+    public float getVoicePitch() {
+        return this.isSleeping() ? super.getVoicePitch() * 0.25F : super.getVoicePitch();
     }
 
     @Override
@@ -571,7 +577,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
                     ++this.ticksWaited;
                 }
             } else if (!this.isReachedTarget() && bear.getRandom().nextFloat() < 0.05F) {
-                bear.playSound(SoundEvents.FOX_SNIFF, 1.0F, 1.0F);
+                bear.playSound(NaturalistSoundEvents.BEAR_SNIFF.get(), 1.0F, 1.0F);
                 bear.setSniffing(true);
             }
 
@@ -689,7 +695,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
         public void tick() {
             super.tick();
             if (bear.getRandom().nextFloat() < 0.05F) {
-                bear.playSound(SoundEvents.FOX_SNIFF, 1.0F, 1.0F);
+                bear.playSound(NaturalistSoundEvents.BEAR_SNIFF.get(), 1.0F, 1.0F);
             }
         }
 

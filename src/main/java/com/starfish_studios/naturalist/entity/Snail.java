@@ -1,13 +1,13 @@
 package com.starfish_studios.naturalist.entity;
 
+import com.starfish_studios.naturalist.Naturalist;
+import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -24,6 +24,7 @@ import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.SoundKeyframeEvent;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
@@ -66,13 +67,18 @@ public class Snail extends Animal implements IAnimatable {
         for (Player player : level.getEntitiesOfClass(Player.class, this.getBoundingBox())) {
             if (!player.isOnGround() && EnchantmentHelper.getEnchantmentLevel(Enchantments.FALL_PROTECTION, player) == 0) {
                 this.hurt(DamageSource.playerAttack(player), 5.0F);
-                level.playSound(null, this.blockPosition(), SoundEvents.TURTLE_EGG_CRACK, SoundSource.NEUTRAL, 1.0F, 1.2F);
             }
         }
     }
 
+    @Nullable
+    @Override
+    protected SoundEvent getDeathSound() {
+        return NaturalistSoundEvents.SNAIL_CRUSH.get();
+    }
+
     private boolean canHide() {
-        List<Player> players = this.level.getNearbyPlayers(TargetingConditions.forNonCombat().range(5.0D), this, this.getBoundingBox().inflate(5.0D, 3.0D, 5.0D));
+        List<Player> players = this.level.getNearbyPlayers(TargetingConditions.forNonCombat().range(5.0D).selector(EntitySelector.NO_CREATIVE_OR_SPECTATOR::test), this, this.getBoundingBox().inflate(5.0D, 3.0D, 5.0D));
         return !players.isEmpty();
     }
 
@@ -85,10 +91,23 @@ public class Snail extends Animal implements IAnimatable {
         return PlayState.CONTINUE;
     }
 
+    private <E extends Snail> void soundListener(SoundKeyframeEvent<E> event) {
+        if (event.getEntity().level.isClientSide) {
+            if (event.sound.equals("forward")) {
+                event.getEntity().playSound(NaturalistSoundEvents.SNAIL_FORWARD.get(), 1.0F, 1.0F);
+            }
+            if (event.sound.equals("back")) {
+                event.getEntity().playSound(NaturalistSoundEvents.SNAIL_BACK.get(), 1.0F, 1.0F);
+            }
+        }
+    }
+
     @Override
     public void registerControllers(AnimationData data) {
         data.setResetSpeedInTicks(10);
-        data.addAnimationController(new AnimationController<>(this, "controller", 10, this::predicate));
+        AnimationController<Snail> controller = new AnimationController<>(this, "controller", 10, this::predicate);
+        controller.registerSoundListener(this::soundListener);
+        data.addAnimationController(controller);
     }
 
     @Override
