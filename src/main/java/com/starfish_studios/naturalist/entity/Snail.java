@@ -4,8 +4,10 @@ import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -91,13 +93,14 @@ public class Snail extends Animal implements IAnimatable {
         return PlayState.CONTINUE;
     }
 
-    private <E extends Snail> void soundListener(SoundKeyframeEvent<E> event) {
-        if (event.getEntity().level.isClientSide) {
+    private void soundListener(SoundKeyframeEvent<Snail> event) {
+        Snail snail = event.getEntity();
+        if (snail.level.isClientSide) {
             if (event.sound.equals("forward")) {
-                event.getEntity().playSound(NaturalistSoundEvents.SNAIL_FORWARD.get(), 1.0F, 1.0F);
+                snail.level.playLocalSound(snail.getX(), snail.getY(), snail.getZ(), NaturalistSoundEvents.SNAIL_FORWARD.get(), snail.getSoundSource(), 0.5F, 1.0F, false);
             }
             if (event.sound.equals("back")) {
-                event.getEntity().playSound(NaturalistSoundEvents.SNAIL_BACK.get(), 1.0F, 1.0F);
+                snail.level.playLocalSound(snail.getX(), snail.getY(), snail.getZ(), NaturalistSoundEvents.SNAIL_BACK.get(), snail.getSoundSource(), 0.5F, 1.0F, false);
             }
         }
     }

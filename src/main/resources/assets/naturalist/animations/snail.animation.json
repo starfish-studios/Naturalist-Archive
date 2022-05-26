@@ -52,10 +52,10 @@
 				}
 			},
 			"sound_effects": {
-				"0.2083": {
+				"0.3333": {
 					"effect": "forward"
 				},
-				"1.0": {
+				"1.0417": {
 					"effect": "back"
 				}
 			}
