@@ -28,6 +28,11 @@
           ],
           "name": "naturalist:glow_goop"
         }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:killed_by_player"
+        }
       ]
     }
   ]

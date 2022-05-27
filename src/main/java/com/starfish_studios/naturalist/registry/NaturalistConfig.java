@@ -28,8 +28,8 @@ public class NaturalistConfig {
         SNAKE_SPAWN_WEIGHT = COMMON_BUILDER.comment("Snake spawn weight").defineInRange("snakeSpawnWeight", 4, 0, 1000);
         CORAL_SNAKE_SPAWN_WEIGHT = COMMON_BUILDER.comment("Coral Snake spawn weight").defineInRange("coralSnakeSpawnWeight", 4, 0, 1000);
         RATTLESNAKE_SPAWN_WEIGHT = COMMON_BUILDER.comment("Rattlesnake spawn weight").defineInRange("rattlesnakeSpawnWeight", 4, 0, 1000);
-        BEAR_SPAWN_WEIGHT = COMMON_BUILDER.comment("Bear spawn weight").defineInRange("bearSpawnWeight", 4, 0, 1000);
-        DEER_SPAWN_WEIGHT = COMMON_BUILDER.comment("Deer spawn weight").defineInRange("deerSpawnWeight", 4, 0, 1000);
+        BEAR_SPAWN_WEIGHT = COMMON_BUILDER.comment("Bear spawn weight").defineInRange("bearSpawnWeight", 6, 0, 1000);
+        DEER_SPAWN_WEIGHT = COMMON_BUILDER.comment("Deer spawn weight").defineInRange("deerSpawnWeight", 6, 0, 1000);
         FIREFLY_SPAWN_WEIGHT = COMMON_BUILDER.comment("Firefly spawn weight").defineInRange("fireflySpawnWeight", 8, 0, 1000);
         BIRD_SPAWN_WEIGHT = COMMON_BUILDER.comment("Bird spawn weight").defineInRange("birdSpawnWeight", 10, 0, 1000);
         BUTTERFLY_SPAWN_WEIGHT = COMMON_BUILDER.comment("Butterfly spawn weight").defineInRange("butterflySpawnWeight", 4, 0, 1000);

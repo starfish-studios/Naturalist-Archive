@@ -2,6 +2,7 @@ package com.starfish_studios.naturalist.registry;
 
 import com.starfish_studios.naturalist.Naturalist;
 import net.minecraft.world.food.Foods;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
@@ -30,4 +31,5 @@ public class NaturalistItems {
     public static final RegistryObject<Item> ANTLER = ITEMS.register("antler", () -> new Item(new Item.Properties().tab(Naturalist.TAB)));
     public static final RegistryObject<Item> GLOW_GOOP = ITEMS.register("glow_goop", () -> new Item(new Item.Properties().tab(Naturalist.TAB)));
     public static final RegistryObject<Item> SNAIL_SHELL = ITEMS.register("snail_shell", () -> new Item(new Item.Properties().tab(Naturalist.TAB)));
+public static final RegistryObject<Item> CHRYSALIS = ITEMS.register("chrysalis", () -> new BlockItem(NaturalistBlocks.CHRYSALIS.get(), new Item.Properties().tab(Naturalist.TAB).stacksTo(1)));
 }

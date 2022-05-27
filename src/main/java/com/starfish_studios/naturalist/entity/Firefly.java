@@ -2,10 +2,12 @@ package com.starfish_studios.naturalist.entity;
 
 import com.starfish_studios.naturalist.entity.ai.goal.FlyingWanderGoal;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -127,8 +129,14 @@ public class Firefly extends Animal implements FlyingAnimal, IAnimatable {
         if (ticks > 0) {
             this.setGlowTicks(ticks - 1);
         }
-        if (this.isNight() && this.random.nextFloat() <= 0.01 && !this.isGlowing()) {
-            this.setGlowTicks(40 + this.random.nextInt(20));
+        if (this.isNight()) {
+            if (this.random.nextFloat() <= 0.01 && !this.isGlowing()) {
+                this.setGlowTicks(40 + this.random.nextInt(20));
+            }
+        } else {
+            if (this.random.nextInt(100) == 0) {
+                this.hurt(DamageSource.ON_FIRE, Float.MAX_VALUE);
+            }
         }
     }
 
