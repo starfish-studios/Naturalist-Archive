@@ -50,7 +50,7 @@ public class Caterpillar extends ClimbingAnimal implements IAnimatable {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new CocoonGoal(this, 1.0F, 8, 2));
+        this.goalSelector.addGoal(1, new CocoonGoal(this, 1.0F, 5, 2));
         this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0F));
     }
 
@@ -108,6 +108,7 @@ public class Caterpillar extends ClimbingAnimal implements IAnimatable {
     private static class CocoonGoal extends MoveToBlockGoal {
         private final Caterpillar caterpillar;
         private Direction facing = Direction.NORTH;
+        private BlockPos logPos = BlockPos.ZERO;
 
         public CocoonGoal(Caterpillar pMob, double pSpeedModifier, int pSearchRange, int pVerticalSearchRange) {
             super(pMob, pSpeedModifier, pSearchRange, pVerticalSearchRange);
@@ -125,6 +126,7 @@ public class Caterpillar extends ClimbingAnimal implements IAnimatable {
                 for (Direction direction : Direction.Plane.HORIZONTAL) {
                     if (pLevel.getBlockState(pPos.relative(direction)).is(BlockTags.LOGS) && pLevel.getBlockState(pPos.relative(direction).below()).is(BlockTags.LOGS)) {
                         this.facing = direction;
+                        this.logPos = pPos.relative(direction);
                         return true;
                     }
                 }
@@ -135,34 +137,34 @@ public class Caterpillar extends ClimbingAnimal implements IAnimatable {
 
         @Override
         public void tick() {
-            BlockPos moveToTarget = this.blockPos;
-            boolean reachedTarget;
-            if (!moveToTarget.closerToCenterThan(this.mob.position(), this.acceptedDistance())) {
-                reachedTarget = false;
+            BlockPos targetPos = this.getMoveToTarget();
+            if (!targetPos.closerToCenterThan(caterpillar.position(), this.acceptedDistance())) {
                 ++this.tryTicks;
                 if (this.shouldRecalculatePath()) {
-                    this.mob.getNavigation().moveTo(moveToTarget.getX() + 0.5D + (facing.getStepX() * 0.5D), moveToTarget.getY(), moveToTarget.getZ() + 0.5D + (facing.getStepZ() * 0.5D), this.speedModifier);
+                    caterpillar.getNavigation().moveTo(targetPos.getX() + 0.5D, targetPos.getY(), targetPos.getZ() + 0.5D, this.speedModifier);
                 }
             } else {
-                reachedTarget = true;
                 --this.tryTicks;
             }
-            if (reachedTarget) {
-                Level level = caterpillar.level;
-                if (this.isValidTarget(level, blockPos)) {
-                    if (!level.isClientSide) {
-                        ((ServerLevel)level).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, NaturalistBlocks.CHRYSALIS.get().defaultBlockState()), caterpillar.getX(), caterpillar.getY(), caterpillar.getZ(), 50, caterpillar.getBbWidth() / 4.0F, caterpillar.getBbHeight() / 4.0F, caterpillar.getBbWidth() / 4.0F, 0.05D);
-                    }
-                    caterpillar.discard();
-                    level.setBlockAndUpdate(blockPos, NaturalistBlocks.CHRYSALIS.get().defaultBlockState().setValue(ChrysalisBlock.FACING, facing));
-                    level.playSound(null, blockPos, SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 0.7F, 0.9F + level.random.nextFloat() * 0.2F);
+            Level level = caterpillar.level;
+            if (this.isValidTarget(level, caterpillar.blockPosition())) {
+                if (!level.isClientSide) {
+                    ((ServerLevel)level).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, NaturalistBlocks.CHRYSALIS.get().defaultBlockState()), caterpillar.getX(), caterpillar.getY(), caterpillar.getZ(), 50, caterpillar.getBbWidth() / 4.0F, caterpillar.getBbHeight() / 4.0F, caterpillar.getBbWidth() / 4.0F, 0.05D);
                 }
+                caterpillar.discard();
+                level.setBlockAndUpdate(caterpillar.blockPosition(), NaturalistBlocks.CHRYSALIS.get().defaultBlockState().setValue(ChrysalisBlock.FACING, facing));
+                level.playSound(null, caterpillar.blockPosition(), SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 0.7F, 0.9F + level.random.nextFloat() * 0.2F);
             }
         }
 
         @Override
         protected void moveMobToBlock() {
-            this.mob.getNavigation().moveTo(blockPos.getX() + 0.5D + (facing.getStepX() * 0.5D), blockPos.getY(), blockPos.getZ() + 0.5D + (facing.getStepZ() * 0.5D), this.speedModifier);
+            caterpillar.getNavigation().moveTo(logPos.getX() + 0.5D, logPos.getY() + 1.0D, logPos.getZ() + 0.5D, this.speedModifier);
+        }
+
+        @Override
+        protected BlockPos getMoveToTarget() {
+            return logPos.above();
         }
     }
 }
