@@ -30,6 +30,7 @@ public class Naturalist {
 
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        NaturalistBlocks.BLOCKS.register(bus);
         NaturalistEntityTypes.ENTITY_TYPES.register(bus);
         NaturalistItems.ITEMS.register(bus);
         NaturalistPotions.POTIONS.register(bus);

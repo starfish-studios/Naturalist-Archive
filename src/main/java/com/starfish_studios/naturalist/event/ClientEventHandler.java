@@ -2,14 +2,23 @@ package com.starfish_studios.naturalist.event;
 
 import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.client.renderer.*;
+import com.starfish_studios.naturalist.registry.NaturalistBlocks;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 @Mod.EventBusSubscriber(modid = Naturalist.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientEventHandler {
+
+    @SubscribeEvent
+    public static void init(FMLCommonSetupEvent event) {
+        ItemBlockRenderTypes.setRenderLayer(NaturalistBlocks.COCOON.get(), RenderType.cutout());
+    }
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {

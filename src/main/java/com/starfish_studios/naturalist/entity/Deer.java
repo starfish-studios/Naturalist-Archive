@@ -131,7 +131,7 @@ public class Deer extends Animal implements IAnimatable {
             int ticks = 100 + this.random.nextInt(100);
             this.panicTicks = ticks;
             List<? extends Deer> deers = this.level.getEntitiesOfClass(Deer.class, this.getBoundingBox().inflate(8.0D, 4.0D, 8.0D));
-            for(Deer deer : deers){
+            for (Deer deer : deers) {
                 deer.panicTicks = ticks;
             }
         }
@@ -141,11 +141,11 @@ public class Deer extends Animal implements IAnimatable {
     @Override
     public void tick() {
         super.tick();
-        if(!this.level.isClientSide){
-            if(panicTicks >= 0){
+        if (!this.level.isClientSide) {
+            if (panicTicks >= 0) {
                 panicTicks--;
             }
-            if(panicTicks == 0 && this.getLastHurtByMob() != null){
+            if (panicTicks == 0 && this.getLastHurtByMob() != null) {
                 this.setLastHurtByMob(null);
             }
         }

@@ -1,9 +1,13 @@
 package com.starfish_studios.naturalist.entity;
 
-import com.starfish_studios.naturalist.Naturalist;
+import com.starfish_studios.naturalist.block.CocoonBlock;
+import com.starfish_studios.naturalist.registry.NaturalistBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -18,7 +22,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -44,13 +47,13 @@ public class Caterpillar extends ClimbingAnimal implements IAnimatable {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new CocoonGoal(this, 1.0F, 8, 3));
+        this.goalSelector.addGoal(1, new CocoonGoal(this, 1.0F, 8, 1));
         this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0F));
     }
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @javax.annotation.Nullable SpawnGroupData pSpawnData, @javax.annotation.Nullable CompoundTag pDataTag) {
-        this.setAge(-12000);
+        this.setAge(0);
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }
 
@@ -58,6 +61,11 @@ public class Caterpillar extends ClimbingAnimal implements IAnimatable {
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mob) {
         return null;
+    }
+
+    @Override
+    protected float getClimbSpeedMultiplier() {
+        return 0.5F;
     }
 
     @Override
@@ -96,6 +104,7 @@ public class Caterpillar extends ClimbingAnimal implements IAnimatable {
 
     private static class CocoonGoal extends MoveToBlockGoal {
         private final Caterpillar caterpillar;
+        private BlockPos logPos = BlockPos.ZERO;
 
         public CocoonGoal(Caterpillar pMob, double pSpeedModifier, int pSearchRange, int pVerticalSearchRange) {
             super(pMob, pSpeedModifier, pSearchRange, pVerticalSearchRange);
@@ -109,26 +118,41 @@ public class Caterpillar extends ClimbingAnimal implements IAnimatable {
 
         @Override
         protected boolean isValidTarget(LevelReader pLevel, BlockPos pPos) {
-            return pLevel.getBlockState(pPos).is(BlockTags.LOGS);
+            if (pLevel.getBlockState(pPos).isAir()) {
+                for (Direction direction : Direction.Plane.HORIZONTAL) {
+                    if (pLevel.getBlockState(pPos.relative(direction)).is(BlockTags.LOGS)) {
+                        this.logPos = pPos.relative(direction);
+                        return true;
+                    }
+                }
+                return false;
+            }
+            return false;
         }
 
         @Override
         public void tick() {
             super.tick();
             if (this.isReachedTarget()) {
-                caterpillar.discard();
                 Level level = caterpillar.level;
-                if (level.getBlockState(caterpillar.blockPosition()).getMaterial().isReplaceable()) {
-                    level.setBlockAndUpdate(caterpillar.blockPosition(), Blocks.SHROOMLIGHT.defaultBlockState());
-                } else {
-                    this.tryTicks = 40;
+                if (this.isValidTarget(level, blockPos)) {
+                    caterpillar.discard();
+                    Direction facing = Direction.NORTH;
+                    for (Direction direction : Direction.Plane.HORIZONTAL) {
+                        if (level.getBlockState(blockPos.relative(direction)).is(BlockTags.LOGS)) {
+                            facing = direction;
+                            break;
+                        }
+                    }
+                    level.setBlockAndUpdate(blockPos, NaturalistBlocks.COCOON.get().defaultBlockState().setValue(CocoonBlock.FACING, facing));
+                    level.playSound(null, blockPos, SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 0.7F, 0.9F + level.random.nextFloat() * 0.2F);
                 }
             }
         }
 
         @Override
-        public void stop() {
-            caterpillar.getNavigation().stop();
+        protected BlockPos getMoveToTarget() {
+            return this.logPos;
         }
     }
 }
