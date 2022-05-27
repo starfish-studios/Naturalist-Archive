@@ -22,6 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -47,7 +48,7 @@ public class Caterpillar extends ClimbingAnimal implements IAnimatable {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new CocoonGoal(this, 1.0F, 8, 1));
+        this.goalSelector.addGoal(1, new CocoonGoal(this, 1.0F, 8, 2));
         this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0F));
     }
 
@@ -120,7 +121,7 @@ public class Caterpillar extends ClimbingAnimal implements IAnimatable {
         protected boolean isValidTarget(LevelReader pLevel, BlockPos pPos) {
             if (pLevel.getBlockState(pPos).isAir()) {
                 for (Direction direction : Direction.Plane.HORIZONTAL) {
-                    if (pLevel.getBlockState(pPos.relative(direction)).is(BlockTags.LOGS)) {
+                    if (pLevel.getBlockState(pPos.relative(direction)).is(BlockTags.LOGS) && pLevel.getBlockState(pPos.relative(direction).below()).is(BlockTags.LOGS)) {
                         this.logPos = pPos.relative(direction);
                         return true;
                     }
