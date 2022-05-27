@@ -17,7 +17,7 @@ public class ClientEventHandler {
 
     @SubscribeEvent
     public static void init(FMLCommonSetupEvent event) {
-        ItemBlockRenderTypes.setRenderLayer(NaturalistBlocks.COCOON.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(NaturalistBlocks.CHRYSALIS.get(), RenderType.cutout());
     }
 
     @SubscribeEvent

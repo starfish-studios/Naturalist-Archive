@@ -1,8 +1,9 @@
 {
-	"credit": "Made with Blockbench",
+	"parent": "block/block",
 	"ambientocclusion": false,
 	"texture_size": [32, 32],
 	"textures": {
+		"particle": "naturalist:block/chrysalis_stage2",
 		"1": "naturalist:block/chrysalis_stage2"
 	},
 	"elements": [

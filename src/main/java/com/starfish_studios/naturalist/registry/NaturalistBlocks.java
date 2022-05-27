@@ -1,7 +1,7 @@
 package com.starfish_studios.naturalist.registry;
 
 import com.starfish_studios.naturalist.Naturalist;
-import com.starfish_studios.naturalist.block.CocoonBlock;
+import com.starfish_studios.naturalist.block.ChrysalisBlock;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -17,7 +17,7 @@ import java.util.function.Supplier;
 public class NaturalistBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Naturalist.MOD_ID);
 
-    public static final RegistryObject<Block> COCOON = registerBlock("cocoon", () -> new CocoonBlock(BlockBehaviour.Properties.of(Material.PLANT).randomTicks().strength(0.2F, 3.0F).sound(SoundType.WOOD).noOcclusion().noCollission()));
+    public static final RegistryObject<Block> CHRYSALIS = registerBlock("chrysalis", () -> new ChrysalisBlock(BlockBehaviour.Properties.of(Material.PLANT).randomTicks().strength(0.2F, 3.0F).sound(SoundType.WOOD).noOcclusion().noCollission()));
 
     public static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = NaturalistBlocks.BLOCKS.register(name, block);

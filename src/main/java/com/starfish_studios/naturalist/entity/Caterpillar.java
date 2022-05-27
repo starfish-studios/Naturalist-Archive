@@ -1,6 +1,6 @@
 package com.starfish_studios.naturalist.entity;
 
-import com.starfish_studios.naturalist.block.CocoonBlock;
+import com.starfish_studios.naturalist.block.ChrysalisBlock;
 import com.starfish_studios.naturalist.registry.NaturalistBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,7 +22,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -105,7 +104,7 @@ public class Caterpillar extends ClimbingAnimal implements IAnimatable {
 
     private static class CocoonGoal extends MoveToBlockGoal {
         private final Caterpillar caterpillar;
-        private BlockPos logPos = BlockPos.ZERO;
+        private Direction facing = Direction.NORTH;
 
         public CocoonGoal(Caterpillar pMob, double pSpeedModifier, int pSearchRange, int pVerticalSearchRange) {
             super(pMob, pSpeedModifier, pSearchRange, pVerticalSearchRange);
@@ -122,7 +121,7 @@ public class Caterpillar extends ClimbingAnimal implements IAnimatable {
             if (pLevel.getBlockState(pPos).isAir()) {
                 for (Direction direction : Direction.Plane.HORIZONTAL) {
                     if (pLevel.getBlockState(pPos.relative(direction)).is(BlockTags.LOGS) && pLevel.getBlockState(pPos.relative(direction).below()).is(BlockTags.LOGS)) {
-                        this.logPos = pPos.relative(direction);
+                        this.facing = direction;
                         return true;
                     }
                 }
@@ -133,27 +132,31 @@ public class Caterpillar extends ClimbingAnimal implements IAnimatable {
 
         @Override
         public void tick() {
-            super.tick();
-            if (this.isReachedTarget()) {
+            BlockPos moveToTarget = this.blockPos;
+            boolean reachedTarget;
+            if (!moveToTarget.closerToCenterThan(this.mob.position(), this.acceptedDistance())) {
+                reachedTarget = false;
+                ++this.tryTicks;
+                if (this.shouldRecalculatePath()) {
+                    this.mob.getNavigation().moveTo(moveToTarget.getX() + 0.5D + (facing.getStepX() * 0.5D), moveToTarget.getY(), moveToTarget.getZ() + 0.5D + (facing.getStepZ() * 0.5D), this.speedModifier);
+                }
+            } else {
+                reachedTarget = true;
+                --this.tryTicks;
+            }
+            if (reachedTarget) {
                 Level level = caterpillar.level;
                 if (this.isValidTarget(level, blockPos)) {
                     caterpillar.discard();
-                    Direction facing = Direction.NORTH;
-                    for (Direction direction : Direction.Plane.HORIZONTAL) {
-                        if (level.getBlockState(blockPos.relative(direction)).is(BlockTags.LOGS)) {
-                            facing = direction;
-                            break;
-                        }
-                    }
-                    level.setBlockAndUpdate(blockPos, NaturalistBlocks.COCOON.get().defaultBlockState().setValue(CocoonBlock.FACING, facing));
+                    level.setBlockAndUpdate(blockPos, NaturalistBlocks.CHRYSALIS.get().defaultBlockState().setValue(ChrysalisBlock.FACING, facing));
                     level.playSound(null, blockPos, SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 0.7F, 0.9F + level.random.nextFloat() * 0.2F);
                 }
             }
         }
 
         @Override
-        protected BlockPos getMoveToTarget() {
-            return this.logPos;
+        protected void moveMobToBlock() {
+            this.mob.getNavigation().moveTo(blockPos.getX() + 0.5D + (facing.getStepX() * 0.5D), blockPos.getY(), blockPos.getZ() + 0.5D + (facing.getStepZ() * 0.5D), this.speedModifier);
         }
     }
 }
