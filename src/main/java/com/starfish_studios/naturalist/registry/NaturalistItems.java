@@ -1,9 +1,13 @@
 package com.starfish_studios.naturalist.registry;
 
 import com.starfish_studios.naturalist.Naturalist;
+import com.starfish_studios.naturalist.item.NoFluidMobBucketItem;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.MobBucketItem;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -31,5 +35,6 @@ public class NaturalistItems {
     public static final RegistryObject<Item> ANTLER = ITEMS.register("antler", () -> new Item(new Item.Properties().tab(Naturalist.TAB)));
     public static final RegistryObject<Item> GLOW_GOOP = ITEMS.register("glow_goop", () -> new Item(new Item.Properties().tab(Naturalist.TAB)));
     public static final RegistryObject<Item> SNAIL_SHELL = ITEMS.register("snail_shell", () -> new Item(new Item.Properties().tab(Naturalist.TAB)));
-public static final RegistryObject<Item> CHRYSALIS = ITEMS.register("chrysalis", () -> new BlockItem(NaturalistBlocks.CHRYSALIS.get(), new Item.Properties().tab(Naturalist.TAB).stacksTo(1)));
+    public static final RegistryObject<Item> CHRYSALIS = ITEMS.register("chrysalis", () -> new BlockItem(NaturalistBlocks.CHRYSALIS.get(), new Item.Properties().tab(Naturalist.TAB).stacksTo(1)));
+    public static final RegistryObject<Item> SNAIL_BUCKET = ITEMS.register("snail_bucket", () -> new NoFluidMobBucketItem(() -> NaturalistEntityTypes.SNAIL.get(), () -> Fluids.EMPTY, () -> SoundEvents.BUCKET_EMPTY, new Item.Properties().tab(Naturalist.TAB).stacksTo(1)));
 }
