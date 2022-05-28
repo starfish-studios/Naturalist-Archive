@@ -24,7 +24,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -146,6 +145,7 @@ public class Caterpillar extends ClimbingAnimal implements IAnimatable {
             } else {
                 --this.tryTicks;
             }
+            caterpillar.getLookControl().setLookAt(logPos.getX() + 0.5D, logPos.getY() + 1, logPos.getZ() + 0.5D, 10.0F, this.caterpillar.getMaxHeadXRot());
             Level level = caterpillar.level;
             if (this.isValidTarget(level, caterpillar.blockPosition())) {
                 if (!level.isClientSide) {
