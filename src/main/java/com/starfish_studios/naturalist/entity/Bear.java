@@ -7,6 +7,7 @@ import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -297,7 +298,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
     }
 
     private void addEatingParticles() {
-        if (this.getEatCounter() % 5 == 0) {
+        if (this.getEatCounter() % 5 == 0 || this.getEatCounter() == 0) {
             this.playSound(NaturalistSoundEvents.BEAR_EAT.get(), 0.5F + 0.5F * (float)this.random.nextInt(2), (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
 
             for(int i = 0; i < 6; ++i) {
@@ -580,7 +581,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
                 bear.playSound(NaturalistSoundEvents.BEAR_SNIFF.get(), 1.0F, 1.0F);
                 bear.setSniffing(true);
             }
-
+            bear.getLookControl().setLookAt(blockPos.getX() + 0.5D, blockPos.getY(), blockPos.getZ() + 0.5D, 10.0F, bear.getMaxHeadXRot());
             super.tick();
         }
 
@@ -651,6 +652,15 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
         public void start() {
             this.ticksWaited = 0;
             super.start();
+        }
+
+        @Override
+        protected BlockPos getMoveToTarget() {
+            BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos().set(blockPos);
+            while (bear.level.getBlockState(mutable.below()).isAir()) {
+                mutable.move(Direction.DOWN);
+            }
+            return mutable;
         }
     }
 
