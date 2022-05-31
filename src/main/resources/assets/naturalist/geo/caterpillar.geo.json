@@ -12,19 +12,31 @@
 			},
 			"bones": [
 				{
-					"name": "body1",
+					"name": "main",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "body",
+					"parent": "main",
 					"pivot": [0, 1.5, 0],
 					"cubes": [
-						{"origin": [-1.5, 0, -5], "size": [3, 3, 5], "uv": [0, 9]},
-						{"origin": [-1.5, 3, -6], "size": [3, 1, 1], "pivot": [0, 3, -5], "rotation": [22.5, 0, 0], "uv": [17, 6]}
+						{"origin": [-1.5, 0, -5], "size": [3, 3, 5], "uv": [0, 9]}
 					]
 				},
 				{
-					"name": "body2",
-					"parent": "body1",
+					"name": "butt",
+					"parent": "body",
 					"pivot": [0, 1.5, 0],
 					"cubes": [
 						{"origin": [-1.5, 0, 0], "size": [3, 3, 5], "inflate": -0.01, "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "antennae",
+					"parent": "main",
+					"pivot": [0, 3, -5],
+					"cubes": [
+						{"origin": [-1.5, 3, -6], "size": [3, 1, 1], "uv": [17, 6]}
 					]
 				}
 			]
