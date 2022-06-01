@@ -1,7 +1,6 @@
 {
   "itemGroup.naturalist": "Naturalist",
   "entity.naturalist.snail": "Snail",
-  "entity.naturalist.crocodile": "Crocodile",
   "entity.naturalist.bear": "Grizzly Bear",
   "entity.naturalist.butterfly": "Butterfly",
   "entity.naturalist.firefly": "Firefly",
@@ -15,7 +14,6 @@
   "entity.naturalist.robin": "Robin",
   "entity.naturalist.caterpillar": "Caterpillar",
   "item.naturalist.snail_spawn_egg": "Snail Spawn Egg",
-  "item.naturalist.crocodile_spawn_egg": "Crocodile Spawn Egg",
   "item.naturalist.bear_spawn_egg": "Grizzly Bear Spawn Egg",
   "item.naturalist.butterfly_spawn_egg": "Butterfly Spawn Egg",
   "item.naturalist.firefly_spawn_egg": "Firefly Spawn Egg",

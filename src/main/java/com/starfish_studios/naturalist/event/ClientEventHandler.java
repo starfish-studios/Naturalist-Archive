@@ -23,7 +23,6 @@ public class ClientEventHandler {
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(NaturalistEntityTypes.SNAIL.get(), SnailRenderer::new);
-        event.registerEntityRenderer(NaturalistEntityTypes.CROCODILE.get(), CrocodileRenderer::new);
         event.registerEntityRenderer(NaturalistEntityTypes.BEAR.get(), BearRenderer::new);
         event.registerEntityRenderer(NaturalistEntityTypes.BUTTERFLY.get(), ButterflyRenderer::new);
         event.registerEntityRenderer(NaturalistEntityTypes.FIREFLY.get(), FireflyRenderer::new);
