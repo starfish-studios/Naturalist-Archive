@@ -1,12 +1,14 @@
 package com.starfish_studios.naturalist.entity;
 
 import com.starfish_studios.naturalist.entity.ai.goal.FlyingWanderGoal;
+import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
@@ -129,19 +131,31 @@ public class Firefly extends Animal implements FlyingAnimal, IAnimatable {
         if (ticks > 0) {
             this.setGlowTicks(ticks - 1);
         }
-        if (this.isNight()) {
+        if (this.canGlow()) {
             if (this.random.nextFloat() <= 0.01 && !this.isGlowing()) {
                 this.setGlowTicks(40 + this.random.nextInt(20));
             }
-        } else {
-            if (this.random.nextInt(100) == 0) {
-                this.hurt(DamageSource.ON_FIRE, Float.MAX_VALUE);
-            }
+        } else if (this.isSunBurnTick()) {
+            this.setSecondsOnFire(8);
         }
     }
 
-    boolean isNight() {
-        return this.level.getDayTime() > 13000 && this.level.getDayTime() < 23000;
+    private boolean canGlow() {
+        if (!this.level.isClientSide) {
+            return this.level.isNight() || this.level.getMaxLocalRawBrightness(this.blockPosition()) < 8;
+        }
+        return false;
+    }
+
+    @Override
+    protected boolean isSunBurnTick() {
+        if (this.level.isDay() && !this.hasCustomName() && !this.level.isClientSide) {
+            float brightness = this.getBrightness();
+            BlockPos pos = new BlockPos(this.getX(), this.getEyeY(), this.getZ());
+            return brightness > 0.5F && this.random.nextFloat() * 30.0F < (brightness - 0.4F) * 2.0F && this.level.canSeeSky(pos);
+        }
+
+        return false;
     }
 
     @Override
@@ -151,7 +165,19 @@ public class Firefly extends Animal implements FlyingAnimal, IAnimatable {
 
     @Override
     public boolean isFlying() {
-        return !this.onGround;
+        return true;
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+        return NaturalistSoundEvents.FIREFLY_HURT.get();
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getDeathSound() {
+        return NaturalistSoundEvents.FIREFLY_DEATH.get();
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {

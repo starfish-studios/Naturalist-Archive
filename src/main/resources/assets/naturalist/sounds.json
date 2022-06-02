@@ -181,5 +181,17 @@
       "naturalist:cardinal_song"
     ],
     "subtitle": "naturalist.subtitles.entity.bird.ambient_cardinal"
+  },
+  "entity.firefly.hurt": {
+    "sounds": [
+      "naturalist:firefly_hurt"
+    ],
+    "subtitle": "naturalist.subtitles.entity.firefly.hurt"
+  },
+  "entity.firefly.death": {
+    "sounds": [
+      "naturalist:firefly_death"
+    ],
+    "subtitle": "naturalist.subtitles.entity.firefly.death"
   }
 }

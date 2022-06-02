@@ -32,5 +32,7 @@ public class NaturalistSoundEvents {
     public static final RegistryObject<SoundEvent> BIRD_AMBIENT_CANARY = SOUND_EVENTS.register("bird_ambient_canary", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.bird.ambient_canary")));
     public static final RegistryObject<SoundEvent> BIRD_AMBIENT_ROBIN = SOUND_EVENTS.register("bird_ambient_robin", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.bird.ambient_robin")));
     public static final RegistryObject<SoundEvent> BIRD_AMBIENT_CARDINAL = SOUND_EVENTS.register("bird_ambient_cardinal", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.bird.ambient_cardinal")));
+    public static final RegistryObject<SoundEvent> FIREFLY_HURT = SOUND_EVENTS.register("firefly_hurt", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.firefly.hurt")));
+    public static final RegistryObject<SoundEvent> FIREFLY_DEATH = SOUND_EVENTS.register("firefly_death", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.firefly.death")));
 
 }

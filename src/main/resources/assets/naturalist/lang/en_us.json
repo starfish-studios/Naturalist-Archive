@@ -55,6 +55,8 @@
   "naturalist.subtitles.entity.bird.ambient_canary": "Canary chirps",
   "naturalist.subtitles.entity.bird.ambient_robin": "Robin chirps",
   "naturalist.subtitles.entity.bird.ambient_cardinal": "Cardinal chirps",
+  "naturalist.subtitles.entity.firefly.hurt": "Firefly hurts",
+  "naturalist.subtitles.entity.firefly.death": "Firefly dies",
   "item.minecraft.tipped_arrow.effect.forest_dasher": "Arrow of the Forest Dasher",
   "item.minecraft.potion.effect.forest_dasher": "Potion of the Forest Dasher",
   "item.minecraft.splash_potion.effect.forest_dasher": "Splash Potion of the Forest Dasher",
