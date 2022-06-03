@@ -1,10 +1,12 @@
 package com.starfish_studios.naturalist.event;
 
 import com.starfish_studios.naturalist.Naturalist;
+import com.starfish_studios.naturalist.registry.NaturalistMobCategories;
 import com.starfish_studios.naturalist.registry.NaturalistConfig;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -18,7 +20,7 @@ public class CommonEventHandler {
         MobSpawnSettings.SpawnerData bear = new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.BEAR.get(), NaturalistConfig.BEAR_SPAWN_WEIGHT.get(), 1, 2);
         MobSpawnSettings.SpawnerData deer = new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.DEER.get(), NaturalistConfig.DEER_SPAWN_WEIGHT.get(), 1, 3);
         MobSpawnSettings.SpawnerData snail = new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.SNAIL.get(), NaturalistConfig.SNAIL_SPAWN_WEIGHT.get(), 1, 3);
-        MobSpawnSettings.SpawnerData firefly = new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.FIREFLY.get(), NaturalistConfig.FIREFLY_SPAWN_WEIGHT.get(), 3, 6);
+        MobSpawnSettings.SpawnerData firefly = new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.FIREFLY.get(), NaturalistConfig.FIREFLY_SPAWN_WEIGHT.get(), 2, 3);
         MobSpawnSettings.SpawnerData butterfly = new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.BUTTERFLY.get(), NaturalistConfig.BUTTERFLY_SPAWN_WEIGHT.get(), 1, 3);
         MobSpawnSettings.SpawnerData snake = new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.SNAKE.get(), NaturalistConfig.SNAKE_SPAWN_WEIGHT.get(), 1, 1);
         MobSpawnSettings.SpawnerData rattlesnake = new MobSpawnSettings.SpawnerData(NaturalistEntityTypes.RATTLESNAKE.get(), NaturalistConfig.RATTLESNAKE_SPAWN_WEIGHT.get(), 1, 1);
@@ -36,7 +38,7 @@ public class CommonEventHandler {
                         .addSpawn(MobCategory.CREATURE, deer)
                         .addSpawn(MobCategory.CREATURE, snake)
                         .addSpawn(MobCategory.CREATURE, snail)
-                        .addSpawn(MobCategory.AMBIENT, firefly)
+                        .addSpawn(NaturalistMobCategories.FIREFLIES, firefly)
                         .addSpawn(MobCategory.CREATURE, butterfly)
                         .addSpawn(MobCategory.CREATURE, rabbit)
                         .addSpawn(MobCategory.CREATURE, fox)
@@ -50,14 +52,14 @@ public class CommonEventHandler {
             case PLAINS -> {
                 event.getSpawns().addSpawn(MobCategory.CREATURE, snake)
                         .addSpawn(MobCategory.CREATURE, snail)
-                        .addSpawn(MobCategory.AMBIENT, firefly)
+                        .addSpawn(NaturalistMobCategories.FIREFLIES, firefly)
                         .addSpawn(MobCategory.CREATURE, butterfly)
                         .addSpawn(MobCategory.CREATURE, robin);
             }
             case SWAMP -> {
                 event.getSpawns().addSpawn(MobCategory.CREATURE, snake)
                         .addSpawn(MobCategory.CREATURE, snail)
-                        .addSpawn(MobCategory.AMBIENT, firefly)
+                        .addSpawn(NaturalistMobCategories.FIREFLIES, firefly)
                         .addSpawn(MobCategory.CREATURE, cardinal);
             }
             case MESA -> {
@@ -90,7 +92,7 @@ public class CommonEventHandler {
             }
             case MUSHROOM -> {
                 event.getSpawns().addSpawn(MobCategory.CREATURE, snail)
-                        .addSpawn(MobCategory.AMBIENT, firefly);
+                        .addSpawn(NaturalistMobCategories.FIREFLIES, firefly);
             }
             case UNDERGROUND -> {
                 event.getSpawns().addSpawn(MobCategory.CREATURE, snail);
