@@ -80,7 +80,7 @@ public class Snail extends Animal implements IAnimatable, Bucketable {
     public void aiStep() {
         super.aiStep();
         for (Player player : level.getEntitiesOfClass(Player.class, this.getBoundingBox())) {
-            if (!player.isOnGround() && EnchantmentHelper.getEnchantmentLevel(Enchantments.FALL_PROTECTION, player) == 0) {
+            if (!player.isOnGround() && EnchantmentHelper.getEnchantmentLevel(Enchantments.FALL_PROTECTION, player) == 0 && !this.hasCustomName()) {
                 this.hurt(DamageSource.playerAttack(player), 5.0F);
             }
         }
