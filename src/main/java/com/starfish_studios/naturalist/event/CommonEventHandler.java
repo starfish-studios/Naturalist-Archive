@@ -87,7 +87,6 @@ public class CommonEventHandler {
             case EXTREME_HILLS -> {
                 event.getSpawns().addSpawn(MobCategory.CREATURE, snail)
                         .addSpawn(MobCategory.CREATURE, bluejay)
-                        .addSpawn(MobCategory.CREATURE, canary)
                         .addSpawn(MobCategory.CREATURE, canary);
             }
             case MUSHROOM -> {
