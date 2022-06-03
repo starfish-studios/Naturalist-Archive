@@ -147,6 +147,11 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal {
         return NaturalistEntityTypes.CATERPILLAR.get().create(level);
     }
 
+    @Override
+    public boolean isBaby() {
+        return false;
+    }
+
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.isFlying()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("butterfly.fly", true));
@@ -189,6 +194,10 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal {
 
     @Override
     protected void checkFallDamage(double pY, boolean pOnGround, BlockState pState, BlockPos pPos) {
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pPos, BlockState pState) {
     }
 
     static class ButterflyPollinateGoal extends MoveToBlockGoal {
