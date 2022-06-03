@@ -31,13 +31,13 @@
     "sounds": [
       "naturalist:snail_forward"
     ],
-    "subtitle": "naturalist.subtitles.entity.snail.forward"
+    "subtitle": "naturalist.subtitles.entity.snail.move"
   },
   "entity.snail.back": {
     "sounds": [
       "naturalist:snail_back"
     ],
-    "subtitle": "naturalist.subtitles.entity.snail.back"
+    "subtitle": "naturalist.subtitles.entity.snail.move"
   },
   "entity.bear.hurt": {
     "sounds": [
