@@ -193,5 +193,11 @@
       "naturalist:firefly_death"
     ],
     "subtitle": "naturalist.subtitles.entity.firefly.death"
+  },
+  "entity.firefly.hide": {
+    "sounds": [
+      "naturalist:firefly_hide"
+    ],
+    "subtitle": "naturalist.subtitles.entity.firefly.hide"
   }
 }

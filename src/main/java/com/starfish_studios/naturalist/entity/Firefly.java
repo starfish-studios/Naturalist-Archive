@@ -3,11 +3,14 @@ package com.starfish_studios.naturalist.entity;
 import com.starfish_studios.naturalist.entity.ai.goal.FlyingWanderGoal;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -16,6 +19,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Animal;
@@ -41,6 +45,7 @@ import java.util.Random;
 
 public class Firefly extends Animal implements FlyingAnimal, IAnimatable {
     private static final EntityDataAccessor<Integer> GLOW_TICKS_REMAINING = SynchedEntityData.defineId(Firefly.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> SUN_TICKS = SynchedEntityData.defineId(Firefly.class, EntityDataSerializers.INT);
     private final AnimationFactory factory = new AnimationFactory(this);
 
     public Firefly(EntityType<? extends Animal> entityType, Level level) {
@@ -83,8 +88,9 @@ public class Firefly extends Animal implements FlyingAnimal, IAnimatable {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(1, new FlyingWanderGoal(this));
-        this.goalSelector.addGoal(2, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new FireflyHideInGrassGoal(this, 1.2F, 10, 4));
+        this.goalSelector.addGoal(2, new FlyingWanderGoal(this));
+        this.goalSelector.addGoal(3, new FloatGoal(this));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -110,6 +116,7 @@ public class Firefly extends Animal implements FlyingAnimal, IAnimatable {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(GLOW_TICKS_REMAINING, 0);
+        this.entityData.define(SUN_TICKS, 0);
     }
 
     public boolean isGlowing() {
@@ -124,6 +131,14 @@ public class Firefly extends Animal implements FlyingAnimal, IAnimatable {
         this.entityData.set(GLOW_TICKS_REMAINING, ticks);
     }
 
+    public int getSunTicks() {
+        return this.entityData.get(SUN_TICKS);
+    }
+
+    private void setSunTicks(int ticks) {
+        this.entityData.set(SUN_TICKS, ticks);
+    }
+
     @Override
     public void aiStep() {
         super.aiStep();
@@ -135,8 +150,22 @@ public class Firefly extends Animal implements FlyingAnimal, IAnimatable {
             if (this.random.nextFloat() <= 0.01 && !this.isGlowing()) {
                 this.setGlowTicks(40 + this.random.nextInt(20));
             }
-        } else if (this.isSunBurnTick()) {
-            this.setSecondsOnFire(8);
+        }
+        if (this.isSunBurnTick()) {
+            this.setSunTicks(this.getSunTicks() + 1);
+            if (this.getSunTicks() > 600) {
+                BlockPos pos = this.blockPosition();
+                if (!level.isClientSide) {
+                    for(int i = 0; i < 20; ++i) {
+                        double x = random.nextGaussian() * 0.02D;
+                        double y = random.nextGaussian() * 0.02D;
+                        double z = random.nextGaussian() * 0.02D;
+                        ((ServerLevel)level).sendParticles(ParticleTypes.POOF, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, 1, x, y, z, 0.15F);
+                    }
+                }
+                level.playSound(null, this.blockPosition(), NaturalistSoundEvents.FIREFLY_HIDE.get(), SoundSource.NEUTRAL, 0.7F, 0.9F + level.random.nextFloat() * 0.2F);
+                this.discard();
+            }
         }
     }
 
@@ -150,16 +179,9 @@ public class Firefly extends Animal implements FlyingAnimal, IAnimatable {
     @Override
     protected boolean isSunBurnTick() {
         if (this.level.isDay() && !this.hasCustomName() && !this.level.isClientSide) {
-            float brightness = this.getBrightness();
-            BlockPos pos = new BlockPos(this.getX(), this.getEyeY(), this.getZ());
-            return brightness > 0.5F && this.random.nextFloat() * 30.0F < (brightness - 0.4F) * 2.0F && this.level.canSeeSky(pos);
+            return this.getBrightness() > 0.5F;
         }
 
-        return false;
-    }
-
-    @Override
-    public boolean isOnFire() {
         return false;
     }
 
@@ -205,4 +227,40 @@ public class Firefly extends Animal implements FlyingAnimal, IAnimatable {
         return factory;
     }
 
+    static class FireflyHideInGrassGoal extends MoveToBlockGoal {
+        private final Firefly firefly;
+
+        public FireflyHideInGrassGoal(Firefly pMob, double pSpeedModifier, int pSearchRange, int pVerticalSearchRange) {
+            super(pMob, pSpeedModifier, pSearchRange, pVerticalSearchRange);
+            this.firefly = pMob;
+        }
+
+        @Override
+        public boolean canUse() {
+            return firefly.isSunBurnTick() && super.canUse();
+        }
+
+        @Override
+        protected boolean isValidTarget(LevelReader pLevel, BlockPos pPos) {
+            return pLevel.getBlockState(pPos).is(Blocks.GRASS) || pLevel.getBlockState(pPos).is(Blocks.FERN) || pLevel.getBlockState(pPos).is(Blocks.TALL_GRASS);
+        }
+
+        @Override
+        public void tick() {
+            super.tick();
+            Level level = firefly.level;
+            if (this.isReachedTarget()) {
+                if (!level.isClientSide) {
+                    ((ServerLevel)level).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.GRASS.defaultBlockState()), firefly.getX(), firefly.getY(), firefly.getZ(), 50, firefly.getBbWidth() / 4.0F, firefly.getBbHeight() / 4.0F, firefly.getBbWidth() / 4.0F, 0.05D);
+                }
+                level.playSound(null, firefly.blockPosition(), NaturalistSoundEvents.FIREFLY_HIDE.get(), SoundSource.NEUTRAL, 0.7F, 0.9F + level.random.nextFloat() * 0.2F);
+                firefly.discard();
+            }
+        }
+
+        @Override
+        protected BlockPos getMoveToTarget() {
+            return this.blockPos;
+        }
+    }
 }
