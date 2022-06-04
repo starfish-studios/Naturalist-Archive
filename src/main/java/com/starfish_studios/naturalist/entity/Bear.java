@@ -32,7 +32,6 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraft.world.entity.animal.AbstractSchoolingFish;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.PolarBear;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -491,7 +490,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
 
         @Override
         protected void alertOther(Mob pMob, LivingEntity pTarget) {
-            if (pMob instanceof PolarBear && !pMob.isBaby()) {
+            if (pMob instanceof Bear && !pMob.isBaby()) {
                 super.alertOther(pMob, pTarget);
             }
         }
