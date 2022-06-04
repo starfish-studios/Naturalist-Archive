@@ -46,7 +46,9 @@ public class DeerModel extends AnimatedGeoModel<Deer> {
             head.setScaleZ(2.0F);
         }
 
-        head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD);
-        head.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD);
+        if (!deer.isEating()) {
+            head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD);
+            head.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD);
+        }
     }
 }
