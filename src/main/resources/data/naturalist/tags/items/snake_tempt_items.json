@@ -2,11 +2,10 @@
   "replace": false,
   "values": [
     "minecraft:chicken",
-    "minecraft:cooked_chicken",
     "minecraft:rabbit",
-    "minecraft:cooked_rabbit",
     "minecraft:rabbit_foot",
     "minecraft:slime_ball",
+    "minecraft:egg",
     "naturalist:snail_shell"
   ]
 }
