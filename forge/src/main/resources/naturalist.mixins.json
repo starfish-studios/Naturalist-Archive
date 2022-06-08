@@ -1,5 +1,6 @@
 {
   "required": true,
+  "minVersion": "0.8",
   "package": "com.starfish_studios.naturalist.mixin.forge",
   "compatibilityLevel": "JAVA_16",
   "client": [
