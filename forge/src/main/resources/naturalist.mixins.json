@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "com.starfish_studios.naturalist.mixin.forge",
+  "compatibilityLevel": "JAVA_16",
+  "client": [
+  ],
+  "mixins": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

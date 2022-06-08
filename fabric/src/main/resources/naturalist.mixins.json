@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "com.starfish_studios.naturalist.mixin.fabric",
+  "compatibilityLevel": "JAVA_16",
+  "client": [
+  ],
+  "mixins": [
+    "MobCategoryMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

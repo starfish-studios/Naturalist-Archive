@@ -1,0 +1,28 @@
+modLoader = "javafml"
+loaderVersion = "[40,)"
+issueTrackerURL = "https://github.com/starfish-studios/Naturalist/issues"
+license = "MIT"
+
+[[mods]]
+modId = "naturalist"
+version = "${version}"
+displayName = "Naturalist"
+authors = "Starfish Studios"
+description = '''
+Enhances the overworld by adding new wildlife with unique behavior!
+'''
+logoFile = "icon.png"
+
+[[dependencies.naturalist]]
+modId = "forge"
+mandatory = true
+versionRange = "[40,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.naturalist]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.18.2,)"
+ordering = "NONE"
+side = "BOTH"

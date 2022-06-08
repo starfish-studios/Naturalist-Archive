@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "naturalist",
+  "version": "${version}",
+  "name": "Naturalist",
+  "description": "Enhances the overworld by adding new wildlife with unique behavior!",
+  "authors": [
+    "Starfish Studios"
+  ],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/naturalist",
+    "issues": "https://github.com/starfish-studios/Naturalist/issues"
+  },
+  "license": "MIT",
+  "icon": "icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.starfish_studios.naturalist.fabric.NaturalistFabric"
+    ],
+    "client": [
+      "com.starfish_studios.naturalist.fabric.NaturalistFabricClient"
+    ]
+  },
+  "mixins": [
+    "naturalist.mixins.json",
+    "naturalist-common.mixins.json"
+  ],
+  "depends": {
+    "fabric": "*",
+    "minecraft": ">=1.18.2"
+  }
+}
