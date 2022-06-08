@@ -2,6 +2,8 @@ package com.starfish_studios.naturalist.registry.fabric;
 
 import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.item.fabric.NoFluidMobBucketItem;
+import com.starfish_studios.naturalist.mixin.fabric.PotionBrewingInvoker;
+import com.starfish_studios.naturalist.mixin.fabric.SpawnPlacementsInvoker;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -17,8 +19,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Fluid;
 
 import java.util.function.Supplier;
@@ -72,6 +74,10 @@ public class NaturalistRegistryHelperImpl {
     }
 
     public static void registerBrewingRecipe(Potion input, Item ingredient, Potion output) {
-        PotionBrewing.addMix(input, ingredient, output);
+        PotionBrewingInvoker.invokeAddMix(input, ingredient, output);
+    }
+
+    public static <T extends Mob> void registerSpawnPlacement(EntityType<T> entityType, SpawnPlacements.Type decoratorType, Heightmap.Types heightMapType, SpawnPlacements.SpawnPredicate<T> decoratorPredicate) {
+        SpawnPlacementsInvoker.invokeRegister(entityType, decoratorType, heightMapType, decoratorPredicate);
     }
 }

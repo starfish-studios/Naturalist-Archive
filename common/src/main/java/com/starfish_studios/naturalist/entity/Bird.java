@@ -1,16 +1,15 @@
 package com.starfish_studios.naturalist.entity;
 
-import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
+import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -22,7 +21,9 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
-import net.minecraft.world.entity.animal.*;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.FlyingAnimal;
+import net.minecraft.world.entity.animal.ShoulderRidingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -32,7 +33,6 @@ import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -47,7 +47,7 @@ import java.util.Random;
 public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
     private BirdAvoidEntityGoal<Player> avoidPlayersGoal;
-    private static final Ingredient TAME_FOOD = Ingredient.of(Tags.Items.SEEDS);
+    private static final Ingredient TAME_FOOD = Ingredient.of(NaturalistTags.Items.BIRD_FOOD_ITEMS);
     public float flap;
     public float flapSpeed;
     public float oFlapSpeed;
@@ -78,7 +78,7 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 6.0D).add(Attributes.FLYING_SPEED, 0.8F).add(Attributes.MOVEMENT_SPEED, 0.2D);
     }
 
-    public static boolean checkBirdSpawnRules(EntityType<Bird> entityType, LevelAccessor state, MobSpawnType type, BlockPos pos, Random random) {
+    public static boolean checkBirdSpawnRules(EntityType<Bird> entityType, LevelAccessor state, MobSpawnType type, BlockPos pos, RandomSource random) {
         return state.getBlockState(pos.below()).is(BlockTags.PARROTS_SPAWNABLE_ON) && isBrightEnoughToSpawn(state, pos);
     }
 

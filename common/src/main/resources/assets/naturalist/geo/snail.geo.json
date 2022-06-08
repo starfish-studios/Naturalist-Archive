@@ -1,0 +1,42 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.snail",
+				"texture_width": 32,
+				"texture_height": 32,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 1.5,
+				"visible_bounds_offset": [0, 0.25, 0]
+			},
+			"bones": [
+				{
+					"name": "shell",
+					"pivot": [0, 1.1248, 0.57348],
+					"cubes": [
+						{"origin": [-1.5, 1.1248, -1.42652], "size": [3, 5, 5], "pivot": [0, 1.1248, 0.57348], "rotation": [-10, 0, 0], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "body",
+					"parent": "shell",
+					"pivot": [0, 0.66667, 0.16667],
+					"cubes": [
+						{"origin": [-1, 0, -3], "size": [2, 2, 6], "uv": [0, 11]},
+						{"origin": [-1, 0, 3], "size": [2, 1, 2], "uv": [11, 11]},
+						{"origin": [-1, 0, -4], "size": [2, 1, 1], "uv": [17, 4]}
+					]
+				},
+				{
+					"name": "eyes",
+					"parent": "body",
+					"pivot": [0, 2, -2.5],
+					"cubes": [
+						{"origin": [-1, 1.9, -3], "size": [2, 2, 1], "inflate": 0.01, "uv": [12, 0]}
+					]
+				}
+			]
+		}
+	]
+}

@@ -7,5 +7,7 @@ public class NaturalistFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         Naturalist.init();
+        Naturalist.registerBrewingRecipes();
+        Naturalist.registerSpawnPlacements();
     }
 }

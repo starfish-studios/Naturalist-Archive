@@ -37,6 +37,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -48,7 +49,6 @@ import net.minecraft.world.level.block.entity.CampfireBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.ForgeEventFactory;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -151,7 +151,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
             this.setSniffing(false);
         }
         this.level.getProfiler().push("looting");
-        if (!this.level.isClientSide && this.canPickUpLoot() && this.isAlive() && !this.dead && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
+        if (!this.level.isClientSide && this.canPickUpLoot() && this.isAlive() && !this.dead && this.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
             for(ItemEntity itementity : this.level.getEntitiesOfClass(ItemEntity.class, this.getBoundingBox().inflate(1.0D, 0.0D, 1.0D))) {
                 if (!itementity.isRemoved() && !itementity.getItem().isEmpty() && this.wantsToPickUp(itementity.getItem())) {
                     this.pickUpItem(itementity);
@@ -285,7 +285,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
                 if (this.isFood(this.getItemBySlot(EquipmentSlot.MAINHAND))) {
                     if (!this.level.isClientSide) {
                         this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
-                        this.gameEvent(GameEvent.EAT, this.eyeBlockPosition());
+                        this.gameEvent(GameEvent.EAT);
                     }
                     this.setSitting(false);
                 }
@@ -585,7 +585,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
         }
 
         protected void onReachedTarget() {
-            if (ForgeEventFactory.getMobGriefingEvent(bear.level, bear)) {
+            if (bear.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
                 BlockState state = bear.level.getBlockState(blockPos);
                 bear.setSniffing(false);
                 if (state.getBlock() instanceof BeehiveBlock && state.getValue(BeehiveBlock.HONEY_LEVEL) >= 5) {

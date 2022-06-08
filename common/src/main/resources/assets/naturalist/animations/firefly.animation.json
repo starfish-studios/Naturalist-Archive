@@ -1,0 +1,27 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"firefly.fly": {
+			"loop": true,
+			"animation_length": 4,
+			"bones": {
+				"left_wing": {
+					"rotation": ["Math.cos((query.anim_time - 0.1) * 2880) * -15", 22.5, "-45 + Math.cos((query.anim_time - 0.2) * 2880) * 45"]
+				},
+				"right_wing": {
+					"rotation": ["Math.cos((query.anim_time - 0.1) * 2880) * -15", -22.5, "45 + Math.cos((query.anim_time - 0.2) * 2880) * -45"]
+				},
+				"body": {
+					"rotation": ["-22.5 + Math.cos((query.anim_time - 0.5) * 180) * -4", 0, 0],
+					"position": [0, "Math.cos((query.anim_time - 0.5) * 180) * -0.25", 0]
+				},
+				"head": {
+					"rotation": ["22.5 + Math.cos((query.anim_time - 0.5) * 180) * 4", 0, 0]
+				},
+				"antennae": {
+					"rotation": ["Math.cos((query.anim_time - 0.5) * 180) * -16", 0, 0]
+				}
+			}
+		}
+	}
+}

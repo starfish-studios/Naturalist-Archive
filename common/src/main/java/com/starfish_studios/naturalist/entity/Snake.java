@@ -14,6 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.DifficultyInstance;
@@ -97,20 +98,20 @@ public class Snake extends ClimbingAnimal implements SleepingAnimal, NeutralMob,
         return null;
     }
 
-    public static boolean checkSnakeSpawnRules(EntityType<Snake> entityType, LevelAccessor level, MobSpawnType type, BlockPos pos, Random random) {
+    public static boolean checkSnakeSpawnRules(EntityType<Snake> entityType, LevelAccessor level, MobSpawnType type, BlockPos pos, RandomSource random) {
         return level.getBlockState(pos.below()).is(BlockTags.RABBITS_SPAWNABLE_ON) && isBrightEnoughToSpawn(level, pos);
     }
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
-        this.populateDefaultEquipmentSlots(pDifficulty);
+        this.populateDefaultEquipmentSlots(random, pDifficulty);
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }
 
     @Override
-    protected void populateDefaultEquipmentSlots(DifficultyInstance pDifficulty) {
-        if (this.random.nextFloat() < 0.2F) {
-            float chance = this.random.nextFloat();
+    protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance pDifficulty) {
+        if (random.nextFloat() < 0.2F) {
+            float chance = random.nextFloat();
             ItemStack stack;
             if (chance < 0.05F) {
                 stack = new ItemStack(Items.RABBIT_FOOT);
@@ -202,7 +203,7 @@ public class Snake extends ClimbingAnimal implements SleepingAnimal, NeutralMob,
                 if (!this.getMainHandItem().isEmpty()) {
                     if (!this.level.isClientSide) {
                         this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
-                        this.gameEvent(GameEvent.EAT, this.eyeBlockPosition());
+                        this.gameEvent(GameEvent.EAT);
                     }
                 }
                 this.eat(false);

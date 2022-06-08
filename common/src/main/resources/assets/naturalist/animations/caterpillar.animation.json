@@ -1,0 +1,21 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"caterpillar.move": {
+			"loop": true,
+			"animation_length": 2,
+			"bones": {
+				"body": {
+					"scale": [1, 1, "0.95 + Math.cos((query.anim_time - 0.8) * 360) * -0.15"]
+				},
+				"butt": {
+					"scale": [1, 1, "0.95 + Math.cos((query.anim_time - 0.5) * 360) * -0.15"]
+				},
+				"antennae": {
+					"rotation": ["Math.cos((query.anim_time - 0.5) * 360) * -4", 0, 0],
+					"position": [0, 0, "0.35 + Math.cos((query.anim_time - 0.8) * 360) * 0.8"]
+				}
+			}
+		}
+	}
+}

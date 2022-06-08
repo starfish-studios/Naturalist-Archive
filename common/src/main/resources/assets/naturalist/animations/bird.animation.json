@@ -1,0 +1,76 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"bird.fly": {
+			"loop": true,
+			"animation_length": 0.5,
+			"bones": {
+				"body": {
+					"position": {
+						"vector": [0, "Math.cos((query.anim_time - 0.3) * 1440) * -0.25", 0]
+					}
+				},
+				"left_wing": {
+					"rotation": {
+						"vector": [0, "Math.cos((query.anim_time - 0.2) * 1440) * -30", "293.5 + Math.cos((query.anim_time - 0.5) * 1440) * -64"]
+					}
+				},
+				"right_wing": {
+					"rotation": {
+						"vector": [0, "Math.cos((query.anim_time - 0.2) * 1440) * 30", "-293.5 + Math.cos((query.anim_time - 0.5) * 1440) * 64"]
+					}
+				},
+				"left_leg": {
+					"rotation": {
+						"vector": ["22.5 + Math.cos((query.anim_time - 0.4) * 1440) * -10", 0, 0]
+					}
+				},
+				"right_leg": {
+					"rotation": {
+						"vector": ["22.5 + Math.cos((query.anim_time - 0.35) * 1440) * -10", 0, 0]
+					}
+				},
+				"tail": {
+					"rotation": {
+						"vector": ["0 + Math.cos((query.anim_time - 0.5) * 1440) * 4", 0, 0]
+					}
+				}
+			}
+		},
+		"bird.eat": {
+			"loop": true,
+			"animation_length": 2,
+			"bones": {
+				"body": {
+					"rotation": {
+						"vector": [70, 0, 0]
+					}
+				},
+				"head": {
+					"rotation": {
+						"vector": ["Math.cos((query.anim_time - 0.2) * 1440) * -5", 0, 0]
+					},
+					"position": {
+						"vector": [0, 0, "Math.cos((query.anim_time - 0.2) * 1440) * .25"]
+					}
+				},
+				"legs": {
+					"position": {
+						"vector": [0, 0.2, 0]
+					}
+				}
+			}
+		},
+		"bird.sit": {
+			"loop": true,
+			"bones": {
+				"body": {
+					"position": {
+						"vector": [0, -1, 0]
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

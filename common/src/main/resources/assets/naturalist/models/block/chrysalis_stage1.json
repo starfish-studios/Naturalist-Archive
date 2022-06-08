@@ -1,0 +1,35 @@
+{
+	"parent": "block/block",
+	"ambientocclusion": false,
+	"texture_size": [32, 32],
+	"textures": {
+		"particle": "naturalist:block/chrysalis_stage1",
+		"cocoa": "naturalist:block/chrysalis_stage1"
+	},
+	"elements": [
+		{
+			"from": [5, 5, 9],
+			"to": [11, 12, 15],
+			"faces": {
+				"north": {"uv": [5, 4.5, 8, 8], "texture": "#cocoa"},
+				"east": {"uv": [11, 4.5, 8, 8], "texture": "#cocoa"},
+				"south": {"uv": [8, 1, 11, 4.5], "texture": "#cocoa"},
+				"west": {"uv": [8, 4.5, 11, 8], "texture": "#cocoa"},
+				"up": {"uv": [0, 3, 3, 6], "texture": "#cocoa"},
+				"down": {"uv": [0, 0, 3, 3], "texture": "#cocoa"}
+			}
+		},
+		{
+			"from": [8, 12, 12],
+			"to": [8, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 0, 0], "texture": "#cocoa"},
+				"east": {"uv": [8, 2.5, 6, 4.5], "texture": "#cocoa"},
+				"south": {"uv": [0, 0, 0, 0], "texture": "#cocoa"},
+				"west": {"uv": [6, 2.5, 8, 4.5], "texture": "#cocoa"},
+				"up": {"uv": [0, 0, 0, 0], "texture": "#cocoa"},
+				"down": {"uv": [0, 0, 0, 0], "texture": "#cocoa"}
+			}
+		}
+	]
+}

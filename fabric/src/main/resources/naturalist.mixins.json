@@ -5,7 +5,9 @@
   "client": [
   ],
   "mixins": [
-    "MobCategoryMixin"
+    "MobCategoryMixin",
+    "PotionBrewingInvoker",
+    "SpawnPlacementsInvoker"
   ],
   "injectors": {
     "defaultRequire": 1

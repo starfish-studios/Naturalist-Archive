@@ -1,0 +1,79 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"snail.move": {
+			"loop": true,
+			"animation_length": 1.5,
+			"bones": {
+				"body": {
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"0.75": {
+							"vector": [1, 1, 1.2],
+							"easing": "easeInOutCubic"
+						},
+						"1.4583": {
+							"vector": [1, 1, 1],
+							"easing": "easeInOutCubic"
+						}
+					}
+				},
+				"shell": {
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.75": {
+							"vector": [0, 0, 0.6],
+							"easing": "easeInOutCubic"
+						},
+						"1.4583": {
+							"vector": [0, 0, 0],
+							"easing": "easeInOutCubic"
+						}
+					}
+				},
+				"eyes": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.75": {
+							"vector": [-22.5, 0, 0],
+							"easing": "easeInOutCubic"
+						},
+						"1.5": {
+							"vector": [0, 0, 0],
+							"easing": "easeInOutCubic"
+						}
+					}
+				}
+			},
+			"sound_effects": {
+				"0.3333": {
+					"effect": "forward"
+				},
+				"1.0417": {
+					"effect": "back"
+				}
+			}
+		},
+		"snail.retreat": {
+			"loop": true,
+			"animation_length": 2,
+			"bones": {
+				"body": {
+					"position": [0, 1, 0],
+					"scale": 0
+				},
+				"shell": {
+					"rotation": [10, 0, 0],
+					"position": [0, -1, -1]
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

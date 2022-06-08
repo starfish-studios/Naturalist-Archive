@@ -13,6 +13,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -97,7 +98,7 @@ public class Firefly extends Animal implements FlyingAnimal, IAnimatable {
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 6.0D).add(Attributes.FLYING_SPEED, 0.6F).add(Attributes.MOVEMENT_SPEED, 0.3F);
     }
 
-    public static boolean checkFireflySpawnRules(EntityType<? extends Firefly> pType, ServerLevelAccessor pLevel, MobSpawnType pReason, BlockPos pPos, Random pRandom) {
+    public static boolean checkFireflySpawnRules(EntityType<? extends Firefly> pType, ServerLevelAccessor pLevel, MobSpawnType pReason, BlockPos pPos, RandomSource pRandom) {
         return Monster.isDarkEnoughToSpawn(pLevel, pPos, pRandom) && pLevel.getBlockState(pPos.below()).is(BlockTags.PARROTS_SPAWNABLE_ON);
     }
 
