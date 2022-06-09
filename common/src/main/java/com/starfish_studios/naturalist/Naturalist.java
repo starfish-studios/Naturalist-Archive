@@ -13,12 +13,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.levelgen.Heightmap;
+import software.bernie.geckolib3.GeckoLib;
 
 public class Naturalist {
     public static final String MOD_ID = "naturalist";
     public static final CreativeModeTab TAB = NaturalistRegistryHelper.registerCreativeModeTab(new ResourceLocation(MOD_ID, "tab"), () -> new ItemStack(Items.FERN));
 
     public static void init() {
+        GeckoLib.initialize();
         NaturalistBlocks.init();
         NaturalistItems.init();
         NaturalistSoundEvents.init();
