@@ -5,6 +5,8 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import com.starfish_studios.naturalist.client.model.BearModel;
 import com.starfish_studios.naturalist.entity.Bear;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -14,6 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.geo.render.built.GeoBone;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
+@Environment(EnvType.CLIENT)
 public class BearRenderer extends GeoEntityRenderer<Bear> {
     public BearRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new BearModel());

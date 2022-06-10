@@ -2,9 +2,12 @@ package com.starfish_studios.naturalist.client.model;
 
 import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.entity.Caterpillar;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
+@Environment(EnvType.CLIENT)
 public class CaterpillarModel extends AnimatedGeoModel<Caterpillar> {
     @Override
     public ResourceLocation getModelResource(Caterpillar object) {

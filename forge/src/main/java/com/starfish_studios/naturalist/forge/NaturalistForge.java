@@ -13,6 +13,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(Naturalist.MOD_ID)
 public class NaturalistForge {
+
     public NaturalistForge() {
         Naturalist.init();
 

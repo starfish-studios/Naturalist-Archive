@@ -3,6 +3,8 @@ package com.starfish_studios.naturalist.client.model;
 import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.entity.Snake;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
@@ -13,6 +15,7 @@ import software.bernie.geckolib3.model.provider.data.EntityModelData;
 
 import java.util.List;
 
+@Environment(EnvType.CLIENT)
 public class SnakeModel extends AnimatedGeoModel<Snake> {
     @Override
     public ResourceLocation getModelResource(Snake snake) {

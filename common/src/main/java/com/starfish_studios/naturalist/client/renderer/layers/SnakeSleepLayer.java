@@ -3,6 +3,8 @@ package com.starfish_studios.naturalist.client.renderer.layers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.entity.Snake;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -10,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.renderers.geo.GeoLayerRenderer;
 import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
 
+@Environment(EnvType.CLIENT)
 public class SnakeSleepLayer extends GeoLayerRenderer<Snake> {
     private static final ResourceLocation LAYER = new ResourceLocation(Naturalist.MOD_ID, "textures/entity/snake/snake_sleep.png");
     private static final ResourceLocation MODEL = new ResourceLocation(Naturalist.MOD_ID, "geo/snake.geo.json");
