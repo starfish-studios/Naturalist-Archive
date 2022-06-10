@@ -4,6 +4,8 @@ import com.starfish_studios.naturalist.entity.Bird;
 import com.starfish_studios.naturalist.entity.Firefly;
 import com.starfish_studios.naturalist.entity.Snake;
 import com.starfish_studios.naturalist.registry.*;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacements;
@@ -21,6 +23,7 @@ public class Naturalist {
 
     public static void init() {
         GeckoLib.initialize();
+        AutoConfig.register(NaturalistConfig.class, GsonConfigSerializer::new);
         NaturalistBlocks.init();
         NaturalistItems.init();
         NaturalistSoundEvents.init();

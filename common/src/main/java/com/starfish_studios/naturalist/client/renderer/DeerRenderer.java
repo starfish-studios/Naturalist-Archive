@@ -18,6 +18,11 @@ public class DeerRenderer extends GeoEntityRenderer<Deer> {
     }
 
     @Override
+    public ResourceLocation getTextureLocation(Deer entity) {
+        return null;
+    }
+
+    @Override
     public void renderEarly(Deer animatable, PoseStack stackIn, float ticks, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float partialTicks) {
         super.renderEarly(animatable, stackIn, ticks, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, partialTicks);
         if (animatable.isBaby()) {

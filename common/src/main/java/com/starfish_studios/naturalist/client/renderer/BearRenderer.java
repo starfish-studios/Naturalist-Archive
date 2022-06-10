@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.geo.render.built.GeoBone;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
@@ -17,6 +18,11 @@ public class BearRenderer extends GeoEntityRenderer<Bear> {
     public BearRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new BearModel());
         this.shadowRadius = 0.9F;
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(Bear entity) {
+        return null;
     }
 
     @Override

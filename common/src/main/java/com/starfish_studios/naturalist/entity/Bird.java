@@ -42,12 +42,10 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-import java.util.Random;
-
 public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
     private BirdAvoidEntityGoal<Player> avoidPlayersGoal;
-    private static final Ingredient TAME_FOOD = Ingredient.of(NaturalistTags.Items.BIRD_FOOD_ITEMS);
+    private static final Ingredient TAME_FOOD = Ingredient.of(NaturalistTags.ItemTags.BIRD_FOOD_ITEMS);
     public float flap;
     public float flapSpeed;
     public float oFlapSpeed;

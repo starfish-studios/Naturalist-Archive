@@ -36,6 +36,7 @@ allprojects {
     repositories {
         maven { url "https://maven.parchmentmc.org" }
         maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
+        maven { url "https://maven.shedaniel.me/" }
     }
 
     tasks.withType(JavaCompile) {

@@ -18,6 +18,11 @@ public class ButterflyRenderer extends GeoEntityRenderer<Butterfly> {
     }
 
     @Override
+    public ResourceLocation getTextureLocation(Butterfly entity) {
+        return null;
+    }
+
+    @Override
     public RenderType getRenderType(Butterfly animatable, float partialTicks, PoseStack stack, @Nullable MultiBufferSource renderTypeBuffer, @Nullable VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
         return RenderType.entityCutoutNoCull(textureLocation);
     }

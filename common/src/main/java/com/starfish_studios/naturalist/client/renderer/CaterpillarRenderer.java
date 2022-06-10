@@ -18,6 +18,11 @@ public class CaterpillarRenderer extends GeoEntityRenderer<Caterpillar> {
     }
 
     @Override
+    public ResourceLocation getTextureLocation(Caterpillar entity) {
+        return null;
+    }
+
+    @Override
     public RenderType getRenderType(Caterpillar animatable, float partialTicks, PoseStack stack, @Nullable MultiBufferSource renderTypeBuffer, @Nullable VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
         return RenderType.entityCutoutNoCull(textureLocation);
     }
