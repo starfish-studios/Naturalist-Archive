@@ -3,6 +3,7 @@ package com.starfish_studios.naturalist.forge;
 import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.entity.*;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
+import com.starfish_studios.naturalist.registry.forge.NaturalistBiomeModifierSerializers;
 import com.starfish_studios.naturalist.registry.forge.NaturalistRegistryHelperImpl;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -24,6 +25,7 @@ public class NaturalistForge {
         NaturalistRegistryHelperImpl.SOUND_EVENTS.register(bus);
         NaturalistRegistryHelperImpl.ENTITY_TYPES.register(bus);
         NaturalistRegistryHelperImpl.POTIONS.register(bus);
+        NaturalistBiomeModifierSerializers.BIOME_MODIFIER_SERIALIZERS.register(bus);
 
         bus.addListener(this::setup);
         bus.addListener(this::createAttributes);

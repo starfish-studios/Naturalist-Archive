@@ -1,0 +1,4 @@
+{
+  "type": "naturalist:bear",
+  "biomes": "#naturalist:has_mob/bear"
+}
