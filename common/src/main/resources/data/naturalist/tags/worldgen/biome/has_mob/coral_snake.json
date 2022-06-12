@@ -1,7 +1,8 @@
 {
   "values": [
     "#minecraft:is_jungle",
-    "#minecraft:is_beach",
-    "#minecraft:is_river"
+    "#minecraft:is_river",
+    "minecraft:beach",
+    "minecraft:stony_shore"
   ]
 }

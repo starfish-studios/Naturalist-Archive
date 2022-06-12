@@ -1,0 +1,13 @@
+{
+  "type": "naturalist:mob_spawns",
+  "biomes": [
+    "#naturalist:has_mob/rattlesnake"
+  ],
+  "spawn": {
+    "type": "naturalist:rattlesnake",
+    "minCount": 4,
+    "maxCount": 3,
+    "weight": 4
+  },
+  "mob_category": "creature"
+}

@@ -1,0 +1,13 @@
+{
+  "type": "naturalist:mob_spawns",
+  "biomes": [
+    "#minecraft:is_forest"
+  ],
+  "spawn": {
+    "type": "minecraft:fox",
+    "minCount": 2,
+    "maxCount": 4,
+    "weight": 6
+  },
+  "mob_category": "creature"
+}

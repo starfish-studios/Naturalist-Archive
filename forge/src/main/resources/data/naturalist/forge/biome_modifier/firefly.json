@@ -1,0 +1,13 @@
+{
+  "type": "naturalist:mob_spawns",
+  "biomes": [
+    "#naturalist:has_mob/firefly"
+  ],
+  "spawn": {
+    "type": "naturalist:firefly",
+    "minCount": 2,
+    "maxCount": 3,
+    "weight": 8
+  },
+  "mob_category": "firefly"
+}

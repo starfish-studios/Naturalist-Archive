@@ -1,13 +1,13 @@
 {
   "type": "naturalist:mob_spawns",
   "biomes": [
-    "#naturalist:has_mob/bear"
+    "#naturalist:has_mob/snake"
   ],
   "spawn": {
-    "type": "naturalist:bear",
+    "type": "naturalist:snake",
     "minCount": 1,
-    "maxCount": 2,
-    "weight": 8
+    "maxCount": 1,
+    "weight": 4
   },
   "mob_category": "creature"
 }
