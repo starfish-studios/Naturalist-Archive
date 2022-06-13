@@ -25,7 +25,7 @@ public class BearRenderer extends GeoEntityRenderer<Bear> {
 
     @Override
     public ResourceLocation getTextureLocation(Bear entity) {
-        return null;
+        return getTextureResource(entity);
     }
 
     @Override

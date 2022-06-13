@@ -22,7 +22,7 @@ public class ButterflyRenderer extends GeoEntityRenderer<Butterfly> {
 
     @Override
     public ResourceLocation getTextureLocation(Butterfly entity) {
-        return null;
+        return getTextureResource(entity);
     }
 
     @Override

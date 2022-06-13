@@ -23,7 +23,7 @@ public class SnailRenderer extends GeoEntityRenderer<Snail> {
 
     @Override
     public ResourceLocation getTextureLocation(Snail entity) {
-        return null;
+        return getTextureResource(entity);
     }
 
     @Override

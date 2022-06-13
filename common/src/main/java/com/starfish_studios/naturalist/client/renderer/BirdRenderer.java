@@ -22,7 +22,7 @@ public class BirdRenderer extends GeoEntityRenderer<Bird> {
 
     @Override
     public ResourceLocation getTextureLocation(Bird entity) {
-        return null;
+        return getTextureResource(entity);
     }
 
     @Override

@@ -24,7 +24,7 @@ public class FireflyRenderer extends GeoEntityRenderer<Firefly> {
 
     @Override
     public ResourceLocation getTextureLocation(Firefly entity) {
-        return null;
+        return getTextureResource(entity);
     }
 
     @Override

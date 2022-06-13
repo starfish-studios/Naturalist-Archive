@@ -22,7 +22,7 @@ public class DeerRenderer extends GeoEntityRenderer<Deer> {
 
     @Override
     public ResourceLocation getTextureLocation(Deer entity) {
-        return null;
+        return getTextureResource(entity);
     }
 
     @Override

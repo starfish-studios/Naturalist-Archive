@@ -19,6 +19,6 @@ public class SnakeRenderer extends GeoEntityRenderer<Snake> {
 
     @Override
     public ResourceLocation getTextureLocation(Snake entity) {
-        return null;
+        return getTextureResource(entity);
     }
 }

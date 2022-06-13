@@ -22,7 +22,7 @@ public class CaterpillarRenderer extends GeoEntityRenderer<Caterpillar> {
 
     @Override
     public ResourceLocation getTextureLocation(Caterpillar entity) {
-        return null;
+        return getTextureResource(entity);
     }
 
     @Override
