@@ -1,4 +1,4 @@
-package com.starfish_studios.naturalist.registry;
+package com.starfish_studios.naturalist.registry.fabric;
 
 import com.starfish_studios.naturalist.Naturalist;
 import me.shedaniel.autoconfig.ConfigData;

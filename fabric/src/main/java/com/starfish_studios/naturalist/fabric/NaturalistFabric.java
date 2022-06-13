@@ -2,11 +2,12 @@ package com.starfish_studios.naturalist.fabric;
 
 import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.entity.*;
-import com.starfish_studios.naturalist.registry.NaturalistConfig;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import com.starfish_studios.naturalist.registry.NaturalistMobCategories;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
+import com.starfish_studios.naturalist.registry.fabric.NaturalistConfig;
 import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
@@ -16,12 +17,11 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
 
-import java.util.List;
-
 public class NaturalistFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         Naturalist.init();
+        AutoConfig.register(NaturalistConfig.class, GsonConfigSerializer::new);
         addSpawns();
         registerEntityAttributes();
         Naturalist.registerBrewingRecipes();

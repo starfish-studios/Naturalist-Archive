@@ -57,7 +57,7 @@ public class NaturalistRegistryHelperImpl {
     }
 
     public static CreativeModeTab registerCreativeModeTab(ResourceLocation name, Supplier<ItemStack> icon) {
-        return new CreativeModeTab(name.getNamespace()) {
+        return new CreativeModeTab(name.toLanguageKey()) {
             @Override
             public ItemStack makeIcon() {
                 return icon.get();
