@@ -30,18 +30,18 @@ public class NaturalistTags {
     }
 
     public static class Biomes {
-        public static final TagKey<Biome> HAS_BEAR = tag("has_mob/bear");
-        public static final TagKey<Biome> HAS_DEER = tag("has_mob/deer");
-        public static final TagKey<Biome> HAS_SNAIL = tag("has_mob/snail");
-        public static final TagKey<Biome> HAS_FIREFLY = tag("has_mob/firefly");
-        public static final TagKey<Biome> HAS_BUTTERFLY = tag("has_mob/butterfly");
-        public static final TagKey<Biome> HAS_SNAKE = tag("has_mob/snake");
-        public static final TagKey<Biome> HAS_RATTLESNAKE = tag("has_mob/rattlesnake");
-        public static final TagKey<Biome> HAS_CORAL_SNAKE = tag("has_mob/coral_snake");
-        public static final TagKey<Biome> HAS_BLUEJAY = tag("has_mob/bluejay");
-        public static final TagKey<Biome> HAS_CANARY = tag("has_mob/canary");
-        public static final TagKey<Biome> HAS_CARDINAL = tag("has_mob/cardinal");
-        public static final TagKey<Biome> HAS_ROBIN = tag("has_mob/robin");
+        public static final TagKey<Biome> HAS_BEAR = tag("has_bear");
+        public static final TagKey<Biome> HAS_DEER = tag("has_deer");
+        public static final TagKey<Biome> HAS_SNAIL = tag("has_snail");
+        public static final TagKey<Biome> HAS_FIREFLY = tag("has_firefly");
+        public static final TagKey<Biome> HAS_BUTTERFLY = tag("has_butterfly");
+        public static final TagKey<Biome> HAS_SNAKE = tag("has_snake");
+        public static final TagKey<Biome> HAS_RATTLESNAKE = tag("has_rattlesnake");
+        public static final TagKey<Biome> HAS_CORAL_SNAKE = tag("has_coral_snake");
+        public static final TagKey<Biome> HAS_BLUEJAY = tag("has_bluejay");
+        public static final TagKey<Biome> HAS_CANARY = tag("has_canary");
+        public static final TagKey<Biome> HAS_CARDINAL = tag("has_cardinal");
+        public static final TagKey<Biome> HAS_ROBIN = tag("has_robin");
 
         private static TagKey<Biome> tag(String name) {
             return TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(Naturalist.MOD_ID, name));

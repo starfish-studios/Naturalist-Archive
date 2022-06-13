@@ -1,13 +1,11 @@
 {
   "type": "naturalist:mob_spawns",
-  "biomes": [
-    "#naturalist:has_mob/snail"
-  ],
+  "biomes": "#naturalist:has_snail",
   "spawn": {
     "type": "naturalist:snail",
     "minCount": 1,
     "maxCount": 3,
     "weight": 5
   },
-  "mob_category": "creature"
+  "category": "creature"
 }

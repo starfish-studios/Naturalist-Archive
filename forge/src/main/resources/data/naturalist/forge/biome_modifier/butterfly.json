@@ -1,13 +1,11 @@
 {
   "type": "naturalist:mob_spawns",
-  "biomes": [
-    "#naturalist:has_mob/butterfly"
-  ],
+  "biomes": "#naturalist:has_butterfly",
   "spawn": {
     "type": "naturalist:butterfly",
     "minCount": 1,
     "maxCount": 3,
     "weight": 6
   },
-  "mob_category": "creature"
+  "category": "creature"
 }

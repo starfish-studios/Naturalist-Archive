@@ -1,13 +1,11 @@
 {
   "type": "naturalist:mob_spawns",
-  "biomes": [
-    "#naturalist:has_mob/cardinal"
-  ],
+  "biomes": "#naturalist:has_cardinal",
   "spawn": {
     "type": "naturalist:cardinal",
     "minCount": 1,
     "maxCount": 4,
     "weight": 8
   },
-  "mob_category": "creature"
+  "category": "creature"
 }

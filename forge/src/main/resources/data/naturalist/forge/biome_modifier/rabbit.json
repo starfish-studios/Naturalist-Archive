@@ -1,13 +1,11 @@
 {
   "type": "naturalist:mob_spawns",
-  "biomes": [
-    "#minecraft:is_forest"
-  ],
+  "biomes": "#minecraft:is_forest",
   "spawn": {
     "type": "minecraft:rabbit",
     "minCount": 2,
     "maxCount": 3,
     "weight": 6
   },
-  "mob_category": "creature"
+  "category": "creature"
 }
