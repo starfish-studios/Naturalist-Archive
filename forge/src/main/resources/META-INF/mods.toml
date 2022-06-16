@@ -8,6 +8,7 @@ modId = "naturalist"
 version = "${version}"
 displayName = "Naturalist"
 authors = "Starfish Studios"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/naturalist"
 description = '''
 Enhances the overworld by adding new wildlife with unique behavior!
 '''

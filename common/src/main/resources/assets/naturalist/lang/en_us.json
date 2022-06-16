@@ -64,5 +64,21 @@
   "item.minecraft.tipped_arrow.effect.glowing": "Arrow of Glowing",
   "item.minecraft.potion.effect.glowing": "Potion of Glowing",
   "item.minecraft.splash_potion.effect.glowing": "Splash Potion of Glowing",
-  "item.minecraft.lingering_potion.effect.glowing": "Lingering Potion of Glowing"
+  "item.minecraft.lingering_potion.effect.glowing": "Lingering Potion of Glowing",
+
+  "text.autoconfig.naturalist.title": "Naturalist Config",
+  "text.autoconfig.naturalist.option.snailSpawnWeight": "Snail Spawn Weight",
+  "text.autoconfig.naturalist.option.snakeSpawnWeight": "Snake Spawn Weight",
+  "text.autoconfig.naturalist.option.coralSnakeSpawnWeight": "Coral Snake Spawn Weight",
+  "text.autoconfig.naturalist.option.rattlesnakeSpawnWeight": "Rattlesnake Spawn Weight",
+  "text.autoconfig.naturalist.option.bearSpawnWeight": "Bear Spawn Weight",
+  "text.autoconfig.naturalist.option.deerSpawnWeight": "Deer Spawn Weight",
+  "text.autoconfig.naturalist.option.fireflySpawnWeight": "Firefly Spawn Weight",
+  "text.autoconfig.naturalist.option.bluejaySpawnWeight": "Bluejay Spawn Weight",
+  "text.autoconfig.naturalist.option.canarySpawnWeight": "Canary Spawn Weight",
+  "text.autoconfig.naturalist.option.cardinalSpawnWeight": "Cardinal Spawn Weight",
+  "text.autoconfig.naturalist.option.robinSpawnWeight": "Robin Spawn Weight",
+  "text.autoconfig.naturalist.option.butterflySpawnWeight": "Butterfly Spawn Weight",
+  "text.autoconfig.naturalist.option.forestRabbitSpawnWeight": "Rabbit Spawn Weight in Forest Biomes",
+  "text.autoconfig.naturalist.option.forestFoxSpawnWeight": "Fox Spawn Weight in Forest Biomes"
 }
