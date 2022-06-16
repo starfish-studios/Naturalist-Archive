@@ -91,6 +91,11 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
     }
 
     @Override
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions size) {
+        return size.height * 0.6f;
+    }
+
+    @Override
     public boolean canMate(Animal pOtherAnimal) {
         return false;
     }

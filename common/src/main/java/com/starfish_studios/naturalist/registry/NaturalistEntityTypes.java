@@ -15,10 +15,10 @@ public class NaturalistEntityTypes {
     public static final Supplier<EntityType<Snake>> CORAL_SNAKE = NaturalistRegistryHelper.registerEntityType("coral_snake", Snake::new, MobCategory.CREATURE, 0.6F, 0.7F, 8);
     public static final Supplier<EntityType<Snake>> RATTLESNAKE = NaturalistRegistryHelper.registerEntityType("rattlesnake", Snake::new, MobCategory.CREATURE, 0.6F, 0.7F, 8);
     public static final Supplier<EntityType<Deer>> DEER = NaturalistRegistryHelper.registerEntityType("deer", Deer::new, MobCategory.CREATURE, 1.3F, 1.6F, 10);
-    public static final Supplier<EntityType<Bird>> BLUEJAY = NaturalistRegistryHelper.registerEntityType("bluejay", Bird::new, MobCategory.CREATURE, 0.5F, 0.9F, 8);
-    public static final Supplier<EntityType<Bird>> CANARY = NaturalistRegistryHelper.registerEntityType("canary", Bird::new, MobCategory.CREATURE, 0.5F, 0.9F, 8);
-    public static final Supplier<EntityType<Bird>> CARDINAL = NaturalistRegistryHelper.registerEntityType("cardinal", Bird::new, MobCategory.CREATURE, 0.5F, 0.9F, 8);
-    public static final Supplier<EntityType<Bird>> ROBIN = NaturalistRegistryHelper.registerEntityType("robin", Bird::new, MobCategory.CREATURE, 0.5F, 0.9F, 8);
+    public static final Supplier<EntityType<Bird>> BLUEJAY = NaturalistRegistryHelper.registerEntityType("bluejay", Bird::new, MobCategory.CREATURE, 0.5F, 0.6F, 8);
+    public static final Supplier<EntityType<Bird>> CANARY = NaturalistRegistryHelper.registerEntityType("canary", Bird::new, MobCategory.CREATURE, 0.5F, 0.6F, 8);
+    public static final Supplier<EntityType<Bird>> CARDINAL = NaturalistRegistryHelper.registerEntityType("cardinal", Bird::new, MobCategory.CREATURE, 0.5F, 0.6F, 8);
+    public static final Supplier<EntityType<Bird>> ROBIN = NaturalistRegistryHelper.registerEntityType("robin", Bird::new, MobCategory.CREATURE, 0.5F, 0.6F, 8);
     public static final Supplier<EntityType<Caterpillar>> CATERPILLAR = NaturalistRegistryHelper.registerEntityType("caterpillar", Caterpillar::new, MobCategory.CREATURE, 0.4F, 0.4F, 10);
 
     public static void init() {}
