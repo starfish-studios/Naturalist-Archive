@@ -122,15 +122,25 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
             }
 
             return InteractionResult.sidedSuccess(this.level.isClientSide);
-        } else if (!this.isFlying() && this.isTame() && this.isOwnedBy(pPlayer)) {
-            if (!this.level.isClientSide) {
-                this.setOrderedToSit(!this.isOrderedToSit());
+        } else if (this.isTame() && this.isOwnedBy(pPlayer)) {
+            if (TAME_FOOD.test(stack) && this.getHealth() < this.getMaxHealth()) {
+                if (!pPlayer.getAbilities().instabuild) {
+                    stack.shrink(1);
+                }
+                this.heal(1.0F);
+                if (this.getHealth() == this.getMaxHealth()) {
+                    this.spawnTamingParticles(true);
+                }
+                return InteractionResult.sidedSuccess(this.level.isClientSide);
+            } else if (!this.isFlying()) {
+                if (!this.level.isClientSide) {
+                    this.setOrderedToSit(!this.isOrderedToSit());
+                }
+                return InteractionResult.sidedSuccess(this.level.isClientSide);
             }
 
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
-        } else {
-            return super.mobInteract(pPlayer, pHand);
         }
+        return super.mobInteract(pPlayer, pHand);
     }
 
     @Override
