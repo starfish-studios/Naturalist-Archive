@@ -11,6 +11,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -72,7 +73,7 @@ public class Caterpillar extends ClimbingAnimal implements IAnimatable {
 
     @Override
     public boolean isFood(ItemStack pStack) {
-        return false;
+        return this.isBaby() && pStack.is(ItemTags.FLOWERS);
     }
 
     @Override
