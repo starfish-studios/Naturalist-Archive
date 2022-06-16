@@ -14,7 +14,10 @@ public class NaturalistConfig implements ConfigData {
     public int bearSpawnWeight = 8;
     public int deerSpawnWeight = 8;
     public int fireflySpawnWeight = 8;
-    public int birdSpawnWeight = 8;
+    public int bluejaySpawnWeight = 8;
+    public int canarySpawnWeight = 8;
+    public int cardinalSpawnWeight = 8;
+    public int robinSpawnWeight = 8;
     public int butterflySpawnWeight = 6;
     public int forestRabbitSpawnWeight = 6;
     public int forestFoxSpawnWeight = 6;
