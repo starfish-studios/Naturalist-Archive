@@ -1,11 +1,11 @@
 {
-  "type": "naturalist:mob_spawns",
+  "type": "forge:add_spawns",
   "biomes": "#naturalist:has_firefly",
-  "spawn": {
+  "spawners": {
     "type": "naturalist:firefly",
+    "weight": 8,
     "minCount": 2,
-    "maxCount": 3,
-    "weight": 8
+    "maxCount": 3
   },
   "category": "fireflies"
 }

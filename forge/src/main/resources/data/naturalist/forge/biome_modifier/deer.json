@@ -1,11 +1,11 @@
 {
-  "type": "naturalist:mob_spawns",
+  "type": "forge:add_spawns",
   "biomes": "#naturalist:has_deer",
-  "spawn": {
+  "spawners": {
     "type": "naturalist:deer",
+    "weight": 8,
     "minCount": 1,
-    "maxCount": 3,
-    "weight": 8
+    "maxCount": 3
   },
   "category": "creature"
 }

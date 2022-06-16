@@ -1,11 +1,11 @@
 {
-  "type": "naturalist:mob_spawns",
+  "type": "forge:add_spawns",
   "biomes": "#naturalist:has_coral_snake",
-  "spawn": {
+  "spawners": {
     "type": "naturalist:coral_snake",
+    "weight": 4,
     "minCount": 1,
-    "maxCount": 1,
-    "weight": 4
+    "maxCount": 1
   },
   "category": "creature"
 }

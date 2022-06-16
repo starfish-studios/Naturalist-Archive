@@ -1,11 +1,11 @@
 {
-  "type": "naturalist:mob_spawns",
+  "type": "forge:add_spawns",
   "biomes": "#naturalist:has_robin",
-  "spawn": {
+  "spawners": {
     "type": "naturalist:robin",
+    "weight": 8,
     "minCount": 1,
-    "maxCount": 4,
-    "weight": 8
+    "maxCount": 4
   },
   "category": "creature"
 }
