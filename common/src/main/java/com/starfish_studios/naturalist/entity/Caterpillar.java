@@ -77,6 +77,11 @@ public class Caterpillar extends ClimbingAnimal implements IAnimatable {
     }
 
     @Override
+    public float getScale() {
+        return 1.0f;
+    }
+
+    @Override
     public boolean causeFallDamage(float pFallDistance, float pMultiplier, DamageSource pSource) {
         return false;
     }
