@@ -5,7 +5,7 @@ import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 
 @Config(name = Naturalist.MOD_ID)
-public class NaturalistConfig implements ConfigData {
+public class NaturalistConfigFabric implements ConfigData {
 
     public int snailSpawnWeight = 5;
     public int snakeSpawnWeight = 4;

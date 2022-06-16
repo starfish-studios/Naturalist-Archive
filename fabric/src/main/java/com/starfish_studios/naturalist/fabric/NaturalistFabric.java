@@ -5,7 +5,7 @@ import com.starfish_studios.naturalist.entity.*;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import com.starfish_studios.naturalist.registry.NaturalistMobCategories;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
-import com.starfish_studios.naturalist.registry.fabric.NaturalistConfig;
+import com.starfish_studios.naturalist.registry.fabric.NaturalistConfigFabric;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
@@ -21,7 +21,7 @@ public class NaturalistFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         Naturalist.init();
-        AutoConfig.register(NaturalistConfig.class, GsonConfigSerializer::new);
+        AutoConfig.register(NaturalistConfigFabric.class, GsonConfigSerializer::new);
         addSpawns();
         registerEntityAttributes();
         Naturalist.registerBrewingRecipes();
@@ -45,7 +45,7 @@ public class NaturalistFabric implements ModInitializer {
     }
 
     void addSpawns() {
-        NaturalistConfig config = AutoConfig.getConfigHolder(NaturalistConfig.class).getConfig();
+        NaturalistConfigFabric config = AutoConfig.getConfigHolder(NaturalistConfigFabric.class).getConfig();
         addMobSpawn(NaturalistTags.Biomes.HAS_BEAR, MobCategory.CREATURE, NaturalistEntityTypes.BEAR.get(), config.bearSpawnWeight, 1, 2);
         addMobSpawn(NaturalistTags.Biomes.HAS_DEER, MobCategory.CREATURE, NaturalistEntityTypes.DEER.get(), config.deerSpawnWeight, 1, 3);
         addMobSpawn(NaturalistTags.Biomes.HAS_SNAIL, MobCategory.CREATURE, NaturalistEntityTypes.SNAIL.get(), config.snailSpawnWeight, 1, 3);
