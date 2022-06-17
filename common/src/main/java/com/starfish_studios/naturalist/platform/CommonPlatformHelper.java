@@ -1,4 +1,4 @@
-package com.starfish_studios.naturalist.registry;
+package com.starfish_studios.naturalist.platform;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.client.renderer.RenderType;
@@ -17,7 +17,7 @@ import net.minecraft.world.level.material.Fluid;
 
 import java.util.function.Supplier;
 
-public class NaturalistRegistryHelper {
+public class CommonPlatformHelper {
     @ExpectPlatform
     public static <T extends Block> Supplier<T> registerBlock(String name, Supplier<T> block) {
         throw new AssertionError();
@@ -50,16 +50,6 @@ public class NaturalistRegistryHelper {
 
     @ExpectPlatform
     public static CreativeModeTab registerCreativeModeTab(ResourceLocation name, Supplier<ItemStack> icon) {
-        throw new AssertionError();
-    }
-
-    @ExpectPlatform
-    public static void setRenderLayer(Supplier<Block> block, RenderType type) {
-        throw new AssertionError();
-    }
-
-    @ExpectPlatform
-    public static <T extends Entity> void registerEntityRenderers(Supplier<EntityType<T>> type, EntityRendererProvider<T> renderProvider) {
         throw new AssertionError();
     }
 

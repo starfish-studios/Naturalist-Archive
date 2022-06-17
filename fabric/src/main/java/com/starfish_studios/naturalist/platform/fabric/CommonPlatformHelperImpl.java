@@ -1,4 +1,4 @@
-package com.starfish_studios.naturalist.registry.fabric;
+package com.starfish_studios.naturalist.platform.fabric;
 
 import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.item.fabric.NoFluidMobBucketItem;
@@ -25,7 +25,7 @@ import net.minecraft.world.level.material.Fluid;
 
 import java.util.function.Supplier;
 
-public class NaturalistRegistryHelperImpl {
+public class CommonPlatformHelperImpl {
     public static <T extends Block> Supplier<T> registerBlock(String name, Supplier<T> block) {
         var registry = Registry.register(Registry.BLOCK, new ResourceLocation(Naturalist.MOD_ID, name), block.get());
         return () -> registry;
@@ -58,14 +58,6 @@ public class NaturalistRegistryHelperImpl {
 
     public static CreativeModeTab registerCreativeModeTab(ResourceLocation name, Supplier<ItemStack> icon) {
         return FabricItemGroupBuilder.build(name, icon);
-    }
-
-    public static void setRenderLayer(Supplier<Block> block, RenderType type) {
-        BlockRenderLayerMap.INSTANCE.putBlock(block.get(), type);
-    }
-
-    public static <T extends Entity> void registerEntityRenderers(Supplier<EntityType<T>> type, EntityRendererProvider<T> renderProvider) {
-        EntityRendererRegistry.register(type.get(), renderProvider);
     }
 
     public static <T extends Potion> Supplier<T> registerPotion(String name, Supplier<T> potion) {

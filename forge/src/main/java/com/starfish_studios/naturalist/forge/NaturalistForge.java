@@ -3,7 +3,7 @@ package com.starfish_studios.naturalist.forge;
 import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.entity.*;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
-import com.starfish_studios.naturalist.registry.forge.NaturalistRegistryHelperImpl;
+import com.starfish_studios.naturalist.platform.forge.CommonPlatformHelperImpl;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -19,11 +19,11 @@ public class NaturalistForge {
 
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        NaturalistRegistryHelperImpl.BLOCKS.register(bus);
-        NaturalistRegistryHelperImpl.ITEMS.register(bus);
-        NaturalistRegistryHelperImpl.SOUND_EVENTS.register(bus);
-        NaturalistRegistryHelperImpl.ENTITY_TYPES.register(bus);
-        NaturalistRegistryHelperImpl.POTIONS.register(bus);
+        CommonPlatformHelperImpl.BLOCKS.register(bus);
+        CommonPlatformHelperImpl.ITEMS.register(bus);
+        CommonPlatformHelperImpl.SOUND_EVENTS.register(bus);
+        CommonPlatformHelperImpl.ENTITY_TYPES.register(bus);
+        CommonPlatformHelperImpl.POTIONS.register(bus);
 
         bus.addListener(this::setup);
         bus.addListener(this::createAttributes);

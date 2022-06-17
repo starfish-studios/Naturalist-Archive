@@ -1,4 +1,4 @@
-package com.starfish_studios.naturalist.registry.forge;
+package com.starfish_studios.naturalist.platform.forge;
 
 import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.item.forge.NoFluidMobBucketItem;
@@ -25,7 +25,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Supplier;
 
-public class NaturalistRegistryHelperImpl {
+public class CommonPlatformHelperImpl {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Naturalist.MOD_ID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Naturalist.MOD_ID);
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, Naturalist.MOD_ID);
@@ -63,14 +63,6 @@ public class NaturalistRegistryHelperImpl {
                 return icon.get();
             }
         };
-    }
-
-    public static void setRenderLayer(Supplier<Block> block, RenderType type) {
-        ItemBlockRenderTypes.setRenderLayer(block.get(), type);
-    }
-
-    public static <T extends Entity> void registerEntityRenderers(Supplier<EntityType<T>> type, EntityRendererProvider<T> renderProvider) {
-        EntityRenderers.register(type.get(), renderProvider);
     }
 
     public static <T extends Potion> Supplier<T> registerPotion(String name, Supplier<T> potion) {
