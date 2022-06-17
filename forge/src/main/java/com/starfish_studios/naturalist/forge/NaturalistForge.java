@@ -8,10 +8,6 @@ import com.starfish_studios.naturalist.registry.NaturalistMobCategories;
 import com.starfish_studios.naturalist.registry.forge.NaturalistConfigForge;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
-import net.minecraft.tag.TagKey;
-import net.minecraft.util.registry.BuiltinRegistries;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.SpawnSettings;
 import net.minecraftforge.common.MinecraftForge;
@@ -28,12 +24,13 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import java.util.List;
 
 @Mod(Naturalist.MOD_ID)
+@Mod.EventBusSubscriber(modid = Naturalist.MOD_ID)
 public class NaturalistForge {
 
     public NaturalistForge() {
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, NaturalistConfigForge.COMMON_CONFIG);
-
         Naturalist.init();
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, NaturalistConfigForge.COMMON_CONFIG);
 
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 
