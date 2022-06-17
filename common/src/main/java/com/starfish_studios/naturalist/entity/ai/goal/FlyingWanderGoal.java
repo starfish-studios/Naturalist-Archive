@@ -1,46 +1,45 @@
 package com.starfish_studios.naturalist.entity.ai.goal;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
-import net.minecraft.world.entity.ai.util.HoverRandomPos;
-import net.minecraft.world.phys.Vec3;
-
 import javax.annotation.Nullable;
+import net.minecraft.entity.ai.AboveGroundTargeting;
+import net.minecraft.entity.ai.NoPenaltySolidTargeting;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.mob.PathAwareEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import java.util.EnumSet;
 
 public class FlyingWanderGoal extends Goal {
-    private final PathfinderMob mob;
+    private final PathAwareEntity mob;
 
-    public FlyingWanderGoal(PathfinderMob mob) {
-        this.setFlags(EnumSet.of(Flag.MOVE));
+    public FlyingWanderGoal(PathAwareEntity mob) {
+        this.setControls(EnumSet.of(Control.MOVE));
         this.mob = mob;
     }
 
     @Override
-    public boolean canUse() {
-        return mob.getNavigation().isDone() && mob.getRandom().nextInt(10) == 0;
+    public boolean canStart() {
+        return mob.getNavigation().isIdle() && mob.getRandom().nextInt(10) == 0;
     }
 
     @Override
-    public boolean canContinueToUse() {
-        return mob.getNavigation().isInProgress();
+    public boolean shouldContinue() {
+        return mob.getNavigation().isFollowingPath();
     }
 
     @Override
     public void start() {
-        Vec3 vec3 = this.findPos();
+        Vec3d vec3 = this.findPos();
         if (vec3 != null) {
-            mob.getNavigation().moveTo(mob.getNavigation().createPath(new BlockPos(vec3), 1), 1.0D);
+            mob.getNavigation().startMovingAlong(mob.getNavigation().findPathTo(new BlockPos(vec3), 1), 1.0D);
         }
 
     }
 
     @Nullable
-    private Vec3 findPos() {
-        Vec3 viewVector = mob.getViewVector(0.0F);
-        Vec3 hoverPos = HoverRandomPos.getPos(mob, 8, 7, viewVector.x, viewVector.z, ((float) Math.PI / 2F), 3, 1);
-        return hoverPos != null ? hoverPos : AirAndWaterRandomPos.getPos(mob, 8, 4, -2, viewVector.x, viewVector.z, (float) Math.PI / 2F);
+    private Vec3d findPos() {
+        Vec3d viewVector = mob.getRotationVec(0.0F);
+        Vec3d hoverPos = AboveGroundTargeting.find(mob, 8, 7, viewVector.x, viewVector.z, ((float) Math.PI / 2F), 3, 1);
+        return hoverPos != null ? hoverPos : NoPenaltySolidTargeting.find(mob, 8, 4, -2, viewVector.x, viewVector.z, (float) Math.PI / 2F);
     }
 }

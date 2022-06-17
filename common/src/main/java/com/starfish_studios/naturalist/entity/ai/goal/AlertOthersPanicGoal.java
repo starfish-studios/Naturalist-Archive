@@ -1,41 +1,40 @@
 package com.starfish_studios.naturalist.entity.ai.goal;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.util.LandRandomPos;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
-
 import javax.annotation.Nullable;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.FuzzyTargeting;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.mob.PathAwareEntity;
+import net.minecraft.tag.FluidTags;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.BlockView;
 import java.util.EnumSet;
 import java.util.List;
 
 public class AlertOthersPanicGoal extends Goal {
-    protected final PathfinderMob mob;
+    protected final PathAwareEntity mob;
     protected final double speedModifier;
     protected double posX;
     protected double posY;
     protected double posZ;
     protected boolean isRunning;
 
-    public AlertOthersPanicGoal(PathfinderMob mob, double speedModifier) {
+    public AlertOthersPanicGoal(PathAwareEntity mob, double speedModifier) {
         this.mob = mob;
         this.speedModifier = speedModifier;
-        this.setFlags(EnumSet.of(Flag.MOVE));
+        this.setControls(EnumSet.of(Control.MOVE));
     }
 
     @Override
-    public boolean canUse() {
-        if (this.mob.getLastHurtByMob() == null || !this.mob.getLastHurtByMob().isAlive()) {
+    public boolean canStart() {
+        if (this.mob.getAttacker() == null || !this.mob.getAttacker().isAlive()) {
             return false;
         } else {
             if (this.mob.isOnFire()) {
-                BlockPos blockpos = this.lookForWater(this.mob.level, this.mob, 5);
+                BlockPos blockpos = this.lookForWater(this.mob.world, this.mob, 5);
                 if (blockpos != null) {
                     this.posX = blockpos.getX();
                     this.posY = blockpos.getY();
@@ -43,19 +42,19 @@ public class AlertOthersPanicGoal extends Goal {
                     return true;
                 }
             }
-            if (this.mob.getLastHurtByMob() != null) {
-                List<? extends PathfinderMob> mobs = this.mob.level.getEntitiesOfClass(this.mob.getClass(), AABB.unitCubeFromLowerCorner(this.mob.position()).inflate(8.0D, 8.0D, 8.0D));
-                for (PathfinderMob mob : mobs) {
-                    mob.setLastHurtByMob(this.mob.getLastHurtByMob());
+            if (this.mob.getAttacker() != null) {
+                List<? extends PathAwareEntity> mobs = this.mob.world.getNonSpectatingEntities(this.mob.getClass(), Box.from(this.mob.getPos()).expand(8.0D, 8.0D, 8.0D));
+                for (PathAwareEntity mob : mobs) {
+                    mob.setAttacker(this.mob.getAttacker());
                 }
-                return this.findRandomPosAway(this.mob.getLastHurtByMob());
+                return this.findRandomPosAway(this.mob.getAttacker());
             }
             return this.findRandomPosition();
         }
     }
 
     protected boolean findRandomPosAway(LivingEntity entity) {
-        Vec3 vec3 = LandRandomPos.getPosAway(this.mob, 16, 7, entity.position());
+        Vec3d vec3 = FuzzyTargeting.findFrom(this.mob, 16, 7, entity.getPos());
         if (vec3 == null) {
             return false;
         } else {
@@ -67,7 +66,7 @@ public class AlertOthersPanicGoal extends Goal {
     }
 
     protected boolean findRandomPosition() {
-        Vec3 vec3 = LandRandomPos.getPos(this.mob, 5, 4);
+        Vec3d vec3 = FuzzyTargeting.find(this.mob, 5, 4);
         if (vec3 == null) {
             return false;
         } else {
@@ -84,7 +83,7 @@ public class AlertOthersPanicGoal extends Goal {
 
     @Override
     public void start() {
-        this.mob.getNavigation().moveTo(this.posX, this.posY, this.posZ, this.speedModifier);
+        this.mob.getNavigation().startMovingTo(this.posX, this.posY, this.posZ, this.speedModifier);
         this.isRunning = true;
     }
 
@@ -94,13 +93,13 @@ public class AlertOthersPanicGoal extends Goal {
     }
 
     @Override
-    public boolean canContinueToUse() {
-        return !this.mob.getNavigation().isDone();
+    public boolean shouldContinue() {
+        return !this.mob.getNavigation().isIdle();
     }
 
     @Nullable
-    protected BlockPos lookForWater(BlockGetter pLevel, Entity pEntity, int pRange) {
-        BlockPos blockpos = pEntity.blockPosition();
-        return !pLevel.getBlockState(blockpos).getCollisionShape(pLevel, blockpos).isEmpty() ? null : BlockPos.findClosestMatch(pEntity.blockPosition(), pRange, 1, (fluidState) -> pLevel.getFluidState(fluidState).is(FluidTags.WATER)).orElse(null);
+    protected BlockPos lookForWater(BlockView pLevel, Entity pEntity, int pRange) {
+        BlockPos blockpos = pEntity.getBlockPos();
+        return !pLevel.getBlockState(blockpos).getCollisionShape(pLevel, blockpos).isEmpty() ? null : BlockPos.findClosest(pEntity.getBlockPos(), pRange, 1, (fluidState) -> pLevel.getFluidState(fluidState).isIn(FluidTags.WATER)).orElse(null);
     }
 }

@@ -1,16 +1,16 @@
 package com.starfish_studios.naturalist.mixin.fabric;
 
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnRestriction;
+import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.world.Heightmap;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
-@Mixin(SpawnPlacements.class)
+@Mixin(SpawnRestriction.class)
 public interface SpawnPlacementsInvoker {
     @Invoker("register")
-    static <T extends Mob> void invokeRegister(EntityType<T> entityType, SpawnPlacements.Type decoratorType, Heightmap.Types heightMapType, SpawnPlacements.SpawnPredicate<T> decoratorPredicate) {
+    static <T extends MobEntity> void invokeRegister(EntityType<T> entityType, SpawnRestriction.Location decoratorType, Heightmap.Type heightMapType, SpawnRestriction.SpawnPredicate<T> decoratorPredicate) {
         throw new AssertionError();
     }
 }

@@ -1,23 +1,22 @@
 package com.starfish_studios.naturalist.entity.ai.goal;
 
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.animal.Animal;
-
 import javax.annotation.Nullable;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.util.math.MathHelper;
 import java.util.List;
 
 public class DistancedFollowParentGoal extends Goal {
-    protected final Animal animal;
+    protected final AnimalEntity animal;
     @Nullable
-    protected Animal parent;
+    protected AnimalEntity parent;
     private final double speedModifier;
     private int timeToRecalcPath;
     protected final double horizontalScanRange;
     protected final double verticalScanRange;
     protected final double followDistanceThreshold;
 
-    public DistancedFollowParentGoal(Animal animal, double speedModifier, double horizontalScanRange, double verticalScanRange, double followDistanceThreshold) {
+    public DistancedFollowParentGoal(AnimalEntity animal, double speedModifier, double horizontalScanRange, double verticalScanRange, double followDistanceThreshold) {
         this.animal = animal;
         this.speedModifier = speedModifier;
         this.horizontalScanRange = horizontalScanRange;
@@ -26,17 +25,17 @@ public class DistancedFollowParentGoal extends Goal {
     }
 
     @Override
-    public boolean canUse() {
-        if (this.animal.getAge() >= 0) {
+    public boolean canStart() {
+        if (this.animal.getBreedingAge() >= 0) {
             return false;
         } else {
-            List<? extends Animal> adults = this.animal.level.getEntitiesOfClass(this.animal.getClass(), this.animal.getBoundingBox().inflate(horizontalScanRange, verticalScanRange, horizontalScanRange));
-            Animal parent = null;
+            List<? extends AnimalEntity> adults = this.animal.world.getNonSpectatingEntities(this.animal.getClass(), this.animal.getBoundingBox().expand(horizontalScanRange, verticalScanRange, horizontalScanRange));
+            AnimalEntity parent = null;
             double distance = Double.MAX_VALUE;
 
-            for(Animal adult : adults) {
-                if (adult.getAge() >= 0) {
-                    double distanceToAdult = this.animal.distanceToSqr(adult);
+            for(AnimalEntity adult : adults) {
+                if (adult.getBreedingAge() >= 0) {
+                    double distanceToAdult = this.animal.squaredDistanceTo(adult);
                     if (!(distanceToAdult > distance)) {
                         distance = distanceToAdult;
                         parent = adult;
@@ -46,7 +45,7 @@ public class DistancedFollowParentGoal extends Goal {
 
             if (parent == null) {
                 return false;
-            } else if (distance < Mth.square(followDistanceThreshold)) {
+            } else if (distance < MathHelper.square(followDistanceThreshold)) {
                 return false;
             } else {
                 this.parent = parent;
@@ -56,14 +55,14 @@ public class DistancedFollowParentGoal extends Goal {
     }
 
     @Override
-    public boolean canContinueToUse() {
-        if (this.animal.getAge() >= 0) {
+    public boolean shouldContinue() {
+        if (this.animal.getBreedingAge() >= 0) {
             return false;
         } else if (!this.parent.isAlive()) {
             return false;
         } else {
-            double distanceToParent = this.animal.distanceToSqr(this.parent);
-            return !(distanceToParent < Mth.square(followDistanceThreshold)) && !(distanceToParent > 256.0D);
+            double distanceToParent = this.animal.squaredDistanceTo(this.parent);
+            return !(distanceToParent < MathHelper.square(followDistanceThreshold)) && !(distanceToParent > 256.0D);
         }
     }
 
@@ -80,8 +79,8 @@ public class DistancedFollowParentGoal extends Goal {
     @Override
     public void tick() {
         if (--this.timeToRecalcPath <= 0) {
-            this.timeToRecalcPath = this.adjustedTickDelay(10);
-            this.animal.getNavigation().moveTo(this.parent, this.speedModifier);
+            this.timeToRecalcPath = this.getTickCount(10);
+            this.animal.getNavigation().startMovingTo(this.parent, this.speedModifier);
         }
     }
 }

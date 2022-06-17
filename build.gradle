@@ -17,10 +17,7 @@ subprojects {
     dependencies {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
         // The following line declares the mojmap mappings, you may use other mappings as well
-        mappings loom.layered() {
-            officialMojangMappings()
-            parchment("org.parchmentmc.data:parchment-1.18.2:${rootProject.parchment_version}")
-        }
+        mappings "net.fabricmc:yarn:${yarn_mappings}:v2"
     }
 }
 

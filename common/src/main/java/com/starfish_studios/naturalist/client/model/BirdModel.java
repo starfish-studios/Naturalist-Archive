@@ -5,8 +5,8 @@ import com.starfish_studios.naturalist.entity.Bird;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
@@ -18,26 +18,26 @@ import java.util.List;
 @Environment(EnvType.CLIENT)
 public class BirdModel extends AnimatedGeoModel<Bird> {
     @Override
-    public ResourceLocation getTextureResource(Bird bird) {
+    public Identifier getTextureResource(Bird bird) {
         if (bird.getType().equals(NaturalistEntityTypes.BLUEJAY.get())) {
-            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/bluejay.png");
+            return new Identifier(Naturalist.MOD_ID, "textures/entity/bluejay.png");
         } else if (bird.getType().equals(NaturalistEntityTypes.CANARY.get())) {
-            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/canary.png");
+            return new Identifier(Naturalist.MOD_ID, "textures/entity/canary.png");
         } else if (bird.getType().equals(NaturalistEntityTypes.CARDINAL.get())) {
-            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/cardinal.png");
+            return new Identifier(Naturalist.MOD_ID, "textures/entity/cardinal.png");
         } else {
-            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/robin.png");
+            return new Identifier(Naturalist.MOD_ID, "textures/entity/robin.png");
         }
     }
 
     @Override
-    public ResourceLocation getModelResource(Bird bird) {
-        return new ResourceLocation(Naturalist.MOD_ID, "geo/bird.geo.json");
+    public Identifier getModelResource(Bird bird) {
+        return new Identifier(Naturalist.MOD_ID, "geo/bird.geo.json");
     }
 
     @Override
-    public ResourceLocation getAnimationResource(Bird bird) {
-        return new ResourceLocation(Naturalist.MOD_ID, "animations/bird.animation.json");
+    public Identifier getAnimationResource(Bird bird) {
+        return new Identifier(Naturalist.MOD_ID, "animations/bird.animation.json");
     }
 
     @Override
@@ -49,7 +49,7 @@ public class BirdModel extends AnimatedGeoModel<Bird> {
         List<EntityModelData> extraDataOfType = customPredicate.getExtraDataOfType(EntityModelData.class);
         IBone head = this.getAnimationProcessor().getBone("head");
 
-        head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD);
-        head.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD);
+        head.setRotationX(extraDataOfType.get(0).headPitch * MathHelper.RADIANS_PER_DEGREE);
+        head.setRotationY(extraDataOfType.get(0).netHeadYaw * MathHelper.RADIANS_PER_DEGREE);
     }
 }

@@ -5,8 +5,8 @@ import com.starfish_studios.naturalist.entity.Snake;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
@@ -18,24 +18,24 @@ import java.util.List;
 @Environment(EnvType.CLIENT)
 public class SnakeModel extends AnimatedGeoModel<Snake> {
     @Override
-    public ResourceLocation getModelResource(Snake snake) {
-        return new ResourceLocation(Naturalist.MOD_ID, "geo/snake.geo.json");
+    public Identifier getModelResource(Snake snake) {
+        return new Identifier(Naturalist.MOD_ID, "geo/snake.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureResource(Snake snake) {
+    public Identifier getTextureResource(Snake snake) {
         if (snake.getType().equals(NaturalistEntityTypes.CORAL_SNAKE.get())) {
-            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/snake/coral_snake.png");
+            return new Identifier(Naturalist.MOD_ID, "textures/entity/snake/coral_snake.png");
         } else if (snake.getType().equals(NaturalistEntityTypes.RATTLESNAKE.get())) {
-            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/snake/rattlesnake.png");
+            return new Identifier(Naturalist.MOD_ID, "textures/entity/snake/rattlesnake.png");
         } else {
-            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/snake/snake.png");
+            return new Identifier(Naturalist.MOD_ID, "textures/entity/snake/snake.png");
         }
     }
 
     @Override
-    public ResourceLocation getAnimationResource(Snake snake) {
-        return new ResourceLocation(Naturalist.MOD_ID, "animations/snake.animation.json");
+    public Identifier getAnimationResource(Snake snake) {
+        return new Identifier(Naturalist.MOD_ID, "animations/snake.animation.json");
     }
 
     @Override
@@ -50,10 +50,10 @@ public class SnakeModel extends AnimatedGeoModel<Snake> {
         IBone tail4 = this.getAnimationProcessor().getBone("tail4");
 
         if (!snake.isSleeping()) {
-            head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD);
-            head.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD);
+            head.setRotationX(extraDataOfType.get(0).headPitch * MathHelper.RADIANS_PER_DEGREE);
+            head.setRotationY(extraDataOfType.get(0).netHeadYaw * MathHelper.RADIANS_PER_DEGREE);
         }
-        if (!snake.getMainHandItem().isEmpty()) {
+        if (!snake.getMainHandStack().isEmpty()) {
             tail2.setScaleX(1.5F);
             tail2.setScaleY(1.5F);
         }

@@ -4,23 +4,23 @@ import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.entity.Caterpillar;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Identifier;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 @Environment(EnvType.CLIENT)
 public class CaterpillarModel extends AnimatedGeoModel<Caterpillar> {
     @Override
-    public ResourceLocation getModelResource(Caterpillar object) {
-        return new ResourceLocation(Naturalist.MOD_ID, "geo/caterpillar.geo.json");
+    public Identifier getModelResource(Caterpillar object) {
+        return new Identifier(Naturalist.MOD_ID, "geo/caterpillar.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureResource(Caterpillar object) {
-        return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/caterpillar.png");
+    public Identifier getTextureResource(Caterpillar object) {
+        return new Identifier(Naturalist.MOD_ID, "textures/entity/caterpillar.png");
     }
 
     @Override
-    public ResourceLocation getAnimationResource(Caterpillar animatable) {
-        return new ResourceLocation(Naturalist.MOD_ID, "animations/caterpillar.animation.json");
+    public Identifier getAnimationResource(Caterpillar animatable) {
+        return new Identifier(Naturalist.MOD_ID, "animations/caterpillar.animation.json");
     }
 }

@@ -6,49 +6,70 @@ import com.starfish_studios.naturalist.entity.ai.goal.SearchForItemsGoal;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.TimeUtil;
-import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.Containers;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.block.BeehiveBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.SweetBerryBushBlock;
+import net.minecraft.block.entity.CampfireBlockEntity;
+import net.minecraft.entity.EntityData;
+import net.minecraft.entity.EntityDimensions;
+import net.minecraft.entity.EntityPose;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.goal.ActiveTargetGoal;
+import net.minecraft.entity.ai.goal.AnimalMateGoal;
+import net.minecraft.entity.ai.goal.EscapeDangerGoal;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.ai.goal.LookAroundGoal;
+import net.minecraft.entity.ai.goal.LookAtEntityGoal;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.ai.goal.MoveToTargetPosGoal;
+import net.minecraft.entity.ai.goal.RevengeGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.ai.goal.TemptGoal;
+import net.minecraft.entity.ai.goal.UniversalAngerGoal;
+import net.minecraft.entity.ai.goal.WanderAroundGoal;
+import net.minecraft.entity.attribute.DefaultAttributeContainer;
+import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.mob.Angerable;
+import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.mob.PathAwareEntity;
+import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.PassiveEntity;
+import net.minecraft.entity.passive.SchoolingFishEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ItemStackParticleEffect;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Hand;
+import net.minecraft.util.ItemScatterer;
+import net.minecraft.util.TimeHelper;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.intprovider.UniformIntProvider;
+import net.minecraft.world.GameRules;
+import net.minecraft.world.LocalDifficulty;
+import net.minecraft.world.ServerWorldAccess;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldView;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
-import net.minecraft.world.entity.animal.AbstractSchoolingFish;
-import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.BeehiveBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SweetBerryBushBlock;
-import net.minecraft.world.level.block.entity.CampfireBlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.event.GameEvent;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -63,21 +84,21 @@ import java.util.EnumSet;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAnimal {
+public class Bear extends AnimalEntity implements Angerable, IAnimatable, SleepingAnimal {
     private final AnimationFactory factory = new AnimationFactory(this);
-    private static final Ingredient FOOD_ITEMS = Ingredient.of(NaturalistTags.ItemTags.BEAR_TEMPT_ITEMS);
-    private static final EntityDataAccessor<Boolean> SLEEPING = SynchedEntityData.defineId(Bear.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> SNIFFING = SynchedEntityData.defineId(Bear.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(Bear.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> EAT_COUNTER = SynchedEntityData.defineId(Bear.class, EntityDataSerializers.INT);
-    private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
-    private static final EntityDataAccessor<Integer> REMAINING_ANGER_TIME = SynchedEntityData.defineId(Bear.class, EntityDataSerializers.INT);
+    private static final Ingredient FOOD_ITEMS = Ingredient.fromTag(NaturalistTags.ItemTags.BEAR_TEMPT_ITEMS);
+    private static final TrackedData<Boolean> SLEEPING = DataTracker.registerData(Bear.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final TrackedData<Boolean> SNIFFING = DataTracker.registerData(Bear.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final TrackedData<Boolean> SITTING = DataTracker.registerData(Bear.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final TrackedData<Integer> EAT_COUNTER = DataTracker.registerData(Bear.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final UniformIntProvider PERSISTENT_ANGER_TIME = TimeHelper.betweenSeconds(20, 39);
+    private static final TrackedData<Integer> REMAINING_ANGER_TIME = DataTracker.registerData(Bear.class, TrackedDataHandlerRegistry.INTEGER);
     @Nullable
     private UUID persistentAngerTarget;
 
-    public Bear(EntityType<? extends Animal> entityType, Level level) {
+    public Bear(EntityType<? extends AnimalEntity> entityType, World level) {
         super(entityType, level);
-        this.maxUpStep = 1.0F;
+        this.stepHeight = 1.0F;
         this.setCanPickUpLoot(true);
     }
 
@@ -85,80 +106,80 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
 
     @Nullable
     @Override
-    public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mob) {
+    public PassiveEntity createChild(ServerWorld level, PassiveEntity mob) {
         return NaturalistEntityTypes.BEAR.get().create(level);
     }
 
     @Override
-    public boolean isFood(ItemStack pStack) {
+    public boolean isBreedingItem(ItemStack pStack) {
         return FOOD_ITEMS.test(pStack);
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
+    public EntityData initialize(ServerWorldAccess pLevel, LocalDifficulty pDifficulty, SpawnReason pReason, @Nullable EntityData pSpawnData, @Nullable NbtCompound pDataTag) {
         if (pSpawnData == null) {
-            pSpawnData = new AgeableMobGroupData(1.0F);
+            pSpawnData = new PassiveData(1.0F);
         }
 
-        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+        return super.initialize(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }
 
     // ATTRIBUTES/GOALS/LOGIC
 
-    public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.FOLLOW_RANGE, 20.0D).add(Attributes.MOVEMENT_SPEED, 0.25D).add(Attributes.ATTACK_DAMAGE, 6.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.6D);
+    public static DefaultAttributeContainer.Builder createAttributes() {
+        return MobEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 30.0D).add(EntityAttributes.GENERIC_FOLLOW_RANGE, 20.0D).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.25D).add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 6.0D).add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 0.6D);
     }
 
     @Override
-    protected void registerGoals() {
-        super.registerGoals();
-        this.goalSelector.addGoal(0, new BearFloatGoal(this));
-        this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(2, new BearMeleeAttackGoal(this, 1.25D, true));
-        this.goalSelector.addGoal(3, new BearTemptGoal(this, 1.0D, FOOD_ITEMS, false));
-        this.goalSelector.addGoal(3, new BearPanicGoal(this, 2.0D));
-        this.goalSelector.addGoal(4, new BearSleepGoal(this));
-        this.goalSelector.addGoal(5, new DistancedFollowParentGoal(this, 1.25D, 48.0D, 8.0D, 12.0D));
-        this.goalSelector.addGoal(5, new SearchForItemsGoal(this, 1.2F, FOOD_ITEMS, 8, 2));
-        this.goalSelector.addGoal(6, new BearHarvestFoodGoal(this, 1.2F, 12, 3));
-        this.goalSelector.addGoal(7, new BearPickupFoodAndSitGoal(this));
-        this.goalSelector.addGoal(8, new RandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 6.0F));
-        this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new BearHurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new BearAttackPlayerNearBabiesGoal(this, Player.class, 20, false, true, null));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, PathfinderMob.class, 10, true, false, (entity) -> entity.getType().is(NaturalistTags.EntityTypes.BEAR_HOSTILES) && !this.isSleeping() && !this.isBaby()));
-        this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, false));
+    protected void initGoals() {
+        super.initGoals();
+        this.goalSelector.add(0, new BearFloatGoal(this));
+        this.goalSelector.add(1, new AnimalMateGoal(this, 1.0D));
+        this.goalSelector.add(2, new BearMeleeAttackGoal(this, 1.25D, true));
+        this.goalSelector.add(3, new BearTemptGoal(this, 1.0D, FOOD_ITEMS, false));
+        this.goalSelector.add(3, new BearPanicGoal(this, 2.0D));
+        this.goalSelector.add(4, new BearSleepGoal(this));
+        this.goalSelector.add(5, new DistancedFollowParentGoal(this, 1.25D, 48.0D, 8.0D, 12.0D));
+        this.goalSelector.add(5, new SearchForItemsGoal(this, 1.2F, FOOD_ITEMS, 8, 2));
+        this.goalSelector.add(6, new BearHarvestFoodGoal(this, 1.2F, 12, 3));
+        this.goalSelector.add(7, new BearPickupFoodAndSitGoal(this));
+        this.goalSelector.add(8, new WanderAroundGoal(this, 1.0D));
+        this.goalSelector.add(9, new LookAtEntityGoal(this, PlayerEntity.class, 6.0F));
+        this.goalSelector.add(10, new LookAroundGoal(this));
+        this.targetSelector.add(1, new BearHurtByTargetGoal(this));
+        this.targetSelector.add(2, new BearAttackPlayerNearBabiesGoal(this, PlayerEntity.class, 20, false, true, null));
+        this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, 10, true, false, this::shouldAngerAt));
+        this.targetSelector.add(4, new ActiveTargetGoal<>(this, PathAwareEntity.class, 10, true, false, (entity) -> entity.getType().isIn(NaturalistTags.EntityTypes.BEAR_HOSTILES) && !this.isSleeping() && !this.isBaby()));
+        this.targetSelector.add(5, new UniversalAngerGoal<>(this, false));
     }
 
     @Override
-    public void aiStep() {
-        super.aiStep();
-        if (!this.level.isClientSide) {
-            this.updatePersistentAnger((ServerLevel)this.level, true);
+    public void tickMovement() {
+        super.tickMovement();
+        if (!this.world.isClient) {
+            this.tickAngerLogic((ServerWorld)this.world, true);
         }
         if (this.isSleeping() || this.isImmobile()) {
             this.jumping = false;
-            this.xxa = 0.0F;
-            this.zza = 0.0F;
+            this.sidewaysSpeed = 0.0F;
+            this.forwardSpeed = 0.0F;
         }
         this.handleEating();
-        if (!this.getMainHandItem().isEmpty()) {
-            if (this.isAngry()) {
-                this.stopBeingAngry();
+        if (!this.getMainHandStack().isEmpty()) {
+            if (this.hasAngerTime()) {
+                this.stopAnger();
             }
             this.setSniffing(false);
         }
-        this.level.getProfiler().push("looting");
-        if (!this.level.isClientSide && this.canPickUpLoot() && this.isAlive() && !this.dead && this.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
-            for(ItemEntity itementity : this.level.getEntitiesOfClass(ItemEntity.class, this.getBoundingBox().inflate(1.0D, 0.0D, 1.0D))) {
-                if (!itementity.isRemoved() && !itementity.getItem().isEmpty() && this.wantsToPickUp(itementity.getItem())) {
-                    this.pickUpItem(itementity);
+        this.world.getProfiler().push("looting");
+        if (!this.world.isClient && this.canPickUpLoot() && this.isAlive() && !this.dead && this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
+            for(ItemEntity itementity : this.world.getNonSpectatingEntities(ItemEntity.class, this.getBoundingBox().expand(1.0D, 0.0D, 1.0D))) {
+                if (!itementity.isRemoved() && !itementity.getStack().isEmpty() && this.canGather(itementity.getStack())) {
+                    this.loot(itementity);
                 }
             }
         }
-        this.level.getProfiler().pop();
+        this.world.getProfiler().pop();
     }
 
     @Override
@@ -167,125 +188,125 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
     }
 
     @Override
-    protected float getStandingEyeHeight(Pose pPose, EntityDimensions pSize) {
+    protected float getActiveEyeHeight(EntityPose pPose, EntityDimensions pSize) {
         return pSize.height * 0.75F;
     }
 
     // ENTITY DATA
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(SLEEPING, false);
-        this.entityData.define(SNIFFING, false);
-        this.entityData.define(SITTING, false);
-        this.entityData.define(EAT_COUNTER, 0);
-        this.entityData.define(REMAINING_ANGER_TIME, 0);
+    protected void initDataTracker() {
+        super.initDataTracker();
+        this.dataTracker.startTracking(SLEEPING, false);
+        this.dataTracker.startTracking(SNIFFING, false);
+        this.dataTracker.startTracking(SITTING, false);
+        this.dataTracker.startTracking(EAT_COUNTER, 0);
+        this.dataTracker.startTracking(REMAINING_ANGER_TIME, 0);
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag pCompound) {
-        super.readAdditionalSaveData(pCompound);
-        this.readPersistentAngerSaveData(this.level, pCompound);
+    public void readCustomDataFromNbt(NbtCompound pCompound) {
+        super.readCustomDataFromNbt(pCompound);
+        this.readAngerFromNbt(this.world, pCompound);
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag pCompound) {
-        super.addAdditionalSaveData(pCompound);
-        this.addPersistentAngerSaveData(pCompound);
+    public void writeCustomDataToNbt(NbtCompound pCompound) {
+        super.writeCustomDataToNbt(pCompound);
+        this.writeAngerToNbt(pCompound);
     }
 
     @Override
     public boolean isSleeping() {
-        return this.entityData.get(SLEEPING);
+        return this.dataTracker.get(SLEEPING);
     }
 
     @Override
     public boolean canSleep() {
-        long dayTime = this.level.getDayTime();
-        return (dayTime < 12000 || dayTime > 18000) && dayTime < 23000 && dayTime > 6000 && !this.isAngry() && !this.level.isWaterAt(this.blockPosition());
+        long dayTime = this.world.getTimeOfDay();
+        return (dayTime < 12000 || dayTime > 18000) && dayTime < 23000 && dayTime > 6000 && !this.hasAngerTime() && !this.world.isWater(this.getBlockPos());
     }
 
     @Override
     public void setSleeping(boolean sleeping) {
-        this.entityData.set(SLEEPING, sleeping);
+        this.dataTracker.set(SLEEPING, sleeping);
     }
 
     public boolean isSniffing() {
-        return this.entityData.get(SNIFFING);
+        return this.dataTracker.get(SNIFFING);
     }
 
     public void setSniffing(boolean sniffing) {
-        this.entityData.set(SNIFFING, sniffing);
+        this.dataTracker.set(SNIFFING, sniffing);
     }
 
     public boolean isSitting() {
-        return this.entityData.get(SITTING);
+        return this.dataTracker.get(SITTING);
     }
 
     public void setSitting(boolean sitting) {
-        this.entityData.set(SITTING, sitting);
+        this.dataTracker.set(SITTING, sitting);
     }
 
     public boolean isEating() {
-        return this.entityData.get(EAT_COUNTER) > 0;
+        return this.dataTracker.get(EAT_COUNTER) > 0;
     }
 
     public void eat(boolean eat) {
-        this.entityData.set(EAT_COUNTER, eat ? 1 : 0);
+        this.dataTracker.set(EAT_COUNTER, eat ? 1 : 0);
     }
 
     private int getEatCounter() {
-        return this.entityData.get(EAT_COUNTER);
+        return this.dataTracker.get(EAT_COUNTER);
     }
 
     private void setEatCounter(int amount) {
-        this.entityData.set(EAT_COUNTER, amount);
+        this.dataTracker.set(EAT_COUNTER, amount);
     }
 
     // ANGER
 
     @Override
-    public void startPersistentAngerTimer() {
-        this.setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(this.random));
+    public void chooseRandomAngerTime() {
+        this.setAngerTime(PERSISTENT_ANGER_TIME.get(this.random));
     }
 
     @Override
-    public void setRemainingPersistentAngerTime(int pTime) {
-        this.entityData.set(REMAINING_ANGER_TIME, pTime);
+    public void setAngerTime(int pTime) {
+        this.dataTracker.set(REMAINING_ANGER_TIME, pTime);
     }
 
     @Override
-    public int getRemainingPersistentAngerTime() {
-        return this.entityData.get(REMAINING_ANGER_TIME);
+    public int getAngerTime() {
+        return this.dataTracker.get(REMAINING_ANGER_TIME);
     }
 
     @Override
-    public void setPersistentAngerTarget(@Nullable UUID pTarget) {
+    public void setAngryAt(@Nullable UUID pTarget) {
         this.persistentAngerTarget = pTarget;
     }
 
     @Nullable
     @Override
-    public UUID getPersistentAngerTarget() {
+    public UUID getAngryAt() {
         return this.persistentAngerTarget;
     }
 
     // EATING
 
     private void handleEating() {
-        if (!this.isEating() && this.isSitting() && !this.isSleeping() && !this.getMainHandItem().isEmpty() && this.random.nextInt(80) == 1) {
+        if (!this.isEating() && this.isSitting() && !this.isSleeping() && !this.getMainHandStack().isEmpty() && this.random.nextInt(80) == 1) {
             this.eat(true);
-        } else if (this.getMainHandItem().isEmpty() || !this.isSitting()) {
+        } else if (this.getMainHandStack().isEmpty() || !this.isSitting()) {
             this.eat(false);
         }
         if (this.isEating()) {
             this.addEatingParticles();
-            if (!this.level.isClientSide && this.getEatCounter() > 40) {
-                if (this.isFood(this.getItemBySlot(EquipmentSlot.MAINHAND))) {
-                    if (!this.level.isClientSide) {
-                        this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
-                        this.gameEvent(GameEvent.EAT);
+            if (!this.world.isClient && this.getEatCounter() > 40) {
+                if (this.isBreedingItem(this.getEquippedStack(EquipmentSlot.MAINHAND))) {
+                    if (!this.world.isClient) {
+                        this.equipStack(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+                        this.emitGameEvent(GameEvent.EAT);
                     }
                     this.setSitting(false);
                 }
@@ -301,70 +322,70 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
             this.playSound(NaturalistSoundEvents.BEAR_EAT.get(), 0.5F + 0.5F * (float)this.random.nextInt(2), (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
 
             for(int i = 0; i < 6; ++i) {
-                Vec3 speedVec = new Vec3(((double)this.random.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, ((double)this.random.nextFloat() - 0.5D) * 0.1D);
-                speedVec  = speedVec .xRot(-this.getXRot() * ((float)Math.PI / 180F));
-                speedVec  = speedVec .yRot(-this.getYRot() * ((float)Math.PI / 180F));
+                Vec3d speedVec = new Vec3d(((double)this.random.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, ((double)this.random.nextFloat() - 0.5D) * 0.1D);
+                speedVec  = speedVec .rotateX(-this.getPitch() * ((float)Math.PI / 180F));
+                speedVec  = speedVec .rotateY(-this.getYaw() * ((float)Math.PI / 180F));
                 double y = (double)(-this.random.nextFloat()) * 0.6D - 0.3D;
-                Vec3 posVec = new Vec3(((double)this.random.nextFloat() - 0.5D) * 0.8D, y, 1.0D + ((double)this.random.nextFloat() - 0.5D) * 0.4D);
-                posVec = posVec.yRot(-this.yBodyRot * ((float)Math.PI / 180F));
+                Vec3d posVec = new Vec3d(((double)this.random.nextFloat() - 0.5D) * 0.8D, y, 1.0D + ((double)this.random.nextFloat() - 0.5D) * 0.4D);
+                posVec = posVec.rotateY(-this.bodyYaw * ((float)Math.PI / 180F));
                 posVec = posVec.add(this.getX(), this.getEyeY() + 1.0D, this.getZ());
-                this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, this.getItemBySlot(EquipmentSlot.MAINHAND)), posVec.x, posVec.y, posVec.z, speedVec .x, speedVec .y + 0.05D, speedVec .z);
+                this.world.addParticle(new ItemStackParticleEffect(ParticleTypes.ITEM, this.getEquippedStack(EquipmentSlot.MAINHAND)), posVec.x, posVec.y, posVec.z, speedVec .x, speedVec .y + 0.05D, speedVec .z);
             }
         }
     }
 
     @Override
-    public boolean canTakeItem(ItemStack pItemstack) {
-        EquipmentSlot slot = Mob.getEquipmentSlotForItem(pItemstack);
-        if (!this.getItemBySlot(slot).isEmpty() || this.isBaby()) {
+    public boolean canEquip(ItemStack pItemstack) {
+        EquipmentSlot slot = MobEntity.getPreferredEquipmentSlot(pItemstack);
+        if (!this.getEquippedStack(slot).isEmpty() || this.isBaby()) {
             return false;
         } else {
-            return slot == EquipmentSlot.MAINHAND && super.canTakeItem(pItemstack);
+            return slot == EquipmentSlot.MAINHAND && super.canEquip(pItemstack);
         }
     }
 
     @Override
-    protected void pickUpItem(ItemEntity pItemEntity) {
-        ItemStack stack = pItemEntity.getItem();
-        if (this.getMainHandItem().isEmpty() && FOOD_ITEMS.test(stack) && !this.isBaby()) {
-            this.onItemPickup(pItemEntity);
-            this.setItemSlot(EquipmentSlot.MAINHAND, stack);
-            this.handDropChances[EquipmentSlot.MAINHAND.getIndex()] = 2.0F;
-            this.take(pItemEntity, stack.getCount());
+    protected void loot(ItemEntity pItemEntity) {
+        ItemStack stack = pItemEntity.getStack();
+        if (this.getMainHandStack().isEmpty() && FOOD_ITEMS.test(stack) && !this.isBaby()) {
+            this.triggerItemPickedUpByEntityCriteria(pItemEntity);
+            this.equipStack(EquipmentSlot.MAINHAND, stack);
+            this.handDropChances[EquipmentSlot.MAINHAND.getEntitySlotId()] = 2.0F;
+            this.sendPickup(pItemEntity, stack.getCount());
             pItemEntity.discard();
         }
     }
 
     @Override
-    public boolean hurt(DamageSource pSource, float pAmount) {
-        if (!this.getMainHandItem().isEmpty() && !this.level.isClientSide) {
-            ItemEntity itemEntity = new ItemEntity(this.level, this.getX() + this.getLookAngle().x, this.getY() + 1.0D, this.getZ() + this.getLookAngle().z, this.getMainHandItem());
-            itemEntity.setPickUpDelay(80);
-            itemEntity.setThrower(this.getUUID());
+    public boolean damage(DamageSource pSource, float pAmount) {
+        if (!this.getMainHandStack().isEmpty() && !this.world.isClient) {
+            ItemEntity itemEntity = new ItemEntity(this.world, this.getX() + this.getRotationVector().x, this.getY() + 1.0D, this.getZ() + this.getRotationVector().z, this.getMainHandStack());
+            itemEntity.setPickupDelay(80);
+            itemEntity.setThrower(this.getUuid());
             this.playSound(NaturalistSoundEvents.BEAR_SPIT.get(), 1.0F, 1.0F);
-            this.level.addFreshEntity(itemEntity);
-            this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+            this.world.spawnEntity(itemEntity);
+            this.equipStack(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
         }
-        return super.hurt(pSource, pAmount);
+        return super.damage(pSource, pAmount);
     }
 
     // MOVEMENT
 
     @Override
-    protected float getWaterSlowDown() {
+    protected float getBaseMovementSpeedMultiplier() {
         return 0.98F;
     }
 
     void tryToSit() {
         if (!this.isTouchingWater()) {
-            this.setZza(0.0F);
+            this.setForwardSpeed(0.0F);
             this.getNavigation().stop();
             this.setSitting(true);
         }
     }
 
     boolean isTouchingWater() {
-        return this.level.isWaterAt(this.blockPosition());
+        return this.world.isWater(this.getBlockPos());
     }
 
     // SOUNDS
@@ -388,13 +409,13 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
     }
 
     @Override
-    public float getVoicePitch() {
-        return this.isSleeping() ? super.getVoicePitch() * 0.25F : super.getVoicePitch();
+    public float getSoundPitch() {
+        return this.isSleeping() ? super.getSoundPitch() * 0.25F : super.getSoundPitch();
     }
 
     @Override
     protected void playStepSound(BlockPos pPos, BlockState pBlock) {
-        this.playSound(SoundEvents.POLAR_BEAR_STEP, 0.15F, 1.0F);
+        this.playSound(SoundEvents.ENTITY_POLAR_BEAR_STEP, 0.15F, 1.0F);
     }
 
     // ANIMATION
@@ -427,10 +448,10 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
     }
 
     private <E extends IAnimatable> PlayState swingPredicate(AnimationEvent<E> event) {
-        if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
+        if (this.handSwinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
             event.getController().markNeedsReload();
             event.getController().setAnimation(new AnimationBuilder().addAnimation("bear.swing", false));
-            this.swinging = false;
+            this.handSwinging = false;
         }
         return PlayState.CONTINUE;
     }
@@ -460,18 +481,18 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
 
     // GOALS
 
-    static class BearPanicGoal extends PanicGoal {
-        public BearPanicGoal(PathfinderMob pMob, double pSpeedModifier) {
+    static class BearPanicGoal extends EscapeDangerGoal {
+        public BearPanicGoal(PathAwareEntity pMob, double pSpeedModifier) {
             super(pMob, pSpeedModifier);
         }
 
         @Override
-        protected boolean shouldPanic() {
-            return mob.getLastHurtByMob() != null && mob.isBaby() || mob.isOnFire();
+        protected boolean isInDanger() {
+            return mob.getAttacker() != null && mob.isBaby() || mob.isOnFire();
         }
     }
 
-    static class BearHurtByTargetGoal extends HurtByTargetGoal {
+    static class BearHurtByTargetGoal extends RevengeGoal {
         private final Bear bear;
 
         public BearHurtByTargetGoal(Bear pMob, Class<?>... pToIgnoreDamage) {
@@ -483,32 +504,32 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
         public void start() {
             super.start();
             if (bear.isBaby()) {
-                this.alertOthers();
+                this.callSameTypeForRevenge();
                 this.stop();
             }
         }
 
         @Override
-        protected void alertOther(Mob pMob, LivingEntity pTarget) {
+        protected void setMobEntityTarget(MobEntity pMob, LivingEntity pTarget) {
             if (pMob instanceof Bear && !pMob.isBaby()) {
-                super.alertOther(pMob, pTarget);
+                super.setMobEntityTarget(pMob, pTarget);
             }
         }
     }
 
-    static class BearAttackPlayerNearBabiesGoal extends NearestAttackableTargetGoal<Player> {
+    static class BearAttackPlayerNearBabiesGoal extends ActiveTargetGoal<PlayerEntity> {
         private final Bear bear;
 
-        public BearAttackPlayerNearBabiesGoal(Bear pMob, Class<Player> pTargetType, int pRandomInterval, boolean pMustSee, boolean pMustReach, @org.jetbrains.annotations.Nullable Predicate<LivingEntity> pTargetPredicate) {
+        public BearAttackPlayerNearBabiesGoal(Bear pMob, Class<PlayerEntity> pTargetType, int pRandomInterval, boolean pMustSee, boolean pMustReach, @org.jetbrains.annotations.Nullable Predicate<LivingEntity> pTargetPredicate) {
             super(pMob, pTargetType, pRandomInterval, pMustSee, pMustReach, pTargetPredicate);
             this.bear = pMob;
         }
 
         @Override
-        public boolean canUse() {
+        public boolean canStart() {
             if (!bear.isBaby() && !bear.isSleeping()) {
-                if (super.canUse()) {
-                    for (Bear bear : bear.level.getEntitiesOfClass(Bear.class, bear.getBoundingBox().inflate(8.0D, 4.0D, 8.0D))) {
+                if (super.canStart()) {
+                    for (Bear bear : bear.world.getNonSpectatingEntities(Bear.class, bear.getBoundingBox().expand(8.0D, 4.0D, 8.0D))) {
                         if (bear.isBaby()) {
                             return true;
                         }
@@ -520,8 +541,8 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
         }
 
         @Override
-        protected double getFollowDistance() {
-            return super.getFollowDistance() * 0.5D;
+        protected double getFollowRange() {
+            return super.getFollowRange() * 0.5D;
         }
     }
 
@@ -537,7 +558,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
         }
     }
 
-    static class BearHarvestFoodGoal extends MoveToBlockGoal {
+    static class BearHarvestFoodGoal extends MoveToTargetPosGoal {
         protected int ticksWaited;
         private final Bear bear;
 
@@ -547,22 +568,22 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
         }
 
         @Override
-        public double acceptedDistance() {
+        public double getDesiredDistanceToTarget() {
             return 3.0D;
         }
 
-        public boolean shouldRecalculatePath() {
-            return this.tryTicks % 100 == 0;
+        public boolean shouldResetPath() {
+            return this.tryingTime % 100 == 0;
         }
 
         @Override
-        protected boolean isValidTarget(LevelReader pLevel, BlockPos pPos) {
+        protected boolean isTargetPos(WorldView pLevel, BlockPos pPos) {
             BlockState state = pLevel.getBlockState(pPos);
             if (state.getBlock() instanceof BeehiveBlock) {
-                return state.getValue(BeehiveBlock.HONEY_LEVEL) >= 5;
-            } else if (state.is(Blocks.SWEET_BERRY_BUSH)) {
-                return state.getValue(SweetBerryBushBlock.AGE) >= 2;
-            } else if (state.is(Blocks.CAMPFIRE) && pLevel.getBlockEntity(pPos) instanceof CampfireBlockEntity campfire) {
+                return state.get(BeehiveBlock.HONEY_LEVEL) >= 5;
+            } else if (state.isOf(Blocks.SWEET_BERRY_BUSH)) {
+                return state.get(SweetBerryBushBlock.AGE) >= 2;
+            } else if (state.isOf(Blocks.CAMPFIRE) && pLevel.getBlockEntity(pPos) instanceof CampfireBlockEntity campfire) {
                 return campfireIsTempting(campfire);
             }
             return false;
@@ -570,49 +591,49 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
 
         @Override
         public void tick() {
-            if (this.isReachedTarget()) {
+            if (this.hasReached()) {
                 if (this.ticksWaited >= 40) {
                     this.onReachedTarget();
                 } else {
                     ++this.ticksWaited;
                 }
-            } else if (!this.isReachedTarget() && bear.getRandom().nextFloat() < 0.05F) {
+            } else if (!this.hasReached() && bear.getRandom().nextFloat() < 0.05F) {
                 bear.playSound(NaturalistSoundEvents.BEAR_SNIFF.get(), 1.0F, 1.0F);
                 bear.setSniffing(true);
             }
-            bear.getLookControl().setLookAt(blockPos.getX() + 0.5D, blockPos.getY(), blockPos.getZ() + 0.5D, 10.0F, bear.getMaxHeadXRot());
+            bear.getLookControl().lookAt(targetPos.getX() + 0.5D, targetPos.getY(), targetPos.getZ() + 0.5D, 10.0F, bear.getMaxLookPitchChange());
             super.tick();
         }
 
         protected void onReachedTarget() {
-            if (bear.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
-                BlockState state = bear.level.getBlockState(blockPos);
+            if (bear.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
+                BlockState state = bear.world.getBlockState(targetPos);
                 bear.setSniffing(false);
-                if (state.getBlock() instanceof BeehiveBlock && state.getValue(BeehiveBlock.HONEY_LEVEL) >= 5) {
+                if (state.getBlock() instanceof BeehiveBlock && state.get(BeehiveBlock.HONEY_LEVEL) >= 5) {
                     this.harvestHoney(state);
-                } else if (state.is(Blocks.SWEET_BERRY_BUSH) && state.getValue(SweetBerryBushBlock.AGE) >= 2) {
+                } else if (state.isOf(Blocks.SWEET_BERRY_BUSH) && state.get(SweetBerryBushBlock.AGE) >= 2) {
                     this.pickSweetBerries(state);
-                } else if (state.is(Blocks.CAMPFIRE) && bear.level.getBlockEntity(blockPos) instanceof CampfireBlockEntity campfire && campfireIsTempting(campfire)) {
+                } else if (state.isOf(Blocks.CAMPFIRE) && bear.world.getBlockEntity(targetPos) instanceof CampfireBlockEntity campfire && campfireIsTempting(campfire)) {
                     this.stealCampfireFood(state, campfire);
                 }
             }
         }
 
         private void stealCampfireFood(BlockState state, CampfireBlockEntity campfire) {
-            for (int i = 0; i < campfire.getItems().size(); i++) {
-                if (FOOD_ITEMS.test(campfire.getItems().get(i))) {
-                    Containers.dropItemStack(bear.level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), campfire.getItems().get(i));
-                    campfire.getItems().set(i, ItemStack.EMPTY);
-                    bear.level.sendBlockUpdated(blockPos, state, state, 3);
-                    campfire.setChanged();
+            for (int i = 0; i < campfire.getItemsBeingCooked().size(); i++) {
+                if (FOOD_ITEMS.test(campfire.getItemsBeingCooked().get(i))) {
+                    ItemScatterer.spawn(bear.world, targetPos.getX(), targetPos.getY(), targetPos.getZ(), campfire.getItemsBeingCooked().get(i));
+                    campfire.getItemsBeingCooked().set(i, ItemStack.EMPTY);
+                    bear.world.updateListeners(targetPos, state, state, 3);
+                    campfire.markDirty();
                     break;
                 }
             }
         }
 
         private boolean campfireIsTempting(CampfireBlockEntity campfire) {
-            for (int i = 0; i < campfire.getItems().size(); i++) {
-                if (FOOD_ITEMS.test(campfire.getItems().get(i))) {
+            for (int i = 0; i < campfire.getItemsBeingCooked().size(); i++) {
+                if (FOOD_ITEMS.test(campfire.getItemsBeingCooked().get(i))) {
                     return true;
                 }
             }
@@ -620,31 +641,31 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
         }
 
         private void harvestHoney(BlockState state) {
-            state.setValue(BeehiveBlock.HONEY_LEVEL, 0);
-            BeehiveBlock.dropHoneycomb(bear.level, blockPos);
-            bear.playSound(SoundEvents.BEEHIVE_SHEAR, 1.0F, 1.0F);
-            bear.level.setBlock(blockPos, state.setValue(BeehiveBlock.HONEY_LEVEL, 0), 2);
-            bear.swing(InteractionHand.MAIN_HAND);
+            state.with(BeehiveBlock.HONEY_LEVEL, 0);
+            BeehiveBlock.dropHoneycomb(bear.world, targetPos);
+            bear.playSound(SoundEvents.BLOCK_BEEHIVE_SHEAR, 1.0F, 1.0F);
+            bear.world.setBlockState(targetPos, state.with(BeehiveBlock.HONEY_LEVEL, 0), 2);
+            bear.swingHand(Hand.MAIN_HAND);
         }
 
         private void pickSweetBerries(BlockState state) {
-            int age = state.getValue(SweetBerryBushBlock.AGE);
-            state.setValue(SweetBerryBushBlock.AGE, 1);
-            int berryAmount = 1 + bear.level.random.nextInt(2) + (age == 3 ? 1 : 0);
-            Block.popResource(bear.level, this.blockPos, new ItemStack(Items.SWEET_BERRIES, berryAmount));
-            bear.playSound(SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, 1.0F, 1.0F);
-            bear.level.setBlock(this.blockPos, state.setValue(SweetBerryBushBlock.AGE, 1), 2);
-            bear.swing(InteractionHand.MAIN_HAND);
+            int age = state.get(SweetBerryBushBlock.AGE);
+            state.with(SweetBerryBushBlock.AGE, 1);
+            int berryAmount = 1 + bear.world.random.nextInt(2) + (age == 3 ? 1 : 0);
+            Block.dropStack(bear.world, this.targetPos, new ItemStack(Items.SWEET_BERRIES, berryAmount));
+            bear.playSound(SoundEvents.BLOCK_SWEET_BERRY_BUSH_PICK_BERRIES, 1.0F, 1.0F);
+            bear.world.setBlockState(this.targetPos, state.with(SweetBerryBushBlock.AGE, 1), 2);
+            bear.swingHand(Hand.MAIN_HAND);
         }
 
         @Override
-        public boolean canUse() {
-            return !bear.isBaby() && bear.getMainHandItem().isEmpty() && super.canUse();
+        public boolean canStart() {
+            return !bear.isBaby() && bear.getMainHandStack().isEmpty() && super.canStart();
         }
 
         @Override
-        public boolean canContinueToUse() {
-            return bear.getMainHandItem().isEmpty() && super.canContinueToUse();
+        public boolean shouldContinue() {
+            return bear.getMainHandStack().isEmpty() && super.shouldContinue();
         }
 
         @Override
@@ -654,16 +675,16 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
         }
 
         @Override
-        protected BlockPos getMoveToTarget() {
-            BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos().set(blockPos);
-            while (bear.level.getBlockState(mutable.below()).isAir()) {
+        protected BlockPos getTargetPos() {
+            BlockPos.Mutable mutable = new BlockPos.Mutable().set(targetPos);
+            while (bear.world.getBlockState(mutable.down()).isAir()) {
                 mutable.move(Direction.DOWN);
             }
             return mutable;
         }
     }
 
-    static class BearFloatGoal extends FloatGoal {
+    static class BearFloatGoal extends SwimGoal {
         private final Bear bear;
 
         public BearFloatGoal(Bear pMob) {
@@ -672,11 +693,11 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
         }
 
         @Override
-        public boolean canUse() {
+        public boolean canStart() {
             if (!bear.isBaby()) {
-                return (bear.level.isWaterAt(bear.blockPosition().below()) || bear.level.isWaterAt(bear.blockPosition().above())) && super.canUse();
+                return (bear.world.isWater(bear.getBlockPos().down()) || bear.world.isWater(bear.getBlockPos().up())) && super.canStart();
             } else {
-                return super.canUse();
+                return super.canStart();
             }
         }
     }
@@ -690,8 +711,8 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
         }
 
         @Override
-        public boolean canUse() {
-            return bear.getMainHandItem().isEmpty() && super.canUse();
+        public boolean canStart() {
+            return bear.getMainHandStack().isEmpty() && super.canStart();
         }
 
         @Override
@@ -720,34 +741,34 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
         private final Bear bear;
         
         public BearPickupFoodAndSitGoal(Bear bear) {
-            this.setFlags(EnumSet.of(Flag.MOVE));
+            this.setControls(EnumSet.of(Control.MOVE));
             this.bear = bear;
         }
 
         @Override
-        public boolean canUse() {
-            if (this.cooldown <= bear.tickCount && !bear.isBaby() && !bear.isTouchingWater() && !bear.isSleeping() && !bear.isSitting()) {
-                return !bear.getMainHandItem().isEmpty();
+        public boolean canStart() {
+            if (this.cooldown <= bear.age && !bear.isBaby() && !bear.isTouchingWater() && !bear.isSleeping() && !bear.isSitting()) {
+                return !bear.getMainHandStack().isEmpty();
             } else {
                 return false;
             }
         }
 
         @Override
-        public boolean canContinueToUse() {
+        public boolean shouldContinue() {
             return !bear.isTouchingWater();
         }
 
         @Override
         public void tick() {
-            if (!bear.isSitting() && !bear.getMainHandItem().isEmpty()) {
+            if (!bear.isSitting() && !bear.getMainHandStack().isEmpty()) {
                 bear.tryToSit();
             }
         }
 
         @Override
         public void start() {
-            if (!bear.getMainHandItem().isEmpty()) {
+            if (!bear.getMainHandStack().isEmpty()) {
                 bear.tryToSit();
             }
 
@@ -756,12 +777,12 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
 
         @Override
         public void stop() {
-            ItemStack stack = bear.getItemBySlot(EquipmentSlot.MAINHAND);
+            ItemStack stack = bear.getEquippedStack(EquipmentSlot.MAINHAND);
             if (!stack.isEmpty()) {
-                bear.spawnAtLocation(stack);
-                bear.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+                bear.dropStack(stack);
+                bear.equipStack(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
                 int cooldownSeconds = bear.random.nextInt(150) + 10;
-                this.cooldown = bear.tickCount + cooldownSeconds * 20;
+                this.cooldown = bear.age + cooldownSeconds * 20;
             }
             bear.setSitting(false);
         }
@@ -769,23 +790,23 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
 
     static class BearMeleeAttackGoal extends MeleeAttackGoal {
 
-        public BearMeleeAttackGoal(PathfinderMob pMob, double pSpeedModifier, boolean pFollowingTargetEvenIfNotSeen) {
+        public BearMeleeAttackGoal(PathAwareEntity pMob, double pSpeedModifier, boolean pFollowingTargetEvenIfNotSeen) {
             super(pMob, pSpeedModifier, pFollowingTargetEvenIfNotSeen);
         }
 
         @Override
-        public boolean canUse() {
-            return mob.getMainHandItem().isEmpty() && super.canUse();
+        public boolean canStart() {
+            return mob.getMainHandStack().isEmpty() && super.canStart();
         }
 
         @Override
-        public boolean canContinueToUse() {
-            return mob.getMainHandItem().isEmpty() && super.canContinueToUse();
+        public boolean shouldContinue() {
+            return mob.getMainHandStack().isEmpty() && super.shouldContinue();
         }
 
         @Override
-        protected double getAttackReachSqr(LivingEntity pAttackTarget) {
-            return pAttackTarget instanceof AbstractSchoolingFish ? super.getAttackReachSqr(pAttackTarget) : 4.0F + pAttackTarget.getBbWidth();
+        protected double getSquaredMaxAttackDistance(LivingEntity pAttackTarget) {
+            return pAttackTarget instanceof SchoolingFishEntity ? super.getSquaredMaxAttackDistance(pAttackTarget) : 4.0F + pAttackTarget.getWidth();
         }
     }
 }

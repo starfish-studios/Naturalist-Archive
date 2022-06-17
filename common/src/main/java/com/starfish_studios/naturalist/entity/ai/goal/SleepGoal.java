@@ -1,22 +1,21 @@
 package com.starfish_studios.naturalist.entity.ai.goal;
 
 import com.starfish_studios.naturalist.entity.SleepingAnimal;
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.ai.goal.Goal;
-
 import java.util.EnumSet;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.mob.PathAwareEntity;
 
-public class SleepGoal<E extends PathfinderMob & SleepingAnimal> extends Goal {
+public class SleepGoal<E extends PathAwareEntity & SleepingAnimal> extends Goal {
     private final E mob;
 
     public SleepGoal(E mob) {
-        this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.JUMP));
+        this.setControls(EnumSet.of(Control.MOVE, Control.LOOK, Control.JUMP));
         this.mob = mob;
     }
 
     @Override
-    public boolean canUse() {
-        if (mob.xxa == 0.0F && mob.yya == 0.0F && mob.zza == 0.0F) {
+    public boolean canStart() {
+        if (mob.sidewaysSpeed == 0.0F && mob.upwardSpeed == 0.0F && mob.forwardSpeed == 0.0F) {
             return mob.canSleep() || mob.isSleeping();
         } else {
             return false;
@@ -24,7 +23,7 @@ public class SleepGoal<E extends PathfinderMob & SleepingAnimal> extends Goal {
     }
 
     @Override
-    public boolean canContinueToUse() {
+    public boolean shouldContinue() {
         return mob.canSleep();
     }
 
@@ -33,7 +32,7 @@ public class SleepGoal<E extends PathfinderMob & SleepingAnimal> extends Goal {
         mob.setJumping(false);
         mob.setSleeping(true);
         mob.getNavigation().stop();
-        mob.getMoveControl().setWantedPosition(mob.getX(), mob.getY(), mob.getZ(), 0.0D);
+        mob.getMoveControl().moveTo(mob.getX(), mob.getY(), mob.getZ(), 0.0D);
     }
 
     @Override

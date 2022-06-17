@@ -1,21 +1,23 @@
 package com.starfish_studios.naturalist.platform;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.SpawnRestriction;
+import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemConvertible;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.SpawnEggItem;
+import net.minecraft.potion.Potion;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.Identifier;
+import net.minecraft.world.Heightmap;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SpawnEggItem;
-import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.material.Fluid;
-
 import java.util.function.Supplier;
 
 public class CommonPlatformHelper {
@@ -30,7 +32,7 @@ public class CommonPlatformHelper {
     }
 
     @ExpectPlatform
-    public static <T extends Mob> Supplier<SpawnEggItem> registerSpawnEggItem(String name, Supplier<EntityType<T>> entityType, int backgroundColor, int highlightColor) {
+    public static <T extends MobEntity> Supplier<SpawnEggItem> registerSpawnEggItem(String name, Supplier<EntityType<T>> entityType, int backgroundColor, int highlightColor) {
         throw new AssertionError();
     }
 
@@ -45,12 +47,12 @@ public class CommonPlatformHelper {
     }
 
     @ExpectPlatform
-    public static <T extends Entity> Supplier<EntityType<T>> registerEntityType(String name, EntityType.EntityFactory<T> factory, MobCategory category, float width, float height, int clientTrackingRange) {
+    public static <T extends Entity> Supplier<EntityType<T>> registerEntityType(String name, EntityType.EntityFactory<T> factory, SpawnGroup category, float width, float height, int clientTrackingRange) {
         throw new AssertionError();
     }
 
     @ExpectPlatform
-    public static CreativeModeTab registerCreativeModeTab(ResourceLocation name, Supplier<ItemStack> icon) {
+    public static ItemGroup registerCreativeModeTab(Identifier name, Supplier<ItemStack> icon) {
         throw new AssertionError();
     }
 
@@ -65,12 +67,12 @@ public class CommonPlatformHelper {
     }
 
     @ExpectPlatform
-    public static <T extends Mob> void registerSpawnPlacement(EntityType<T> entityType, SpawnPlacements.Type decoratorType, Heightmap.Types heightMapType, SpawnPlacements.SpawnPredicate<T> decoratorPredicate) {
+    public static <T extends MobEntity> void registerSpawnPlacement(EntityType<T> entityType, SpawnRestriction.Location decoratorType, Heightmap.Type heightMapType, SpawnRestriction.SpawnPredicate<T> decoratorPredicate) {
         throw new AssertionError();
     }
 
     @ExpectPlatform
-    public static void registerCompostable(float chance, ItemLike item) {
+    public static void registerCompostable(float chance, ItemConvertible item) {
         throw new AssertionError();
     }
 }

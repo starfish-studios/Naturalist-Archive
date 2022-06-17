@@ -3,23 +3,24 @@ package com.starfish_studios.naturalist.platform.forge;
 import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.item.forge.NoFluidMobBucketItem;
 import com.starfish_studios.naturalist.util.forge.NaturalistBrewingRecipe;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.block.Block;
+import net.minecraft.block.ComposterBlock;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.SpawnRestriction;
+import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemConvertible;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.SpawnEggItem;
+import net.minecraft.potion.Potion;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.Identifier;
+import net.minecraft.world.Heightmap;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SpawnEggItem;
-import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.ComposterBlock;
-import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.registries.DeferredRegister;
@@ -42,26 +43,26 @@ public class CommonPlatformHelperImpl {
         return ITEMS.register(name, item);
     }
 
-    public static <T extends Mob> Supplier<SpawnEggItem> registerSpawnEggItem(String name, Supplier<EntityType<T>> entityType, int backgroundColor, int highlightColor) {
-        return ITEMS.register(name, () -> new ForgeSpawnEggItem(entityType, backgroundColor, highlightColor, new Item.Properties().tab(Naturalist.TAB)));
+    public static <T extends MobEntity> Supplier<SpawnEggItem> registerSpawnEggItem(String name, Supplier<EntityType<T>> entityType, int backgroundColor, int highlightColor) {
+        return ITEMS.register(name, () -> new ForgeSpawnEggItem(entityType, backgroundColor, highlightColor, new Item.Settings().group(Naturalist.TAB)));
     }
 
     public static Supplier<Item> registerMobBucketItem(String name, Supplier<? extends EntityType<?>> entitySupplier, Supplier<? extends Fluid> fluidSupplier, Supplier<? extends SoundEvent> soundSupplier) {
-        return ITEMS.register(name, () -> new NoFluidMobBucketItem(entitySupplier, fluidSupplier, soundSupplier, new Item.Properties().tab(Naturalist.TAB).stacksTo(1)));
+        return ITEMS.register(name, () -> new NoFluidMobBucketItem(entitySupplier, fluidSupplier, soundSupplier, new Item.Settings().group(Naturalist.TAB).stacksTo(1)));
     }
 
     public static <T extends SoundEvent> Supplier<T> registerSoundEvent(String name, Supplier<T> soundEvent) {
         return SOUND_EVENTS.register(name, soundEvent);
     }
 
-    public static <T extends Entity> Supplier<EntityType<T>> registerEntityType(String name, EntityType.EntityFactory<T> factory, MobCategory category, float width, float height, int clientTrackingRange) {
-        return ENTITY_TYPES.register(name, () -> EntityType.Builder.of(factory, category).sized(width, height).clientTrackingRange(clientTrackingRange).build(name));
+    public static <T extends Entity> Supplier<EntityType<T>> registerEntityType(String name, EntityType.EntityFactory<T> factory, SpawnGroup category, float width, float height, int clientTrackingRange) {
+        return ENTITY_TYPES.register(name, () -> EntityType.Builder.create(factory, category).setDimensions(width, height).maxTrackingRange(clientTrackingRange).build(name));
     }
 
-    public static CreativeModeTab registerCreativeModeTab(ResourceLocation name, Supplier<ItemStack> icon) {
-        return new CreativeModeTab(name.toLanguageKey()) {
+    public static ItemGroup registerCreativeModeTab(Identifier name, Supplier<ItemStack> icon) {
+        return new ItemGroup(name.toLanguageKey()) {
             @Override
-            public ItemStack makeIcon() {
+            public ItemStack createIcon() {
                 return icon.get();
             }
         };
@@ -75,11 +76,11 @@ public class CommonPlatformHelperImpl {
         BrewingRecipeRegistry.addRecipe(new NaturalistBrewingRecipe(input, ingredient, output));
     }
 
-    public static <T extends Mob> void registerSpawnPlacement(EntityType<T> entityType, SpawnPlacements.Type decoratorType, Heightmap.Types heightMapType, SpawnPlacements.SpawnPredicate<T> decoratorPredicate) {
-        SpawnPlacements.register(entityType, decoratorType, heightMapType, decoratorPredicate);
+    public static <T extends MobEntity> void registerSpawnPlacement(EntityType<T> entityType, SpawnRestriction.Location decoratorType, Heightmap.Type heightMapType, SpawnRestriction.SpawnPredicate<T> decoratorPredicate) {
+        SpawnRestriction.register(entityType, decoratorType, heightMapType, decoratorPredicate);
     }
 
-    public static void registerCompostable(float chance, ItemLike item) {
-        ComposterBlock.COMPOSTABLES.put(item.asItem(), chance);
+    public static void registerCompostable(float chance, ItemConvertible item) {
+        ComposterBlock.ITEM_TO_LEVEL_INCREASE_CHANCE.put(item.asItem(), chance);
     }
 }

@@ -1,16 +1,16 @@
 package com.starfish_studios.naturalist.entity.ai.goal;
 
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.mob.PathAwareEntity;
 
 public class CloseMeleeAttackGoal extends MeleeAttackGoal {
-    public CloseMeleeAttackGoal(PathfinderMob pMob, double pSpeedModifier, boolean pFollowingTargetEvenIfNotSeen) {
+    public CloseMeleeAttackGoal(PathAwareEntity pMob, double pSpeedModifier, boolean pFollowingTargetEvenIfNotSeen) {
         super(pMob, pSpeedModifier, pFollowingTargetEvenIfNotSeen);
     }
 
     @Override
-    protected double getAttackReachSqr(LivingEntity pAttackTarget) {
-        return 4.0F + pAttackTarget.getBbWidth();
+    protected double getSquaredMaxAttackDistance(LivingEntity pAttackTarget) {
+        return 4.0F + pAttackTarget.getWidth();
     }
 }

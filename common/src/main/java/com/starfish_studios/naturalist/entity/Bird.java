@@ -3,36 +3,53 @@ package com.starfish_studios.naturalist.entity;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Mth;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.LeavesBlock;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityDimensions;
+import net.minecraft.entity.EntityPose;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.Flutterer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.FuzzyTargeting;
+import net.minecraft.entity.ai.control.FlightMoveControl;
+import net.minecraft.entity.ai.goal.FleeEntityGoal;
+import net.minecraft.entity.ai.goal.FlyGoal;
+import net.minecraft.entity.ai.goal.FollowMobGoal;
+import net.minecraft.entity.ai.goal.FollowOwnerGoal;
+import net.minecraft.entity.ai.goal.LookAtEntityGoal;
+import net.minecraft.entity.ai.goal.SitGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.ai.goal.TemptGoal;
+import net.minecraft.entity.ai.pathing.BirdNavigation;
+import net.minecraft.entity.ai.pathing.EntityNavigation;
+import net.minecraft.entity.ai.pathing.PathNodeType;
+import net.minecraft.entity.attribute.DefaultAttributeContainer;
+import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.PassiveEntity;
+import net.minecraft.entity.passive.TameableShoulderEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.predicate.entity.EntityPredicates;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.tag.BlockTags;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.ai.util.LandRandomPos;
-import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.FlyingAnimal;
-import net.minecraft.world.entity.animal.ShoulderRidingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.LeavesBlock;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -42,10 +59,10 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimatable {
+public class Bird extends TameableShoulderEntity implements Flutterer, IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
-    private BirdAvoidEntityGoal<Player> avoidPlayersGoal;
-    private static final Ingredient TAME_FOOD = Ingredient.of(NaturalistTags.ItemTags.BIRD_FOOD_ITEMS);
+    private BirdAvoidEntityGoal<PlayerEntity> avoidPlayersGoal;
+    private static final Ingredient TAME_FOOD = Ingredient.fromTag(NaturalistTags.ItemTags.BIRD_FOOD_ITEMS);
     public float flap;
     public float flapSpeed;
     public float oFlapSpeed;
@@ -53,36 +70,36 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
     private float flapping = 1.0F;
     private float nextFlap = 1.0F;
 
-    public Bird(EntityType<? extends ShoulderRidingEntity> entityType, Level level) {
+    public Bird(EntityType<? extends TameableShoulderEntity> entityType, World level) {
         super(entityType, level);
-        this.moveControl = new FlyingMoveControl(this, 10, false);
-        this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
-        this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, -1.0F);
-        this.setPathfindingMalus(BlockPathTypes.COCOA, -1.0F);
+        this.moveControl = new FlightMoveControl(this, 10, false);
+        this.setPathfindingPenalty(PathNodeType.DANGER_FIRE, -1.0F);
+        this.setPathfindingPenalty(PathNodeType.DAMAGE_FIRE, -1.0F);
+        this.setPathfindingPenalty(PathNodeType.COCOA, -1.0F);
     }
 
     @Override
-    protected void registerGoals() {
-        this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new BirdTemptGoal(this, 1.0D, TAME_FOOD, true));
-        this.goalSelector.addGoal(3, new SitWhenOrderedToGoal(this));
-        this.goalSelector.addGoal(3, new FollowOwnerGoal(this, 1.5D, 5.0F, 1.0F, true));
-        this.goalSelector.addGoal(4, new BirdWanderGoal(this, 1.0D));
-        this.goalSelector.addGoal(5, new BirdFlockGoal(this, 1.0D, 3.0F, 7.0F));
-        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+    protected void initGoals() {
+        this.goalSelector.add(0, new SwimGoal(this));
+        this.goalSelector.add(1, new BirdTemptGoal(this, 1.0D, TAME_FOOD, true));
+        this.goalSelector.add(3, new SitGoal(this));
+        this.goalSelector.add(3, new FollowOwnerGoal(this, 1.5D, 5.0F, 1.0F, true));
+        this.goalSelector.add(4, new BirdWanderGoal(this, 1.0D));
+        this.goalSelector.add(5, new BirdFlockGoal(this, 1.0D, 3.0F, 7.0F));
+        this.goalSelector.add(6, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
     }
 
-    public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 6.0D).add(Attributes.FLYING_SPEED, 0.8F).add(Attributes.MOVEMENT_SPEED, 0.2D);
+    public static DefaultAttributeContainer.Builder createAttributes() {
+        return MobEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 6.0D).add(EntityAttributes.GENERIC_FLYING_SPEED, 0.8F).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.2D);
     }
 
-    public static boolean checkBirdSpawnRules(EntityType<Bird> entityType, LevelAccessor state, MobSpawnType type, BlockPos pos, RandomSource random) {
-        return state.getBlockState(pos.below()).is(BlockTags.PARROTS_SPAWNABLE_ON) && isBrightEnoughToSpawn(state, pos);
+    public static boolean checkBirdSpawnRules(EntityType<Bird> entityType, WorldAccess state, SpawnReason type, BlockPos pos, RandomSource random) {
+        return state.getBlockState(pos.down()).isIn(BlockTags.PARROTS_SPAWNABLE_ON) && isLightLevelValidForNaturalSpawn(state, pos);
     }
 
     @Nullable
     @Override
-    public AgeableMob getBreedOffspring(ServerLevel p_146743_, AgeableMob p_146744_) {
+    public PassiveEntity createChild(ServerWorld p_146743_, PassiveEntity p_146744_) {
         return null;
     }
 
@@ -91,146 +108,146 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
     }
 
     @Override
-    protected float getStandingEyeHeight(Pose pose, EntityDimensions size) {
+    protected float getActiveEyeHeight(EntityPose pose, EntityDimensions size) {
         return size.height * 0.6f;
     }
 
     @Override
-    public boolean canMate(Animal pOtherAnimal) {
+    public boolean canBreedWith(AnimalEntity pOtherAnimal) {
         return false;
     }
 
     @Override
-    public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
-        ItemStack stack = pPlayer.getItemInHand(pHand);
-        if (!this.isTame() && TAME_FOOD.test(stack)) {
-            if (!pPlayer.getAbilities().instabuild) {
-                stack.shrink(1);
+    public ActionResult interactMob(PlayerEntity pPlayer, Hand pHand) {
+        ItemStack stack = pPlayer.getStackInHand(pHand);
+        if (!this.isTamed() && TAME_FOOD.test(stack)) {
+            if (!pPlayer.getAbilities().creativeMode) {
+                stack.decrement(1);
             }
 
             if (!this.isSilent()) {
-                this.level.playSound(null, this.getX(), this.getY(), this.getZ(), NaturalistSoundEvents.BIRD_EAT.get(), this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
+                this.world.playSound(null, this.getX(), this.getY(), this.getZ(), NaturalistSoundEvents.BIRD_EAT.get(), this.getSoundCategory(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
             }
 
-            if (!this.level.isClientSide) {
+            if (!this.world.isClient) {
                 if (this.random.nextInt(10) == 0) {
-                    this.tame(pPlayer);
-                    this.level.broadcastEntityEvent(this, (byte)7);
+                    this.setOwner(pPlayer);
+                    this.world.sendEntityStatus(this, (byte)7);
                 } else {
-                    this.level.broadcastEntityEvent(this, (byte)6);
+                    this.world.sendEntityStatus(this, (byte)6);
                 }
             }
 
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
-        } else if (this.isTame() && this.isOwnedBy(pPlayer)) {
+            return ActionResult.success(this.world.isClient);
+        } else if (this.isTamed() && this.isOwner(pPlayer)) {
             if (TAME_FOOD.test(stack) && this.getHealth() < this.getMaxHealth()) {
-                if (!pPlayer.getAbilities().instabuild) {
-                    stack.shrink(1);
+                if (!pPlayer.getAbilities().creativeMode) {
+                    stack.decrement(1);
                 }
                 this.heal(1.0F);
                 if (this.getHealth() == this.getMaxHealth()) {
-                    this.spawnTamingParticles(true);
+                    this.showEmoteParticle(true);
                 }
-                return InteractionResult.sidedSuccess(this.level.isClientSide);
-            } else if (!this.isFlying()) {
-                if (!this.level.isClientSide) {
-                    this.setOrderedToSit(!this.isOrderedToSit());
+                return ActionResult.success(this.world.isClient);
+            } else if (!this.isInAir()) {
+                if (!this.world.isClient) {
+                    this.setSitting(!this.isSitting());
                 }
-                return InteractionResult.sidedSuccess(this.level.isClientSide);
+                return ActionResult.success(this.world.isClient);
             }
 
         }
-        return super.mobInteract(pPlayer, pHand);
+        return super.interactMob(pPlayer, pHand);
     }
 
     @Override
-    public boolean hurt(DamageSource pSource, float pAmount) {
+    public boolean damage(DamageSource pSource, float pAmount) {
         if (this.isInvulnerableTo(pSource)) {
             return false;
         } else {
-            if (!this.level.isClientSide) {
-                this.setOrderedToSit(false);
+            if (!this.world.isClient) {
+                this.setSitting(false);
             }
 
-            return super.hurt(pSource, pAmount);
+            return super.damage(pSource, pAmount);
         }
     }
 
 
     @Override
-    public boolean isFood(ItemStack pStack) {
+    public boolean isBreedingItem(ItemStack pStack) {
         return false;
     }
 
     @Override
-    protected void reassessTameGoals() {
+    protected void onTamedChanged() {
         if (this.avoidPlayersGoal == null) {
-            this.avoidPlayersGoal = new BirdAvoidEntityGoal<>(this, Player.class, 16.0F, 2.0D, 2.0D);
+            this.avoidPlayersGoal = new BirdAvoidEntityGoal<>(this, PlayerEntity.class, 16.0F, 2.0D, 2.0D);
         }
 
-        this.goalSelector.removeGoal(this.avoidPlayersGoal);
-        if (!this.isTame()) {
-            this.goalSelector.addGoal(2, this.avoidPlayersGoal);
+        this.goalSelector.remove(this.avoidPlayersGoal);
+        if (!this.isTamed()) {
+            this.goalSelector.add(2, this.avoidPlayersGoal);
         }
 
     }
 
     @Override
-    public boolean isFlying() {
+    public boolean isInAir() {
         return !this.isOnGround();
     }
 
     @Override
-    protected PathNavigation createNavigation(Level pLevel) {
-        FlyingPathNavigation navigation = new FlyingPathNavigation(this, pLevel);
-        navigation.setCanOpenDoors(false);
-        navigation.setCanFloat(true);
-        navigation.setCanPassDoors(true);
+    protected EntityNavigation createNavigation(World pLevel) {
+        BirdNavigation navigation = new BirdNavigation(this, pLevel);
+        navigation.setCanPathThroughDoors(false);
+        navigation.setCanSwim(true);
+        navigation.setCanEnterOpenDoors(true);
         return navigation;
     }
 
     @Override
-    public void aiStep() {
-        super.aiStep();
+    public void tickMovement() {
+        super.tickMovement();
         this.calculateFlapping();
     }
 
     private void calculateFlapping() {
         this.oFlap = this.flap;
         this.oFlapSpeed = this.flapSpeed;
-        this.flapSpeed += (float)(!this.onGround && !this.isPassenger() ? 4 : -1) * 0.3F;
-        this.flapSpeed = Mth.clamp(this.flapSpeed, 0.0F, 1.0F);
+        this.flapSpeed += (float)(!this.onGround && !this.hasVehicle() ? 4 : -1) * 0.3F;
+        this.flapSpeed = MathHelper.clamp(this.flapSpeed, 0.0F, 1.0F);
         if (!this.onGround && this.flapping < 1.0F) {
             this.flapping = 1.0F;
         }
 
         this.flapping *= 0.9F;
-        Vec3 vec3 = this.getDeltaMovement();
+        Vec3d vec3 = this.getVelocity();
         if (!this.onGround && vec3.y < 0.0D) {
-            this.setDeltaMovement(vec3.multiply(1.0D, 0.6D, 1.0D));
+            this.setVelocity(vec3.multiply(1.0D, 0.6D, 1.0D));
         }
 
         this.flap += this.flapping * 2.0F;
     }
 
     @Override
-    protected boolean isFlapping() {
-        return this.flyDist > this.nextFlap;
+    protected boolean hasWings() {
+        return this.speed > this.nextFlap;
     }
 
     @Override
-    protected void onFlap() {
+    protected void addFlapEffects() {
         this.playSound(NaturalistSoundEvents.BIRD_FLY.get(), 0.15F, 1.0F);
-        this.nextFlap = this.flyDist + this.flapSpeed / 2.0F;
+        this.nextFlap = this.speed + this.flapSpeed / 2.0F;
     }
 
     @Override
-    public boolean causeFallDamage(float pFallDistance, float pMultiplier, DamageSource pSource) {
+    public boolean handleFallDamage(float pFallDistance, float pMultiplier, DamageSource pSource) {
         return false;
     }
 
     @Override
-    protected void checkFallDamage(double pY, boolean pOnGround, BlockState pState, BlockPos pPos) {
+    protected void fall(double pY, boolean pOnGround, BlockState pState, BlockPos pPos) {
     }
 
     @Override
@@ -239,9 +256,9 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
     }
 
     @Override
-    protected void doPush(Entity pEntity) {
-        if (!(pEntity instanceof Player)) {
-            super.doPush(pEntity);
+    protected void pushAway(Entity pEntity) {
+        if (!(pEntity instanceof PlayerEntity)) {
+            super.pushAway(pEntity);
         }
     }
 
@@ -275,7 +292,7 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
         if (this.isInSittingPose()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("bird.sit", true));
             return PlayState.CONTINUE;
-        } else if (this.isFlying()) {
+        } else if (this.isInAir()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("bird.fly", true));
             return PlayState.CONTINUE;
         }
@@ -293,7 +310,7 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
         return factory;
     }
 
-    static class BirdWanderGoal extends WaterAvoidingRandomFlyingGoal {
+    static class BirdWanderGoal extends FlyGoal {
         private final Bird bird;
 
         public BirdWanderGoal(Bird mob, double speedModifier) {
@@ -302,31 +319,31 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
         }
 
         @Nullable
-        protected Vec3 getPosition() {
-            Vec3 vec3 = null;
-            if (this.mob.isInWater()) {
-                vec3 = LandRandomPos.getPos(this.mob, 15, 15);
+        protected Vec3d getWanderTarget() {
+            Vec3d vec3 = null;
+            if (this.mob.isTouchingWater()) {
+                vec3 = FuzzyTargeting.find(this.mob, 15, 15);
             }
 
             if (this.mob.getRandom().nextFloat() >= this.probability) {
                 vec3 = this.getTreePos();
             }
 
-            return vec3 == null ? super.getPosition() : vec3;
+            return vec3 == null ? super.getWanderTarget() : vec3;
         }
 
         @Nullable
-        private Vec3 getTreePos() {
-            BlockPos mobPos = this.mob.blockPosition();
-            BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
-            BlockPos.MutableBlockPos mutable1 = new BlockPos.MutableBlockPos();
+        private Vec3d getTreePos() {
+            BlockPos mobPos = this.mob.getBlockPos();
+            BlockPos.Mutable mutable = new BlockPos.Mutable();
+            BlockPos.Mutable mutable1 = new BlockPos.Mutable();
 
-            for(BlockPos pos : BlockPos.betweenClosed(Mth.floor(this.mob.getX() - 3.0D), Mth.floor(this.mob.getY() - 6.0D), Mth.floor(this.mob.getZ() - 3.0D), Mth.floor(this.mob.getX() + 3.0D), Mth.floor(this.mob.getY() + 6.0D), Mth.floor(this.mob.getZ() + 3.0D))) {
+            for(BlockPos pos : BlockPos.iterate(MathHelper.floor(this.mob.getX() - 3.0D), MathHelper.floor(this.mob.getY() - 6.0D), MathHelper.floor(this.mob.getZ() - 3.0D), MathHelper.floor(this.mob.getX() + 3.0D), MathHelper.floor(this.mob.getY() + 6.0D), MathHelper.floor(this.mob.getZ() + 3.0D))) {
                 if (!mobPos.equals(pos)) {
-                    BlockState blockstate = this.mob.level.getBlockState(mutable1.setWithOffset(pos, Direction.DOWN));
-                    boolean flag = blockstate.getBlock() instanceof LeavesBlock || blockstate.is(BlockTags.LOGS);
-                    if (flag && this.mob.level.isEmptyBlock(pos) && this.mob.level.isEmptyBlock(mutable.setWithOffset(pos, Direction.UP))) {
-                        return Vec3.atBottomCenterOf(pos);
+                    BlockState blockstate = this.mob.world.getBlockState(mutable1.set(pos, Direction.DOWN));
+                    boolean flag = blockstate.getBlock() instanceof LeavesBlock || blockstate.isIn(BlockTags.LOGS);
+                    if (flag && this.mob.world.isAir(pos) && this.mob.world.isAir(mutable.set(pos, Direction.UP))) {
+                        return Vec3d.ofBottomCenter(pos);
                     }
                 }
             }
@@ -336,13 +353,13 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
 
 
         @Override
-        public boolean canUse() {
-            return !this.bird.isTame() && super.canUse();
+        public boolean canStart() {
+            return !this.bird.isTamed() && super.canStart();
         }
 
         @Override
-        public boolean canContinueToUse() {
-            return !this.bird.isTame() && super.canContinueToUse();
+        public boolean shouldContinue() {
+            return !this.bird.isTamed() && super.shouldContinue();
         }
     }
 
@@ -355,19 +372,19 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
         }
 
         @Override
-        public boolean canUse() {
-            return !this.bird.isTame() && super.canUse();
+        public boolean canStart() {
+            return !this.bird.isTamed() && super.canStart();
         }
 
         @Override
-        public boolean canContinueToUse() {
-            return !this.bird.isTame() && super.canContinueToUse();
+        public boolean shouldContinue() {
+            return !this.bird.isTamed() && super.shouldContinue();
         }
     }
 
     static class BirdTemptGoal extends TemptGoal {
         @Nullable
-        private Player selectedPlayer;
+        private PlayerEntity selectedPlayer;
         private final Bird bird;
 
         public BirdTemptGoal(Bird bird, double speedModifier, Ingredient temptItems, boolean canScare) {
@@ -378,40 +395,40 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
         @Override
         public void tick() {
             super.tick();
-            if (this.selectedPlayer == null && this.mob.getRandom().nextInt(this.adjustedTickDelay(600)) == 0) {
-                this.selectedPlayer = this.player;
-            } else if (this.mob.getRandom().nextInt(this.adjustedTickDelay(500)) == 0) {
+            if (this.selectedPlayer == null && this.mob.getRandom().nextInt(this.getTickCount(600)) == 0) {
+                this.selectedPlayer = this.closestPlayer;
+            } else if (this.mob.getRandom().nextInt(this.getTickCount(500)) == 0) {
                 this.selectedPlayer = null;
             }
         }
 
         @Override
-        protected boolean canScare() {
-            return this.selectedPlayer != null && this.selectedPlayer.equals(this.player) ? false : super.canScare();
+        protected boolean canBeScared() {
+            return this.selectedPlayer != null && this.selectedPlayer.equals(this.closestPlayer) ? false : super.canBeScared();
         }
 
         @Override
-        public boolean canUse() {
-            return super.canUse() && !this.bird.isTame();
+        public boolean canStart() {
+            return super.canStart() && !this.bird.isTamed();
         }
     }
 
-    static class BirdAvoidEntityGoal<T extends LivingEntity> extends AvoidEntityGoal<T> {
+    static class BirdAvoidEntityGoal<T extends LivingEntity> extends FleeEntityGoal<T> {
         private final Bird bird;
 
         public BirdAvoidEntityGoal(Bird bird, Class<T> toAvoid, float maxDistance, double walkSpeed, double sprintSpeed) {
-            super(bird, toAvoid, maxDistance, walkSpeed, sprintSpeed, EntitySelector.NO_CREATIVE_OR_SPECTATOR::test);
+            super(bird, toAvoid, maxDistance, walkSpeed, sprintSpeed, EntityPredicates.EXCEPT_CREATIVE_OR_SPECTATOR::test);
             this.bird = bird;
         }
 
         @Override
-        public boolean canUse() {
-            return !this.bird.isTame() && super.canUse();
+        public boolean canStart() {
+            return !this.bird.isTamed() && super.canStart();
         }
 
         @Override
-        public boolean canContinueToUse() {
-            return !this.bird.isTame() && super.canContinueToUse();
+        public boolean shouldContinue() {
+            return !this.bird.isTamed() && super.shouldContinue();
         }
     }
 }

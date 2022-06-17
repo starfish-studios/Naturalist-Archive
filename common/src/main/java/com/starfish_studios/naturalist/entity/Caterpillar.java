@@ -2,30 +2,35 @@ package com.starfish_studios.naturalist.entity;
 
 import com.starfish_studios.naturalist.block.ChrysalisBlock;
 import com.starfish_studios.naturalist.registry.NaturalistBlocks;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.particles.BlockParticleOption;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.EntityData;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.goal.MoveToTargetPosGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
+import net.minecraft.entity.attribute.DefaultAttributeContainer;
+import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.PassiveEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.BlockStateParticleEffect;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.tag.BlockTags;
+import net.minecraft.tag.ItemTags;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.world.LocalDifficulty;
+import net.minecraft.world.ServerWorldAccess;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldView;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
-import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -38,31 +43,31 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 public class Caterpillar extends ClimbingAnimal implements IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
 
-    public Caterpillar(EntityType<? extends Animal> entityType, Level level) {
+    public Caterpillar(EntityType<? extends AnimalEntity> entityType, World level) {
         super(entityType, level);
     }
 
-    public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 5.0D).add(Attributes.MOVEMENT_SPEED, 0.1F);
+    public static DefaultAttributeContainer.Builder createAttributes() {
+        return MobEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 5.0D).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.1F);
     }
 
     @Override
-    protected void registerGoals() {
-        super.registerGoals();
-        this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new CocoonGoal(this, 1.0F, 5, 2));
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0F));
+    protected void initGoals() {
+        super.initGoals();
+        this.goalSelector.add(0, new SwimGoal(this));
+        this.goalSelector.add(1, new CocoonGoal(this, 1.0F, 5, 2));
+        this.goalSelector.add(2, new WanderAroundFarGoal(this, 1.0F));
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @javax.annotation.Nullable SpawnGroupData pSpawnData, @javax.annotation.Nullable CompoundTag pDataTag) {
-        this.setAge(0);
-        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+    public EntityData initialize(ServerWorldAccess pLevel, LocalDifficulty pDifficulty, SpawnReason pReason, @javax.annotation.Nullable EntityData pSpawnData, @javax.annotation.Nullable NbtCompound pDataTag) {
+        this.setBreedingAge(0);
+        return super.initialize(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }
 
     @Nullable
     @Override
-    public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mob) {
+    public PassiveEntity createChild(ServerWorld level, PassiveEntity mob) {
         return null;
     }
 
@@ -72,22 +77,22 @@ public class Caterpillar extends ClimbingAnimal implements IAnimatable {
     }
 
     @Override
-    public boolean isFood(ItemStack pStack) {
-        return this.isBaby() && pStack.is(ItemTags.FLOWERS);
+    public boolean isBreedingItem(ItemStack pStack) {
+        return this.isBaby() && pStack.isIn(ItemTags.FLOWERS);
     }
 
     @Override
-    public float getScale() {
+    public float getScaleFactor() {
         return 1.0f;
     }
 
     @Override
-    public boolean causeFallDamage(float pFallDistance, float pMultiplier, DamageSource pSource) {
+    public boolean handleFallDamage(float pFallDistance, float pMultiplier, DamageSource pSource) {
         return false;
     }
 
     @Override
-    protected void checkFallDamage(double pY, boolean pOnGround, BlockState pState, BlockPos pPos) {
+    protected void fall(double pY, boolean pOnGround, BlockState pState, BlockPos pPos) {
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -109,10 +114,10 @@ public class Caterpillar extends ClimbingAnimal implements IAnimatable {
         return factory;
     }
 
-    private static class CocoonGoal extends MoveToBlockGoal {
+    private static class CocoonGoal extends MoveToTargetPosGoal {
         private final Caterpillar caterpillar;
         private Direction facing = Direction.NORTH;
-        private BlockPos logPos = BlockPos.ZERO;
+        private BlockPos logPos = BlockPos.ORIGIN;
 
         public CocoonGoal(Caterpillar pMob, double pSpeedModifier, int pSearchRange, int pVerticalSearchRange) {
             super(pMob, pSpeedModifier, pSearchRange, pVerticalSearchRange);
@@ -120,17 +125,17 @@ public class Caterpillar extends ClimbingAnimal implements IAnimatable {
         }
 
         @Override
-        public boolean canUse() {
-            return !caterpillar.isBaby() && super.canUse();
+        public boolean canStart() {
+            return !caterpillar.isBaby() && super.canStart();
         }
 
         @Override
-        protected boolean isValidTarget(LevelReader pLevel, BlockPos pPos) {
+        protected boolean isTargetPos(WorldView pLevel, BlockPos pPos) {
             if (pLevel.getBlockState(pPos).isAir()) {
-                for (Direction direction : Direction.Plane.HORIZONTAL) {
-                    if (pLevel.getBlockState(pPos.relative(direction)).is(BlockTags.LOGS) && pLevel.getBlockState(pPos.relative(direction).below()).is(BlockTags.LOGS)) {
+                for (Direction direction : Direction.Type.HORIZONTAL) {
+                    if (pLevel.getBlockState(pPos.offset(direction)).isIn(BlockTags.LOGS) && pLevel.getBlockState(pPos.offset(direction).down()).isIn(BlockTags.LOGS)) {
                         this.facing = direction;
-                        this.logPos = pPos.relative(direction);
+                        this.logPos = pPos.offset(direction);
                         return true;
                     }
                 }
@@ -141,35 +146,35 @@ public class Caterpillar extends ClimbingAnimal implements IAnimatable {
 
         @Override
         public void tick() {
-            BlockPos targetPos = this.getMoveToTarget();
-            if (!targetPos.closerToCenterThan(caterpillar.position(), this.acceptedDistance())) {
-                ++this.tryTicks;
-                if (this.shouldRecalculatePath()) {
-                    caterpillar.getNavigation().moveTo(targetPos.getX() + 0.5D, targetPos.getY(), targetPos.getZ() + 0.5D, this.speedModifier);
+            BlockPos targetPos = this.getTargetPos();
+            if (!targetPos.isWithinDistance(caterpillar.getPos(), this.getDesiredDistanceToTarget())) {
+                ++this.tryingTime;
+                if (this.shouldResetPath()) {
+                    caterpillar.getNavigation().startMovingTo(targetPos.getX() + 0.5D, targetPos.getY(), targetPos.getZ() + 0.5D, this.speed);
                 }
             } else {
-                --this.tryTicks;
+                --this.tryingTime;
             }
-            caterpillar.getLookControl().setLookAt(logPos.getX() + 0.5D, logPos.getY() + 1, logPos.getZ() + 0.5D, 10.0F, this.caterpillar.getMaxHeadXRot());
-            Level level = caterpillar.level;
-            if (this.isValidTarget(level, caterpillar.blockPosition())) {
-                if (!level.isClientSide) {
-                    ((ServerLevel)level).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, NaturalistBlocks.CHRYSALIS.get().defaultBlockState()), caterpillar.getX(), caterpillar.getY(), caterpillar.getZ(), 50, caterpillar.getBbWidth() / 4.0F, caterpillar.getBbHeight() / 4.0F, caterpillar.getBbWidth() / 4.0F, 0.05D);
+            caterpillar.getLookControl().lookAt(logPos.getX() + 0.5D, logPos.getY() + 1, logPos.getZ() + 0.5D, 10.0F, this.caterpillar.getMaxLookPitchChange());
+            World level = caterpillar.world;
+            if (this.isTargetPos(level, caterpillar.getBlockPos())) {
+                if (!level.isClient) {
+                    ((ServerWorld)level).spawnParticles(new BlockStateParticleEffect(ParticleTypes.BLOCK, NaturalistBlocks.CHRYSALIS.get().getDefaultState()), caterpillar.getX(), caterpillar.getY(), caterpillar.getZ(), 50, caterpillar.getWidth() / 4.0F, caterpillar.getHeight() / 4.0F, caterpillar.getWidth() / 4.0F, 0.05D);
                 }
                 caterpillar.discard();
-                level.setBlockAndUpdate(caterpillar.blockPosition(), NaturalistBlocks.CHRYSALIS.get().defaultBlockState().setValue(ChrysalisBlock.FACING, facing));
-                level.playSound(null, caterpillar.blockPosition(), SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 0.7F, 0.9F + level.random.nextFloat() * 0.2F);
+                level.setBlockState(caterpillar.getBlockPos(), NaturalistBlocks.CHRYSALIS.get().getDefaultState().with(ChrysalisBlock.FACING, facing));
+                level.playSound(null, caterpillar.getBlockPos(), SoundEvents.BLOCK_GRASS_PLACE, SoundCategory.BLOCKS, 0.7F, 0.9F + level.random.nextFloat() * 0.2F);
             }
         }
 
         @Override
-        protected void moveMobToBlock() {
-            caterpillar.getNavigation().moveTo(logPos.getX() + 0.5D, logPos.getY() + 1.0D, logPos.getZ() + 0.5D, this.speedModifier);
+        protected void startMovingToTarget() {
+            caterpillar.getNavigation().startMovingTo(logPos.getX() + 0.5D, logPos.getY() + 1.0D, logPos.getZ() + 0.5D, this.speed);
         }
 
         @Override
-        protected BlockPos getMoveToTarget() {
-            return logPos.above();
+        protected BlockPos getTargetPos() {
+            return logPos.up();
         }
     }
 }

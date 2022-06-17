@@ -1,10 +1,5 @@
 package com.starfish_studios.naturalist.util.forge;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraftforge.common.brewing.IBrewingRecipe;
 
 public record NaturalistBrewingRecipe(Potion input, Item ingredient, Potion output) implements IBrewingRecipe {

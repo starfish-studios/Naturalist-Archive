@@ -1,32 +1,32 @@
 package com.starfish_studios.naturalist.client.renderer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.starfish_studios.naturalist.client.model.CaterpillarModel;
 import com.starfish_studios.naturalist.entity.Caterpillar;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.entity.EntityRendererFactory;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
 @Environment(EnvType.CLIENT)
 public class CaterpillarRenderer extends GeoEntityRenderer<Caterpillar> {
-    public CaterpillarRenderer(EntityRendererProvider.Context renderManager) {
+    public CaterpillarRenderer(EntityRendererFactory.Context renderManager) {
         super(renderManager, new CaterpillarModel());
         this.shadowRadius = 0.3F;
     }
 
     @Override
-    public ResourceLocation getTextureLocation(Caterpillar entity) {
+    public Identifier getTextureLocation(Caterpillar entity) {
         return getTextureResource(entity);
     }
 
     @Override
-    public RenderType getRenderType(Caterpillar animatable, float partialTicks, PoseStack stack, @Nullable MultiBufferSource renderTypeBuffer, @Nullable VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
-        return RenderType.entityCutoutNoCull(textureLocation);
+    public RenderLayer getRenderType(Caterpillar animatable, float partialTicks, MatrixStack stack, @Nullable VertexConsumerProvider renderTypeBuffer, @Nullable VertexConsumer vertexBuilder, int packedLightIn, Identifier textureLocation) {
+        return RenderLayer.getEntityCutoutNoCull(textureLocation);
     }
 }

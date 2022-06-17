@@ -4,8 +4,8 @@ import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.entity.Deer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
@@ -17,18 +17,18 @@ import java.util.List;
 @Environment(EnvType.CLIENT)
 public class DeerModel extends AnimatedGeoModel<Deer> {
     @Override
-    public ResourceLocation getModelResource(Deer deer) {
-        return new ResourceLocation(Naturalist.MOD_ID, "geo/deer.geo.json");
+    public Identifier getModelResource(Deer deer) {
+        return new Identifier(Naturalist.MOD_ID, "geo/deer.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureResource(Deer deer) {
-        return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/deer.png");
+    public Identifier getTextureResource(Deer deer) {
+        return new Identifier(Naturalist.MOD_ID, "textures/entity/deer.png");
     }
 
     @Override
-    public ResourceLocation getAnimationResource(Deer deer) {
-        return new ResourceLocation(Naturalist.MOD_ID, "animations/deer.animation.json");
+    public Identifier getAnimationResource(Deer deer) {
+        return new Identifier(Naturalist.MOD_ID, "animations/deer.animation.json");
     }
 
     @Override
@@ -47,8 +47,8 @@ public class DeerModel extends AnimatedGeoModel<Deer> {
         }
 
         if (!deer.isEating()) {
-            head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD);
-            head.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD);
+            head.setRotationX(extraDataOfType.get(0).headPitch * MathHelper.RADIANS_PER_DEGREE);
+            head.setRotationY(extraDataOfType.get(0).netHeadYaw * MathHelper.RADIANS_PER_DEGREE);
         }
     }
 }

@@ -2,74 +2,73 @@ package com.starfish_studios.naturalist.block;
 
 import com.starfish_studios.naturalist.entity.Butterfly;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BlockTags;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.block.ShapeContext;
+import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.IntProperty;
+import net.minecraft.state.property.Properties;
+import net.minecraft.tag.BlockTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
-
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.world.BlockView;
+import net.minecraft.world.WorldAccess;
+import net.minecraft.world.WorldView;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class ChrysalisBlock extends HorizontalDirectionalBlock {
-    public static final IntegerProperty AGE = BlockStateProperties.AGE_3;
-    protected static final VoxelShape[] EAST_AABB = new VoxelShape[]{Block.box(11.0D, 7.0D, 6.0D, 15.0D, 12.0D, 10.0D), Block.box(9.0D, 5.0D, 5.0D, 15.0D, 12.0D, 11.0D), Block.box(7.0D, 3.0D, 4.0D, 15.0D, 12.0D, 12.0D), Block.box(7.0D, 3.0D, 4.0D, 15.0D, 12.0D, 12.0D)};
-    protected static final VoxelShape[] WEST_AABB = new VoxelShape[]{Block.box(1.0D, 7.0D, 6.0D, 5.0D, 12.0D, 10.0D), Block.box(1.0D, 5.0D, 5.0D, 7.0D, 12.0D, 11.0D), Block.box(1.0D, 3.0D, 4.0D, 9.0D, 12.0D, 12.0D), Block.box(1.0D, 3.0D, 4.0D, 9.0D, 12.0D, 12.0D)};
-    protected static final VoxelShape[] NORTH_AABB = new VoxelShape[]{Block.box(6.0D, 7.0D, 1.0D, 10.0D, 12.0D, 5.0D), Block.box(5.0D, 5.0D, 1.0D, 11.0D, 12.0D, 7.0D), Block.box(4.0D, 3.0D, 1.0D, 12.0D, 12.0D, 9.0D), Block.box(4.0D, 3.0D, 1.0D, 12.0D, 12.0D, 9.0D)};
-    protected static final VoxelShape[] SOUTH_AABB = new VoxelShape[]{Block.box(6.0D, 7.0D, 11.0D, 10.0D, 12.0D, 15.0D), Block.box(5.0D, 5.0D, 9.0D, 11.0D, 12.0D, 15.0D), Block.box(4.0D, 3.0D, 7.0D, 12.0D, 12.0D, 15.0D), Block.box(4.0D, 3.0D, 7.0D, 12.0D, 12.0D, 15.0D)};
+public class ChrysalisBlock extends HorizontalFacingBlock {
+    public static final IntProperty AGE = Properties.AGE_3;
+    protected static final VoxelShape[] EAST_AABB = new VoxelShape[]{Block.createCuboidShape(11.0D, 7.0D, 6.0D, 15.0D, 12.0D, 10.0D), Block.createCuboidShape(9.0D, 5.0D, 5.0D, 15.0D, 12.0D, 11.0D), Block.createCuboidShape(7.0D, 3.0D, 4.0D, 15.0D, 12.0D, 12.0D), Block.createCuboidShape(7.0D, 3.0D, 4.0D, 15.0D, 12.0D, 12.0D)};
+    protected static final VoxelShape[] WEST_AABB = new VoxelShape[]{Block.createCuboidShape(1.0D, 7.0D, 6.0D, 5.0D, 12.0D, 10.0D), Block.createCuboidShape(1.0D, 5.0D, 5.0D, 7.0D, 12.0D, 11.0D), Block.createCuboidShape(1.0D, 3.0D, 4.0D, 9.0D, 12.0D, 12.0D), Block.createCuboidShape(1.0D, 3.0D, 4.0D, 9.0D, 12.0D, 12.0D)};
+    protected static final VoxelShape[] NORTH_AABB = new VoxelShape[]{Block.createCuboidShape(6.0D, 7.0D, 1.0D, 10.0D, 12.0D, 5.0D), Block.createCuboidShape(5.0D, 5.0D, 1.0D, 11.0D, 12.0D, 7.0D), Block.createCuboidShape(4.0D, 3.0D, 1.0D, 12.0D, 12.0D, 9.0D), Block.createCuboidShape(4.0D, 3.0D, 1.0D, 12.0D, 12.0D, 9.0D)};
+    protected static final VoxelShape[] SOUTH_AABB = new VoxelShape[]{Block.createCuboidShape(6.0D, 7.0D, 11.0D, 10.0D, 12.0D, 15.0D), Block.createCuboidShape(5.0D, 5.0D, 9.0D, 11.0D, 12.0D, 15.0D), Block.createCuboidShape(4.0D, 3.0D, 7.0D, 12.0D, 12.0D, 15.0D), Block.createCuboidShape(4.0D, 3.0D, 7.0D, 12.0D, 12.0D, 15.0D)};
 
-    public ChrysalisBlock(Properties properties) {
+    public ChrysalisBlock(Settings properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(AGE, 0));
+        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(AGE, 0));
     }
 
     @Override
-    public boolean isRandomlyTicking(BlockState pState) {
+    public boolean hasRandomTicks(BlockState pState) {
         return true;
     }
 
     @Override
-    public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
-        int age = pState.getValue(AGE);
+    public void randomTick(BlockState pState, ServerWorld pLevel, BlockPos pPos, RandomSource pRandom) {
+        int age = pState.get(AGE);
         if (age < 3) {
             if (pLevel.random.nextInt(5) == 0) {
-                pLevel.setBlock(pPos, pState.setValue(AGE, age + 1), 2);
+                pLevel.setBlockState(pPos, pState.with(AGE, age + 1), 2);
             }
         } else {
             pLevel.removeBlock(pPos, false);
-            pLevel.playSound(null, pPos, SoundEvents.WOOD_BREAK, SoundSource.BLOCKS, 0.7F, 0.9F + pRandom.nextFloat() * 0.2F);
-            pLevel.levelEvent(2001, pPos, Block.getId(pState));
+            pLevel.playSound(null, pPos, SoundEvents.BLOCK_WOOD_BREAK, SoundCategory.BLOCKS, 0.7F, 0.9F + pRandom.nextFloat() * 0.2F);
+            pLevel.syncWorldEvent(2001, pPos, Block.getRawIdFromState(pState));
             Butterfly butterfly = NaturalistEntityTypes.BUTTERFLY.get().create(pLevel);
-            butterfly.moveTo(pPos.getX() + 0.5D, pPos.getY() + 0.5D, pPos.getZ() + 0.5D, 0.0F, 0.0F);
-            pLevel.addFreshEntity(butterfly);
+            butterfly.refreshPositionAndAngles(pPos.getX() + 0.5D, pPos.getY() + 0.5D, pPos.getZ() + 0.5D, 0.0F, 0.0F);
+            pLevel.spawnEntity(butterfly);
         }
     }
 
     @Override
-    public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
-        BlockState facingState = pLevel.getBlockState(pPos.relative(pState.getValue(FACING)));
-        return facingState.is(BlockTags.LOGS);
+    public boolean canPlaceAt(BlockState pState, WorldView pLevel, BlockPos pPos) {
+        BlockState facingState = pLevel.getBlockState(pPos.offset(pState.get(FACING)));
+        return facingState.isIn(BlockTags.LOGS);
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        int age = pState.getValue(AGE);
-        switch (pState.getValue(FACING)) {
+    public VoxelShape getOutlineShape(BlockState pState, BlockView pLevel, BlockPos pPos, ShapeContext pContext) {
+        int age = pState.get(AGE);
+        switch (pState.get(FACING)) {
             case SOUTH:
                 return SOUTH_AABB[age];
             case NORTH:
@@ -84,15 +83,15 @@ public class ChrysalisBlock extends HorizontalDirectionalBlock {
 
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        BlockState state = this.defaultBlockState();
-        LevelReader level = pContext.getLevel();
-        BlockPos pos = pContext.getClickedPos();
+    public BlockState getPlacementState(ItemPlacementContext pContext) {
+        BlockState state = this.getDefaultState();
+        WorldView level = pContext.getWorld();
+        BlockPos pos = pContext.getBlockPos();
 
-        for(Direction direction : pContext.getNearestLookingDirections()) {
+        for(Direction direction : pContext.getPlacementDirections()) {
             if (direction.getAxis().isHorizontal()) {
-                state = state.setValue(FACING, direction);
-                if (state.canSurvive(level, pos)) {
+                state = state.with(FACING, direction);
+                if (state.canPlaceAt(level, pos)) {
                     return state;
                 }
             }
@@ -102,12 +101,12 @@ public class ChrysalisBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
-        return pFacing == pState.getValue(FACING) && !pState.canSurvive(pLevel, pCurrentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
+    public BlockState getStateForNeighborUpdate(BlockState pState, Direction pFacing, BlockState pFacingState, WorldAccess pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
+        return pFacing == pState.get(FACING) && !pState.canPlaceAt(pLevel, pCurrentPos) ? Blocks.AIR.getDefaultState() : super.getStateForNeighborUpdate(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
+    protected void appendProperties(StateManager.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(FACING, AGE);
     }
 }

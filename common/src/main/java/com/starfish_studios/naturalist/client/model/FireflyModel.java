@@ -4,23 +4,23 @@ import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.entity.Firefly;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Identifier;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 @Environment(EnvType.CLIENT)
 public class FireflyModel extends AnimatedGeoModel<Firefly> {
     @Override
-    public ResourceLocation getModelResource(Firefly firefly) {
-        return new ResourceLocation(Naturalist.MOD_ID, "geo/firefly.geo.json");
+    public Identifier getModelResource(Firefly firefly) {
+        return new Identifier(Naturalist.MOD_ID, "geo/firefly.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureResource(Firefly firefly) {
-        return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/firefly/firefly.png");
+    public Identifier getTextureResource(Firefly firefly) {
+        return new Identifier(Naturalist.MOD_ID, "textures/entity/firefly/firefly.png");
     }
 
     @Override
-    public ResourceLocation getAnimationResource(Firefly firefly) {
-        return new ResourceLocation(Naturalist.MOD_ID, "animations/firefly.animation.json");
+    public Identifier getAnimationResource(Firefly firefly) {
+        return new Identifier(Naturalist.MOD_ID, "animations/firefly.animation.json");
     }
 }

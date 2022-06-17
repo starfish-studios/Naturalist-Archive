@@ -2,34 +2,39 @@ package com.starfish_studios.naturalist.entity;
 
 import com.starfish_studios.naturalist.registry.NaturalistItems;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
-import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.advancement.criterion.Criteria;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.Bucketable;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.TargetPredicate;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
+import net.minecraft.entity.attribute.DefaultAttributeContainer;
+import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.mob.PathAwareEntity;
+import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.PassiveEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsage;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.predicate.entity.EntityPredicates;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.world.World;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
-import net.minecraft.world.entity.ai.targeting.TargetingConditions;
-import net.minecraft.world.entity.animal.AbstractFish;
-import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.Bucketable;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemUtils;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -44,44 +49,44 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 
-public class Snail extends Animal implements IAnimatable, Bucketable {
+public class Snail extends AnimalEntity implements IAnimatable, Bucketable {
     private final AnimationFactory factory = new AnimationFactory(this);
-    private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(Snail.class, EntityDataSerializers.BOOLEAN);
+    private static final TrackedData<Boolean> FROM_BUCKET = DataTracker.registerData(Snail.class, TrackedDataHandlerRegistry.BOOLEAN);
 
-    public Snail(EntityType<? extends Animal> type, Level level) {
+    public Snail(EntityType<? extends AnimalEntity> type, World level) {
         super(type, level);
     }
 
     // ATTRIBUTES/BREEDING/AI
 
-    public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 2.0D).add(Attributes.MOVEMENT_SPEED, 0.06F);
+    public static DefaultAttributeContainer.Builder createAttributes() {
+        return MobEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 2.0D).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.06F);
     }
 
     @Override
-    protected void registerGoals() {
-        super.registerGoals();
-        this.goalSelector.addGoal(0, new HideGoal(this));
-        this.goalSelector.addGoal(1, new SnailStrollGoal(this, 1.0D, 0.0F));
+    protected void initGoals() {
+        super.initGoals();
+        this.goalSelector.add(0, new HideGoal(this));
+        this.goalSelector.add(1, new SnailStrollGoal(this, 1.0D, 0.0F));
     }
 
     @Nullable
     @Override
-    public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mob) {
+    public PassiveEntity createChild(ServerWorld level, PassiveEntity mob) {
         return null;
     }
 
     @Override
-    public boolean isFood(ItemStack pStack) {
+    public boolean isBreedingItem(ItemStack pStack) {
         return false;
     }
 
     @Override
-    public void aiStep() {
-        super.aiStep();
-        for (Player player : level.getEntitiesOfClass(Player.class, this.getBoundingBox())) {
-            if (!player.isOnGround() && EnchantmentHelper.getEnchantmentLevel(Enchantments.FALL_PROTECTION, player) == 0 && !this.hasCustomName()) {
-                this.hurt(DamageSource.playerAttack(player), 5.0F);
+    public void tickMovement() {
+        super.tickMovement();
+        for (PlayerEntity player : world.getNonSpectatingEntities(PlayerEntity.class, this.getBoundingBox())) {
+            if (!player.isOnGround() && EnchantmentHelper.getEquipmentLevel(Enchantments.FEATHER_FALLING, player) == 0 && !this.hasCustomName()) {
+                this.damage(DamageSource.player(player), 5.0F);
             }
         }
     }
@@ -89,76 +94,76 @@ public class Snail extends Animal implements IAnimatable, Bucketable {
     // BUCKETING
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(FROM_BUCKET, false);
+    protected void initDataTracker() {
+        super.initDataTracker();
+        this.dataTracker.startTracking(FROM_BUCKET, false);
     }
 
     @Override
-    public boolean fromBucket() {
-        return this.entityData.get(FROM_BUCKET);
+    public boolean isFromBucket() {
+        return this.dataTracker.get(FROM_BUCKET);
     }
 
     @Override
     public void setFromBucket(boolean fromBucket) {
-        this.entityData.set(FROM_BUCKET, fromBucket);
+        this.dataTracker.set(FROM_BUCKET, fromBucket);
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag pCompound) {
-        super.addAdditionalSaveData(pCompound);
-        pCompound.putBoolean("FromBucket", this.fromBucket());
+    public void writeCustomDataToNbt(NbtCompound pCompound) {
+        super.writeCustomDataToNbt(pCompound);
+        pCompound.putBoolean("FromBucket", this.isFromBucket());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag pCompound) {
-        super.readAdditionalSaveData(pCompound);
+    public void readCustomDataFromNbt(NbtCompound pCompound) {
+        super.readCustomDataFromNbt(pCompound);
         this.setFromBucket(pCompound.getBoolean("FromBucket"));
     }
 
     @Override
-    public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
-        return bucketMobPickup(pPlayer, pHand, this).orElse(super.mobInteract(pPlayer, pHand));
+    public ActionResult interactMob(PlayerEntity pPlayer, Hand pHand) {
+        return tryBucket(pPlayer, pHand, this).orElse(super.interactMob(pPlayer, pHand));
     }
 
-    static <T extends LivingEntity & Bucketable> Optional<InteractionResult> bucketMobPickup(Player player, InteractionHand hand, T entity) {
-        ItemStack stack = player.getItemInHand(hand);
+    static <T extends LivingEntity & Bucketable> Optional<ActionResult> tryBucket(PlayerEntity player, Hand hand, T entity) {
+        ItemStack stack = player.getStackInHand(hand);
         if (stack.getItem() == Items.BUCKET && entity.isAlive()) {
-            entity.playSound(entity.getPickupSound(), 1.0F, 1.0F);
-            ItemStack bucketStack = entity.getBucketItemStack();
-            entity.saveToBucketTag(bucketStack);
-            ItemStack resultStack = ItemUtils.createFilledResult(stack, player, bucketStack, false);
-            player.setItemInHand(hand, resultStack);
-            Level level = entity.level;
-            if (!level.isClientSide) {
-                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer)player, bucketStack);
+            entity.playSound(entity.getBucketedSound(), 1.0F, 1.0F);
+            ItemStack bucketStack = entity.getBucketItem();
+            entity.copyDataToStack(bucketStack);
+            ItemStack resultStack = ItemUsage.exchangeStack(stack, player, bucketStack, false);
+            player.setStackInHand(hand, resultStack);
+            World level = entity.world;
+            if (!level.isClient) {
+                Criteria.FILLED_BUCKET.trigger((ServerPlayerEntity)player, bucketStack);
             }
 
             entity.discard();
-            return Optional.of(InteractionResult.sidedSuccess(level.isClientSide));
+            return Optional.of(ActionResult.success(level.isClient));
         } else {
             return Optional.empty();
         }
     }
 
     @Override
-    public void saveToBucketTag(ItemStack stack) {
-        Bucketable.saveDefaultDataToBucketTag(this, stack);
+    public void copyDataToStack(ItemStack stack) {
+        Bucketable.copyDataToStack(this, stack);
     }
 
     @Override
-    public void loadFromBucketTag(CompoundTag tag) {
-        Bucketable.loadDefaultDataFromBucketTag(this, tag);
+    public void copyDataFromNbt(NbtCompound tag) {
+        Bucketable.copyDataFromNbt(this, tag);
     }
 
     @Override
-    public ItemStack getBucketItemStack() {
+    public ItemStack getBucketItem() {
         return new ItemStack(NaturalistItems.SNAIL_BUCKET.get());
     }
 
     @Override
-    public SoundEvent getPickupSound() {
-        return SoundEvents.BUCKET_FILL;
+    public SoundEvent getBucketedSound() {
+        return SoundEvents.ITEM_BUCKET_FILL;
     }
 
     // SOUNDS
@@ -172,7 +177,7 @@ public class Snail extends Animal implements IAnimatable, Bucketable {
     // ANIMATION
 
     private boolean canHide() {
-        List<Player> players = this.level.getNearbyPlayers(TargetingConditions.forNonCombat().range(5.0D).selector(EntitySelector.NO_CREATIVE_OR_SPECTATOR::test), this, this.getBoundingBox().inflate(5.0D, 3.0D, 5.0D));
+        List<PlayerEntity> players = this.world.getPlayers(TargetPredicate.createNonAttackable().setBaseMaxDistance(5.0D).setPredicate(EntityPredicates.EXCEPT_CREATIVE_OR_SPECTATOR::test), this, this.getBoundingBox().expand(5.0D, 3.0D, 5.0D));
         return !players.isEmpty();
     }
 
@@ -187,12 +192,12 @@ public class Snail extends Animal implements IAnimatable, Bucketable {
 
     private void soundListener(SoundKeyframeEvent<Snail> event) {
         Snail snail = event.getEntity();
-        if (snail.level.isClientSide) {
+        if (snail.world.isClient) {
             if (event.sound.equals("forward")) {
-                snail.level.playLocalSound(snail.getX(), snail.getY(), snail.getZ(), NaturalistSoundEvents.SNAIL_FORWARD.get(), snail.getSoundSource(), 0.5F, 1.0F, false);
+                snail.world.playSound(snail.getX(), snail.getY(), snail.getZ(), NaturalistSoundEvents.SNAIL_FORWARD.get(), snail.getSoundCategory(), 0.5F, 1.0F, false);
             }
             if (event.sound.equals("back")) {
-                snail.level.playLocalSound(snail.getX(), snail.getY(), snail.getZ(), NaturalistSoundEvents.SNAIL_BACK.get(), snail.getSoundSource(), 0.5F, 1.0F, false);
+                snail.world.playSound(snail.getX(), snail.getY(), snail.getZ(), NaturalistSoundEvents.SNAIL_BACK.get(), snail.getSoundCategory(), 0.5F, 1.0F, false);
             }
         }
     }
@@ -214,12 +219,12 @@ public class Snail extends Animal implements IAnimatable, Bucketable {
         private final Snail snail;
 
         public HideGoal(Snail mob) {
-            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.JUMP));
+            this.setControls(EnumSet.of(Control.MOVE, Control.LOOK, Control.JUMP));
             this.snail = mob;
         }
 
         @Override
-        public boolean canUse() {
+        public boolean canStart() {
             return snail.canHide();
         }
 
@@ -227,15 +232,15 @@ public class Snail extends Animal implements IAnimatable, Bucketable {
         public void start() {
             snail.setJumping(false);
             snail.getNavigation().stop();
-            snail.getMoveControl().setWantedPosition(snail.getX(), snail.getY(), snail.getZ(), 0.0D);
+            snail.getMoveControl().moveTo(snail.getX(), snail.getY(), snail.getZ(), 0.0D);
         }
     }
 
-    static class SnailStrollGoal extends WaterAvoidingRandomStrollGoal {
-        public SnailStrollGoal(PathfinderMob pMob, double pSpeedModifier, float pProbability) {
+    static class SnailStrollGoal extends WanderAroundFarGoal {
+        public SnailStrollGoal(PathAwareEntity pMob, double pSpeedModifier, float pProbability) {
             super(pMob, pSpeedModifier, pProbability);
-            this.forceTrigger = true;
-            this.interval = 1;
+            this.ignoringChance = true;
+            this.chance = 1;
         }
     }
 }

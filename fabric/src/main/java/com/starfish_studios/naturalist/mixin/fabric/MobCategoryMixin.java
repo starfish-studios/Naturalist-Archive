@@ -1,7 +1,6 @@
 package com.starfish_studios.naturalist.mixin.fabric;
 
 import com.starfish_studios.naturalist.registry.fabric.NaturalistMobCategoriesImpl;
-import net.minecraft.world.entity.MobCategory;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,12 +13,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import net.minecraft.entity.SpawnGroup;
 
-@Mixin(MobCategory.class)
+@Mixin(SpawnGroup.class)
 public abstract class MobCategoryMixin {
     @SuppressWarnings("InvokerTarget")
     @Invoker("<init>")
-    private static MobCategory newMobCategory(String internalName, int internalId, String name, int spawnCap, boolean peaceful, boolean rare, int immediateDespawnRange) {
+    private static SpawnGroup newMobCategory(String internalName, int internalId, String name, int spawnCap, boolean peaceful, boolean rare, int immediateDespawnRange) {
         throw new AssertionError();
     }
 
@@ -27,7 +27,7 @@ public abstract class MobCategoryMixin {
     @Shadow
     private static @Final
     @Mutable
-    MobCategory[] $VALUES;
+    SpawnGroup[] $VALUES;
 
     @Inject(method = "<clinit>", at = @At(value = "FIELD", opcode = Opcodes.PUTSTATIC, target = "Lnet/minecraft/world/entity/MobCategory;$VALUES:[Lnet/minecraft/world/entity/MobCategory;", shift = At.Shift.AFTER))
     private static void addCustomSpawnGroup(CallbackInfo ci) {
@@ -37,6 +37,6 @@ public abstract class MobCategoryMixin {
         var firefliesCategory = newMobCategory("FIREFLIES", last.ordinal() + 1, "fireflies", 10, true, false, 128);
         NaturalistMobCategoriesImpl.FIREFLIES = firefliesCategory;
         mobCategories.add(firefliesCategory);
-        $VALUES = mobCategories.toArray(new MobCategory[0]);
+        $VALUES = mobCategories.toArray(new SpawnGroup[0]);
     }
 }

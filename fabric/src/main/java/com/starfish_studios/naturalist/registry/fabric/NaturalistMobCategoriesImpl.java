@@ -1,14 +1,14 @@
 package com.starfish_studios.naturalist.registry.fabric;
 
-import net.minecraft.world.entity.MobCategory;
+import net.minecraft.entity.SpawnGroup;
 
 public class NaturalistMobCategoriesImpl {
     static {
-        MobCategory.values();
+        SpawnGroup.values();
     }
-    public static MobCategory FIREFLIES;
+    public static SpawnGroup FIREFLIES;
 
-    public static MobCategory getFireflyCategory() {
+    public static SpawnGroup getFireflyCategory() {
         return FIREFLIES;
     }
 }

@@ -4,9 +4,9 @@ import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.entity.Bear;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
-import net.minecraft.world.item.Items;
+import net.minecraft.item.Items;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
@@ -18,29 +18,29 @@ import java.util.List;
 @Environment(EnvType.CLIENT)
 public class BearModel extends AnimatedGeoModel<Bear> {
     @Override
-    public ResourceLocation getModelResource(Bear crocodile) {
-        return new ResourceLocation(Naturalist.MOD_ID, "geo/bear.geo.json");
+    public Identifier getModelResource(Bear crocodile) {
+        return new Identifier(Naturalist.MOD_ID, "geo/bear.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureResource(Bear bear) {
-        if (bear.isAngry()) {
-            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/bear/bear_angry.png");
+    public Identifier getTextureResource(Bear bear) {
+        if (bear.hasAngerTime()) {
+            return new Identifier(Naturalist.MOD_ID, "textures/entity/bear/bear_angry.png");
         } else if (bear.isSleeping()) {
-            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/bear/bear_sleep.png");
+            return new Identifier(Naturalist.MOD_ID, "textures/entity/bear/bear_sleep.png");
         } else if (bear.isEating()) {
-            if (bear.getMainHandItem().is(Items.SWEET_BERRIES)) {
-                return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/bear/bear_berries.png");
-            } else if (bear.getMainHandItem().is(Items.HONEYCOMB)) {
-                return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/bear/bear_honey.png");
+            if (bear.getMainHandStack().isOf(Items.SWEET_BERRIES)) {
+                return new Identifier(Naturalist.MOD_ID, "textures/entity/bear/bear_berries.png");
+            } else if (bear.getMainHandStack().isOf(Items.HONEYCOMB)) {
+                return new Identifier(Naturalist.MOD_ID, "textures/entity/bear/bear_honey.png");
             }
         }
-        return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/bear/bear.png");
+        return new Identifier(Naturalist.MOD_ID, "textures/entity/bear/bear.png");
     }
 
     @Override
-    public ResourceLocation getAnimationResource(Bear bear) {
-        return new ResourceLocation(Naturalist.MOD_ID, "animations/bear.animation.json");
+    public Identifier getAnimationResource(Bear bear) {
+        return new Identifier(Naturalist.MOD_ID, "animations/bear.animation.json");
     }
 
     @Override
@@ -59,8 +59,8 @@ public class BearModel extends AnimatedGeoModel<Bear> {
         }
 
         if (!bear.isSleeping() && !bear.isEating() && !bear.isSitting()) {
-            head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD);
-            head.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD);
+            head.setRotationX(extraDataOfType.get(0).headPitch * MathHelper.RADIANS_PER_DEGREE);
+            head.setRotationY(extraDataOfType.get(0).netHeadYaw * MathHelper.RADIANS_PER_DEGREE);
         }
     }
 }
