@@ -20,11 +20,12 @@ import net.minecraft.world.level.biome.Biome;
 public class NaturalistFabric implements ModInitializer {
     @Override
     public void onInitialize() {
-        Naturalist.init();
         AutoConfig.register(NaturalistConfigFabric.class, GsonConfigSerializer::new);
+        Naturalist.init();
         addSpawns();
         registerEntityAttributes();
         Naturalist.registerBrewingRecipes();
+        Naturalist.registerCompostables();
         Naturalist.registerSpawnPlacements();
     }
 

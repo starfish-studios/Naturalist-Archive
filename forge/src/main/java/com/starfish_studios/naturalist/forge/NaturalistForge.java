@@ -34,6 +34,7 @@ public class NaturalistForge {
     private void setup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             Naturalist.registerBrewingRecipes();
+            Naturalist.registerCompostables();
             Naturalist.registerSpawnPlacements();
         });
     }
