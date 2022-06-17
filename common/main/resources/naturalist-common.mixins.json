@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.starfish_studios.naturalist.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+  ],
+  "mixins": [
+    "CropBlockMixin",
+    "MobMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

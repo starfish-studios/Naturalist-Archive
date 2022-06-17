@@ -1,0 +1,32 @@
+{
+  "values": [
+    "#minecraft:is_forest",
+    "minecraft:plains",
+    "minecraft:swamp",
+    "minecraft:mangrove_swamp",
+    {
+      "id": "#forge:is_forest",
+      "required": false
+    },
+    {
+      "id": "#forge:is_plains",
+      "required": false
+    },
+    {
+      "id": "#forge:is_swamp",
+      "required": false
+    },
+    {
+      "id": "#c:forest",
+      "required": false
+    },
+    {
+      "id": "#c:plains",
+      "required": false
+    },
+    {
+      "id": "#c:swamp",
+      "required": false
+    }
+  ]
+}

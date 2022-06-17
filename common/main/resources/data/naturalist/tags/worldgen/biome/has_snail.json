@@ -1,0 +1,79 @@
+{
+  "values": [
+    "#minecraft:is_forest",
+    "#minecraft:is_savanna",
+    "#minecraft:is_river",
+    "#minecraft:is_hill",
+    "#minecraft:is_mountain",
+    "minecraft:plains",
+    "minecraft:swamp",
+    "minecraft:mangrove_swamp",
+    "minecraft:lush_caves",
+    "minecraft:dripstone_caves",
+    "minecraft:mushroom_fields",
+    {
+      "id": "#forge:is_forest",
+      "required": false
+    },
+    {
+      "id": "#forge:is_savanna",
+      "required": false
+    },
+    {
+      "id": "#forge:is_mountain",
+      "required": false
+    },
+    {
+      "id": "#forge:is_plains",
+      "required": false
+    },
+    {
+      "id": "#forge:is_swamp",
+      "required": false
+    },
+    {
+      "id": "#forge:is_underground",
+      "required": false
+    },
+    {
+      "id": "#forge:is_mushroom",
+      "required": false
+    },
+    {
+      "id": "#c:forest",
+      "required": false
+    },
+    {
+      "id": "#c:savanna",
+      "required": false
+    },
+    {
+      "id": "#c:river",
+      "required": false
+    },
+    {
+      "id": "#c:extreme_hills",
+      "required": false
+    },
+    {
+      "id": "#c:mountain",
+      "required": false
+    },
+    {
+      "id": "#c:plains",
+      "required": false
+    },
+    {
+      "id": "#c:swamp",
+      "required": false
+    },
+    {
+      "id": "#c:underground",
+      "required": false
+    },
+    {
+      "id": "#c:mushroom",
+      "required": false
+    }
+  ]
+}

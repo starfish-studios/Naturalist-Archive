@@ -1,0 +1,18 @@
+{
+  "values": [
+    "#minecraft:is_hill",
+    "#minecraft:is_mountain",
+    {
+      "id": "#forge:is_mountain",
+      "required": false
+    },
+    {
+      "id": "#c:mountain",
+      "required": false
+    },
+    {
+      "id": "#c:extreme_hills",
+      "required": false
+    }
+  ]
+}

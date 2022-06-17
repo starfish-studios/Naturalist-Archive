@@ -1,0 +1,33 @@
+{
+  "values": [
+    "#minecraft:is_taiga",
+    "#minecraft:is_hill",
+    "minecraft:ice_spikes",
+    "minecraft:snowy_plains",
+    "minecraft:snowy_slopes",
+    {
+      "id": "#forge:is_snowy",
+      "required": false
+    },
+    {
+      "id": "#forge:is_mountain",
+      "required": false
+    },
+    {
+      "id": "#c:taiga",
+      "required": false
+    },
+    {
+      "id": "#c:icy",
+      "required": false
+    },
+    {
+      "id": "#c:snowy",
+      "required": false
+    },
+    {
+      "id": "#c:extreme_hills",
+      "required": false
+    }
+  ]
+}

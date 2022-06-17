@@ -19,7 +19,7 @@ import java.util.Arrays;
 public abstract class MobCategoryMixin {
     @SuppressWarnings("InvokerTarget")
     @Invoker("<init>")
-    private static MobCategory newSpawnGroup(String internalName, int internalId, String name, int spawnCap, boolean peaceful, boolean rare, int immediateDespawnRange) {
+    private static MobCategory newMobCategory(String internalName, int internalId, String name, int spawnCap, boolean peaceful, boolean rare, int immediateDespawnRange) {
         throw new AssertionError();
     }
 
@@ -31,12 +31,12 @@ public abstract class MobCategoryMixin {
 
     @Inject(method = "<clinit>", at = @At(value = "FIELD", opcode = Opcodes.PUTSTATIC, target = "Lnet/minecraft/world/entity/MobCategory;$VALUES:[Lnet/minecraft/world/entity/MobCategory;", shift = At.Shift.AFTER))
     private static void addCustomSpawnGroup(CallbackInfo ci) {
-        var spawnGroups = new ArrayList<>(Arrays.asList($VALUES));
-        var last = spawnGroups.get(spawnGroups.size() - 1);
+        var mobCategories = new ArrayList<>(Arrays.asList($VALUES));
+        var last = mobCategories.get(mobCategories.size() - 1);
         // This means our code will still work if other mods or Mojang add more spawn groups!
-        var spawnGroup = newSpawnGroup("FIREFLIES", last.ordinal() + 1, "fireflies", 5, true, false, 128);
-        NaturalistMobCategoriesImpl.FIREFLIES = spawnGroup;
-        spawnGroups.add(spawnGroup);
-        $VALUES = spawnGroups.toArray(new MobCategory[0]);
+        var firefliesCategory = newMobCategory("FIREFLIES", last.ordinal() + 1, "fireflies", 10, true, false, 128);
+        NaturalistMobCategoriesImpl.FIREFLIES = firefliesCategory;
+        mobCategories.add(firefliesCategory);
+        $VALUES = mobCategories.toArray(new MobCategory[0]);
     }
 }

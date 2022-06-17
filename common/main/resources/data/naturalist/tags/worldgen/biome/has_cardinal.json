@@ -1,0 +1,41 @@
+{
+  "values": [
+    "#minecraft:is_forest",
+    "#minecraft:is_savanna",
+    "minecraft:swamp",
+    "minecraft:mangrove_swamp",
+    "minecraft:desert",
+    {
+      "id": "#forge:is_forest",
+      "required": false
+    },
+    {
+      "id": "#forge:is_savanna",
+      "required": false
+    },
+    {
+      "id": "#forge:is_swamp",
+      "required": false
+    },
+    {
+      "id": "#forge:is_sandy",
+      "required": false
+    },
+    {
+      "id": "#c:forest",
+      "required": false
+    },
+    {
+      "id": "#c:savanna",
+      "required": false
+    },
+    {
+      "id": "#c:swamp",
+      "required": false
+    },
+    {
+      "id": "#c:desert",
+      "required": false
+    }
+  ]
+}

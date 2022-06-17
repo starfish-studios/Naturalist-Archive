@@ -1,0 +1,22 @@
+{
+  "values": [
+    "#minecraft:is_forest",
+    "minecraft:plains",
+    {
+      "id": "#forge:is_forest",
+      "required": false
+    },
+    {
+      "id": "#forge:is_plains",
+      "required": false
+    },
+    {
+      "id": "#c:forest",
+      "required": false
+    },
+    {
+      "id": "#c:plains",
+      "required": false
+    }
+  ]
+}
