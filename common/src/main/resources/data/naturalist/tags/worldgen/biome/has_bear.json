@@ -1,6 +1,18 @@
 {
   "values": [
     "#minecraft:is_forest",
-    "#minecraft:is_taiga"
+    "#minecraft:is_taiga",
+    {
+      "id": "#forge:is_forest",
+      "required": false
+    },
+    {
+      "id": "#c:forest",
+      "required": false
+    },
+    {
+      "id": "#c:taiga",
+      "required": false
+    }
   ]
 }
