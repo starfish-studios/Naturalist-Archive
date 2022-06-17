@@ -15,15 +15,15 @@ import software.bernie.geckolib3.model.provider.data.EntityModelData;
 
 import java.util.List;
 
-@Environment(EnvType.CLIENT)
+@Environment(value= EnvType.CLIENT)
 public class BearModel extends AnimatedGeoModel<Bear> {
     @Override
-    public Identifier getModelResource(Bear crocodile) {
+    public Identifier getModelLocation(Bear crocodile) {
         return new Identifier(Naturalist.MOD_ID, "geo/bear.geo.json");
     }
 
     @Override
-    public Identifier getTextureResource(Bear bear) {
+    public Identifier getTextureLocation(Bear bear) {
         if (bear.hasAngerTime()) {
             return new Identifier(Naturalist.MOD_ID, "textures/entity/bear/bear_angry.png");
         } else if (bear.isSleeping()) {
@@ -39,7 +39,7 @@ public class BearModel extends AnimatedGeoModel<Bear> {
     }
 
     @Override
-    public Identifier getAnimationResource(Bear bear) {
+    public Identifier getAnimationFileLocation(Bear bear) {
         return new Identifier(Naturalist.MOD_ID, "animations/bear.animation.json");
     }
 

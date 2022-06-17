@@ -14,17 +14,12 @@ import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
-@Environment(EnvType.CLIENT)
+@Environment(value= EnvType.CLIENT)
 public class FireflyRenderer extends GeoEntityRenderer<Firefly> {
     public FireflyRenderer(EntityRendererFactory.Context renderManager) {
         super(renderManager, new FireflyModel());
         this.shadowRadius = 0.4F;
         this.addLayer(new FireflyGlowLayer(this));
-    }
-
-    @Override
-    public Identifier getTextureLocation(Firefly entity) {
-        return getTextureResource(entity);
     }
 
     @Override

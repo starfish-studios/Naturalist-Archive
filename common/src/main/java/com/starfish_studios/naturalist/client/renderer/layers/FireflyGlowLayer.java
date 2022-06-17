@@ -12,7 +12,7 @@ import net.minecraft.util.Identifier;
 import software.bernie.geckolib3.renderers.geo.GeoLayerRenderer;
 import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
 
-@Environment(EnvType.CLIENT)
+@Environment(value= EnvType.CLIENT)
 public class FireflyGlowLayer extends GeoLayerRenderer<Firefly> {
     private static final Identifier TOP_LAYER = new Identifier(Naturalist.MOD_ID, "textures/entity/firefly/firefly_glow_top.png");
     private static final Identifier BACK_LAYER = new Identifier(Naturalist.MOD_ID, "textures/entity/firefly/firefly_glow_back.png");
@@ -27,11 +27,11 @@ public class FireflyGlowLayer extends GeoLayerRenderer<Firefly> {
 
     @Override
     public void render(MatrixStack matrixStackIn, VertexConsumerProvider bufferIn, int packedLightIn, Firefly entityLivingBaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        RenderLayer top = entityLivingBaseIn.isGlowing() ? RenderLayer.getEyes(TOP_LAYER) : RenderLayer.getEntityCutoutNoCull(TOP_LAYER);
-        RenderLayer back = entityLivingBaseIn.isGlowing() ? RenderLayer.getEyes(BACK_LAYER) : RenderLayer.getEntityCutoutNoCull(BACK_LAYER);
-        RenderLayer bottom = entityLivingBaseIn.isGlowing() ? RenderLayer.getEyes(BOTTOM_LAYER) : RenderLayer.getEntityCutoutNoCull(BOTTOM_LAYER);
-        RenderLayer left = entityLivingBaseIn.isGlowing() ? RenderLayer.getEyes(LEFT_LAYER) : RenderLayer.getEntityCutoutNoCull(LEFT_LAYER);
-        RenderLayer right = entityLivingBaseIn.isGlowing() ? RenderLayer.getEyes(RIGHT_LAYER) : RenderLayer.getEntityCutoutNoCull(RIGHT_LAYER);
+        RenderLayer top = entityLivingBaseIn.isTailGlowing() ? RenderLayer.getEyes(TOP_LAYER) : RenderLayer.getEntityCutoutNoCull(TOP_LAYER);
+        RenderLayer back = entityLivingBaseIn.isTailGlowing() ? RenderLayer.getEyes(BACK_LAYER) : RenderLayer.getEntityCutoutNoCull(BACK_LAYER);
+        RenderLayer bottom = entityLivingBaseIn.isTailGlowing() ? RenderLayer.getEyes(BOTTOM_LAYER) : RenderLayer.getEntityCutoutNoCull(BOTTOM_LAYER);
+        RenderLayer left = entityLivingBaseIn.isTailGlowing() ? RenderLayer.getEyes(LEFT_LAYER) : RenderLayer.getEntityCutoutNoCull(LEFT_LAYER);
+        RenderLayer right = entityLivingBaseIn.isTailGlowing() ? RenderLayer.getEyes(RIGHT_LAYER) : RenderLayer.getEntityCutoutNoCull(RIGHT_LAYER);
 
         matrixStackIn.push();
         this.getRenderer().render(this.getEntityModel().getModel(MODEL), entityLivingBaseIn, partialTicks, top, matrixStackIn, bufferIn,

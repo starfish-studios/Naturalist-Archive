@@ -15,18 +15,18 @@ import software.bernie.geckolib3.model.provider.data.EntityModelData;
 
 import java.util.List;
 
-@Environment(EnvType.CLIENT)
+@Environment(value= EnvType.CLIENT)
 public class SnakeModel extends AnimatedGeoModel<Snake> {
     @Override
-    public Identifier getModelResource(Snake snake) {
+    public Identifier getModelLocation(Snake snake) {
         return new Identifier(Naturalist.MOD_ID, "geo/snake.geo.json");
     }
 
     @Override
-    public Identifier getTextureResource(Snake snake) {
-        if (snake.getType().equals(NaturalistEntityTypes.CORAL_SNAKE.get())) {
+    public Identifier getTextureLocation(Snake snake) {
+        if (snake.getType().equals(NaturalistEntityTypes.CORAL_SNAKE)) {
             return new Identifier(Naturalist.MOD_ID, "textures/entity/snake/coral_snake.png");
-        } else if (snake.getType().equals(NaturalistEntityTypes.RATTLESNAKE.get())) {
+        } else if (snake.getType().equals(NaturalistEntityTypes.RATTLESNAKE)) {
             return new Identifier(Naturalist.MOD_ID, "textures/entity/snake/rattlesnake.png");
         } else {
             return new Identifier(Naturalist.MOD_ID, "textures/entity/snake/snake.png");
@@ -34,7 +34,7 @@ public class SnakeModel extends AnimatedGeoModel<Snake> {
     }
 
     @Override
-    public Identifier getAnimationResource(Snake snake) {
+    public Identifier getAnimationFileLocation(Snake snake) {
         return new Identifier(Naturalist.MOD_ID, "animations/snake.animation.json");
     }
 
@@ -57,6 +57,6 @@ public class SnakeModel extends AnimatedGeoModel<Snake> {
             tail2.setScaleX(1.5F);
             tail2.setScaleY(1.5F);
         }
-        tail4.setHidden(!snake.getType().equals(NaturalistEntityTypes.RATTLESNAKE.get()));
+        tail4.setHidden(!snake.getType().equals(NaturalistEntityTypes.RATTLESNAKE));
     }
 }

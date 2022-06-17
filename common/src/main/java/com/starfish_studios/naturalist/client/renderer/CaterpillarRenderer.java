@@ -13,16 +13,11 @@ import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
-@Environment(EnvType.CLIENT)
+@Environment(value= EnvType.CLIENT)
 public class CaterpillarRenderer extends GeoEntityRenderer<Caterpillar> {
     public CaterpillarRenderer(EntityRendererFactory.Context renderManager) {
         super(renderManager, new CaterpillarModel());
         this.shadowRadius = 0.3F;
-    }
-
-    @Override
-    public Identifier getTextureLocation(Caterpillar entity) {
-        return getTextureResource(entity);
     }
 
     @Override

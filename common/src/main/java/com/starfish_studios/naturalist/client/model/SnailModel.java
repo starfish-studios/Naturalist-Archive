@@ -7,20 +7,20 @@ import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
-@Environment(EnvType.CLIENT)
+@Environment(value= EnvType.CLIENT)
 public class SnailModel extends AnimatedGeoModel<Snail> {
     @Override
-    public Identifier getModelResource(Snail snail) {
+    public Identifier getModelLocation(Snail snail) {
         return new Identifier(Naturalist.MOD_ID, "geo/snail.geo.json");
     }
 
     @Override
-    public Identifier getTextureResource(Snail snail) {
+    public Identifier getTextureLocation(Snail snail) {
         return new Identifier(Naturalist.MOD_ID, "textures/entity/snail.png");
     }
 
     @Override
-    public Identifier getAnimationResource(Snail snail) {
+    public Identifier getAnimationFileLocation(Snail snail) {
         return new Identifier(Naturalist.MOD_ID, "animations/snail.animation.json");
     }
 }

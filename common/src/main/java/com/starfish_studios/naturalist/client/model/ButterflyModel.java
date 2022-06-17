@@ -7,20 +7,20 @@ import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
-@Environment(EnvType.CLIENT)
+@Environment(value= EnvType.CLIENT)
 public class ButterflyModel extends AnimatedGeoModel<Butterfly> {
     @Override
-    public Identifier getModelResource(Butterfly butterfly) {
+    public Identifier getModelLocation(Butterfly butterfly) {
         return new Identifier(Naturalist.MOD_ID, "geo/butterfly.geo.json");
     }
 
     @Override
-    public Identifier getTextureResource(Butterfly butterfly) {
+    public Identifier getTextureLocation(Butterfly butterfly) {
         return new Identifier(Naturalist.MOD_ID, "textures/entity/butterfly.png");
     }
 
     @Override
-    public Identifier getAnimationResource(Butterfly butterfly) {
+    public Identifier getAnimationFileLocation(Butterfly butterfly) {
         return new Identifier(Naturalist.MOD_ID, "animations/butterfly.animation.json");
     }
 }

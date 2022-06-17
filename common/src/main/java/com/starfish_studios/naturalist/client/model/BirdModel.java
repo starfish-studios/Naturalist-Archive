@@ -15,15 +15,15 @@ import software.bernie.geckolib3.model.provider.data.EntityModelData;
 
 import java.util.List;
 
-@Environment(EnvType.CLIENT)
+@Environment(value= EnvType.CLIENT)
 public class BirdModel extends AnimatedGeoModel<Bird> {
     @Override
-    public Identifier getTextureResource(Bird bird) {
-        if (bird.getType().equals(NaturalistEntityTypes.BLUEJAY.get())) {
+    public Identifier getTextureLocation(Bird bird) {
+        if (bird.getType().equals(NaturalistEntityTypes.BLUEJAY)) {
             return new Identifier(Naturalist.MOD_ID, "textures/entity/bluejay.png");
-        } else if (bird.getType().equals(NaturalistEntityTypes.CANARY.get())) {
+        } else if (bird.getType().equals(NaturalistEntityTypes.CANARY)) {
             return new Identifier(Naturalist.MOD_ID, "textures/entity/canary.png");
-        } else if (bird.getType().equals(NaturalistEntityTypes.CARDINAL.get())) {
+        } else if (bird.getType().equals(NaturalistEntityTypes.CARDINAL)) {
             return new Identifier(Naturalist.MOD_ID, "textures/entity/cardinal.png");
         } else {
             return new Identifier(Naturalist.MOD_ID, "textures/entity/robin.png");
@@ -31,12 +31,12 @@ public class BirdModel extends AnimatedGeoModel<Bird> {
     }
 
     @Override
-    public Identifier getModelResource(Bird bird) {
+    public Identifier getModelLocation(Bird bird) {
         return new Identifier(Naturalist.MOD_ID, "geo/bird.geo.json");
     }
 
     @Override
-    public Identifier getAnimationResource(Bird bird) {
+    public Identifier getAnimationFileLocation(Bird bird) {
         return new Identifier(Naturalist.MOD_ID, "animations/bird.animation.json");
     }
 

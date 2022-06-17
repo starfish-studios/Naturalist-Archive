@@ -10,20 +10,14 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
-import javax.annotation.Nullable;
-
-@Environment(EnvType.CLIENT)
+@Environment(value= EnvType.CLIENT)
 public class SnailRenderer extends GeoEntityRenderer<Snail> {
     public SnailRenderer(EntityRendererFactory.Context renderManager) {
         super(renderManager, new SnailModel());
         this.shadowRadius = 0.2F;
-    }
-
-    @Override
-    public Identifier getTextureLocation(Snail entity) {
-        return getTextureResource(entity);
     }
 
     @Override

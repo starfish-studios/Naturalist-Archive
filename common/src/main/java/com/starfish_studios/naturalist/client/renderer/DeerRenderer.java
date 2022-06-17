@@ -13,16 +13,11 @@ import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
-@Environment(EnvType.CLIENT)
+@Environment(value= EnvType.CLIENT)
 public class DeerRenderer extends GeoEntityRenderer<Deer> {
     public DeerRenderer(EntityRendererFactory.Context renderManager) {
         super(renderManager, new DeerModel());
         this.shadowRadius = 0.8F;
-    }
-
-    @Override
-    public Identifier getTextureLocation(Deer entity) {
-        return getTextureResource(entity);
     }
 
     @Override

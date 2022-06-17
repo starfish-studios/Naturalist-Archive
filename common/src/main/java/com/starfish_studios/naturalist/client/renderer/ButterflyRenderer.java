@@ -13,16 +13,11 @@ import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
-@Environment(EnvType.CLIENT)
+@Environment(value= EnvType.CLIENT)
 public class ButterflyRenderer extends GeoEntityRenderer<Butterfly> {
     public ButterflyRenderer(EntityRendererFactory.Context renderManager) {
         super(renderManager, new ButterflyModel());
         this.shadowRadius = 0.4F;
-    }
-
-    @Override
-    public Identifier getTextureLocation(Butterfly entity) {
-        return getTextureResource(entity);
     }
 
     @Override

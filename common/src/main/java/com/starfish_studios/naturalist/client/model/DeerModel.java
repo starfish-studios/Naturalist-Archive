@@ -14,20 +14,20 @@ import software.bernie.geckolib3.model.provider.data.EntityModelData;
 
 import java.util.List;
 
-@Environment(EnvType.CLIENT)
+@Environment(value= EnvType.CLIENT)
 public class DeerModel extends AnimatedGeoModel<Deer> {
     @Override
-    public Identifier getModelResource(Deer deer) {
+    public Identifier getModelLocation(Deer deer) {
         return new Identifier(Naturalist.MOD_ID, "geo/deer.geo.json");
     }
 
     @Override
-    public Identifier getTextureResource(Deer deer) {
+    public Identifier getTextureLocation(Deer deer) {
         return new Identifier(Naturalist.MOD_ID, "textures/entity/deer.png");
     }
 
     @Override
-    public Identifier getAnimationResource(Deer deer) {
+    public Identifier getAnimationFileLocation(Deer deer) {
         return new Identifier(Naturalist.MOD_ID, "animations/deer.animation.json");
     }
 

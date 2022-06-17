@@ -11,21 +11,15 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3f;
 import software.bernie.geckolib3.geo.render.built.GeoBone;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
-@Environment(EnvType.CLIENT)
+@Environment(value= EnvType.CLIENT)
 public class BearRenderer extends GeoEntityRenderer<Bear> {
     public BearRenderer(EntityRendererFactory.Context renderManager) {
         super(renderManager, new BearModel());
         this.shadowRadius = 0.9F;
-    }
-
-    @Override
-    public Identifier getTextureLocation(Bear entity) {
-        return getTextureResource(entity);
     }
 
     @Override

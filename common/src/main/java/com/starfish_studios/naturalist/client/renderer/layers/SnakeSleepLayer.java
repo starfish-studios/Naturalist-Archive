@@ -12,7 +12,7 @@ import net.minecraft.util.Identifier;
 import software.bernie.geckolib3.renderers.geo.GeoLayerRenderer;
 import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
 
-@Environment(EnvType.CLIENT)
+@Environment(value= EnvType.CLIENT)
 public class SnakeSleepLayer extends GeoLayerRenderer<Snake> {
     private static final Identifier LAYER = new Identifier(Naturalist.MOD_ID, "textures/entity/snake/snake_sleep.png");
     private static final Identifier MODEL = new Identifier(Naturalist.MOD_ID, "geo/snake.geo.json");
