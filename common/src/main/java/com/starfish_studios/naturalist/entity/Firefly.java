@@ -32,13 +32,11 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.RandomSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
-import net.minecraft.world.entity.*;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -104,7 +102,7 @@ public class Firefly extends AnimalEntity implements Flutterer, IAnimatable {
         return MobEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 6.0D).add(EntityAttributes.GENERIC_FLYING_SPEED, 0.6F).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3F);
     }
 
-    public static boolean checkFireflySpawnRules(EntityType<? extends Firefly> pType, ServerWorldAccess pLevel, SpawnReason pReason, BlockPos pPos, RandomSource pRandom) {
+    public static boolean checkFireflySpawnRules(EntityType<? extends Firefly> pType, ServerWorldAccess pLevel, SpawnReason pReason, BlockPos pPos, Random pRandom) {
         return HostileEntity.isSpawnDark(pLevel, pPos, pRandom) && pLevel.getBlockState(pPos.down()).isIn(NaturalistTags.BlockTags.FIREFLIES_SPAWNABLE_ON);
     }
 
@@ -126,7 +124,7 @@ public class Firefly extends AnimalEntity implements Flutterer, IAnimatable {
         this.dataTracker.startTracking(SUN_TICKS, 0);
     }
 
-    public boolean isGlowing() {
+    public boolean isTailGlowing() {
         return this.dataTracker.get(GLOW_TICKS_REMAINING) > 0;
     }
 
@@ -154,7 +152,7 @@ public class Firefly extends AnimalEntity implements Flutterer, IAnimatable {
             this.setGlowTicks(ticks - 1);
         }
         if (this.canGlow()) {
-            if (this.random.nextFloat() <= 0.01 && !this.isGlowing()) {
+            if (this.random.nextFloat() <= 0.01 && !this.isTailGlowing()) {
                 this.setGlowTicks(40 + this.random.nextInt(20));
             }
         }
@@ -186,7 +184,7 @@ public class Firefly extends AnimalEntity implements Flutterer, IAnimatable {
     @Override
     protected boolean isAffectedByDaylight() {
         if (this.world.isDay() && !this.hasCustomName() && !this.world.isClient) {
-            return this.getLightLevelDependentMagicValue() > 0.5F;
+            return this.getBrightnessAtEyes() > 0.5F;
         }
 
         return false;

@@ -1,7 +1,6 @@
 {
   "values": [
     "#minecraft:is_badlands",
-    "#minecraft:is_savanna",
     "minecraft:desert",
     {
       "id": "#forge:is_sandy",

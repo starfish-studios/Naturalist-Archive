@@ -15,7 +15,6 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.tag.BlockTags;
-import net.minecraft.util.RandomSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
@@ -43,7 +42,7 @@ public class ChrysalisBlock extends HorizontalFacingBlock {
     }
 
     @Override
-    public void randomTick(BlockState pState, ServerWorld pLevel, BlockPos pPos, RandomSource pRandom) {
+    public void randomTick(BlockState pState, ServerWorld pLevel, BlockPos pPos, Random pRandom) {
         int age = pState.get(AGE);
         if (age < 3) {
             if (pLevel.random.nextInt(5) == 0) {

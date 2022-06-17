@@ -67,8 +67,6 @@ import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
-import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.event.GameEvent;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -377,14 +375,14 @@ public class Bear extends AnimalEntity implements Angerable, IAnimatable, Sleepi
     }
 
     void tryToSit() {
-        if (!this.isTouchingWater()) {
+        if (!this.isInWater()) {
             this.setForwardSpeed(0.0F);
             this.getNavigation().stop();
             this.setSitting(true);
         }
     }
 
-    boolean isTouchingWater() {
+    boolean isInWater() {
         return this.world.isWater(this.getBlockPos());
     }
 
@@ -747,7 +745,7 @@ public class Bear extends AnimalEntity implements Angerable, IAnimatable, Sleepi
 
         @Override
         public boolean canStart() {
-            if (this.cooldown <= bear.age && !bear.isBaby() && !bear.isTouchingWater() && !bear.isSleeping() && !bear.isSitting()) {
+            if (this.cooldown <= bear.age && !bear.isBaby() && !bear.isInWater() && !bear.isSleeping() && !bear.isSitting()) {
                 return !bear.getMainHandStack().isEmpty();
             } else {
                 return false;
@@ -756,7 +754,7 @@ public class Bear extends AnimalEntity implements Angerable, IAnimatable, Sleepi
 
         @Override
         public boolean shouldContinue() {
-            return !bear.isTouchingWater();
+            return !bear.isInWater();
         }
 
         @Override

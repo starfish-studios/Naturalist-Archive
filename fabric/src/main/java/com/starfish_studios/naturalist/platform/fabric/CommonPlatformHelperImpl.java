@@ -47,7 +47,7 @@ public class CommonPlatformHelperImpl {
     }
 
     public static Supplier<Item> registerMobBucketItem(String name, Supplier<? extends EntityType<?>> entitySupplier, Supplier<? extends Fluid> fluidSupplier, Supplier<? extends SoundEvent> soundSupplier) {
-        var registry = Registry.register(Registry.ITEM, new Identifier(Naturalist.MOD_ID, name), new NoFluidMobBucketItem(entitySupplier, fluidSupplier.get(), soundSupplier.get(), new Item.Settings().group(Naturalist.TAB).stacksTo(1)));
+        var registry = Registry.register(Registry.ITEM, new Identifier(Naturalist.MOD_ID, name), new NoFluidMobBucketItem(entitySupplier, fluidSupplier.get(), soundSupplier.get(), new Item.Settings().group(Naturalist.TAB).maxCount(1)));
         return () -> registry;
     }
 

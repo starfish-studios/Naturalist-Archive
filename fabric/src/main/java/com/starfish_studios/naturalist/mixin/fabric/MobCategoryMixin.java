@@ -27,16 +27,16 @@ public abstract class MobCategoryMixin {
     @Shadow
     private static @Final
     @Mutable
-    SpawnGroup[] $VALUES;
+    SpawnGroup[] field_6301;
 
-    @Inject(method = "<clinit>", at = @At(value = "FIELD", opcode = Opcodes.PUTSTATIC, target = "Lnet/minecraft/world/entity/MobCategory;$VALUES:[Lnet/minecraft/world/entity/MobCategory;", shift = At.Shift.AFTER))
+    @Inject(method = "<clinit>", at = @At(value = "FIELD", opcode = Opcodes.PUTSTATIC, target = "Lnet/minecraft/entity/SpawnGroup;field_6301:[Lnet/minecraft/entity/SpawnGroup;", shift = At.Shift.AFTER))
     private static void addCustomSpawnGroup(CallbackInfo ci) {
-        var mobCategories = new ArrayList<>(Arrays.asList($VALUES));
+        var mobCategories = new ArrayList<>(Arrays.asList(field_6301));
         var last = mobCategories.get(mobCategories.size() - 1);
         // This means our code will still work if other mods or Mojang add more spawn groups!
         var firefliesCategory = newMobCategory("FIREFLIES", last.ordinal() + 1, "fireflies", 10, true, false, 128);
         NaturalistMobCategoriesImpl.FIREFLIES = firefliesCategory;
         mobCategories.add(firefliesCategory);
-        $VALUES = mobCategories.toArray(new SpawnGroup[0]);
+        field_6301 = mobCategories.toArray(new SpawnGroup[0]);
     }
 }

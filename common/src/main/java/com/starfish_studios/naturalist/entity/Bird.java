@@ -41,7 +41,6 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.RandomSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
@@ -49,7 +48,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.goal.*;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -58,6 +56,8 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+
+import java.util.Random;
 
 public class Bird extends TameableShoulderEntity implements Flutterer, IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
@@ -93,7 +93,7 @@ public class Bird extends TameableShoulderEntity implements Flutterer, IAnimatab
         return MobEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 6.0D).add(EntityAttributes.GENERIC_FLYING_SPEED, 0.8F).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.2D);
     }
 
-    public static boolean checkBirdSpawnRules(EntityType<Bird> entityType, WorldAccess state, SpawnReason type, BlockPos pos, RandomSource random) {
+    public static boolean checkBirdSpawnRules(EntityType<Bird> entityType, WorldAccess state, SpawnReason type, BlockPos pos, Random random) {
         return state.getBlockState(pos.down()).isIn(BlockTags.PARROTS_SPAWNABLE_ON) && isLightLevelValidForNaturalSpawn(state, pos);
     }
 

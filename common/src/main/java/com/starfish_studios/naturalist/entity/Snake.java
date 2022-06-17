@@ -44,7 +44,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.tag.BlockTags;
-import net.minecraft.util.RandomSource;
 import net.minecraft.util.TimeHelper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
@@ -52,8 +51,6 @@ import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
-import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.event.GameEvent;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -67,6 +64,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 public class Snake extends ClimbingAnimal implements SleepingAnimal, Angerable, IAnimatable {
@@ -112,18 +110,17 @@ public class Snake extends ClimbingAnimal implements SleepingAnimal, Angerable, 
         return null;
     }
 
-    public static boolean checkSnakeSpawnRules(EntityType<Snake> entityType, WorldAccess level, SpawnReason type, BlockPos pos, RandomSource random) {
+    public static boolean checkSnakeSpawnRules(EntityType<Snake> entityType, WorldAccess level, SpawnReason type, BlockPos pos, Random random) {
         return level.getBlockState(pos.down()).isIn(BlockTags.RABBITS_SPAWNABLE_ON) && isLightLevelValidForNaturalSpawn(level, pos);
     }
 
     @Override
     public EntityData initialize(ServerWorldAccess pLevel, LocalDifficulty pDifficulty, SpawnReason pReason, @Nullable EntityData pSpawnData, @Nullable NbtCompound pDataTag) {
-        this.populateDefaultEquipmentSlots(random, pDifficulty);
+        this.initEquipment(random, pDifficulty);
         return super.initialize(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }
 
-    @Override
-    protected void populateDefaultEquipmentSlots(RandomSource random, LocalDifficulty pDifficulty) {
+    protected void initEquipment(Random random, LocalDifficulty pDifficulty) {
         if (random.nextFloat() < 0.2F) {
             float chance = random.nextFloat();
             ItemStack stack;

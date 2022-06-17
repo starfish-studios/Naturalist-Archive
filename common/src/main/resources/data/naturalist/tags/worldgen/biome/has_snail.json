@@ -1,13 +1,11 @@
 {
   "values": [
     "#minecraft:is_forest",
-    "#minecraft:is_savanna",
     "#minecraft:is_river",
     "#minecraft:is_hill",
     "#minecraft:is_mountain",
     "minecraft:plains",
     "minecraft:swamp",
-    "minecraft:mangrove_swamp",
     "minecraft:lush_caves",
     "minecraft:dripstone_caves",
     "minecraft:mushroom_fields",

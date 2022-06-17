@@ -1,7 +1,6 @@
 {
   "values": [
     "minecraft:grass_block",
-    "minecraft:mud",
     "#minecraft:leaves"
   ]
 }

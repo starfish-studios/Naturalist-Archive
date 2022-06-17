@@ -40,10 +40,6 @@ public abstract class ClimbingAnimal extends AnimalEntity {
 
     @Override
     public boolean isClimbing() {
-        return this.isClimbing();
-    }
-
-    public boolean isClimbing() {
         return (this.dataTracker.get(CLIMB_FLAG) & 1) != 0;
     }
 
