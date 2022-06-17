@@ -5,10 +5,6 @@
     "minecraft:beach",
     "minecraft:stony_shore",
     {
-      "id": "#forge:is_beach",
-      "required": false
-    },
-    {
       "id": "#c:jungle",
       "required": false
     },

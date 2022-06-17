@@ -10,34 +10,6 @@
     "minecraft:dripstone_caves",
     "minecraft:mushroom_fields",
     {
-      "id": "#forge:is_forest",
-      "required": false
-    },
-    {
-      "id": "#forge:is_savanna",
-      "required": false
-    },
-    {
-      "id": "#forge:is_mountain",
-      "required": false
-    },
-    {
-      "id": "#forge:is_plains",
-      "required": false
-    },
-    {
-      "id": "#forge:is_swamp",
-      "required": false
-    },
-    {
-      "id": "#forge:is_underground",
-      "required": false
-    },
-    {
-      "id": "#forge:is_mushroom",
-      "required": false
-    },
-    {
       "id": "#c:forest",
       "required": false
     },

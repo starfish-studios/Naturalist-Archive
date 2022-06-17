@@ -5,22 +5,6 @@
     "minecraft:swamp",
     "minecraft:mushroom_fields",
     {
-      "id": "#forge:is_forest",
-      "required": false
-    },
-    {
-      "id": "#forge:is_plains",
-      "required": false
-    },
-    {
-      "id": "#forge:is_swamp",
-      "required": false
-    },
-    {
-      "id": "#forge:is_mushroom",
-      "required": false
-    },
-    {
       "id": "#c:forest",
       "required": false
     },

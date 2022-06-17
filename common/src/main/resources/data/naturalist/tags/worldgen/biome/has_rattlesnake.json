@@ -3,14 +3,6 @@
     "#minecraft:is_badlands",
     "minecraft:desert",
     {
-      "id": "#forge:is_sandy",
-      "required": false
-    },
-    {
-      "id": "#forge:is_savanna",
-      "required": false
-    },
-    {
       "id": "#c:desert",
       "required": false
     },

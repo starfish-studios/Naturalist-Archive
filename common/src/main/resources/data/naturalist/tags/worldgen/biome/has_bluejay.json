@@ -6,14 +6,6 @@
     "minecraft:snowy_plains",
     "minecraft:snowy_slopes",
     {
-      "id": "#forge:is_snowy",
-      "required": false
-    },
-    {
-      "id": "#forge:is_mountain",
-      "required": false
-    },
-    {
       "id": "#c:taiga",
       "required": false
     },

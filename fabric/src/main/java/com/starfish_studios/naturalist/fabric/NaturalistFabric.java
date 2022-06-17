@@ -16,6 +16,7 @@ import net.minecraft.entity.SpawnGroup;
 import net.minecraft.tag.BiomeTags;
 import net.minecraft.tag.TagKey;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.dimension.DimensionOptions;
 
 public class NaturalistFabric implements ModInitializer {
     @Override
@@ -64,6 +65,6 @@ public class NaturalistFabric implements ModInitializer {
     }
 
     void addMobSpawn(TagKey<Biome> tag, SpawnGroup mobCategory, EntityType<?> entityType, int weight, int minGroupSize, int maxGroupSize) {
-        BiomeModifications.addSpawn(biomeSelector -> biomeSelector.hasTag(tag), mobCategory, entityType, weight, minGroupSize, maxGroupSize);
+        BiomeModifications.addSpawn(biomeSelector -> biomeSelector.hasTag(tag) && biomeSelector.canGenerateIn(DimensionOptions.OVERWORLD), mobCategory, entityType, weight, minGroupSize, maxGroupSize);
     }
 }
