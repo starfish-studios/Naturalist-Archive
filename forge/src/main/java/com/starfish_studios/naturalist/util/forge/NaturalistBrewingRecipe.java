@@ -1,12 +1,17 @@
 package com.starfish_studios.naturalist.util.forge;
 
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionUtil;
 import net.minecraftforge.common.brewing.IBrewingRecipe;
 
 public record NaturalistBrewingRecipe(Potion input, Item ingredient, Potion output) implements IBrewingRecipe {
 
     @Override
     public boolean isInput(ItemStack input) {
-        return PotionUtils.getPotion(input).equals(this.input);
+        return PotionUtil.getPotion(input).equals(this.input);
     }
 
     @Override
@@ -21,8 +26,8 @@ public record NaturalistBrewingRecipe(Potion input, Item ingredient, Potion outp
         }
 
         ItemStack stack = new ItemStack(input.getItem());
-        stack.setTag(new CompoundTag());
-        PotionUtils.setPotion(stack, this.output);
+        stack.setNbt(new NbtCompound());
+        PotionUtil.setPotion(stack, this.output);
         return stack;
     }
 }

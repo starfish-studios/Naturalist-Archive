@@ -48,7 +48,7 @@ public class CommonPlatformHelperImpl {
     }
 
     public static Supplier<Item> registerMobBucketItem(String name, Supplier<? extends EntityType<?>> entitySupplier, Supplier<? extends Fluid> fluidSupplier, Supplier<? extends SoundEvent> soundSupplier) {
-        return ITEMS.register(name, () -> new NoFluidMobBucketItem(entitySupplier, fluidSupplier, soundSupplier, new Item.Settings().group(Naturalist.TAB).stacksTo(1)));
+        return ITEMS.register(name, () -> new NoFluidMobBucketItem(entitySupplier, fluidSupplier, soundSupplier, new Item.Settings().group(Naturalist.TAB).maxCount(1)));
     }
 
     public static <T extends SoundEvent> Supplier<T> registerSoundEvent(String name, Supplier<T> soundEvent) {
@@ -60,7 +60,7 @@ public class CommonPlatformHelperImpl {
     }
 
     public static ItemGroup registerCreativeModeTab(Identifier name, Supplier<ItemStack> icon) {
-        return new ItemGroup(name.toLanguageKey()) {
+        return new ItemGroup(name.getNamespace() + "." + name.getPath()) {
             @Override
             public ItemStack createIcon() {
                 return icon.get();
