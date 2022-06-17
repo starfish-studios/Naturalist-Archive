@@ -6,7 +6,8 @@
   "client": [
   ],
   "mixins": [
-    "CropBlockMixin"
+    "CropBlockMixin",
+    "MobMixin"
   ],
   "injectors": {
     "defaultRequire": 1
