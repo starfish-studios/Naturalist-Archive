@@ -19,11 +19,11 @@ import java.util.List;
 public class BirdModel extends AnimatedGeoModel<Bird> {
     @Override
     public Identifier getTextureLocation(Bird bird) {
-        if (bird.getType().equals(NaturalistEntityTypes.BLUEJAY)) {
+        if (bird.getType().equals(NaturalistEntityTypes.BLUEJAY.get())) {
             return new Identifier(Naturalist.MOD_ID, "textures/entity/bluejay.png");
-        } else if (bird.getType().equals(NaturalistEntityTypes.CANARY)) {
+        } else if (bird.getType().equals(NaturalistEntityTypes.CANARY.get())) {
             return new Identifier(Naturalist.MOD_ID, "textures/entity/canary.png");
-        } else if (bird.getType().equals(NaturalistEntityTypes.CARDINAL)) {
+        } else if (bird.getType().equals(NaturalistEntityTypes.CARDINAL.get())) {
             return new Identifier(Naturalist.MOD_ID, "textures/entity/cardinal.png");
         } else {
             return new Identifier(Naturalist.MOD_ID, "textures/entity/robin.png");

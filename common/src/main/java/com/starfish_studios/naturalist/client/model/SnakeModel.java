@@ -24,9 +24,9 @@ public class SnakeModel extends AnimatedGeoModel<Snake> {
 
     @Override
     public Identifier getTextureLocation(Snake snake) {
-        if (snake.getType().equals(NaturalistEntityTypes.CORAL_SNAKE)) {
+        if (snake.getType().equals(NaturalistEntityTypes.CORAL_SNAKE.get())) {
             return new Identifier(Naturalist.MOD_ID, "textures/entity/snake/coral_snake.png");
-        } else if (snake.getType().equals(NaturalistEntityTypes.RATTLESNAKE)) {
+        } else if (snake.getType().equals(NaturalistEntityTypes.RATTLESNAKE.get())) {
             return new Identifier(Naturalist.MOD_ID, "textures/entity/snake/rattlesnake.png");
         } else {
             return new Identifier(Naturalist.MOD_ID, "textures/entity/snake/snake.png");
@@ -57,6 +57,6 @@ public class SnakeModel extends AnimatedGeoModel<Snake> {
             tail2.setScaleX(1.5F);
             tail2.setScaleY(1.5F);
         }
-        tail4.setHidden(!snake.getType().equals(NaturalistEntityTypes.RATTLESNAKE));
+        tail4.setHidden(!snake.getType().equals(NaturalistEntityTypes.RATTLESNAKE.get()));
     }
 }
