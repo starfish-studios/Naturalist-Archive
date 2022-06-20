@@ -1,5 +1,6 @@
 package com.starfish_studios.naturalist.entity;
 
+import com.starfish_studios.naturalist.entity.ai.navigation.BetterWallClimberNavigation;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -24,7 +25,7 @@ public abstract class ClimbingAnimal extends Animal {
 
     @Override
     protected PathNavigation createNavigation(Level pLevel) {
-        return new WallClimberNavigation(this, pLevel);
+        return new BetterWallClimberNavigation(this, pLevel);
     }
 
     @Override
