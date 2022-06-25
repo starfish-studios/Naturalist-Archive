@@ -1,0 +1,78 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"elephant.walk": {
+			"loop": true,
+			"animation_length": 1,
+			"override_previous_animation": true,
+			"bones": {
+				"body": {
+					"rotation": {
+						"0.0": ["Math.cos((query.anim_time - 0.0) * 360) * 1", 0, "Math.sin((query.anim_time - 0.0) * 360) * 1.5"],
+						"0.4583": ["Math.cos((query.anim_time - 0.0) * 360) * 1", 0, "Math.sin((query.anim_time - 0.0) * 360) * 3"]
+					},
+					"position": [0, "Math.sin((query.anim_time - 0.0) * 360) * 0.5", 0]
+				},
+				"head": {
+					"rotation": [0, 0, "Math.cos((query.anim_time - 0.2) * 360) * 1"],
+					"position": [0, "-0.5 + Math.sin((query.anim_time - 0.3) * 360) * 0.5", 0]
+				},
+				"trunk": {
+					"rotation": [0, 0, "Math.sin((query.anim_time - 0.0) * 360) * 2"]
+				},
+				"trunk2": {
+					"rotation": [0, 0, "Math.sin((query.anim_time - 0.2) * 360) * 3"]
+				},
+				"trunk3": {
+					"rotation": [0, 0, "Math.sin((query.anim_time - 0.4) * 360) * 2"]
+				},
+				"trunk4": {
+					"rotation": [0, 0, "Math.sin((query.anim_time - 0.4) * 360) * 4"]
+				},
+				"left_arm": {
+					"rotation": ["Math.sin((query.anim_time - 0.0) * 360) * 20", 0, 0],
+					"position": {
+						"0.25": [0, 0, 0],
+						"0.5": [0, 4, 0],
+						"0.75": [0, 0, 0]
+					}
+				},
+				"right_arm": {
+					"rotation": ["Math.sin((query.anim_time - 0.0) * 360) * -20", 0, 0],
+					"position": {
+						"0.0": [0, 4, 0],
+						"0.25": [0, 0, 0],
+						"0.75": [0, 0, 0],
+						"1.0": [0, 4, 0]
+					}
+				},
+				"right_leg": {
+					"rotation": ["Math.cos((query.anim_time - 0.0) * 360) * -20", 0, 0],
+					"position": {
+						"0.5": [0, 0, 0],
+						"0.75": [0, 4, 0],
+						"1.0": [0, 0, 0]
+					}
+				},
+				"left_leg": {
+					"rotation": ["Math.cos((query.anim_time - 0.0) * 360) * 20", 0, 0],
+					"position": {
+						"0.0": [0, 0, 0],
+						"0.25": [0, 4, 0],
+						"0.5": [0, 0, 0]
+					}
+				},
+				"left_ear": {
+					"rotation": [0, "-0.5 + Math.sin((query.anim_time - 0.3) * 360) * 0.5", "Math.cos((query.anim_time - 0.1) * 360) * 2"]
+				},
+				"right_ear": {
+					"rotation": [0, "Math.cos((query.anim_time - 0.0) * 360) * -4", "Math.cos((query.anim_time - 0.1) * 360) * -2"]
+				},
+				"tail": {
+					"rotation": ["-32 + Math.cos((query.anim_time - 0.0) * 360) * 2", 0, 0]
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}
