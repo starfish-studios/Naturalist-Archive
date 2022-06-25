@@ -6,7 +6,7 @@
 				"identifier": "geometry.unknown",
 				"texture_width": 128,
 				"texture_height": 128,
-				"visible_bounds_width": 4,
+				"visible_bounds_width": 5,
 				"visible_bounds_height": 3.5,
 				"visible_bounds_offset": [0, 1.25, 0]
 			},
@@ -27,18 +27,18 @@
 				{
 					"name": "tail",
 					"parent": "body",
-					"pivot": [-1, 20, 10],
+					"pivot": [-0.5, 20, 10],
 					"rotation": [90, 0, 0],
 					"cubes": [
-						{"origin": [-1.5, 12, 9], "size": [2, 8, 2], "uv": [49, 55]}
+						{"origin": [-1, 12, 9], "size": [2, 8, 2], "uv": [49, 55]}
 					]
 				},
 				{
 					"name": "tail2",
 					"parent": "tail",
-					"pivot": [-1, 12, 10],
+					"pivot": [-0.5, 12, 10],
 					"cubes": [
-						{"origin": [-1.5, 4, 9], "size": [2, 8, 2], "uv": [49, 44]}
+						{"origin": [-1, 4, 9], "size": [2, 8, 2], "uv": [49, 44]}
 					]
 				},
 				{
