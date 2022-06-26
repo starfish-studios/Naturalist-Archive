@@ -34,8 +34,13 @@
 					]
 				},
 				{
-					"name": "head",
+					"name": "head2",
 					"parent": "body",
+					"pivot": [1, 17.25, -16.5]
+				},
+				{
+					"name": "head",
+					"parent": "head2",
 					"pivot": [1, 17.25, -16.5],
 					"cubes": [
 						{"origin": [-4, 11, -24], "size": [10, 14, 8], "uv": [54, 40]},
