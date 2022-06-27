@@ -1,0 +1,310 @@
+package com.starfish_studios.naturalist.entity;
+
+import com.starfish_studios.naturalist.entity.ai.goal.BabyHurtByTargetGoal;
+import com.starfish_studios.naturalist.entity.ai.goal.BabyPanicGoal;
+import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
+import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
+import com.starfish_studios.naturalist.registry.NaturalistTags;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.pathfinder.Path;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib3.core.AnimationState;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.SoundKeyframeEvent;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
+
+import java.util.EnumSet;
+import java.util.List;
+import java.util.function.Predicate;
+
+public class Rhino extends Animal implements IAnimatable {
+    private final AnimationFactory factory = new AnimationFactory(this);
+    private static final EntityDataAccessor<Integer> CHARGE_COOLDOWN_TICKS = SynchedEntityData.defineId(Rhino.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> HAS_TARGET = SynchedEntityData.defineId(Rhino.class, EntityDataSerializers.BOOLEAN);
+
+    public Rhino(EntityType<? extends Animal> entityType, Level level) {
+        super(entityType, level);
+    }
+
+    public static AttributeSupplier.Builder createAttributes() {
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.MOVEMENT_SPEED, 0.2D).add(Attributes.ATTACK_DAMAGE, 6.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.6D).add(Attributes.FOLLOW_RANGE, 12.0D);
+    }
+
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @javax.annotation.Nullable SpawnGroupData pSpawnData, @javax.annotation.Nullable CompoundTag pDataTag) {
+        if (pSpawnData == null) {
+            pSpawnData = new AgeableMobGroupData(1.0F);
+        }
+
+        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+    }
+
+    @Override
+    public boolean isFood(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    protected void registerGoals() {
+        super.registerGoals();
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new RhinoPrepareChargeGoal(this));
+        this.goalSelector.addGoal(2, new RhinoChargeGoal(this, 2.5F));
+        this.goalSelector.addGoal(3, new BabyPanicGoal(this, 2.0D));
+        this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.1));
+        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0f));
+        this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+        this.targetSelector.addGoal(1, new BabyHurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, EntitySelector.NO_CREATIVE_OR_SPECTATOR::test));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Animal.class, 10, true, false, entity -> entity.getType().is(NaturalistTags.EntityTypes.RHINO_HOSTILES)));
+    }
+
+    @Nullable
+    @Override
+    public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
+        return NaturalistEntityTypes.RHINO.get().create(serverLevel);
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(CHARGE_COOLDOWN_TICKS, 0);
+        this.entityData.define(HAS_TARGET, false);
+    }
+
+    public void setChargeCooldownTicks(int ticks) {
+        this.entityData.set(CHARGE_COOLDOWN_TICKS, ticks);
+    }
+
+    public int getChargeCooldownTicks() {
+        return this.entityData.get(CHARGE_COOLDOWN_TICKS);
+    }
+
+    public boolean hasChargeCooldown() {
+        return this.entityData.get(CHARGE_COOLDOWN_TICKS) > 0;
+    }
+
+    public void resetChargeCooldownTicks() {
+        this.entityData.set(CHARGE_COOLDOWN_TICKS, 50);
+    }
+
+    public void setHasTarget(boolean hasTarget) {
+        this.entityData.set(HAS_TARGET, hasTarget);
+    }
+
+    public boolean hasTarget() {
+        return this.entityData.get(HAS_TARGET);
+    }
+
+    @Override
+    public int getMaxHeadYRot() {
+        return this.isSprinting() ? 1 : 50;
+    }
+
+    @Override
+    public void customServerAiStep() {
+        if (this.getMoveControl().hasWanted()) {
+            this.setSprinting(this.getMoveControl().getSpeedModifier() >= 1.5D);
+        } else {
+            this.setSprinting(false);
+        }
+        super.customServerAiStep();
+    }
+
+    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        if (event.isMoving()) {
+            if (this.isSprinting()) {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("rhino.run", true));
+                event.getController().setAnimationSpeed(3.0F);
+            } else {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("rhino.walk", true));
+                event.getController().setAnimationSpeed(1.0F);
+            }
+        } else if (this.hasChargeCooldown() && this.hasTarget()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("rhino.foot", true));
+        } else {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("rhino.idle", true));
+            event.getController().setAnimationSpeed(1.0F);
+        }
+        return PlayState.CONTINUE;
+    }
+
+    private void soundListener(SoundKeyframeEvent<Rhino> event) {
+        Rhino rhino = event.getEntity();
+        if (rhino.level.isClientSide) {
+            if (event.sound.equals("scrape")) {
+                rhino.level.playLocalSound(rhino.getX(), rhino.getY(), rhino.getZ(), NaturalistSoundEvents.RHINO_SCRAPE.get(), rhino.getSoundSource(), 1.0F, rhino.getVoicePitch(), false);
+            }
+        }
+    }
+
+    private <E extends IAnimatable> PlayState attackPredicate(AnimationEvent<E> event) {
+        if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
+            event.getController().markNeedsReload();
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("rhino.attack", false));
+            this.swinging = false;
+        }
+        return PlayState.CONTINUE;
+    }
+
+    @Override
+    public void registerControllers(AnimationData data) {
+        data.setResetSpeedInTicks(5);
+        AnimationController<Rhino> controller = new AnimationController<>(this, "controller", 5, this::predicate);
+        controller.registerSoundListener(this::soundListener);
+        data.addAnimationController(controller);
+        data.addAnimationController(new AnimationController<>(this, "attackController", 0, this::attackPredicate));
+    }
+
+    @Override
+    public AnimationFactory getFactory() {
+        return factory;
+    }
+
+    static class RhinoPrepareChargeGoal extends Goal {
+        protected final Rhino rhino;
+
+        public RhinoPrepareChargeGoal(Rhino rhino) {
+            this.rhino = rhino;
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        }
+
+        @Override
+        public boolean canUse() {
+            LivingEntity target = this.rhino.getTarget();
+            if (target == null || !target.isAlive()) {
+                this.rhino.resetChargeCooldownTicks();
+                return false;
+            }
+            return rhino.hasChargeCooldown();
+        }
+
+        @Override
+        public void start() {
+            LivingEntity target = this.rhino.getTarget();
+            if (target == null) {
+                return;
+            }
+            this.rhino.setHasTarget(true);
+            this.rhino.resetChargeCooldownTicks();
+        }
+
+        @Override
+        public void stop() {
+            this.rhino.setHasTarget(false);
+        }
+
+        @Override
+        public void tick() {
+            LivingEntity target = this.rhino.getTarget();
+            if (target == null) {
+                return;
+            }
+            this.rhino.getLookControl().setLookAt(target);
+            this.rhino.setChargeCooldownTicks(Math.max(0, this.rhino.getChargeCooldownTicks() - 1));
+        }
+    }
+
+    static class RhinoChargeGoal extends Goal {
+        protected final Rhino mob;
+        private final double speedModifier;
+        private Path path;
+        private Vec3 chargeDirection;
+
+        public RhinoChargeGoal(Rhino pathfinderMob, double speedModifier) {
+            this.mob = pathfinderMob;
+            this.speedModifier = speedModifier;
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+            this.chargeDirection = Vec3.ZERO;
+        }
+
+        @Override
+        public boolean canUse() {
+            LivingEntity target = this.mob.getTarget();
+            if (target == null || !target.isAlive() || this.mob.hasChargeCooldown()) {
+                return false;
+            }
+            this.path = this.mob.getNavigation().createPath(target, 0);
+            return this.path != null;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            LivingEntity target = this.mob.getTarget();
+            if (target == null || !target.isAlive() || this.mob.hasChargeCooldown()) {
+                return false;
+            }
+            return !this.mob.getNavigation().isDone();
+        }
+
+        @Override
+        public void start() {
+            BlockPos blockPosition = this.mob.blockPosition();
+            BlockPos target = this.path.getTarget();
+            this.chargeDirection = new Vec3(blockPosition.getX() - target.getX(), 0.0, blockPosition.getZ() - target.getZ()).normalize();
+            this.mob.getNavigation().moveTo(this.path, this.speedModifier);
+            this.mob.setAggressive(true);
+        }
+
+        @Override
+        public void stop() {
+            this.mob.resetChargeCooldownTicks();
+            this.mob.getNavigation().stop();
+        }
+
+        @Override
+        public boolean requiresUpdateEveryTick() {
+            return true;
+        }
+
+        @Override
+        public void tick() {
+            this.tryToHurt();
+            RandomSource random = this.mob.getRandom();
+            this.mob.level.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.mob.getX() + 0.5 + random.nextDouble() / 3.0, this.mob.getY(), this.mob.getZ() + 0.5 + random.nextDouble() / 3.0, 0.0, 0.005, 0.0);
+        }
+
+        protected void tryToHurt() {
+            List<LivingEntity> nearbyEntities = this.mob.level.getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), this.mob, this.mob.getBoundingBox());
+            if (!nearbyEntities.isEmpty()) {
+                LivingEntity livingEntity = nearbyEntities.get(0);
+                livingEntity.hurt(DamageSource.mobAttack(this.mob).setNoAggro(), (float) this.mob.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                float speed = Mth.clamp(this.mob.getSpeed() * 1.65f, 0.2f, 3.0f);
+                float shieldBlockModifier = livingEntity.isDamageSourceBlocked(DamageSource.mobAttack(this.mob)) ? 0.5f : 1.0f;
+                livingEntity.knockback(shieldBlockModifier * speed * 2.0D, this.chargeDirection.x(), this.chargeDirection.z());
+                double knockbackResistance = Math.max(0.0, 1.0 - livingEntity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
+                livingEntity.setDeltaMovement(livingEntity.getDeltaMovement().add(0.0, 0.4f * knockbackResistance, 0.0));
+                this.mob.swing(InteractionHand.MAIN_HAND);
+            }
+        }
+    }
+}

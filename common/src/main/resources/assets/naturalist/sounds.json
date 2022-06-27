@@ -199,5 +199,11 @@
       "naturalist:firefly_hide"
     ],
     "subtitle": "naturalist.subtitles.entity.firefly.hide"
+  },
+  "entity.rhino.scrape": {
+    "sounds": [
+      "naturalist:rhino_scrape"
+    ],
+    "subtitle": "naturalist.subtitles.entity.rhino.scrape"
   }
 }

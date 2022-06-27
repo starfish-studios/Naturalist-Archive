@@ -215,7 +215,6 @@
 			}
 		},
 		"rhino.attack": {
-			"loop": "hold_on_last_frame",
 			"animation_length": 0.5,
 			"bones": {
 				"head2": {
@@ -231,15 +230,79 @@
 			"animation_length": 2,
 			"bones": {
 				"body": {
-					"position": [0, "-0.6 + Math.sin((query.anim_time - 0.0) * 180) * 0.6", 0]
+					"position": {
+						"vector": [0, "-0.6 + Math.sin((query.anim_time - 0.0) * 180) * 0.6", 0]
+					}
 				},
 				"head": {
-					"rotation": [22.5, 0, 0],
-					"position": [0, "Math.cos((query.anim_time - 0.0) * 180) * -0.3", 0]
+					"rotation": {
+						"vector": [22.5, 0, 0]
+					},
+					"position": {
+						"vector": [0, "Math.cos((query.anim_time - 0.0) * 180) * -0.3", 0]
+					}
 				},
 				"right_arm": {
-					"rotation": ["Math.clamp(Math.cos((query.anim_time - 0.25) * 360) * -45, 0, 500", 0, 0],
-					"position": [0, "Math.clamp(Math.cos((query.anim_time - 0.25) * 360) * -1, 0, 500", "Math.clamp(Math.cos((query.anim_time - 0.2) * 360) * -1, 0, 500"]
+					"rotation": {
+						"0.5": {
+							"vector": [0, 0, 0]
+						},
+						"0.6667": {
+							"vector": [38.97, 0, 0]
+						},
+						"0.8333": {
+							"vector": [38.97, 0, 0]
+						},
+						"1.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.5": {
+							"vector": [0, 0, 0]
+						},
+						"1.6667": {
+							"vector": [38.97, 0, 0]
+						},
+						"1.8333": {
+							"vector": [38.97, 0, 0]
+						},
+						"2.0": {
+							"vector": [0, 0, 0]
+						}
+					},
+					"position": {
+						"0.5": {
+							"vector": [0, 0, 0.31]
+						},
+						"0.6667": {
+							"vector": [0, 0.87, 0.98]
+						},
+						"0.8333": {
+							"vector": [0, 0.87, 0.67]
+						},
+						"1.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.5": {
+							"vector": [0, 0, 0.31]
+						},
+						"1.6667": {
+							"vector": [0, 0.87, 0.98]
+						},
+						"1.8333": {
+							"vector": [0, 0.87, 0.67]
+						},
+						"2.0": {
+							"vector": [0, 0, 0]
+						}
+					}
+				}
+			},
+			"sound_effects": {
+				"0.5": {
+					"effect": "scrape"
+				},
+				"1.5": {
+					"effect": "scrape"
 				}
 			}
 		}

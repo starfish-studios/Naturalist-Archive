@@ -1,8 +1,6 @@
 package com.starfish_studios.naturalist.entity;
 
-import com.starfish_studios.naturalist.entity.ai.goal.SleepGoal;
-import com.starfish_studios.naturalist.entity.ai.goal.DistancedFollowParentGoal;
-import com.starfish_studios.naturalist.entity.ai.goal.SearchForItemsGoal;
+import com.starfish_studios.naturalist.entity.ai.goal.*;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
@@ -116,7 +114,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
         this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(2, new BearMeleeAttackGoal(this, 1.25D, true));
         this.goalSelector.addGoal(3, new BearTemptGoal(this, 1.0D, FOOD_ITEMS, false));
-        this.goalSelector.addGoal(3, new BearPanicGoal(this, 2.0D));
+        this.goalSelector.addGoal(3, new BabyPanicGoal(this, 2.0D));
         this.goalSelector.addGoal(4, new BearSleepGoal(this));
         this.goalSelector.addGoal(5, new DistancedFollowParentGoal(this, 1.25D, 48.0D, 8.0D, 12.0D));
         this.goalSelector.addGoal(5, new SearchForItemsGoal(this, 1.2F, FOOD_ITEMS, 8, 2));
@@ -125,7 +123,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
         this.goalSelector.addGoal(8, new RandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new BearHurtByTargetGoal(this));
+        this.targetSelector.addGoal(1, new BabyHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new BearAttackPlayerNearBabiesGoal(this, Player.class, 20, false, true, null));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, PathfinderMob.class, 10, true, false, (entity) -> entity.getType().is(NaturalistTags.EntityTypes.BEAR_HOSTILES) && !this.isSleeping() && !this.isBaby()));
@@ -459,42 +457,6 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
     }
 
     // GOALS
-
-    static class BearPanicGoal extends PanicGoal {
-        public BearPanicGoal(PathfinderMob pMob, double pSpeedModifier) {
-            super(pMob, pSpeedModifier);
-        }
-
-        @Override
-        protected boolean shouldPanic() {
-            return mob.getLastHurtByMob() != null && mob.isBaby() || mob.isOnFire();
-        }
-    }
-
-    static class BearHurtByTargetGoal extends HurtByTargetGoal {
-        private final Bear bear;
-
-        public BearHurtByTargetGoal(Bear pMob, Class<?>... pToIgnoreDamage) {
-            super(pMob, pToIgnoreDamage);
-            this.bear = pMob;
-        }
-
-        @Override
-        public void start() {
-            super.start();
-            if (bear.isBaby()) {
-                this.alertOthers();
-                this.stop();
-            }
-        }
-
-        @Override
-        protected void alertOther(Mob pMob, LivingEntity pTarget) {
-            if (pMob instanceof Bear && !pMob.isBaby()) {
-                super.alertOther(pMob, pTarget);
-            }
-        }
-    }
 
     static class BearAttackPlayerNearBabiesGoal extends NearestAttackableTargetGoal<Player> {
         private final Bear bear;
