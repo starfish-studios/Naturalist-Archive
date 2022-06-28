@@ -305,6 +305,40 @@
 					"effect": "scrape"
 				}
 			}
+		},
+		"rhino.stunned": {
+			"loop": true,
+			"animation_length": 1,
+			"bones": {
+				"body": {
+					"rotation": {
+						"vector": [0, "Math.sin((query.anim_time - 0.0) * 360 * 8)", 0]
+					},
+					"position": {
+						"vector": [0, "Math.sin((query.anim_time - 0.0) * 360 * 2) * 0.2", 0]
+					}
+				},
+				"left_arm": {
+					"rotation": {
+						"vector": [0, "Math.sin((query.anim_time - 0.0) * 360 * 8) * 2", 0]
+					}
+				},
+				"right_arm": {
+					"rotation": {
+						"vector": [0, "Math.cos((query.anim_time - 0.0) * 360 * 8) * 2", 0]
+					}
+				},
+				"left_leg": {
+					"rotation": {
+						"vector": [0, "Math.cos((query.anim_time - 0.0) * 360 * 8) * 2", 0]
+					}
+				},
+				"right_leg": {
+					"rotation": {
+						"vector": [0, "Math.sin((query.anim_time - 0.0) * 360 * 8) * 2", 0]
+					}
+				}
+			}
 		}
 	},
 	"geckolib_format_version": 2

@@ -182,6 +182,8 @@ public class Rhino extends Animal implements IAnimatable {
     @Override
     protected void blockedByShield(LivingEntity defender) {
         this.stunnedTick = 60;
+        this.resetChargeCooldownTicks();
+        this.getNavigation().stop();
         this.playSound(SoundEvents.RAVAGER_STUNNED, 1.0f, 1.0f);
         this.level.broadcastEntityEvent(this, (byte)39);
         defender.push(this);
@@ -207,7 +209,10 @@ public class Rhino extends Animal implements IAnimatable {
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (event.isMoving()) {
+        if (this.stunnedTick > 0) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("rhino.stunned", true));
+            event.getController().setAnimationSpeed(1.0F);
+        } else if (event.isMoving()) {
             if (this.isSprinting()) {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("rhino.run", true));
                 event.getController().setAnimationSpeed(3.0F);
@@ -217,6 +222,7 @@ public class Rhino extends Animal implements IAnimatable {
             }
         } else if (this.hasChargeCooldown() && this.hasTarget()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("rhino.foot", true));
+            event.getController().setAnimationSpeed(1.0F);
         } else {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("rhino.idle", true));
             event.getController().setAnimationSpeed(1.0F);
@@ -267,7 +273,7 @@ public class Rhino extends Animal implements IAnimatable {
         @Override
         public boolean canUse() {
             LivingEntity target = this.rhino.getTarget();
-            if (target == null || !target.isAlive()) {
+            if (target == null || !target.isAlive() || this.rhino.stunnedTick > 0) {
                 this.rhino.resetChargeCooldownTicks();
                 return false;
             }
@@ -316,7 +322,7 @@ public class Rhino extends Animal implements IAnimatable {
         @Override
         public boolean canUse() {
             LivingEntity target = this.mob.getTarget();
-            if (target == null || !target.isAlive() || this.mob.hasChargeCooldown()) {
+            if (target == null || !target.isAlive() || this.mob.hasChargeCooldown() || this.mob.stunnedTick > 0) {
                 return false;
             }
             this.path = this.mob.getNavigation().createPath(target, 0);
@@ -326,7 +332,7 @@ public class Rhino extends Animal implements IAnimatable {
         @Override
         public boolean canContinueToUse() {
             LivingEntity target = this.mob.getTarget();
-            if (target == null || !target.isAlive() || this.mob.hasChargeCooldown()) {
+            if (target == null || !target.isAlive() || this.mob.hasChargeCooldown() || this.mob.stunnedTick > 0) {
                 return false;
             }
             return !this.mob.getNavigation().isDone();
@@ -354,6 +360,7 @@ public class Rhino extends Animal implements IAnimatable {
 
         @Override
         public void tick() {
+            this.mob.getLookControl().setLookAt(chargeDirection);
             if (this.mob.horizontalCollision && this.mob.onGround) {
                 this.mob.jumpFromGround();
             }
