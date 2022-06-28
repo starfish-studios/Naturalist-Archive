@@ -95,7 +95,7 @@ public class Rhino extends Animal implements IAnimatable {
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new BabyHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, EntitySelector.NO_CREATIVE_OR_SPECTATOR::test));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Animal.class, 10, true, false, entity -> entity.getType().is(NaturalistTags.EntityTypes.RHINO_HOSTILES)));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, PathfinderMob.class, 10, true, false, entity -> entity.getType().is(NaturalistTags.EntityTypes.RHINO_HOSTILES)));
     }
 
     @Nullable
@@ -354,6 +354,9 @@ public class Rhino extends Animal implements IAnimatable {
 
         @Override
         public void tick() {
+            if (this.mob.horizontalCollision && this.mob.onGround) {
+                this.mob.jumpFromGround();
+            }
             this.tryToHurt();
             if (!this.mob.level.isClientSide()) {
                 ((ServerLevel) this.mob.level).sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.mob.getX(), this.mob.getY(), this.mob.getZ(), 5, this.mob.getBbWidth() / 4.0F, 0, this.mob.getBbWidth() / 4.0F, 0.01D);
@@ -367,7 +370,7 @@ public class Rhino extends Animal implements IAnimatable {
             List<LivingEntity> nearbyEntities = this.mob.level.getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), this.mob, this.mob.getBoundingBox());
             if (!nearbyEntities.isEmpty()) {
                 LivingEntity livingEntity = nearbyEntities.get(0);
-                livingEntity.hurt(DamageSource.mobAttack(this.mob).setNoAggro(), (float) this.mob.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                livingEntity.hurt(DamageSource.mobAttack(this.mob), (float) this.mob.getAttributeValue(Attributes.ATTACK_DAMAGE));
                 float speed = Mth.clamp(this.mob.getSpeed() * 1.65f, 0.2f, 3.0f);
                 float shieldBlockModifier = livingEntity.isDamageSourceBlocked(DamageSource.mobAttack(this.mob)) ? 0.5f : 1.0f;
                 livingEntity.knockback(shieldBlockModifier * speed * 2.0D, this.chargeDirection.x(), this.chargeDirection.z());
