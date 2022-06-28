@@ -6,12 +6,14 @@ import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -28,6 +30,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -36,6 +39,7 @@ import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.ParticleKeyFrameEvent;
 import software.bernie.geckolib3.core.event.SoundKeyframeEvent;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -289,8 +293,12 @@ public class Rhino extends Animal implements IAnimatable {
         @Override
         public void tick() {
             this.tryToHurt();
-            RandomSource random = this.mob.getRandom();
-            this.mob.level.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.mob.getX() + 0.5 + random.nextDouble() / 3.0, this.mob.getY(), this.mob.getZ() + 0.5 + random.nextDouble() / 3.0, 0.0, 0.005, 0.0);
+            if (!this.mob.level.isClientSide()) {
+                ((ServerLevel) this.mob.level).sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.mob.getX(), this.mob.getY(), this.mob.getZ(), 5, this.mob.getBbWidth() / 4.0F, 0, this.mob.getBbWidth() / 4.0F, 0.01D);
+            }
+            if (this.mob.level.getGameTime() % 2L == 0L) {
+                this.mob.playSound(SoundEvents.HOGLIN_STEP, 0.5F, this.mob.getVoicePitch());
+            }
         }
 
         protected void tryToHurt() {
