@@ -28,10 +28,15 @@ import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.Path;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.AnimationState;
@@ -53,6 +58,7 @@ public class Rhino extends Animal implements IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
     private static final EntityDataAccessor<Integer> CHARGE_COOLDOWN_TICKS = SynchedEntityData.defineId(Rhino.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> HAS_TARGET = SynchedEntityData.defineId(Rhino.class, EntityDataSerializers.BOOLEAN);
+    private int stunnedTick;
 
     public Rhino(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
@@ -105,6 +111,18 @@ public class Rhino extends Animal implements IAnimatable {
         this.entityData.define(HAS_TARGET, false);
     }
 
+    @Override
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putInt("StunTick", this.stunnedTick);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.stunnedTick = compound.getInt("StunTick");
+    }
+
     public void setChargeCooldownTicks(int ticks) {
         this.entityData.set(CHARGE_COOLDOWN_TICKS, ticks);
     }
@@ -132,6 +150,50 @@ public class Rhino extends Animal implements IAnimatable {
     @Override
     public int getMaxHeadYRot() {
         return this.isSprinting() ? 1 : 50;
+    }
+
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        if (!this.isAlive()) {
+            return;
+        }
+        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(this.isImmobile() ? 0.0 : 0.2);
+        if (this.stunnedTick > 0) {
+            --this.stunnedTick;
+            this.stunEffect();
+        }
+    }
+
+    private void stunEffect() {
+        if (this.random.nextInt(6) == 0) {
+            double d = this.getX() - (double)this.getBbWidth() * Math.sin(this.yBodyRot * ((float)Math.PI / 180)) + (this.random.nextDouble() * 0.6 - 0.3);
+            double e = this.getY() + (double)this.getBbHeight() - 0.3;
+            double f = this.getZ() + (double)this.getBbWidth() * Math.cos(this.yBodyRot * ((float)Math.PI / 180)) + (this.random.nextDouble() * 0.6 - 0.3);
+            this.level.addParticle(ParticleTypes.ENTITY_EFFECT, d, e, f, 0.4980392156862745, 0.5137254901960784, 0.5725490196078431);
+        }
+    }
+
+    @Override
+    protected boolean isImmobile() {
+        return super.isImmobile() || this.stunnedTick > 0;
+    }
+
+    @Override
+    protected void blockedByShield(LivingEntity defender) {
+        this.stunnedTick = 60;
+        this.playSound(SoundEvents.RAVAGER_STUNNED, 1.0f, 1.0f);
+        this.level.broadcastEntityEvent(this, (byte)39);
+        defender.push(this);
+        defender.hurtMarked = true;
+    }
+
+    @Override
+    public void handleEntityEvent(byte id) {
+        if (id == 39) {
+            this.stunnedTick = 60;
+        }
+        super.handleEntityEvent(id);
     }
 
     @Override

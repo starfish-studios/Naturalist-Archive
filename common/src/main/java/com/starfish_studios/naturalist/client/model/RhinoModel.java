@@ -39,16 +39,23 @@ public class RhinoModel extends AnimatedGeoModel<Rhino> {
 
         List<EntityModelData> extraDataOfType = customPredicate.getExtraDataOfType(EntityModelData.class);
         IBone head = this.getAnimationProcessor().getBone("head");
+        IBone bigHorn = this.getAnimationProcessor().getBone("big_horn");
+        IBone smallHorn = this.getAnimationProcessor().getBone("small_horn");
+        IBone babyHorn = this.getAnimationProcessor().getBone("baby_horn");
 
         if (rhino.isBaby()) {
-            head.setScaleX(2.0F);
-            head.setScaleY(2.0F);
-            head.setScaleZ(2.0F);
+            head.setScaleX(1.75F);
+            head.setScaleY(1.75F);
+            head.setScaleZ(1.75F);
         }
 
         if (!rhino.isSprinting()) {
             head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD);
             head.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD);
         }
+
+        bigHorn.setHidden(rhino.isBaby());
+        smallHorn.setHidden(rhino.isBaby());
+        babyHorn.setHidden(!rhino.isBaby());
     }
 }
