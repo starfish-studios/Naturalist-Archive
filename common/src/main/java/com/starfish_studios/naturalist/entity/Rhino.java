@@ -6,7 +6,6 @@ import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -15,7 +14,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -28,15 +26,9 @@ import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.LeavesBlock;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.Path;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.AnimationState;
@@ -44,7 +36,6 @@ import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.ParticleKeyFrameEvent;
 import software.bernie.geckolib3.core.event.SoundKeyframeEvent;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -52,7 +43,6 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.EnumSet;
 import java.util.List;
-import java.util.function.Predicate;
 
 public class Rhino extends Animal implements IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
@@ -94,7 +84,7 @@ public class Rhino extends Animal implements IAnimatable {
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0f));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new BabyHurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, EntitySelector.NO_CREATIVE_OR_SPECTATOR::test));
+        this.targetSelector.addGoal(2, new RhinoNearestAttackablePlayerTargetGoal(this));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, PathfinderMob.class, 10, true, false, entity -> entity.getType().is(NaturalistTags.EntityTypes.RHINO_HOSTILES)));
     }
 
@@ -208,6 +198,13 @@ public class Rhino extends Animal implements IAnimatable {
         super.customServerAiStep();
     }
 
+    private boolean isWithinYRange(LivingEntity target) {
+        if (target == null) {
+            return false;
+        }
+        return Math.abs(target.getY() - this.getY()) < 3;
+    }
+
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.stunnedTick > 0) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("rhino.stunned", true));
@@ -273,7 +270,7 @@ public class Rhino extends Animal implements IAnimatable {
         @Override
         public boolean canUse() {
             LivingEntity target = this.rhino.getTarget();
-            if (target == null || !target.isAlive() || this.rhino.stunnedTick > 0) {
+            if (target == null || !target.isAlive() || this.rhino.stunnedTick > 0 || !this.rhino.isWithinYRange(target)) {
                 this.rhino.resetChargeCooldownTicks();
                 return false;
             }
@@ -360,7 +357,7 @@ public class Rhino extends Animal implements IAnimatable {
 
         @Override
         public void tick() {
-            this.mob.getLookControl().setLookAt(chargeDirection);
+            this.mob.getLookControl().setLookAt(Vec3.atCenterOf(this.path.getTarget()));
             if (this.mob.horizontalCollision && this.mob.onGround) {
                 this.mob.jumpFromGround();
             }
@@ -377,14 +374,43 @@ public class Rhino extends Animal implements IAnimatable {
             List<LivingEntity> nearbyEntities = this.mob.level.getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), this.mob, this.mob.getBoundingBox());
             if (!nearbyEntities.isEmpty()) {
                 LivingEntity livingEntity = nearbyEntities.get(0);
-                livingEntity.hurt(DamageSource.mobAttack(this.mob), (float) this.mob.getAttributeValue(Attributes.ATTACK_DAMAGE));
-                float speed = Mth.clamp(this.mob.getSpeed() * 1.65f, 0.2f, 3.0f);
-                float shieldBlockModifier = livingEntity.isDamageSourceBlocked(DamageSource.mobAttack(this.mob)) ? 0.5f : 1.0f;
-                livingEntity.knockback(shieldBlockModifier * speed * 2.0D, this.chargeDirection.x(), this.chargeDirection.z());
-                double knockbackResistance = Math.max(0.0, 1.0 - livingEntity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
-                livingEntity.setDeltaMovement(livingEntity.getDeltaMovement().add(0.0, 0.4f * knockbackResistance, 0.0));
-                this.mob.swing(InteractionHand.MAIN_HAND);
+                if (!(livingEntity instanceof Rhino)) {
+                    livingEntity.hurt(DamageSource.mobAttack(this.mob), (float) this.mob.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                    float speed = Mth.clamp(this.mob.getSpeed() * 1.65f, 0.2f, 3.0f);
+                    float shieldBlockModifier = livingEntity.isDamageSourceBlocked(DamageSource.mobAttack(this.mob)) ? 0.5f : 1.0f;
+                    livingEntity.knockback(shieldBlockModifier * speed * 2.0D, this.chargeDirection.x(), this.chargeDirection.z());
+                    double knockbackResistance = Math.max(0.0, 1.0 - livingEntity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
+                    livingEntity.setDeltaMovement(livingEntity.getDeltaMovement().add(0.0, 0.4f * knockbackResistance, 0.0));
+                    this.mob.swing(InteractionHand.MAIN_HAND);
+                }
             }
+        }
+    }
+
+    static class RhinoNearestAttackablePlayerTargetGoal extends NearestAttackableTargetGoal<Player> {
+        private final Rhino rhino;
+
+        public RhinoNearestAttackablePlayerTargetGoal(Rhino mob) {
+            super(mob, Player.class, 10, true, true, EntitySelector.NO_CREATIVE_OR_SPECTATOR::test);
+            this.rhino = mob;
+        }
+
+        @Override
+        public boolean canUse() {
+            if (this.rhino.isBaby()) {
+                return false;
+            }
+            if (super.canUse()) {
+                if (!rhino.isWithinYRange(target)) {
+                    return false;
+                }
+                List<Rhino> nearbyEntities = this.rhino.level.getEntitiesOfClass(Rhino.class, this.rhino.getBoundingBox().inflate(8.0, 4.0, 8.0));
+                for (Rhino mob : nearbyEntities) {
+                    if (!mob.isBaby()) continue;
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
