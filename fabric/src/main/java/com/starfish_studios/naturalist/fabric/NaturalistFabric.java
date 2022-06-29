@@ -72,7 +72,7 @@ public class NaturalistFabric implements ModInitializer {
         addMobSpawn(NaturalistTags.Biomes.HAS_ROBIN, MobCategory.CREATURE, NaturalistEntityTypes.ROBIN.get(), config.robinSpawnWeight, 1, 4);
         addMobSpawn(BiomeTags.IS_FOREST, MobCategory.CREATURE, EntityType.RABBIT,  config.forestRabbitSpawnWeight, 2, 3);
         addMobSpawn(BiomeTags.IS_FOREST, MobCategory.CREATURE, EntityType.FOX, config.forestFoxSpawnWeight, 2, 4);
-        removeSpawn(BiomeTags.IS_SAVANNA, List.of(EntityType.SHEEP, EntityType.PIG, EntityType.CHICKEN, EntityType.COW, EntityType.HORSE, EntityType.DONKEY));
+        removeSpawn(BiomeTags.IS_SAVANNA, List.of(EntityType.SHEEP, EntityType.PIG, EntityType.CHICKEN, EntityType.COW));
         addMobSpawn(BiomeTags.IS_SAVANNA, MobCategory.CREATURE, NaturalistEntityTypes.LION.get(), 20, 3, 5);
     }
 
