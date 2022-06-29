@@ -39,12 +39,15 @@ public class LionModel extends AnimatedGeoModel<Lion> {
 
         List<EntityModelData> extraDataOfType = customPredicate.getExtraDataOfType(EntityModelData.class);
         IBone head = this.getAnimationProcessor().getBone("head");
+        IBone mane = this.getAnimationProcessor().getBone("mane");
 
         if (lion.isBaby()) {
             head.setScaleX(1.75F);
             head.setScaleY(1.75F);
             head.setScaleZ(1.75F);
         }
+
+        mane.setHidden(!lion.hasMane());
 
         head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD);
         head.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD);

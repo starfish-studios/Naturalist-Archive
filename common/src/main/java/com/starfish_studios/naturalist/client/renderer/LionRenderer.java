@@ -2,7 +2,9 @@ package com.starfish_studios.naturalist.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.client.model.LionModel;
+import com.starfish_studios.naturalist.client.renderer.layers.SleepLayer;
 import com.starfish_studios.naturalist.entity.Lion;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -18,6 +20,7 @@ public class LionRenderer extends GeoEntityRenderer<Lion> {
     public LionRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new LionModel());
         this.shadowRadius = 1.1F;
+        this.addLayer(new SleepLayer<>(this, new ResourceLocation(Naturalist.MOD_ID, "geo/lion.geo.json"), new ResourceLocation(Naturalist.MOD_ID, "textures/entity/lion_sleep.png")));
     }
 
     @Override

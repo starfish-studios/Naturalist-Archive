@@ -1,5 +1,6 @@
 package com.starfish_studios.naturalist.fabric;
 
+import com.google.common.base.Preconditions;
 import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.entity.*;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
@@ -10,12 +11,20 @@ import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
+import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.MobSpawnSettings;
+
+import java.util.List;
+import java.util.function.Predicate;
 
 public class NaturalistFabric implements ModInitializer {
     @Override
@@ -63,9 +72,19 @@ public class NaturalistFabric implements ModInitializer {
         addMobSpawn(NaturalistTags.Biomes.HAS_ROBIN, MobCategory.CREATURE, NaturalistEntityTypes.ROBIN.get(), config.robinSpawnWeight, 1, 4);
         addMobSpawn(BiomeTags.IS_FOREST, MobCategory.CREATURE, EntityType.RABBIT,  config.forestRabbitSpawnWeight, 2, 3);
         addMobSpawn(BiomeTags.IS_FOREST, MobCategory.CREATURE, EntityType.FOX, config.forestFoxSpawnWeight, 2, 4);
+        removeSpawn(BiomeTags.IS_SAVANNA, List.of(EntityType.SHEEP, EntityType.PIG, EntityType.CHICKEN, EntityType.COW, EntityType.HORSE, EntityType.DONKEY));
+        addMobSpawn(BiomeTags.IS_SAVANNA, MobCategory.CREATURE, NaturalistEntityTypes.LION.get(), 20, 3, 5);
     }
 
     void addMobSpawn(TagKey<Biome> tag, MobCategory mobCategory, EntityType<?> entityType, int weight, int minGroupSize, int maxGroupSize) {
         BiomeModifications.addSpawn(biomeSelector -> biomeSelector.hasTag(tag), mobCategory, entityType, weight, minGroupSize, maxGroupSize);
+    }
+
+    void removeSpawn(TagKey<Biome> tag, List<EntityType<?>> entityTypes) {
+        entityTypes.forEach(entityType -> {
+            ResourceLocation id = Registry.ENTITY_TYPE.getKey(entityType);
+            Preconditions.checkState(id != Registry.ENTITY_TYPE.getDefaultKey(), "Unregistered entity type: %s", entityType);
+            BiomeModifications.create(id).add(ModificationPhase.REMOVALS, biomeSelector -> biomeSelector.hasTag(tag), context -> context.getSpawnSettings().removeSpawnsOfEntityType(entityType));
+        });
     }
 }
