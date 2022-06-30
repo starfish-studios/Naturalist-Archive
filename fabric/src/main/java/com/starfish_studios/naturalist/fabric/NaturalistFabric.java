@@ -70,10 +70,11 @@ public class NaturalistFabric implements ModInitializer {
         addMobSpawn(NaturalistTags.Biomes.HAS_CANARY, MobCategory.CREATURE, NaturalistEntityTypes.CANARY.get(), config.canarySpawnWeight, 1, 4);
         addMobSpawn(NaturalistTags.Biomes.HAS_CARDINAL, MobCategory.CREATURE, NaturalistEntityTypes.CARDINAL.get(), config.cardinalSpawnWeight, 1, 4);
         addMobSpawn(NaturalistTags.Biomes.HAS_ROBIN, MobCategory.CREATURE, NaturalistEntityTypes.ROBIN.get(), config.robinSpawnWeight, 1, 4);
-        addMobSpawn(BiomeTags.IS_FOREST, MobCategory.CREATURE, EntityType.RABBIT,  config.forestRabbitSpawnWeight, 2, 3);
+        addMobSpawn(BiomeTags.IS_FOREST, MobCategory.CREATURE, EntityType.RABBIT, config.forestRabbitSpawnWeight, 2, 3);
         addMobSpawn(BiomeTags.IS_FOREST, MobCategory.CREATURE, EntityType.FOX, config.forestFoxSpawnWeight, 2, 4);
         removeSpawn(BiomeTags.IS_SAVANNA, List.of(EntityType.SHEEP, EntityType.PIG, EntityType.CHICKEN, EntityType.COW));
-        addMobSpawn(BiomeTags.IS_SAVANNA, MobCategory.CREATURE, NaturalistEntityTypes.LION.get(), 20, 3, 5);
+        addMobSpawn(BiomeTags.IS_SAVANNA, MobCategory.CREATURE, NaturalistEntityTypes.RHINO.get(), config.rhinoSpawnWeight, 1, 3);
+        addMobSpawn(BiomeTags.IS_SAVANNA, MobCategory.CREATURE, NaturalistEntityTypes.LION.get(), config.lionSpawnWeight, 3, 5);
     }
 
     void addMobSpawn(TagKey<Biome> tag, MobCategory mobCategory, EntityType<?> entityType, int weight, int minGroupSize, int maxGroupSize) {

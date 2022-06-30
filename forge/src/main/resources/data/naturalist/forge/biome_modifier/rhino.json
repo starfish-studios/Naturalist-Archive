@@ -1,0 +1,11 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": "#minecraft:is_savanna",
+  "spawners": {
+    "type": "naturalist:rhino",
+    "weight": 15,
+    "minCount": 1,
+    "maxCount": 3
+  },
+  "category": "creature"
+}

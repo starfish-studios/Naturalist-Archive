@@ -21,5 +21,7 @@ public class NaturalistConfigFabric implements ConfigData {
     public int butterflySpawnWeight = 6;
     public int forestRabbitSpawnWeight = 6;
     public int forestFoxSpawnWeight = 6;
+    public int rhinoSpawnWeight = 15;
+    public int lionSpawnWeight = 15;
 
 }
