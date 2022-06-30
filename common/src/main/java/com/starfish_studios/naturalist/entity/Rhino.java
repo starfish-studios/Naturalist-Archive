@@ -52,13 +52,15 @@ public class Rhino extends Animal implements IAnimatable {
     private static final EntityDataAccessor<Integer> CHARGE_COOLDOWN_TICKS = SynchedEntityData.defineId(Rhino.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> HAS_TARGET = SynchedEntityData.defineId(Rhino.class, EntityDataSerializers.BOOLEAN);
     private int stunnedTick;
+    private boolean canBePushed = true;
 
     public Rhino(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
+        this.maxUpStep = 1.0f;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.MOVEMENT_SPEED, 0.2D).add(Attributes.ATTACK_DAMAGE, 6.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.6D).add(Attributes.FOLLOW_RANGE, 12.0D);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 40.0D).add(Attributes.MOVEMENT_SPEED, 0.2D).add(Attributes.ATTACK_DAMAGE, 6.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.6D).add(Attributes.FOLLOW_RANGE, 12.0D);
     }
 
     @Override
@@ -208,6 +210,11 @@ public class Rhino extends Animal implements IAnimatable {
         return Math.abs(target.getY() - this.getY()) < 3;
     }
 
+    @Override
+    public boolean isPushable() {
+        return this.canBePushed;
+    }
+
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.stunnedTick > 0) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("rhino.stunned", true));
@@ -288,11 +295,13 @@ public class Rhino extends Animal implements IAnimatable {
             }
             this.rhino.setHasTarget(true);
             this.rhino.resetChargeCooldownTicks();
+            this.rhino.canBePushed = false;
         }
 
         @Override
         public void stop() {
             this.rhino.setHasTarget(false);
+            this.rhino.canBePushed = true;
         }
 
         @Override
@@ -393,6 +402,9 @@ public class Rhino extends Animal implements IAnimatable {
                     double knockbackResistance = Math.max(0.0, 1.0 - livingEntity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
                     livingEntity.setDeltaMovement(livingEntity.getDeltaMovement().add(0.0, 0.4f * knockbackResistance, 0.0));
                     this.mob.swing(InteractionHand.MAIN_HAND);
+                    if (livingEntity.equals(this.mob.getTarget())) {
+                        this.stop();
+                    }
                 }
             }
         }
