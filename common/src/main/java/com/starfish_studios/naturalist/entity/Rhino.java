@@ -26,9 +26,12 @@ import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.Path;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.AnimationState;
@@ -86,7 +89,6 @@ public class Rhino extends Animal implements IAnimatable {
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new BabyHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new RhinoNearestAttackablePlayerTargetGoal(this));
-//        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, PathfinderMob.class, 10, true, false, entity -> entity.getType().is(NaturalistTags.EntityTypes.RHINO_HOSTILES)));
     }
 
     @Nullable
@@ -362,13 +364,21 @@ public class Rhino extends Animal implements IAnimatable {
             if (this.mob.horizontalCollision && this.mob.onGround) {
                 this.mob.jumpFromGround();
             }
-            this.tryToHurt();
+            if (this.mob.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
+                AABB boundingBox = this.mob.getBoundingBox().inflate(0.2);
+                for (BlockPos pos : BlockPos.betweenClosed(Mth.floor(boundingBox.minX), Mth.floor(boundingBox.minY), Mth.floor(boundingBox.minZ), Mth.floor(boundingBox.maxX), Mth.floor(boundingBox.maxY), Mth.floor(boundingBox.maxZ))) {
+                    BlockState state = this.mob.level.getBlockState(pos);
+                    if (!state.is(NaturalistTags.BlockTags.RHINO_CHARGE_BREAKABLE)) continue;
+                    this.mob.level.destroyBlock(pos, true, this.mob);
+                }
+            }
             if (!this.mob.level.isClientSide()) {
                 ((ServerLevel) this.mob.level).sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.mob.getX(), this.mob.getY(), this.mob.getZ(), 5, this.mob.getBbWidth() / 4.0F, 0, this.mob.getBbWidth() / 4.0F, 0.01D);
             }
             if (this.mob.level.getGameTime() % 2L == 0L) {
                 this.mob.playSound(SoundEvents.HOGLIN_STEP, 0.5F, this.mob.getVoicePitch());
             }
+            this.tryToHurt();
         }
 
         protected void tryToHurt() {

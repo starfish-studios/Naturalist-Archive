@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.Block;
 public class NaturalistTags {
     public static class BlockTags {
         public static final TagKey<Block> FIREFLIES_SPAWNABLE_ON = tag("fireflies_spawnable_on");
+        public static final TagKey<Block> RHINO_CHARGE_BREAKABLE = tag("rhino_charge_breakable");
 
         private static TagKey<Block> tag(String name) {
             return TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(Naturalist.MOD_ID, name));
@@ -32,7 +33,6 @@ public class NaturalistTags {
         public static final TagKey<EntityType<?>> BEAR_HOSTILES = tag("bear_hostiles");
         public static final TagKey<EntityType<?>> SNAKE_HOSTILES = tag("snake_hostiles");
         public static final TagKey<EntityType<?>> DEER_PREDATORS = tag("deer_predators");
-        public static final TagKey<EntityType<?>> RHINO_HOSTILES = tag("rhino_hostiles");
         public static final TagKey<EntityType<?>> LION_HOSTILES = tag("lion_hostiles");
 
         private static TagKey<EntityType<?>> tag(String name) {
