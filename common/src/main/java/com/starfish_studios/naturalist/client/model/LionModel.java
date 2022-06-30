@@ -49,7 +49,9 @@ public class LionModel extends AnimatedGeoModel<Lion> {
 
         mane.setHidden(!lion.hasMane() || lion.isBaby());
 
-        head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD);
-        head.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD);
+        if (!lion.isSleeping()) {
+            head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD);
+            head.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD);
+        }
     }
 }

@@ -29,6 +29,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.Path;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -90,7 +91,7 @@ public class Lion extends Animal implements IAnimatable, SleepingAnimal {
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0f));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new BabyHurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PathfinderMob.class, 10, false, false, entity -> entity.getType().is(NaturalistTags.EntityTypes.LION_HOSTILES)));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PathfinderMob.class, 10, true, true, entity -> entity.getType().is(NaturalistTags.EntityTypes.LION_HOSTILES) && !this.isSleeping() && !this.isBaby() && this.getLevel().isNight()));
     }
 
     @Override
@@ -191,7 +192,7 @@ public class Lion extends Animal implements IAnimatable, SleepingAnimal {
         if (this.isSleeping()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation(this.hasMane() || this.isBaby() ? "lion.sleep2" : "lion.sleep", true));
             event.getController().setAnimationSpeed(1.0F);
-        } else if (!(event.getLimbSwingAmount() > -0.15F && event.getLimbSwingAmount() < 0.15F)) {
+        } else if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
             if (this.isSprinting()) {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("lion.run", true));
                 event.getController().setAnimationSpeed(2.5F);
@@ -209,10 +210,20 @@ public class Lion extends Animal implements IAnimatable, SleepingAnimal {
         return PlayState.CONTINUE;
     }
 
+    private <E extends IAnimatable> PlayState attackPredicate(AnimationEvent<E> event) {
+        if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
+            event.getController().markNeedsReload();
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("lion.swing", false));
+            this.swinging = false;
+        }
+        return PlayState.CONTINUE;
+    }
+
     @Override
     public void registerControllers(AnimationData data) {
         data.setResetSpeedInTicks(10);
         data.addAnimationController(new AnimationController<>(this, "controller", 10, this::predicate));
+        data.addAnimationController(new AnimationController<>(this, "attackController", 0, this::attackPredicate));
     }
 
     @Override
@@ -309,7 +320,6 @@ public class Lion extends Animal implements IAnimatable, SleepingAnimal {
     static class LionPreyGoal extends Goal {
         protected final PathfinderMob mob;
         private double speedModifier = 0.5D;
-        private final boolean followingTargetEvenIfNotSeen = false;
         private Path path;
         private double pathedTargetX;
         private double pathedTargetY;
@@ -356,13 +366,7 @@ public class Lion extends Animal implements IAnimatable, SleepingAnimal {
             if (!livingEntity.isAlive()) {
                 return false;
             }
-            if (!this.followingTargetEvenIfNotSeen) {
-                return !this.mob.getNavigation().isDone();
-            }
-            if (!this.mob.isWithinRestriction(livingEntity.blockPosition())) {
-                return false;
-            }
-            return !(livingEntity instanceof Player) || !livingEntity.isSpectator() && !((Player)livingEntity).isCreative();
+            return !this.mob.getNavigation().isDone();
         }
 
         @Override
@@ -403,7 +407,7 @@ public class Lion extends Animal implements IAnimatable, SleepingAnimal {
             this.mob.getLookControl().setLookAt(target, 30.0f, 30.0f);
             double d = this.mob.distanceToSqr(target.getX(), target.getY(), target.getZ());
             this.ticksUntilNextPathRecalculation = Math.max(this.ticksUntilNextPathRecalculation - 1, 0);
-            if ((this.followingTargetEvenIfNotSeen || this.mob.getSensing().hasLineOfSight(target)) && this.ticksUntilNextPathRecalculation <= 0 && (this.pathedTargetX == 0.0 && this.pathedTargetY == 0.0 && this.pathedTargetZ == 0.0 || target.distanceToSqr(this.pathedTargetX, this.pathedTargetY, this.pathedTargetZ) >= 1.0 || this.mob.getRandom().nextFloat() < 0.05f)) {
+            if (this.mob.getSensing().hasLineOfSight(target) && this.ticksUntilNextPathRecalculation <= 0 && (this.pathedTargetX == 0.0 && this.pathedTargetY == 0.0 && this.pathedTargetZ == 0.0 || target.distanceToSqr(this.pathedTargetX, this.pathedTargetY, this.pathedTargetZ) >= 1.0 || this.mob.getRandom().nextFloat() < 0.05f)) {
                 this.pathedTargetX = target.getX();
                 this.pathedTargetY = target.getY();
                 this.pathedTargetZ = target.getZ();

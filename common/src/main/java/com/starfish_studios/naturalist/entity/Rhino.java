@@ -76,8 +76,9 @@ public class Rhino extends Animal implements IAnimatable {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new RhinoPrepareChargeGoal(this));
-        this.goalSelector.addGoal(2, new RhinoChargeGoal(this, 2.5F));
+        this.goalSelector.addGoal(1, new RhinoMeleeAttackGoal(this, 1.2D, false));
+        this.goalSelector.addGoal(2, new RhinoPrepareChargeGoal(this));
+        this.goalSelector.addGoal(3, new RhinoChargeGoal(this, 2.5F));
         this.goalSelector.addGoal(3, new BabyPanicGoal(this, 2.0D));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.1));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0));
@@ -85,7 +86,7 @@ public class Rhino extends Animal implements IAnimatable {
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new BabyHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new RhinoNearestAttackablePlayerTargetGoal(this));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, PathfinderMob.class, 10, true, false, entity -> entity.getType().is(NaturalistTags.EntityTypes.RHINO_HOSTILES)));
+//        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, PathfinderMob.class, 10, true, false, entity -> entity.getType().is(NaturalistTags.EntityTypes.RHINO_HOSTILES)));
     }
 
     @Nullable
@@ -274,7 +275,7 @@ public class Rhino extends Animal implements IAnimatable {
                 this.rhino.resetChargeCooldownTicks();
                 return false;
             }
-            return rhino.hasChargeCooldown();
+            return target instanceof Player && rhino.hasChargeCooldown();
         }
 
         @Override
@@ -323,7 +324,7 @@ public class Rhino extends Animal implements IAnimatable {
                 return false;
             }
             this.path = this.mob.getNavigation().createPath(target, 0);
-            return this.path != null;
+            return target instanceof Player && this.path != null;
         }
 
         @Override
@@ -411,6 +412,21 @@ public class Rhino extends Animal implements IAnimatable {
                 }
             }
             return false;
+        }
+    }
+
+    static class RhinoMeleeAttackGoal extends MeleeAttackGoal {
+        public RhinoMeleeAttackGoal(PathfinderMob pathfinderMob, double speedModifier, boolean followEvenIfNotSeen) {
+            super(pathfinderMob, speedModifier, followEvenIfNotSeen);
+        }
+
+        @Override
+        public boolean canUse() {
+            LivingEntity target = this.mob.getTarget();
+            if (target instanceof Player) {
+                return false;
+            }
+            return super.canUse();
         }
     }
 }
