@@ -232,10 +232,10 @@ public class Lion extends Animal implements IAnimatable, SleepingAnimal {
     }
 
     static class LionFollowLeaderGoal extends Goal {
-        private final Mob mob;
+        private final Lion mob;
         private final Predicate<Mob> followPredicate;
         @Nullable
-        private Mob followingMob;
+        private Lion followingMob;
         private final double speedModifier;
         private final PathNavigation navigation;
         private int timeToRecalcPath;
@@ -243,7 +243,7 @@ public class Lion extends Animal implements IAnimatable, SleepingAnimal {
         private float oldWaterCost;
         private final float areaSize;
 
-        public LionFollowLeaderGoal(Mob mob, double speedModifier, float stopDistance, float areaSize) {
+        public LionFollowLeaderGoal(Lion mob, double speedModifier, float stopDistance, float areaSize) {
             this.mob = mob;
             this.followPredicate = followingMob -> followingMob != null && !followingMob.isBaby();
             this.speedModifier = speedModifier;
@@ -255,7 +255,7 @@ public class Lion extends Animal implements IAnimatable, SleepingAnimal {
 
         @Override
         public boolean canUse() {
-            if (this.mob.isBaby()) {
+            if (this.mob.isBaby() || this.mob.hasMane()) {
                 return false;
             }
             List<Lion> nearbyLions = this.mob.level.getEntitiesOfClass(Lion.class, this.mob.getBoundingBox().inflate(this.areaSize), this.followPredicate);
@@ -265,6 +265,14 @@ public class Lion extends Animal implements IAnimatable, SleepingAnimal {
                     if (lion.isInvisible()) continue;
                     this.followingMob = lion;
                     return true;
+                }
+                if (this.followingMob == null) {
+                    for (Lion lion : nearbyLions) {
+                        if (lion.isBaby()) continue;
+                        if (lion.isInvisible()) continue;
+                        this.followingMob = lion;
+                        return true;
+                    }
                 }
             }
             return false;
