@@ -91,7 +91,7 @@ public class Lion extends Animal implements IAnimatable, SleepingAnimal {
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0f));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new BabyHurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PathfinderMob.class, 10, true, true, entity -> entity.getType().is(NaturalistTags.EntityTypes.LION_HOSTILES) && !this.isSleeping() && !this.isBaby() && this.getLevel().isNight()));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PathfinderMob.class, 10, true, true, entity -> entity.getType().is(NaturalistTags.EntityTypes.LION_HOSTILES) && !entity.isBaby() && !this.isSleeping() && !this.isBaby() && this.getLevel().isNight()));
     }
 
     @Override
