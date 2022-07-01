@@ -34,6 +34,11 @@ public class NaturalistSoundEvents {
     public static final Supplier<SoundEvent> FIREFLY_DEATH = CommonPlatformHelper.registerSoundEvent("firefly_death", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.firefly.death")));
     public static final Supplier<SoundEvent> FIREFLY_HIDE = CommonPlatformHelper.registerSoundEvent("firefly_hide", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.firefly.hide")));
     public static final Supplier<SoundEvent> RHINO_SCRAPE = CommonPlatformHelper.registerSoundEvent("rhino_scrape", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.rhino.scrape")));
+    public static final Supplier<SoundEvent> RHINO_AMBIENT = CommonPlatformHelper.registerSoundEvent("rhino_ambient", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.rhino.ambient")));
+    public static final Supplier<SoundEvent> RHINO_AMBIENT_BABY = CommonPlatformHelper.registerSoundEvent("rhino_ambient_baby", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.rhino.ambient_baby")));
+    public static final Supplier<SoundEvent> LION_HURT = CommonPlatformHelper.registerSoundEvent("lion_hurt", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.lion.hurt")));
+    public static final Supplier<SoundEvent> LION_AMBIENT = CommonPlatformHelper.registerSoundEvent("lion_ambient", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.lion.ambient")));
+    public static final Supplier<SoundEvent> LION_ROAR = CommonPlatformHelper.registerSoundEvent("lion_roar", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.lion.roar")));
 
     public static void init() {}
 }

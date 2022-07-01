@@ -205,5 +205,39 @@
       "naturalist:rhino_scrape"
     ],
     "subtitle": "naturalist.subtitles.entity.rhino.scrape"
+  },
+  "entity.rhino.ambient": {
+    "sounds": [
+      "naturalist:rhino_idle1",
+      "naturalist:rhino_idle2",
+      "naturalist:rhino_idle3"
+    ],
+    "subtitle": "naturalist.subtitles.entity.rhino.ambient"
+  },
+  "entity.rhino.ambient_baby": {
+    "sounds": [
+      "naturalist:rhino_idle_baby"
+    ],
+    "subtitle": "naturalist.subtitles.entity.rhino.ambient"
+  },
+  "entity.lion.hurt": {
+    "sounds": [
+      "naturalist:lion_hurt1"
+    ],
+    "subtitle": "naturalist.subtitles.entity.lion.hurt"
+  },
+  "entity.lion.ambient": {
+    "sounds": [
+      "naturalist:lion_idle1",
+      "naturalist:lion_idle2"
+    ],
+    "subtitle": "naturalist.subtitles.entity.lion.ambient"
+  },
+  "entity.lion.roar": {
+    "sounds": [
+      "naturalist:lion_roar1",
+      "naturalist:lion_roar2"
+    ],
+    "subtitle": "naturalist.subtitles.entity.lion.roar"
   }
 }

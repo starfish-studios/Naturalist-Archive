@@ -12,6 +12,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
@@ -213,6 +214,17 @@ public class Rhino extends Animal implements IAnimatable {
     @Override
     public boolean isPushable() {
         return this.canBePushed;
+    }
+
+    @Override
+    public float getVoicePitch() {
+        return (this.random.nextFloat() - this.random.nextFloat()) * 0.2f + 1.0f;
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return this.isBaby() ? NaturalistSoundEvents.RHINO_AMBIENT_BABY.get() : NaturalistSoundEvents.RHINO_AMBIENT.get();
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {

@@ -4,15 +4,18 @@ import com.starfish_studios.naturalist.entity.ai.goal.BabyHurtByTargetGoal;
 import com.starfish_studios.naturalist.entity.ai.goal.BabyPanicGoal;
 import com.starfish_studios.naturalist.entity.ai.goal.SleepGoal;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
+import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -186,6 +189,18 @@ public class Lion extends Animal implements IAnimatable, SleepingAnimal {
 
     public boolean hasMane() {
         return this.entityData.get(HAS_MANE);
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSource) {
+        return NaturalistSoundEvents.LION_HURT.get();
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return NaturalistSoundEvents.LION_AMBIENT.get();
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -386,6 +401,7 @@ public class Lion extends Animal implements IAnimatable, SleepingAnimal {
             this.speedModifier = this.mob.distanceTo(target) > 12 ? 0.5D : 1.7D;
             this.mob.getNavigation().moveTo(this.path, this.speedModifier);
             this.mob.setAggressive(true);
+            this.mob.playSound(NaturalistSoundEvents.LION_ROAR.get());
             this.ticksUntilNextPathRecalculation = 0;
             this.ticksUntilNextAttack = 0;
         }
