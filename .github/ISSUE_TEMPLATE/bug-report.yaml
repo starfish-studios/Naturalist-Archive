@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        **BEFORE SUBMITTING THIS REPORT, please try to recreate the issue with ONLY this mod installed. If the mod works on its own, then this is probably due to a mod incompatibility. Please make sure to mention whether or not this is a mod incompatibility in the "What Happened" section of this issue!**
+        **BEFORE SUBMITTING THIS REPORT, make sure you have Geckolib installed, and that the version matches your minecraft version and mod loader! You can download it from this page: https://www.curseforge.com/minecraft/mc-mods/geckolib/files**
   - type: input
     id: mod-version
     attributes:
