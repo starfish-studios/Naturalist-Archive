@@ -55,5 +55,6 @@ public class NaturalistForge {
         event.put(NaturalistEntityTypes.CATERPILLAR.get(), Caterpillar.createAttributes().build());
         event.put(NaturalistEntityTypes.RHINO.get(), Rhino.createAttributes().build());
         event.put(NaturalistEntityTypes.LION.get(), Lion.createAttributes().build());
+        event.put(NaturalistEntityTypes.ELEPHANT.get(), Elephant.createAttributes().build());
     }
 }
