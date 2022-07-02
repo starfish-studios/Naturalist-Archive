@@ -3,6 +3,7 @@ package com.starfish_studios.naturalist.entity;
 import com.starfish_studios.naturalist.entity.ai.goal.BabyHurtByTargetGoal;
 import com.starfish_studios.naturalist.entity.ai.goal.BabyPanicGoal;
 import com.starfish_studios.naturalist.entity.ai.goal.SleepGoal;
+import com.starfish_studios.naturalist.entity.ai.navigation.BetterGroundPathNavigation;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
@@ -79,6 +80,11 @@ public class Lion extends Animal implements IAnimatable, SleepingAnimal {
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
         return NaturalistEntityTypes.LION.get().create(serverLevel);
+    }
+
+    @Override
+    protected PathNavigation createNavigation(Level level) {
+        return new BetterGroundPathNavigation(this, level);
     }
 
     @Override

@@ -46,7 +46,7 @@ public class ElephantModel extends AnimatedGeoModel<Elephant> {
             head.setScaleZ(1.75F);
         }
 
-        head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD);
+//        head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD);
         head.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD);
     }
 }

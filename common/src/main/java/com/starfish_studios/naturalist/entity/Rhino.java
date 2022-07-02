@@ -2,6 +2,7 @@ package com.starfish_studios.naturalist.entity;
 
 import com.starfish_studios.naturalist.entity.ai.goal.BabyHurtByTargetGoal;
 import com.starfish_studios.naturalist.entity.ai.goal.BabyPanicGoal;
+import com.starfish_studios.naturalist.entity.ai.navigation.BetterGroundPathNavigation;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
@@ -23,6 +24,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
@@ -76,6 +78,11 @@ public class Rhino extends Animal implements IAnimatable {
     @Override
     public boolean isFood(ItemStack stack) {
         return false;
+    }
+
+    @Override
+    protected PathNavigation createNavigation(Level level) {
+        return new BetterGroundPathNavigation(this, level);
     }
 
     @Override

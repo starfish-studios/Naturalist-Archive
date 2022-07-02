@@ -1,6 +1,52 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
+		"elephant.idle": {
+			"loop": true,
+			"animation_length": 2,
+			"bones": {
+				"body": {
+					"position": {
+						"vector": [0, "-0.6 + Math.sin((query.anim_time - 0.0) * 180) * 0.6", 0]
+					}
+				},
+				"head": {
+					"position": {
+						"vector": [0, "Math.cos((query.anim_time - 0.0) * 180) * -0.3", 0]
+					}
+				},
+				"trunk": {
+					"rotation": {
+						"vector": ["Math.cos((query.anim_time - 0.0) * 180)", 0, 0]
+					}
+				},
+				"trunk2": {
+					"rotation": {
+						"vector": ["Math.cos((query.anim_time - 0.0) * 180)", 0, 0]
+					}
+				},
+				"trunk3": {
+					"rotation": {
+						"vector": ["Math.cos((query.anim_time - 0.0) * 180)", 0, 0]
+					}
+				},
+				"trunk4": {
+					"rotation": {
+						"vector": ["Math.cos((query.anim_time - 0.0) * 180)", 0, 0]
+					}
+				},
+				"left_ear": {
+					"rotation": {
+						"vector": ["Math.cos((query.anim_time - 0.0) * 180)", 0, 0]
+					}
+				},
+				"right_ear": {
+					"rotation": {
+						"vector": ["Math.cos((query.anim_time - 0.0) * 180)", 0, 0]
+					}
+				}
+			}
+		},
 		"elephant.walk": {
 			"loop": true,
 			"animation_length": 1,
@@ -329,7 +375,7 @@
 				}
 			}
 		},
-		"elephant.attack": {
+		"elephant.swing": {
 			"animation_length": 0.5,
 			"bones": {
 				"head": {
