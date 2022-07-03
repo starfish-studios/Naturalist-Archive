@@ -41,9 +41,9 @@ public class ElephantModel extends AnimatedGeoModel<Elephant> {
         IBone head = this.getAnimationProcessor().getBone("head");
 
         if (elephant.isBaby()) {
-            head.setScaleX(1.75F);
-            head.setScaleY(1.75F);
-            head.setScaleZ(1.75F);
+            head.setScaleX(1.5F);
+            head.setScaleY(1.5F);
+            head.setScaleZ(1.5F);
         }
 
 //        head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD);
