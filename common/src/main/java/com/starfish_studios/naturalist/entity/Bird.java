@@ -1,5 +1,6 @@
 package com.starfish_studios.naturalist.entity;
 
+import com.starfish_studios.naturalist.entity.ai.goal.FollowAdultGoal;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
@@ -68,7 +69,7 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
         this.goalSelector.addGoal(3, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(3, new FollowOwnerGoal(this, 1.5D, 5.0F, 1.0F, true));
         this.goalSelector.addGoal(4, new BirdWanderGoal(this, 1.0D));
-        this.goalSelector.addGoal(5, new BirdFlockGoal(this, 1.0D, 3.0F, 7.0F));
+        this.goalSelector.addGoal(5, new BirdFlockGoal(this, 1.0D, 6.0F, 12.0F));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
     }
 
@@ -346,7 +347,7 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
         }
     }
 
-    static class BirdFlockGoal extends FollowMobGoal {
+    static class BirdFlockGoal extends FollowAdultGoal {
         private final Bird bird;
 
         public BirdFlockGoal(Bird pMob, double pSpeedModifier, float pStopDistance, float pAreaSize) {
