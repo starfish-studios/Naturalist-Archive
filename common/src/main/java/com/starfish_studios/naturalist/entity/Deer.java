@@ -154,8 +154,7 @@ public class Deer extends Animal implements IAnimatable {
         if (this.isEating()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("deer.eat", true));
             event.getController().setAnimationSpeed(1.0D);
-            return PlayState.CONTINUE;
-        } else if (event.isMoving()) {
+        } else if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
             if (this.isSprinting()) {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("deer.run", true));
                 event.getController().setAnimationSpeed(2.0D);
@@ -163,11 +162,11 @@ public class Deer extends Animal implements IAnimatable {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("deer.walk", true));
                 event.getController().setAnimationSpeed(1.0D);
             }
-            return PlayState.CONTINUE;
+        } else {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("deer.idle", true));
+            event.getController().setAnimationSpeed(1.0D);
         }
-        event.getController().setAnimationSpeed(1.0D);
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
+        return PlayState.CONTINUE;
     }
 
     @Override
