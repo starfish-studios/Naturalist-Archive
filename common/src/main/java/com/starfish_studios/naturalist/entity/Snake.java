@@ -315,7 +315,7 @@ public class Snake extends ClimbingAnimal implements SleepingAnimal, NeutralMob,
 
     @Override
     public boolean doHurtTarget(Entity pEntity) {
-        if (this.getType().equals(NaturalistEntityTypes.CORAL_SNAKE.get()) && pEntity instanceof LivingEntity living) {
+        if ((this.getType().equals(NaturalistEntityTypes.CORAL_SNAKE.get()) || this.getType().equals(NaturalistEntityTypes.RATTLESNAKE.get())) && pEntity instanceof LivingEntity living) {
             living.addEffect(new MobEffectInstance(MobEffects.POISON, 40));
         }
         return super.doHurtTarget(pEntity);

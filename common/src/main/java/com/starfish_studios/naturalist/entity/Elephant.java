@@ -6,9 +6,16 @@ import com.starfish_studios.naturalist.entity.ai.goal.BabyPanicGoal;
 import com.starfish_studios.naturalist.entity.ai.goal.DistancedFollowParentGoal;
 import com.starfish_studios.naturalist.entity.ai.navigation.BetterGroundPathNavigation;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -19,6 +26,7 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.AnimationState;
@@ -30,8 +38,11 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import java.util.EnumSet;
+
 public class Elephant extends Animal implements IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
+    private static final EntityDataAccessor<Integer> DIRTY_TICKS = SynchedEntityData.defineId(Elephant.class, EntityDataSerializers.INT);
 
     public Elephant(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
@@ -85,6 +96,54 @@ public class Elephant extends Animal implements IAnimatable {
         }
         this.playSound(SoundEvents.RAVAGER_ATTACK, 1.0f, 1.0f);
         return shouldHurt;
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DIRTY_TICKS, 0);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag pCompound) {
+        super.addAdditionalSaveData(pCompound);
+        pCompound.putInt("DirtyTicks", this.getDirtyTicks());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag pCompound) {
+        super.readAdditionalSaveData(pCompound);
+        this.setDirtyTicks(pCompound.getInt("DirtyTicks"));
+    }
+
+    public void setDirtyTicks(int ticks) {
+        this.entityData.set(DIRTY_TICKS, ticks);
+    }
+
+    public int getDirtyTicks() {
+        return this.entityData.get(DIRTY_TICKS);
+    }
+
+    public boolean isDirty() {
+        return this.getDirtyTicks() > 0;
+    }
+
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        if (this.level instanceof ServerLevel serverLevel) {
+            if (this.isDirty()) {
+                this.setDirtyTicks(this.isInWater() ? 0 : Math.max(0, this.getDirtyTicks() - 1));
+            } else {
+                long dayTime = serverLevel.getDayTime();
+                if (dayTime > 4300 && dayTime < 11000 && this.isOnGround() && this.getRandom().nextFloat() < 0.001f) {
+                    this.swing(InteractionHand.MAIN_HAND);
+                    this.setDirtyTicks(1000);
+                    serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.DIRT.defaultBlockState()), this.getX(), this.getY(), this.getZ(),
+                            200, 0.5, 3.0, 0.5, 10);
+                }
+            }
+        }
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {

@@ -23,7 +23,7 @@ public class ElephantModel extends AnimatedGeoModel<Elephant> {
 
     @Override
     public ResourceLocation getTextureResource(Elephant elephant) {
-        return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/elephant.png");
+        return new ResourceLocation(Naturalist.MOD_ID, elephant.isDirty() ? "textures/entity/elephant_dirty.png" : "textures/entity/elephant.png");
     }
 
     @Override
