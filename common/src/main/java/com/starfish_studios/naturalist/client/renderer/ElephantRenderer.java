@@ -3,6 +3,7 @@ package com.starfish_studios.naturalist.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.starfish_studios.naturalist.client.model.ElephantModel;
+import com.starfish_studios.naturalist.client.renderer.layers.ElephantDirtLayer;
 import com.starfish_studios.naturalist.entity.Elephant;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -17,7 +18,8 @@ import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 public class ElephantRenderer extends GeoEntityRenderer<Elephant> {
     public ElephantRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new ElephantModel());
-        this.shadowRadius = 1.1F;
+        this.shadowRadius = 1.5F;
+        this.addLayer(new ElephantDirtLayer(this));
     }
 
     @Override
