@@ -173,7 +173,7 @@ public class Elephant extends Animal implements IAnimatable {
                 this.setDirtyTicks(this.isInWater() ? 0 : Math.max(0, this.getDirtyTicks() - 1));
             } else {
                 long dayTime = serverLevel.getDayTime();
-                if (dayTime > 4300 && dayTime < 11000 && this.isOnGround() && this.getRandom().nextFloat() < 0.001f) {
+                if (dayTime > 4300 && dayTime < 11000 && this.isOnGround() && this.getRandom().nextFloat() < 0.001f && !this.isDrinking()) {
                     this.swing(InteractionHand.MAIN_HAND);
                     this.setDirtyTicks(1000);
                     serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.DIRT.defaultBlockState()), this.getX(), this.getY(), this.getZ(),
@@ -197,7 +197,7 @@ public class Elephant extends Animal implements IAnimatable {
     private <E extends IAnimatable> PlayState swingPredicate(AnimationEvent<E> event) {
         if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
             event.getController().markNeedsReload();
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("elephant.dirt", false));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("elephant.swing", false));
             this.swinging = false;
         }
         return PlayState.CONTINUE;
