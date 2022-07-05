@@ -5,15 +5,15 @@
 			"loop": true,
 			"animation_length": 2,
 			"bones": {
-				"tail": {
-					"rotation": ["-15 + Math.cos((query.anim_time - 0.2) * 180) * -3", 0, 0]
+				"body": {
+					"position": [0, "-0.4 + Math.sin((query.anim_time - 0.0) * 180) * 0.4", 0],
+					"scale": 1.01
 				},
 				"head": {
-					"position": [0, "Math.cos((query.anim_time - 0.0) * 180) * -0.2", 0]
+					"position": [0, "Math.cos((query.anim_time - 0.0) * 180) * -0.3", 0]
 				},
-				"body": {
-					"position": [0, "-0.3 + Math.sin((query.anim_time - 0.0) * 180) * 0.3", 0],
-					"scale": 1.01
+				"tail": {
+					"rotation": ["-10 + Math.cos((query.anim_time - 0.2) * 180) * -2", 0, 0]
 				}
 			}
 		},
