@@ -289,7 +289,7 @@ public class Elephant extends Animal implements IAnimatable {
 
         @Override
         public boolean canContinueToUse() {
-            return this.drinkTicks > 0;
+            return this.drinkTicks > 0 && super.canContinueToUse();
         }
 
         @Override
