@@ -20,6 +20,7 @@ import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 
@@ -55,6 +56,7 @@ public class NaturalistFabric implements ModInitializer {
         FabricDefaultAttributeRegistry.register(NaturalistEntityTypes.RHINO.get(), Rhino.createAttributes());
         FabricDefaultAttributeRegistry.register(NaturalistEntityTypes.LION.get(), Lion.createAttributes());
         FabricDefaultAttributeRegistry.register(NaturalistEntityTypes.ELEPHANT.get(), Elephant.createAttributes());
+        FabricDefaultAttributeRegistry.register(NaturalistEntityTypes.ZEBRA.get(), AbstractHorse.createBaseHorseAttributes());
     }
 
     void addSpawns() {

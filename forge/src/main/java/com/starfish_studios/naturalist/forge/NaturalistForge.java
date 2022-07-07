@@ -4,6 +4,7 @@ import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.entity.*;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import com.starfish_studios.naturalist.platform.forge.CommonPlatformHelperImpl;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -56,5 +57,6 @@ public class NaturalistForge {
         event.put(NaturalistEntityTypes.RHINO.get(), Rhino.createAttributes().build());
         event.put(NaturalistEntityTypes.LION.get(), Lion.createAttributes().build());
         event.put(NaturalistEntityTypes.ELEPHANT.get(), Elephant.createAttributes().build());
+        event.put(NaturalistEntityTypes.ZEBRA.get(), AbstractHorse.createBaseHorseAttributes().build());
     }
 }
