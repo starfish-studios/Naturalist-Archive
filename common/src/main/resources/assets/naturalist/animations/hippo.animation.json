@@ -255,16 +255,6 @@
 						"vector": ["Math.sin((query.anim_time - 0.1) * 360) * 16", 0, 0]
 					}
 				},
-				"front_legs": {
-					"position": {
-						"vector": ["easeInOutSine", "easeInOutSine", "easeInOutSine"]
-					}
-				},
-				"back_legs": {
-					"position": {
-						"vector": ["easeInOutSine", "easeInOutSine", "easeInOutSine"]
-					}
-				},
 				"tail": {
 					"rotation": {
 						"vector": ["7.5+Math.cos((query.anim_time - 0.0) * 360) * 12", 0, "Math.cos((query.anim_time - 0.3) * 360) * -8"]
@@ -297,7 +287,7 @@
 						"vector": ["Math.cos((query.anim_time - 0.0) * 360) * 2", 0, "Math.sin((query.anim_time - 0.0) * 360) * 1"]
 					},
 					"position": {
-						"vector": [0, "Math.sin((query.anim_time - 0.3) * 360) * -1", 0]
+						"vector": [0, "-1 + Math.sin((query.anim_time - 0.3) * 360) * -0.5", 0]
 					}
 				},
 				"head": {
@@ -382,6 +372,11 @@
 						"1.0": {
 							"vector": [0, 1, 0]
 						}
+					}
+				},
+				"legs": {
+					"position": {
+						"vector": [0, -0.75, 0]
 					}
 				}
 			}
