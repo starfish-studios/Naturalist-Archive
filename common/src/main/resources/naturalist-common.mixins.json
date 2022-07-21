@@ -8,6 +8,7 @@
   "mixins": [
     "CreeperMixin",
     "CropBlockMixin",
+    "MapItemMixin",
     "MobMixin"
   ],
   "injectors": {
