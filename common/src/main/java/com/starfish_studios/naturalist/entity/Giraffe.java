@@ -129,6 +129,7 @@ public class Giraffe extends Animal implements IAnimatable {
             this.setTameTicks(Math.max(0, this.getTameTicks() - 1));
             if (!this.isTame() && this.getControllingPassenger() != null) {
                 this.getControllingPassenger().stopRiding();
+                this.playSound(SoundEvents.LLAMA_ANGRY, this.getSoundVolume(), this.getVoicePitch());
             }
         }
     }
@@ -158,8 +159,8 @@ public class Giraffe extends Animal implements IAnimatable {
         } else if (FOOD_ITEMS.test(stack)) {
             foodHealAmount = 2.0f;
             ageUpAmount = 20;
-            if (!this.level.isClientSide() && !this.isTame()) {
-                this.setTameTicks(600);
+            if (!this.level.isClientSide()) {
+                this.setTameTicks(this.getTameTicks() + 600);
             }
         }
         if (this.getHealth() < this.getMaxHealth() && foodHealAmount > 0) {
