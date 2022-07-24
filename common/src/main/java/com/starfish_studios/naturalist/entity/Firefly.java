@@ -197,6 +197,11 @@ public class Firefly extends Animal implements FlyingAnimal, IAnimatable {
         return true;
     }
 
+    @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return !this.hasCustomName();
+    }
+
     @Nullable
     @Override
     protected SoundEvent getHurtSound(DamageSource pDamageSource) {
