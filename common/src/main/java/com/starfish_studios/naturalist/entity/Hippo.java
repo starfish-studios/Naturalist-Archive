@@ -59,25 +59,8 @@ public class Hippo extends Animal implements IAnimatable {
     }
 
     @Override
-    public boolean isPushedByFluid() {
-        return false;
-    }
-
-
-    @Override
-    public void aiStep() {
-        super.aiStep();
-        this.refreshDimensions();
-    }
-
-    @Override
-    public EntityDimensions getDimensions(Pose pose) {
-        return EntityDimensions.scalable(1.8F, 1.8F);
-    }
-
-    @Override
     protected void registerGoals() {
-//        this.goalSelector.addGoal(0, new HippoFloatGoal(this));
+        this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(2, new HippoAttackBoatsGoal(this, 1.25D));
         this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.25D, true));
