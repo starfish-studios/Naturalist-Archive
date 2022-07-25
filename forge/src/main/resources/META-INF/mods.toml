@@ -17,7 +17,7 @@ logoFile = "icon.png"
 [[dependencies.naturalist]]
 modId = "forge"
 mandatory = true
-versionRange = "[41,)"
+versionRange = "[41.0.98,)"
 ordering = "NONE"
 side = "BOTH"
 
@@ -31,6 +31,6 @@ side = "BOTH"
 [[dependencies.naturalist]]
 modId="geckolib3"
 mandatory=true
-versionRange="[3.1.0,)"
-ordering="AFTER"
+versionRange="[3.1.9,)"
+ordering="NONE"
 side="BOTH"
