@@ -39,7 +39,7 @@ public class MapItemMixin {
             int k = data.z;
             int l = Mth.floor(viewer.getX() - (double)j) / i + 64;
             int m = Mth.floor(viewer.getZ() - (double)k) / i + 64;
-            int n = 256 / i;
+            int n = 192 / i; // +50% range increase
             if (level.dimensionType().hasCeiling()) {
                 n /= 2;
             }
