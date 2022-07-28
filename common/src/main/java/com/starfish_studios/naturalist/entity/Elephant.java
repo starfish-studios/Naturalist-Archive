@@ -5,6 +5,7 @@ import com.starfish_studios.naturalist.entity.ai.goal.BabyHurtByTargetGoal;
 import com.starfish_studios.naturalist.entity.ai.goal.BabyPanicGoal;
 import com.starfish_studios.naturalist.entity.ai.goal.DistancedFollowParentGoal;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
+import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -14,6 +15,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -111,6 +113,15 @@ public class Elephant extends Animal implements IAnimatable {
     public int getMaxHeadYRot() {
         return 35;
     }
+
+    @Nullable
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSource) {return NaturalistSoundEvents.ELEPHANT_HURT.get();}
+
+    @Nullable
+    @Override
+    protected SoundEvent getAmbientSound() {return NaturalistSoundEvents.ELEPHANT_AMBIENT.get();}
+
 
     @Override
     public boolean doHurtTarget(Entity target) {

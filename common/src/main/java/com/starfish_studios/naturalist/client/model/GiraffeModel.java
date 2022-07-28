@@ -5,10 +5,14 @@ import com.starfish_studios.naturalist.entity.Giraffe;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib3.model.provider.data.EntityModelData;
+
+import java.util.List;
 
 @Environment(EnvType.CLIENT)
 public class GiraffeModel extends AnimatedGeoModel<Giraffe> {
@@ -33,12 +37,16 @@ public class GiraffeModel extends AnimatedGeoModel<Giraffe> {
 
         if (customPredicate == null) return;
 
-        IBone neck = this.getAnimationProcessor().getBone("neck");
+        List<EntityModelData> extraDataOfType = customPredicate.getExtraDataOfType(EntityModelData.class);
+        IBone head = this.getAnimationProcessor().getBone("head");
 
         if (giraffe.isBaby()) {
-            neck.setScaleX(1.1F);
-            neck.setScaleY(1.1F);
-            neck.setScaleZ(1.1F);
+            head.setScaleX(1.3F);
+            head.setScaleY(1.3F);
+            head.setScaleZ(1.3F);
         }
+
+        head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD);
+        head.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD);
     }
 }

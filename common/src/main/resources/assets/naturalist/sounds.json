@@ -239,5 +239,19 @@
       "naturalist:lion_roar2"
     ],
     "subtitle": "naturalist.subtitles.entity.lion.roar"
+  },
+  "entity.elephant.hurt": {
+    "sounds": [
+      "naturalist:elephant_hurt"
+  ],
+  "subtitle": "naturalist.subtitles.entity.elephant.hurt"
+},
+  "entity.elephant.ambient": {
+    "sounds": [
+      "naturalist:elephant_idle1",
+      "naturalist:elephant_idle2",
+      "naturalist:elephant_hurt"
+    ],
+    "subtitle": "naturalist.subtitles.entity.elephant.ambient"
   }
 }
