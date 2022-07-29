@@ -236,7 +236,7 @@
   "entity.lion.ambient": {
     "sounds": [
       "naturalist:lion_idle1",
-      "naturalist:lion_idle2"
+      "naturalist:lion_roar1"
     ],
     "subtitle": "naturalist.subtitles.entity.lion.ambient"
   },
@@ -286,5 +286,18 @@
       "naturalist:fawn_hurt"
     ],
     "subtitle": "naturalist.subtitles.entity.fawn.hurt"
+  },
+  "entity.zebra.ambient": {
+    "sounds": [
+      "naturalist:zebra_idle1",
+      "naturalist:zebra_idle2"
+    ],
+    "subtitle": "naturalist.subtitles.entity.zebra.ambient"
+  },
+  "entity.zebra.hurt": {
+    "sounds": [
+      "naturalist:zebra_hurt"
+    ],
+    "subtitle": "naturalist.subtitles.entity.zebra.hurt"
   }
 }
