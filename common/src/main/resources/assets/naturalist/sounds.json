@@ -67,12 +67,19 @@
   },
   "entity.bear.ambient_baby": {
     "sounds": [
-      "minecraft:mob/polarbear_baby/idle1",
-      "minecraft:mob/polarbear_baby/idle2",
-      "minecraft:mob/polarbear_baby/idle3",
-      "minecraft:mob/polarbear_baby/idle4"
+      "minecraft:mob/panda/cant_breed1",
+      "minecraft:mob/panda/cant_breed2",
+      "minecraft:mob/panda/cant_breed3"
     ],
     "subtitle": "naturalist.subtitles.entity.bear.ambient_baby"
+  },
+  "entity.bear.hurt_baby": {
+    "sounds": [
+      "minecraft:mob/panda/hurt1",
+      "minecraft:mob/panda/hurt2",
+      "minecraft:mob/panda/hurt3"
+    ],
+    "subtitle": "naturalist.subtitles.entity.bear.hurt_baby"
   },
   "entity.bear.sleep": {
     "sounds": [

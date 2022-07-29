@@ -53,9 +53,9 @@ public class BearModel extends AnimatedGeoModel<Bear> {
         IBone head = this.getAnimationProcessor().getBone("head");
 
         if (bear.isBaby()) {
-            head.setScaleX(2.0F);
-            head.setScaleY(2.0F);
-            head.setScaleZ(2.0F);
+            head.setScaleX(1.8F);
+            head.setScaleY(1.8F);
+            head.setScaleZ(1.8F);
         }
 
         if (!bear.isSleeping() && !bear.isEating() && !bear.isSitting()) {

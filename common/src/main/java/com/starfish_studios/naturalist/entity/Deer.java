@@ -84,7 +84,10 @@ public class Deer extends Animal implements IAnimatable {
     protected SoundEvent getAmbientSound() {
         return this.isBaby() ? NaturalistSoundEvents.FAWN_AMBIENT.get() : NaturalistSoundEvents.DEER_AMBIENT.get();
     }
-
+    @Override
+    public float getVoicePitch() {
+        return this.isBaby() ? super.getVoicePitch() * 0.65F : super.getVoicePitch();
+    }
     @Override
     public boolean isFood(ItemStack pStack) {
         return pStack.is(Items.APPLE);

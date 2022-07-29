@@ -370,7 +370,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
     @Nullable
     @Override
     protected SoundEvent getHurtSound(DamageSource pDamageSource) {
-        return NaturalistSoundEvents.BEAR_HURT.get();
+        return this.isBaby() ? NaturalistSoundEvents.BEAR_HURT_BABY.get() : NaturalistSoundEvents.BEAR_HURT.get();
     }
 
     @Nullable
@@ -387,7 +387,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
 
     @Override
     public float getVoicePitch() {
-        return this.isSleeping() ? super.getVoicePitch() * 0.25F : super.getVoicePitch();
+        return this.isSleeping() ? super.getVoicePitch() * 0.3F : this.isBaby() ? super.getVoicePitch() * 0.4F : super.getVoicePitch();
     }
 
     @Override
