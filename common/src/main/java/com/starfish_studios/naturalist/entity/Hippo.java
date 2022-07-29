@@ -3,8 +3,13 @@ package com.starfish_studios.naturalist.entity;
 import com.starfish_studios.naturalist.entity.ai.goal.BabyHurtByTargetGoal;
 import com.starfish_studios.naturalist.entity.ai.goal.BabyPanicGoal;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -18,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.Path;
 import org.jetbrains.annotations.Nullable;
@@ -46,6 +52,15 @@ public class Hippo extends Animal implements IAnimatable {
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 40.0D).add(Attributes.FOLLOW_RANGE, 20.0D).add(Attributes.MOVEMENT_SPEED, 0.25D).add(Attributes.ATTACK_DAMAGE, 6.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.6D);
     }
 
+    public static boolean checkHippoSpawnRules(EntityType<? extends Animal> entityType, LevelAccessor levelAccessor, MobSpawnType mobSpawnType, BlockPos blockPos, RandomSource randomSource) {
+        if (levelAccessor.getBlockState(blockPos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON) && Animal.isBrightEnoughToSpawn(levelAccessor, blockPos)) {
+            for (Direction direction : Direction.Plane.HORIZONTAL) {
+                return levelAccessor.getFluidState(blockPos.below().relative(direction)).is(FluidTags.WATER);
+            }
+        }
+        return false;
+    }
+
     @Override
     public boolean isFood(ItemStack stack) {
         return stack.is(Items.GLISTERING_MELON_SLICE);
@@ -66,7 +81,7 @@ public class Hippo extends Animal implements IAnimatable {
         this.goalSelector.addGoal(5, new TemptGoal(this, 1.0D, Ingredient.of(Items.GLISTERING_MELON_SLICE), false));
         this.goalSelector.addGoal(6, new BabyPanicGoal(this, 2.0D));
         this.goalSelector.addGoal(7, new FollowParentGoal(this, 1.25D));
-        this.goalSelector.addGoal(8, new RandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(8, new RandomSwimmingGoal(this, 1.0D, 10));
         this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new BabyHurtByTargetGoal(this));

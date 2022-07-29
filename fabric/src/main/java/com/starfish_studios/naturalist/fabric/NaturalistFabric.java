@@ -81,6 +81,8 @@ public class NaturalistFabric implements ModInitializer {
         addMobSpawn(BiomeTags.IS_SAVANNA, MobCategory.CREATURE, NaturalistEntityTypes.RHINO.get(), config.rhinoSpawnWeight, 1, 3);
         addMobSpawn(BiomeTags.IS_SAVANNA, MobCategory.CREATURE, NaturalistEntityTypes.LION.get(), config.lionSpawnWeight, 3, 5);
         addMobSpawn(BiomeTags.IS_SAVANNA, MobCategory.CREATURE, NaturalistEntityTypes.ELEPHANT.get(), config.elephantSpawnWeight, 2, 3);
+        addMobSpawn(BiomeTags.IS_SAVANNA, MobCategory.CREATURE, NaturalistEntityTypes.GIRAFFE.get(), config.giraffeSpawnWeight, 2, 4);
+        addMobSpawn(BiomeTags.IS_SAVANNA, MobCategory.CREATURE, NaturalistEntityTypes.HIPPO.get(), config.hippoSpawnWeight, 3, 4);
     }
 
     void addMobSpawn(TagKey<Biome> tag, MobCategory mobCategory, EntityType<?> entityType, int weight, int minGroupSize, int maxGroupSize) {
