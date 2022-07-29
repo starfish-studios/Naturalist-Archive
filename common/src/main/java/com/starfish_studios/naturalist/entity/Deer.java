@@ -2,8 +2,10 @@ package com.starfish_studios.naturalist.entity;
 
 import com.starfish_studios.naturalist.entity.ai.goal.AlertOthersPanicGoal;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
+import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntitySelector;
@@ -69,6 +71,18 @@ public class Deer extends Animal implements IAnimatable {
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSource) {
+        return this.isBaby() ? NaturalistSoundEvents.FAWN_HURT.get() : NaturalistSoundEvents.DEER_HURT.get();
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return this.isBaby() ? NaturalistSoundEvents.FAWN_AMBIENT.get() : NaturalistSoundEvents.DEER_AMBIENT.get();
     }
 
     @Override
@@ -160,7 +174,7 @@ public class Deer extends Animal implements IAnimatable {
                 event.getController().setAnimationSpeed(2.0D);
             } else {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("deer.walk", true));
-                event.getController().setAnimationSpeed(1.0D);
+                event.getController().setAnimationSpeed(1.25D);
             }
         } else {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("deer.idle", true));

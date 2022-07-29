@@ -45,5 +45,12 @@ public class NaturalistSoundEvents {
 
     public static final Supplier<SoundEvent> ELEPHANT_AMBIENT2 = CommonPlatformHelper.registerSoundEvent("elephant_ambient2", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.elephant.ambient2")));
 
+    public static final Supplier<SoundEvent> DEER_AMBIENT = CommonPlatformHelper.registerSoundEvent("deer_ambient", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.deer.ambient")));
+    public static final Supplier<SoundEvent> DEER_HURT = CommonPlatformHelper.registerSoundEvent("deer_hurt", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.deer.hurt")));
+
+    public static final Supplier<SoundEvent> FAWN_AMBIENT = CommonPlatformHelper.registerSoundEvent("fawn_ambient", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.fawn.ambient")));
+    public static final Supplier<SoundEvent> FAWN_HURT = CommonPlatformHelper.registerSoundEvent("fawn_hurt", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.fawn.hurt")));
+
+
     public static void init() {}
 }

@@ -70,6 +70,11 @@
   "naturalist.subtitles.entity.bird.ambient_cardinal": "Cardinal chirps",
   "naturalist.subtitles.entity.bird.ambient_robin": "Robin chirps",
 
+  "naturalist.subtitles.entity.deer.hurt": "Deer hurts",
+  "naturalist.subtitles.entity.deer.ambient": "Deer grunts",
+  "naturalist.subtitles.entity.fawn.hurt": "Fawn hurts",
+  "naturalist.subtitles.entity.fawn.ambient": "Fawn bleats",
+
   "naturalist.subtitles.entity.elephant.hurt": "Elephant hurts",
   "naturalist.subtitles.entity.elephant.ambient": "Elephant trumpets",
 

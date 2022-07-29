@@ -39,12 +39,21 @@ public class ElephantModel extends AnimatedGeoModel<Elephant> {
 
         List<EntityModelData> extraDataOfType = customPredicate.getExtraDataOfType(EntityModelData.class);
         IBone head = this.getAnimationProcessor().getBone("head");
+        IBone bigTusks = this.getAnimationProcessor().getBone("tusks");
+        IBone smallTusks = this.getAnimationProcessor().getBone("baby_tusks");
+        IBone babyTrunk = this.getAnimationProcessor().getBone("trunk4");
 
         if (elephant.isBaby()) {
             head.setScaleX(1.5F);
             head.setScaleY(1.5F);
             head.setScaleZ(1.5F);
         }
+
+        bigTusks.setHidden(elephant.isBaby());
+        smallTusks.setHidden(elephant.isBaby());
+        smallTusks.setHidden(!elephant.isBaby());
+
+        babyTrunk.setHidden(elephant.isBaby());
 
 //        head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD);
         head.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD);

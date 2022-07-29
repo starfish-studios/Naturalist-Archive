@@ -6,7 +6,7 @@
 				"identifier": "geometry.elephant",
 				"texture_width": 256,
 				"texture_height": 256,
-				"visible_bounds_width": 5,
+				"visible_bounds_width": 6,
 				"visible_bounds_height": 5.5,
 				"visible_bounds_offset": [0, 2.25, 0]
 			},
@@ -36,9 +36,25 @@
 					"parent": "body",
 					"pivot": [0, 40, -19.33333],
 					"cubes": [
-						{"origin": [-8, 37, -33], "size": [16, 22, 16], "uv": [0, 73]},
-						{"origin": [-8, 37, -45], "size": [4, 4, 12], "uv": [108, 73], "mirror": true},
-						{"origin": [4, 37, -45], "size": [4, 4, 12], "uv": [108, 73]}
+						{"origin": [-8, 37, -33], "size": [16, 22, 16], "uv": [0, 73]}
+					]
+				},
+				{
+					"name": "tusks",
+					"parent": "head",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [4, 37, -45], "size": [4, 4, 12], "uv": [108, 73]},
+						{"origin": [-8, 37, -45], "size": [4, 4, 12], "uv": [108, 73], "mirror": true}
+					]
+				},
+				{
+					"name": "baby_tusks",
+					"parent": "head",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [4, 37, -40], "size": [4, 4, 7], "uv": [113, 78]},
+						{"origin": [-8, 37, -40], "size": [4, 4, 7], "uv": [113, 78], "mirror": true}
 					]
 				},
 				{
