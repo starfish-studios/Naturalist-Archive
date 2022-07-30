@@ -1,0 +1,18 @@
+{
+  "values": [
+    "#minecraft:is_savanna",
+    "#minecraft:is_jungle",
+    {
+      "id": "#forge:is_savanna",
+      "required": false
+    },
+    {
+      "id": "#c:savanna",
+      "required": false
+    },
+    {
+      "id": "#c:jungle",
+      "required": false
+    }
+  ]
+}

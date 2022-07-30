@@ -275,13 +275,13 @@
     ],
     "subtitle": "naturalist.subtitles.entity.deer.hurt"
   },
-  "entity.fawn.ambient": {
+  "entity.deer.ambient_baby": {
     "sounds": [
       "naturalist:fawn_idle"
     ],
     "subtitle": "naturalist.subtitles.entity.fawn.ambient"
   },
-  "entity.fawn.hurt": {
+  "entity.deer.hurt_baby": {
     "sounds": [
       "naturalist:fawn_hurt"
     ],

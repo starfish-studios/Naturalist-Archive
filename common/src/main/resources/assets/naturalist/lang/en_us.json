@@ -1,9 +1,6 @@
 {
   "itemGroup.naturalist.tab": "Naturalist",
 
-
-  "mobs": "MOBS",
-
   "entity.naturalist.butterfly": "Butterfly",
   "entity.naturalist.bluejay": "Bluejay",
   "entity.naturalist.canary": "Canary",
@@ -23,9 +20,6 @@
   "entity.naturalist.snail": "Snail",
   "entity.naturalist.snake": "Snake",
   "entity.naturalist.zebra": "Zebra",
-
-
-  "spawneggs": "SPAWN EGGS",
 
   "item.naturalist.bluejay_spawn_egg": "Bluejay Spawn Egg",
   "item.naturalist.butterfly_spawn_egg": "Butterfly Spawn Egg",
@@ -47,9 +41,6 @@
   "item.naturalist.snake_spawn_egg": "Snake Spawn Egg",
   "item.naturalist.zebra_spawn_egg": "Zebra Spawn Egg",
 
-
-  "items": "ITEMS",
-
   "item.naturalist.antler": "Antler",
   "item.naturalist.snail_bucket": "Bucket of Snail",
   "block.naturalist.chrysalis": "Chrysalis",
@@ -57,9 +48,13 @@
   "item.naturalist.glow_goop": "Glow Goop",
   "item.naturalist.snail_shell": "Snail Shell",
   "item.naturalist.venison": "Venison",
-
-
-  "subtitles": "SUBTITLES",
+  "item.minecraft.tipped_arrow.effect.forest_dasher": "Arrow of the Forest Dasher",
+  "item.minecraft.potion.effect.forest_dasher": "Potion of the Forest Dasher",
+  "item.minecraft.splash_potion.effect.forest_dasher": "Splash Potion of the Forest Dasher",
+  "item.minecraft.lingering_potion.effect.forest_dasher": "Lingering Potion of the Forest Dasher",
+  "item.minecraft.potion.effect.glowing": "Potion of Glowing",
+  "item.minecraft.splash_potion.effect.glowing": "Splash Potion of Glowing",
+  "item.minecraft.lingering_potion.effect.glowing": "Lingering Potion of Glowing",
 
   "naturalist.subtitles.entity.bird.hurt": "Bird hurts",
   "naturalist.subtitles.entity.bird.death": "Bird dies",
@@ -69,19 +64,15 @@
   "naturalist.subtitles.entity.bird.ambient_canary": "Canary chirps",
   "naturalist.subtitles.entity.bird.ambient_cardinal": "Cardinal chirps",
   "naturalist.subtitles.entity.bird.ambient_robin": "Robin chirps",
-
   "naturalist.subtitles.entity.deer.hurt": "Deer hurts",
   "naturalist.subtitles.entity.deer.ambient": "Deer grunts",
-  "naturalist.subtitles.entity.fawn.hurt": "Fawn hurts",
-  "naturalist.subtitles.entity.fawn.ambient": "Fawn bleats",
-
+  "naturalist.subtitles.entity.deer.hurt_baby": "Fawn hurts",
+  "naturalist.subtitles.entity.deer.ambient_baby": "Fawn bleats",
   "naturalist.subtitles.entity.elephant.hurt": "Elephant hurts",
   "naturalist.subtitles.entity.elephant.ambient": "Elephant trumpets",
-
   "naturalist.subtitles.entity.firefly.hurt": "Firefly hurts",
   "naturalist.subtitles.entity.firefly.death": "Firefly dies",
   "naturalist.subtitles.entity.firefly.hide": "Firefly hides",
-
   "naturalist.subtitles.entity.bear.hurt": "Grizzly Bear hurts",
   "naturalist.subtitles.entity.bear.death": "Grizzly Bear dies",
   "naturalist.subtitles.entity.bear.ambient": "Grizzly Bear groans",
@@ -91,41 +82,20 @@
   "naturalist.subtitles.entity.bear.sniff": "Grizzly Bear sniffs",
   "naturalist.subtitles.entity.bear.spit": "Grizzly Bear spits",
   "naturalist.subtitles.entity.bear.eat": "Grizzly Bear eats",
-
   "naturalist.subtitles.entity.lion.hurt": "Lion hurts",
   "naturalist.subtitles.entity.lion.ambient": "Lion growls",
   "naturalist.subtitles.entity.lion.roar": "Lion roars",
-
   "naturalist.subtitles.entity.rhino.scrape": "Rhino scrapes foot",
   "naturalist.subtitles.entity.rhino.ambient": "Rhino growls",
-
   "naturalist.subtitles.entity.snail.crush": "Snail crushes",
   "naturalist.subtitles.entity.snail.move": "Snail inches",
-
   "naturalist.subtitles.entity.snake.hiss": "Snake hisses",
   "naturalist.subtitles.entity.snake.hurt": "Snake hurts",
   "naturalist.subtitles.entity.snake.rattle": "Snake rattles",
-
   "naturalist.subtitles.entity.zebra.ambient": "Zebra brays",
   "naturalist.subtitles.entity.zebra.hurt": "Zebra hurts",
 
-
-  "potionarrows": "POTIONS AND ARROWS",
-
-  "item.minecraft.tipped_arrow.effect.forest_dasher": "Arrow of the Forest Dasher",
-  "item.minecraft.potion.effect.forest_dasher": "Potion of the Forest Dasher",
-  "item.minecraft.splash_potion.effect.forest_dasher": "Splash Potion of the Forest Dasher",
-  "item.minecraft.lingering_potion.effect.forest_dasher": "Lingering Potion of the Forest Dasher",
-
-  "item.minecraft.potion.effect.glowing": "Potion of Glowing",
-  "item.minecraft.splash_potion.effect.glowing": "Splash Potion of Glowing",
-  "item.minecraft.lingering_potion.effect.glowing": "Lingering Potion of Glowing",
-
-
-  "config": "CONFIG",
-
   "text.autoconfig.naturalist.title": "Naturalist Config",
-
   "text.autoconfig.naturalist.option.bluejaySpawnWeight": "Bluejay Spawn Weight",
   "text.autoconfig.naturalist.option.butterflySpawnWeight": "Butterfly Spawn Weight",
   "text.autoconfig.naturalist.option.canarySpawnWeight": "Canary Spawn Weight",
@@ -138,7 +108,13 @@
   "text.autoconfig.naturalist.option.robinSpawnWeight": "Robin Spawn Weight",
   "text.autoconfig.naturalist.option.snailSpawnWeight": "Snail Spawn Weight",
   "text.autoconfig.naturalist.option.snakeSpawnWeight": "Snake Spawn Weight",
-
   "text.autoconfig.naturalist.option.forestRabbitSpawnWeight": "Rabbit Spawn Weight in Forest Biomes",
-  "text.autoconfig.naturalist.option.forestFoxSpawnWeight": "Fox Spawn Weight in Forest Biomes"
+  "text.autoconfig.naturalist.option.forestFoxSpawnWeight": "Fox Spawn Weight in Forest Biomes",
+  "text.autoconfig.naturalist.option.rhinoSpawnWeight": "Rhino Spawn Weight",
+  "text.autoconfig.naturalist.option.lionSpawnWeight": "Lion Spawn Weight",
+  "text.autoconfig.naturalist.option.elephantSpawnWeight": "Elephant Spawn Weight",
+  "text.autoconfig.naturalist.option.zebraSpawnWeight": "Zebra Spawn Weight",
+  "text.autoconfig.naturalist.option.giraffeSpawnWeight": "Giraffe Spawn Weight",
+  "text.autoconfig.naturalist.option.hippoSpawnWeight": "Hippo Spawn Weight",
+  "text.autoconfig.naturalist.option.removeSavannaFarmAnimals": "Remove Farm Animals in Savanna Biomes"
 }

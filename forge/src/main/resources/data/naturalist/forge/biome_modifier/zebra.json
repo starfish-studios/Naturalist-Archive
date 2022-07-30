@@ -1,8 +1,8 @@
 {
   "type": "forge:add_spawns",
-  "biomes": "#naturalist:has_elephant",
+  "biomes": "#naturalist:has_zebra",
   "spawners": {
-    "type": "naturalist:elephant",
+    "type": "naturalist:zebra",
     "weight": 10,
     "minCount": 2,
     "maxCount": 3

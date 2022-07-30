@@ -76,13 +76,13 @@ public class Deer extends Animal implements IAnimatable {
     @Nullable
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return this.isBaby() ? NaturalistSoundEvents.FAWN_HURT.get() : NaturalistSoundEvents.DEER_HURT.get();
+        return this.isBaby() ? NaturalistSoundEvents.DEER_HURT_BABY.get() : NaturalistSoundEvents.DEER_HURT.get();
     }
 
     @Nullable
     @Override
     protected SoundEvent getAmbientSound() {
-        return this.isBaby() ? NaturalistSoundEvents.FAWN_AMBIENT.get() : NaturalistSoundEvents.DEER_AMBIENT.get();
+        return this.isBaby() ? NaturalistSoundEvents.DEER_AMBIENT_BABY.get() : NaturalistSoundEvents.DEER_AMBIENT.get();
     }
     @Override
     public float getVoicePitch() {

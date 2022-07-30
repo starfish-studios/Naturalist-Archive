@@ -116,12 +116,15 @@ public class Elephant extends Animal implements IAnimatable {
 
     @Nullable
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSource) {return NaturalistSoundEvents.ELEPHANT_HURT.get();}
+    protected SoundEvent getHurtSound(DamageSource damageSource) {
+        return NaturalistSoundEvents.ELEPHANT_HURT.get();
+    }
 
     @Nullable
     @Override
-    protected SoundEvent getAmbientSound() {return NaturalistSoundEvents.ELEPHANT_AMBIENT.get();}
-
+    protected SoundEvent getAmbientSound() {
+        return NaturalistSoundEvents.ELEPHANT_AMBIENT.get();
+    }
 
     @Override
     public boolean doHurtTarget(Entity target) {

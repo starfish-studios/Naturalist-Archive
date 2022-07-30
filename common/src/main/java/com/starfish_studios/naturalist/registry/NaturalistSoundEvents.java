@@ -40,20 +40,14 @@ public class NaturalistSoundEvents {
     public static final Supplier<SoundEvent> LION_HURT = CommonPlatformHelper.registerSoundEvent("lion_hurt", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.lion.hurt")));
     public static final Supplier<SoundEvent> LION_AMBIENT = CommonPlatformHelper.registerSoundEvent("lion_ambient", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.lion.ambient")));
     public static final Supplier<SoundEvent> LION_ROAR = CommonPlatformHelper.registerSoundEvent("lion_roar", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.lion.roar")));
-
     public static final Supplier<SoundEvent> ELEPHANT_HURT = CommonPlatformHelper.registerSoundEvent("elephant_hurt", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.elephant.hurt")));
     public static final Supplier<SoundEvent> ELEPHANT_AMBIENT = CommonPlatformHelper.registerSoundEvent("elephant_ambient", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.elephant.ambient")));
-
-    public static final Supplier<SoundEvent> ELEPHANT_AMBIENT2 = CommonPlatformHelper.registerSoundEvent("elephant_ambient2", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.elephant.ambient2")));
-
     public static final Supplier<SoundEvent> DEER_AMBIENT = CommonPlatformHelper.registerSoundEvent("deer_ambient", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.deer.ambient")));
     public static final Supplier<SoundEvent> DEER_HURT = CommonPlatformHelper.registerSoundEvent("deer_hurt", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.deer.hurt")));
-
-    public static final Supplier<SoundEvent> FAWN_AMBIENT = CommonPlatformHelper.registerSoundEvent("fawn_ambient", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.fawn.ambient")));
-    public static final Supplier<SoundEvent> FAWN_HURT = CommonPlatformHelper.registerSoundEvent("fawn_hurt", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.fawn.hurt")));
+    public static final Supplier<SoundEvent> DEER_AMBIENT_BABY = CommonPlatformHelper.registerSoundEvent("deer_ambient_baby", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.deer.ambient_baby")));
+    public static final Supplier<SoundEvent> DEER_HURT_BABY = CommonPlatformHelper.registerSoundEvent("deer_hurt_baby", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.deer.hurt_baby")));
     public static final Supplier<SoundEvent> ZEBRA_AMBIENT = CommonPlatformHelper.registerSoundEvent("zebra_ambient", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.zebra.ambient")));
     public static final Supplier<SoundEvent> ZEBRA_HURT = CommonPlatformHelper.registerSoundEvent("zebra_hurt", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.zebra.hurt")));
-
 
     public static void init() {}
 }
