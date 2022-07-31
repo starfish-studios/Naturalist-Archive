@@ -12,8 +12,13 @@
 			},
 			"bones": [
 				{
+					"name": "root",
+					"pivot": [-0.5, 5, 2]
+				},
+				{
 					"name": "body",
-					"pivot": [-0.5, 5, 2],
+					"parent": "root",
+					"pivot": [0, 0, 0],
 					"cubes": [
 						{"origin": [-3, 3.25, -3], "size": [5, 5, 4], "uv": [21, 14]},
 						{"origin": [-4, 1.5, -1], "size": [7, 6, 7], "uv": [0, 0]}
@@ -30,7 +35,7 @@
 				{
 					"name": "wings",
 					"parent": "body",
-					"pivot": [0, -6, -3]
+					"pivot": [0, 0, 0]
 				},
 				{
 					"name": "left_wing",
@@ -69,7 +74,7 @@
 				},
 				{
 					"name": "feet",
-					"parent": "body",
+					"parent": "root",
 					"pivot": [0, -6, -3]
 				},
 				{
