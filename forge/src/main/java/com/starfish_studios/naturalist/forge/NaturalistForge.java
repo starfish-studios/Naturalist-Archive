@@ -60,5 +60,6 @@ public class NaturalistForge {
         event.put(NaturalistEntityTypes.ZEBRA.get(), AbstractHorse.createBaseHorseAttributes().build());
         event.put(NaturalistEntityTypes.GIRAFFE.get(), Giraffe.createAttributes().build());
         event.put(NaturalistEntityTypes.HIPPO.get(), Hippo.createAttributes().build());
+        event.put(NaturalistEntityTypes.VULTURE.get(), Vulture.createAttributes().build());
     }
 }

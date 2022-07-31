@@ -27,6 +27,7 @@ public class NaturalistEntityTypes {
     public static final Supplier<EntityType<Zebra>> ZEBRA = CommonPlatformHelper.registerEntityType("zebra", Zebra::new, MobCategory.CREATURE, 1.3964844f, 1.6f, 10);
     public static final Supplier<EntityType<Giraffe>> GIRAFFE = CommonPlatformHelper.registerEntityType("giraffe", Giraffe::new, MobCategory.CREATURE, 1.9f, 5.4f, 10);
     public static final Supplier<EntityType<Hippo>> HIPPO = CommonPlatformHelper.registerEntityType("hippo", Hippo::new, MobCategory.CREATURE, 1.8F, 1.8F, 10);
+    public static final Supplier<EntityType<Vulture>> VULTURE = CommonPlatformHelper.registerEntityType("vulture", Vulture::new, MobCategory.CREATURE, 0.9f, 0.5f, 10);
 
     public static void init() {}
 }
