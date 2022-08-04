@@ -158,10 +158,10 @@ public class Lion extends Animal implements IAnimatable, SleepingAnimal {
     public void customServerAiStep() {
         if (this.getMoveControl().hasWanted()) {
             double speedModifier = this.getMoveControl().getSpeedModifier();
-            if (speedModifier < 1.0D) {
+            if (speedModifier < 1.0D && this.isOnGround()) {
                 this.setPose(Pose.CROUCHING);
                 this.setSprinting(false);
-            } else if (speedModifier >= 1.5D) {
+            } else if (speedModifier >= 1.5D && this.isOnGround()) {
                 this.setPose(Pose.STANDING);
                 this.setSprinting(true);
             } else {
