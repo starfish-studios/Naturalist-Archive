@@ -1,9 +1,6 @@
 package com.starfish_studios.naturalist;
 
-import com.starfish_studios.naturalist.entity.Bird;
-import com.starfish_studios.naturalist.entity.Firefly;
-import com.starfish_studios.naturalist.entity.Hippo;
-import com.starfish_studios.naturalist.entity.Snake;
+import com.starfish_studios.naturalist.entity.*;
 import com.starfish_studios.naturalist.platform.CommonPlatformHelper;
 import com.starfish_studios.naturalist.registry.*;
 import net.minecraft.resources.ResourceLocation;
@@ -60,6 +57,7 @@ public class Naturalist {
         CommonPlatformHelper.registerSpawnPlacement(NaturalistEntityTypes.ZEBRA.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
         CommonPlatformHelper.registerSpawnPlacement(NaturalistEntityTypes.GIRAFFE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
         CommonPlatformHelper.registerSpawnPlacement(NaturalistEntityTypes.HIPPO.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Hippo::checkHippoSpawnRules);
+        CommonPlatformHelper.registerSpawnPlacement(NaturalistEntityTypes.VULTURE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, Vulture::checkVultureSpawnRules);
     }
 
     public static void registerCompostables() {

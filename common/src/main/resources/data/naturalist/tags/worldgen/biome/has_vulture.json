@@ -1,0 +1,19 @@
+{
+  "values": [
+    "#minecraft:is_savanna",
+    "#minecraft:is_badlands",
+    "minecraft:desert",
+    {
+      "id": "#forge:is_savanna",
+      "required": false
+    },
+    {
+      "id": "#c:savanna",
+      "required": false
+    },
+    {
+      "id": "#c:desert",
+      "required": false
+    }
+  ]
+}

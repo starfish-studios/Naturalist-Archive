@@ -121,5 +121,6 @@
   "text.autoconfig.naturalist.option.zebraSpawnWeight": "Zebra Spawn Weight",
   "text.autoconfig.naturalist.option.giraffeSpawnWeight": "Giraffe Spawn Weight",
   "text.autoconfig.naturalist.option.hippoSpawnWeight": "Hippo Spawn Weight",
+  "text.autoconfig.naturalist.option.vultureSpawnWeight": "Vulture Spawn Weight",
   "text.autoconfig.naturalist.option.removeSavannaFarmAnimals": "Remove Farm Animals in Savanna Biomes"
 }

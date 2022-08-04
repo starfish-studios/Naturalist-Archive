@@ -1,7 +1,6 @@
 package com.starfish_studios.naturalist.entity;
 
 import com.starfish_studios.naturalist.entity.ai.goal.FlyingWanderGoal;
-import com.starfish_studios.naturalist.entity.ai.goal.SearchForItemsGoal;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.core.BlockPos;
@@ -10,7 +9,9 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -34,6 +35,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
@@ -82,6 +84,10 @@ public class Vulture extends PathfinderMob implements IAnimatable, FlyingAnimal 
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Monster.class, 10, false, false, entity -> entity.getMobType().equals(MobType.UNDEAD) && !FOOD_ITEMS.test(this.getMainHandItem())));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, false, false, entity -> entity.getHealth() <= 6 && !entity.getMainHandItem().isEmpty() && !FOOD_ITEMS.test(this.getMainHandItem())));
+    }
+
+    public static boolean checkVultureSpawnRules(EntityType<Vulture> entityType, LevelAccessor state, MobSpawnType type, BlockPos pos, RandomSource random) {
+        return state.getBlockState(pos.below()).is(NaturalistTags.BlockTags.VULTURES_SPAWNABLE_ON) && state.getRawBrightness(pos, 0) > 8;
     }
 
     @Override
@@ -250,16 +256,16 @@ public class Vulture extends PathfinderMob implements IAnimatable, FlyingAnimal 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.isFlying()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("vulture.fly", true));
-            return PlayState.CONTINUE;
+        } else {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("vulture.idle", true));
         }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
+        return PlayState.CONTINUE;
     }
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.setResetSpeedInTicks(5);
-        data.addAnimationController(new AnimationController<>(this, "controller", 5, this::predicate));
+        data.setResetSpeedInTicks(10);
+        data.addAnimationController(new AnimationController<>(this, "controller", 10, this::predicate));
     }
 
     @Override

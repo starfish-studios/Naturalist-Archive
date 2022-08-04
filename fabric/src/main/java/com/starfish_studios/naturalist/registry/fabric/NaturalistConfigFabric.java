@@ -27,5 +27,6 @@ public class NaturalistConfigFabric implements ConfigData {
     public int zebraSpawnWeight = 10;
     public int giraffeSpawnWeight = 10;
     public int hippoSpawnWeight = 15;
+    public int vultureSpawnWeight = 15;
     public boolean removeSavannaFarmAnimals = true;
 }

@@ -14,6 +14,7 @@ public class NaturalistTags {
         public static final TagKey<Block> FIREFLIES_SPAWNABLE_ON = tag("fireflies_spawnable_on");
         public static final TagKey<Block> RHINO_CHARGE_BREAKABLE = tag("rhino_charge_breakable");
         public static final TagKey<Block> VULTURE_PERCH_BLOCKS = tag("vulture_perch_blocks");
+        public static final TagKey<Block> VULTURES_SPAWNABLE_ON = tag("vultures_spawnable_on");
 
         private static TagKey<Block> tag(String name) {
             return TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(Naturalist.MOD_ID, name));
@@ -61,6 +62,7 @@ public class NaturalistTags {
         public static final TagKey<Biome> HAS_ZEBRA = tag("has_zebra");
         public static final TagKey<Biome> HAS_GIRAFFE = tag("has_giraffe");
         public static final TagKey<Biome> HAS_HIPPO = tag("has_hippo");
+        public static final TagKey<Biome> HAS_VULTURE = tag("has_vulture");
 
         private static TagKey<Biome> tag(String name) {
             return TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(Naturalist.MOD_ID, name));
