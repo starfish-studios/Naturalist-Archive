@@ -13,6 +13,7 @@ public class NaturalistTags {
     public static class BlockTags {
         public static final TagKey<Block> FIREFLIES_SPAWNABLE_ON = tag("fireflies_spawnable_on");
         public static final TagKey<Block> RHINO_CHARGE_BREAKABLE = tag("rhino_charge_breakable");
+        public static final TagKey<Block> VULTURE_PERCH_BLOCKS = tag("vulture_perch_blocks");
 
         private static TagKey<Block> tag(String name) {
             return TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(Naturalist.MOD_ID, name));

@@ -299,5 +299,23 @@
       "naturalist:zebra_hurt"
     ],
     "subtitle": "naturalist.subtitles.entity.zebra.hurt"
+  },
+  "entity.vulture.ambient": {
+    "sounds": [
+      "naturalist:vulture_idle"
+    ],
+    "subtitle": "naturalist.subtitles.entity.vulture.ambient"
+  },
+  "entity.vulture.hurt": {
+    "sounds": [
+      "naturalist:vulture_hurt"
+    ],
+    "subtitle": "naturalist.subtitles.entity.vulture.hurt"
+  },
+  "entity.vulture.death": {
+    "sounds": [
+      "naturalist:vulture_death"
+    ],
+    "subtitle": "naturalist.subtitles.entity.vulture.death"
   }
 }

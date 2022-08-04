@@ -96,6 +96,9 @@
   "naturalist.subtitles.entity.snake.rattle": "Snake rattles",
   "naturalist.subtitles.entity.zebra.ambient": "Zebra brays",
   "naturalist.subtitles.entity.zebra.hurt": "Zebra hurts",
+  "naturalist.subtitles.entity.vulture.ambient": "Vulture squawks",
+  "naturalist.subtitles.entity.vulture.hurt": "Vulture hurts",
+  "naturalist.subtitles.entity.vulture.death": "Vulture dies",
 
   "text.autoconfig.naturalist.title": "Naturalist Config",
   "text.autoconfig.naturalist.option.bluejaySpawnWeight": "Bluejay Spawn Weight",

@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
 import java.util.EnumSet;
 
 public class FlyingWanderGoal extends Goal {
-    private final PathfinderMob mob;
+    protected final PathfinderMob mob;
 
     public FlyingWanderGoal(PathfinderMob mob) {
         this.setFlags(EnumSet.of(Flag.MOVE));
@@ -38,7 +38,7 @@ public class FlyingWanderGoal extends Goal {
     }
 
     @Nullable
-    private Vec3 findPos() {
+    protected Vec3 findPos() {
         Vec3 viewVector = mob.getViewVector(0.0F);
         Vec3 hoverPos = HoverRandomPos.getPos(mob, 8, 7, viewVector.x, viewVector.z, ((float) Math.PI / 2F), 3, 1);
         return hoverPos != null ? hoverPos : AirAndWaterRandomPos.getPos(mob, 8, 4, -2, viewVector.x, viewVector.z, (float) Math.PI / 2F);
