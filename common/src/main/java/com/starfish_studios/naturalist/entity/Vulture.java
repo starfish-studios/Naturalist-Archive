@@ -78,7 +78,7 @@ public class Vulture extends PathfinderMob implements IAnimatable, FlyingAnimal 
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new VultureAttackGoal(this, 1.2F, true));
-        this.goalSelector.addGoal(2, new VultureSearchForFoodGoal(this, 1.2F, FOOD_ITEMS, 8, 12));
+        this.goalSelector.addGoal(2, new VultureSearchForFoodGoal(this, 1.2F, FOOD_ITEMS, 10, 20));
         this.goalSelector.addGoal(3, new VultureWanderGoal(this));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
@@ -293,7 +293,7 @@ public class Vulture extends PathfinderMob implements IAnimatable, FlyingAnimal 
         @Override
         protected Vec3 findPos() {
             Vec3 viewVector = mob.getViewVector(0.0F);
-            return AirAndWaterRandomPos.getPos(mob, 12, 10, 0, viewVector.x, viewVector.z, Math.PI);
+            return AirAndWaterRandomPos.getPos(mob, 12, 12, -1, viewVector.x, viewVector.z, Math.PI);
         }
     }
 
@@ -326,6 +326,8 @@ public class Vulture extends PathfinderMob implements IAnimatable, FlyingAnimal 
                     this.mob.setItemSlot(EquipmentSlot.MAINHAND, enemy.getMainHandItem().split(1));
                     Level level = this.mob.level;
                     level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.ITEM_PICKUP, SoundSource.NEUTRAL, 0.2F, ((level.random.nextFloat() - level.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                    this.mob.setTarget(null);
+                    this.mob.setAggressive(false);
                 }
             }
         }
