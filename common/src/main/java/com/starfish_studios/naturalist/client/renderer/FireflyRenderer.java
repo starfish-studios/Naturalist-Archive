@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.starfish_studios.naturalist.client.model.FireflyModel;
 import com.starfish_studios.naturalist.client.renderer.layers.FireflyGlowLayer;
 import com.starfish_studios.naturalist.entity.Firefly;
+import com.starfish_studios.naturalist.platform.ClientPlatformHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -24,7 +25,7 @@ public class FireflyRenderer extends GeoEntityRenderer<Firefly> {
 
     @Override
     public ResourceLocation getTextureLocation(Firefly entity) {
-        return getTextureResource(entity);
+        return ClientPlatformHelper.arch$getTextureLocation(modelProvider, entity);
     }
 
     @Override

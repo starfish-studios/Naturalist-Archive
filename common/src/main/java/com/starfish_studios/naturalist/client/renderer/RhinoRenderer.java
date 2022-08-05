@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.starfish_studios.naturalist.client.model.RhinoModel;
 import com.starfish_studios.naturalist.entity.Rhino;
+import com.starfish_studios.naturalist.platform.ClientPlatformHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -22,7 +23,7 @@ public class RhinoRenderer extends GeoEntityRenderer<Rhino> {
 
     @Override
     public ResourceLocation getTextureLocation(Rhino entity) {
-        return getTextureResource(entity);
+        return ClientPlatformHelper.arch$getTextureLocation(modelProvider, entity);
     }
 
     @Override

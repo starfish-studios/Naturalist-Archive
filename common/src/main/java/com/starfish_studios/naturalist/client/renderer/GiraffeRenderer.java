@@ -6,6 +6,7 @@ import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.client.model.GiraffeModel;
 import com.starfish_studios.naturalist.client.renderer.layers.SleepLayer;
 import com.starfish_studios.naturalist.entity.Giraffe;
+import com.starfish_studios.naturalist.platform.ClientPlatformHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -24,7 +25,7 @@ public class GiraffeRenderer extends GeoEntityRenderer<Giraffe> {
 
     @Override
     public ResourceLocation getTextureLocation(Giraffe entity) {
-        return getTextureResource(entity);
+        return ClientPlatformHelper.arch$getTextureLocation(modelProvider, entity);
     }
 
     @Override

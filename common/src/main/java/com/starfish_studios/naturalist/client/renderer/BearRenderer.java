@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import com.starfish_studios.naturalist.client.model.BearModel;
 import com.starfish_studios.naturalist.entity.Bear;
+import com.starfish_studios.naturalist.platform.ClientPlatformHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -25,7 +26,7 @@ public class BearRenderer extends GeoEntityRenderer<Bear> {
 
     @Override
     public ResourceLocation getTextureLocation(Bear entity) {
-        return getTextureResource(entity);
+        return ClientPlatformHelper.arch$getTextureLocation(modelProvider, entity);
     }
 
     @Override

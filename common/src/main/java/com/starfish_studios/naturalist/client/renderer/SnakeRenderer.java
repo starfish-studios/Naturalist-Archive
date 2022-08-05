@@ -3,6 +3,7 @@ package com.starfish_studios.naturalist.client.renderer;
 import com.starfish_studios.naturalist.client.model.SnakeModel;
 import com.starfish_studios.naturalist.client.renderer.layers.SnakeSleepLayer;
 import com.starfish_studios.naturalist.entity.Snake;
+import com.starfish_studios.naturalist.platform.ClientPlatformHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -19,6 +20,6 @@ public class SnakeRenderer extends GeoEntityRenderer<Snake> {
 
     @Override
     public ResourceLocation getTextureLocation(Snake entity) {
-        return getTextureResource(entity);
+        return ClientPlatformHelper.arch$getTextureLocation(modelProvider, entity);
     }
 }

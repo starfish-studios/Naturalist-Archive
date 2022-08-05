@@ -6,6 +6,7 @@ import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.client.model.LionModel;
 import com.starfish_studios.naturalist.client.renderer.layers.SleepLayer;
 import com.starfish_studios.naturalist.entity.Lion;
+import com.starfish_studios.naturalist.platform.ClientPlatformHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -25,7 +26,7 @@ public class LionRenderer extends GeoEntityRenderer<Lion> {
 
     @Override
     public ResourceLocation getTextureLocation(Lion entity) {
-        return getTextureResource(entity);
+        return ClientPlatformHelper.arch$getTextureLocation(modelProvider, entity);
     }
 
     @Override
