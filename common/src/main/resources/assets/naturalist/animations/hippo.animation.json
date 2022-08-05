@@ -382,16 +382,30 @@
 			}
 		},
 		"hippo.bite": {
-			"loop": true,
-			"animation_length": 0.5,
+			"animation_length": 0.2917,
 			"bones": {
 				"head": {
 					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.0417": {
+							"vector": [0, 0, 0]
+						},
+						"0.0833": {
+							"vector": [0, 0, 0]
+						},
 						"0.125": {
 							"vector": [0, 0, 0]
 						},
 						"0.1667": {
-							"vector": [0, "Math.sin((query.anim_time - 0.0) * 2880) * 0.5", 0]
+							"vector": [0, 0.43, 0]
+						},
+						"0.2083": {
+							"vector": [0, -0.29, 0]
+						},
+						"0.25": {
+							"vector": [0, 0, 0]
 						},
 						"0.2917": {
 							"vector": [0, 0, 0]
@@ -400,12 +414,58 @@
 				},
 				"topjaw": {
 					"rotation": {
-						"vector": ["Math.clamp(Math.cos((query.anim_time - 0.25) * 720) * 45, -45, 0)", 0, 0]
+						"0.0": {
+							"vector": [-45, 0, 0]
+						},
+						"0.0417": {
+							"vector": [-38.97, 0, 0]
+						},
+						"0.0833": {
+							"vector": [-22.5, 0, 0]
+						},
+						"0.125": {
+							"vector": [0, 0, 0]
+						},
+						"0.1667": {
+							"vector": [0, 0, 0]
+						},
+						"0.2083": {
+							"vector": [0, 0, 0]
+						},
+						"0.25": {
+							"vector": [0, 0, 0]
+						},
+						"0.2917": {
+							"vector": [0, 0, 0]
+						}
 					}
 				},
 				"botjaw": {
 					"rotation": {
-						"vector": ["Math.clamp(Math.cos((query.anim_time - 0.25) * 720) * -15, 0, 150", 0, 0]
+						"0.0": {
+							"vector": [15, 0, 0]
+						},
+						"0.0417": {
+							"vector": [12.99, 0, 0]
+						},
+						"0.0833": {
+							"vector": [7.5, 0, 0]
+						},
+						"0.125": {
+							"vector": [0, 0, 0]
+						},
+						"0.1667": {
+							"vector": [0, 0, 0]
+						},
+						"0.2083": {
+							"vector": [0, 0, 0]
+						},
+						"0.25": {
+							"vector": [0, 0, 0]
+						},
+						"0.2917": {
+							"vector": [0, 0, 0]
+						}
 					}
 				}
 			}
@@ -413,8 +473,7 @@
 		"hippo.idle": {
 			"loop": true,
 			"animation_length": 0.5,
-			"bones": {
-			}
+			"bones": {}
 		}
 	},
 	"geckolib_format_version": 2

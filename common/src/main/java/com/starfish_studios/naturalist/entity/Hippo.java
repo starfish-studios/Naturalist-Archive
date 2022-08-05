@@ -5,12 +5,17 @@ import com.starfish_studios.naturalist.entity.ai.goal.BabyPanicGoal;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -24,6 +29,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.Path;
 import org.jetbrains.annotations.Nullable;
@@ -41,6 +47,8 @@ import java.util.List;
 
 public class Hippo extends Animal implements IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
+    private static final Ingredient FOOD_ITEMS = Ingredient.of(Blocks.MELON.asItem());
+    private int eatingTicks;
 
     public Hippo(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
@@ -63,7 +71,7 @@ public class Hippo extends Animal implements IAnimatable {
 
     @Override
     public boolean isFood(ItemStack stack) {
-        return stack.is(Items.GLISTERING_MELON_SLICE);
+        return FOOD_ITEMS.test(stack);
     }
 
     @Override
@@ -75,22 +83,71 @@ public class Hippo extends Animal implements IAnimatable {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(2, new HippoAttackBoatsGoal(this, 1.25D));
-        this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.25D, true));
-        this.goalSelector.addGoal(4, new BreedGoal(this, 1.0));
-        this.goalSelector.addGoal(5, new TemptGoal(this, 1.0D, Ingredient.of(Items.GLISTERING_MELON_SLICE), false));
-        this.goalSelector.addGoal(6, new BabyPanicGoal(this, 2.0D));
-        this.goalSelector.addGoal(7, new FollowParentGoal(this, 1.25D));
-        this.goalSelector.addGoal(8, new RandomSwimmingGoal(this, 1.0D, 10));
-        this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 6.0F));
-        this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(2, new TemptGoal(this, 1.0D, FOOD_ITEMS, false));
+        this.goalSelector.addGoal(3, new HippoAttackBoatsGoal(this, 1.25D));
+        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.25D, true));
+        this.goalSelector.addGoal(5, new BabyPanicGoal(this, 2.0D));
+        this.goalSelector.addGoal(6, new FollowParentGoal(this, 1.25D));
+        this.goalSelector.addGoal(7, new RandomSwimmingGoal(this, 1.0D, 10));
+        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new BabyHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, (entity) -> !this.isBaby() && entity.isInWater()));
     }
 
     @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemStack = player.getItemInHand(hand);
+        if (this.isFood(itemStack)) {
+            int age = this.getAge();
+            if (!this.level.isClientSide && age == 0 && this.canFallInLove()) {
+                this.eatingTicks = 10;
+                this.setItemSlot(EquipmentSlot.MAINHAND, itemStack.copy());
+                this.swing(InteractionHand.MAIN_HAND);
+                ((ServerLevel)level).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.MELON.defaultBlockState()), this.getX(), this.getY() + 0.5, this.getZ(), 100, this.getBbWidth() / 2.0F, this.getBbHeight() / 4.0F, this.getBbWidth() / 4.0F, 0.05D);
+                this.playSound(SoundEvents.HORSE_EAT);
+                this.playSound(SoundEvents.WOOD_BREAK);
+                this.usePlayerItem(player, hand, itemStack);
+                this.setInLove(player);
+                return InteractionResult.SUCCESS;
+            }
+            if (this.isBaby()) {
+                this.usePlayerItem(player, hand, itemStack);
+                this.ageUp(Animal.getSpeedUpSecondsWhenFeeding(-age), true);
+                return InteractionResult.sidedSuccess(this.level.isClientSide);
+            }
+            if (this.level.isClientSide) {
+                return InteractionResult.CONSUME;
+            }
+        }
+        return InteractionResult.PASS;
+    }
+
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        if (!this.level.isClientSide) {
+            if (this.eatingTicks > 0) {
+                this.eatingTicks--;
+            } else {
+                this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+            }
+        }
+    }
+
+    @Override
+    public double getFluidJumpThreshold() {
+        return 1.25;
+    }
+
+    @Override
     protected float getWaterSlowDown() {
         return 0.98F;
+    }
+
+    @Override
+    public boolean canMate(Animal otherAnimal) {
+        return this.isInWater() && otherAnimal.isInWater() && super.canMate(otherAnimal);
     }
 
     @Nullable
@@ -101,13 +158,8 @@ public class Hippo extends Animal implements IAnimatable {
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
-            if (this.isInWater() && !this.isOnGround()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("hippo.swim", true));
-                event.getController().setAnimationSpeed(2.0D);
-            } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("hippo.walk", true));
-                event.getController().setAnimationSpeed(1.0D);
-            }
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("hippo.walk", true));
+            event.getController().setAnimationSpeed(1.0D);
         } else {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("hippo.idle", true));
             event.getController().setAnimationSpeed(1.0D);
@@ -256,7 +308,7 @@ public class Hippo extends Animal implements IAnimatable {
         }
 
         protected double getAttackReachSqr(Entity attackTarget) {
-            return Mth.square(this.mob.getBbWidth()) + attackTarget.getBbWidth();
+            return Mth.square(this.mob.getBbWidth() * 1.2f) + attackTarget.getBbWidth();
         }
     }
 }
