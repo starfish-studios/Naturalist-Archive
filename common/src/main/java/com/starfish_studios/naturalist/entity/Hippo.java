@@ -6,6 +6,7 @@ import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -104,7 +105,9 @@ public class Hippo extends Animal implements IAnimatable {
                 this.eatingTicks = 10;
                 this.setItemSlot(EquipmentSlot.MAINHAND, itemStack.copy());
                 this.swing(InteractionHand.MAIN_HAND);
-                ((ServerLevel)level).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.MELON.defaultBlockState()), this.getX(), this.getY() + 0.5, this.getZ(), 100, this.getBbWidth() / 2.0F, this.getBbHeight() / 4.0F, this.getBbWidth() / 4.0F, 0.05D);
+                float yRot = (this.getYRot() + 90) * Mth.DEG_TO_RAD;
+                ((ServerLevel)level).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.MELON.defaultBlockState()), this.getX() + Math.cos(yRot), this.getY() + 0.6, this.getZ() + Math.sin(yRot), 100, this.getBbWidth() / 4.0F, this.getBbHeight() / 4.0F, this.getBbWidth() / 4.0F, 0.05D);
+                ((ServerLevel)level).sendParticles(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.MELON_SLICE)), this.getX() + Math.cos(yRot), this.getY() + 0.6, this.getZ() + Math.sin(yRot), 100, this.getBbWidth() / 4.0F, this.getBbHeight() / 4.0F, this.getBbWidth() / 4.0F, 0.05D);
                 this.playSound(SoundEvents.HORSE_EAT);
                 this.playSound(SoundEvents.WOOD_BREAK);
                 this.usePlayerItem(player, hand, itemStack);
@@ -137,7 +140,7 @@ public class Hippo extends Animal implements IAnimatable {
 
     @Override
     public double getFluidJumpThreshold() {
-        return 1.25;
+        return this.isBaby() ? super.getFluidJumpThreshold() : 1.25;
     }
 
     @Override
