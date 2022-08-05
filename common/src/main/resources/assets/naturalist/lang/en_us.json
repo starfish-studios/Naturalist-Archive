@@ -1,6 +1,5 @@
 {
   "itemGroup.naturalist.tab": "Naturalist",
-
   "entity.naturalist.butterfly": "Butterfly",
   "entity.naturalist.bluejay": "Bluejay",
   "entity.naturalist.canary": "Canary",
@@ -21,7 +20,6 @@
   "entity.naturalist.snake": "Snake",
   "entity.naturalist.zebra": "Zebra",
   "entity.naturalist.vulture": "Vulture",
-
   "item.naturalist.bluejay_spawn_egg": "Bluejay Spawn Egg",
   "item.naturalist.butterfly_spawn_egg": "Butterfly Spawn Egg",
   "item.naturalist.canary_spawn_egg": "Canary Spawn Egg",
@@ -42,7 +40,6 @@
   "item.naturalist.snake_spawn_egg": "Snake Spawn Egg",
   "item.naturalist.zebra_spawn_egg": "Zebra Spawn Egg",
   "item.naturalist.vulture_spawn_egg": "Vulture Spawn Egg",
-
   "item.naturalist.antler": "Antler",
   "item.naturalist.snail_bucket": "Bucket of Snail",
   "block.naturalist.chrysalis": "Chrysalis",
@@ -54,10 +51,10 @@
   "item.minecraft.potion.effect.forest_dasher": "Potion of the Forest Dasher",
   "item.minecraft.splash_potion.effect.forest_dasher": "Splash Potion of the Forest Dasher",
   "item.minecraft.lingering_potion.effect.forest_dasher": "Lingering Potion of the Forest Dasher",
+  "item.minecraft.tipped_arrow.effect.glowing": "Arrow of Glowing",
   "item.minecraft.potion.effect.glowing": "Potion of Glowing",
   "item.minecraft.splash_potion.effect.glowing": "Splash Potion of Glowing",
   "item.minecraft.lingering_potion.effect.glowing": "Lingering Potion of Glowing",
-
   "naturalist.subtitles.entity.bird.hurt": "Bird hurts",
   "naturalist.subtitles.entity.bird.death": "Bird dies",
   "naturalist.subtitles.entity.bird.eat": "Bird eats",
