@@ -469,11 +469,6 @@
 					}
 				}
 			}
-		},
-		"hippo.idle": {
-			"loop": true,
-			"animation_length": 0.5,
-			"bones": {}
 		}
 	},
 	"geckolib_format_version": 2
