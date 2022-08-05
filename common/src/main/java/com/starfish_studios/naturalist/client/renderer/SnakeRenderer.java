@@ -1,7 +1,8 @@
 package com.starfish_studios.naturalist.client.renderer;
 
+import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.client.model.SnakeModel;
-import com.starfish_studios.naturalist.client.renderer.layers.SnakeSleepLayer;
+import com.starfish_studios.naturalist.client.renderer.layers.SleepLayer;
 import com.starfish_studios.naturalist.entity.Snake;
 import com.starfish_studios.naturalist.platform.ClientPlatformHelper;
 import net.fabricmc.api.EnvType;
@@ -15,7 +16,7 @@ public class SnakeRenderer extends GeoEntityRenderer<Snake> {
     public SnakeRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new SnakeModel());
         this.shadowRadius = 0.4F;
-        this.addLayer(new SnakeSleepLayer(this));
+        this.addLayer(new SleepLayer<>(this, new ResourceLocation(Naturalist.MOD_ID, "geo/snake.geo.json"), new ResourceLocation(Naturalist.MOD_ID, "textures/entity/snake/snake_sleep.png")));
     }
 
     @Override
