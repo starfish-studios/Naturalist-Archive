@@ -352,7 +352,7 @@ public class Giraffe extends Animal implements IAnimatable {
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
-            if (this.isSprinting()) {
+            if (this.isSprinting() || !this.getPassengers().isEmpty()) {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("giraffe.run", true));
                 event.getController().setAnimationSpeed(2.0D);
             } else {
