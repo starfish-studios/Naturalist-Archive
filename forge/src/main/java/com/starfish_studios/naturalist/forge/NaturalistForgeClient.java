@@ -2,8 +2,8 @@ package com.starfish_studios.naturalist.forge;
 
 import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.NaturalistClient;
+import com.starfish_studios.naturalist.client.model.ZebraModel;
 import com.starfish_studios.naturalist.client.renderer.ZebraRenderer;
-import net.minecraft.client.model.ChestedHorseModel;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -18,6 +18,6 @@ public class NaturalistForgeClient {
 
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(ZebraRenderer.LAYER_LOCATION, ChestedHorseModel::createBodyLayer);
+        event.registerLayerDefinition(ZebraRenderer.LAYER_LOCATION, ZebraModel::createBodyLayer);
     }
 }
