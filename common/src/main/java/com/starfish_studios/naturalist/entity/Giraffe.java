@@ -14,7 +14,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
@@ -29,11 +28,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -61,7 +60,7 @@ public class Giraffe extends Animal implements IAnimatable {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new PanicGoal(this, 1.5));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0));
-        this.goalSelector.addGoal(3, new TemptGoal(this, 1.25, FOOD_ITEMS, false));
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.0, FOOD_ITEMS, false));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.0));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.7));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0f));
@@ -128,23 +127,49 @@ public class Giraffe extends Animal implements IAnimatable {
     public void aiStep() {
         super.aiStep();
         if (!this.level.isClientSide()) {
-            this.setTameTicks(Math.max(0, this.getTameTicks() - 1));
-            if (!this.isTame() && this.getControllingPassenger() != null) {
-                this.getControllingPassenger().stopRiding();
-                this.playSound(SoundEvents.LLAMA_ANGRY, this.getSoundVolume(), this.getVoicePitch());
+            if ( this.getControllingPassenger() != null) {
+                this.setTameTicks(Math.max(0, this.getTameTicks() - 1));
+                if (!this.isTame()) {
+                    this.getControllingPassenger().stopRiding();
+                    this.playSound(SoundEvents.LLAMA_ANGRY, this.getSoundVolume(), this.getVoicePitch());
+                }
             }
         }
     }
 
-    public InteractionResult fedFood(Player player, ItemStack stack) {
-        boolean shouldEat = this.handleEating(player, stack);
-        if (!player.getAbilities().instabuild) {
-            stack.shrink(1);
+    protected void doPlayerRide(Player player) {
+        if (!this.level.isClientSide) {
+            player.setYRot(this.getYRot());
+            player.setXRot(this.getXRot());
+            player.startRiding(this);
         }
-        if (this.level.isClientSide) {
-            return InteractionResult.CONSUME;
+    }
+
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (!this.isBaby() && this.isVehicle()) {
+            return super.mobInteract(player, hand);
         }
-        return shouldEat ? InteractionResult.SUCCESS : InteractionResult.PASS;
+        if (!stack.isEmpty()) {
+            if (this.isFood(stack)) {
+                if (this.handleEating(player, stack)) {
+                    if (!player.getAbilities().instabuild) {
+                        stack.shrink(1);
+                    }
+                } else {
+                    this.level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.LLAMA_ANGRY, this.getSoundSource(), 1.0f, 1.0f + (this.random.nextFloat() - this.random.nextFloat()) * 0.2f);
+                }
+            }
+            return InteractionResult.sidedSuccess(this.level.isClientSide);
+        }
+        if (this.isBaby()) {
+            return super.mobInteract(player, hand);
+        }
+        if (this.isTame()) {
+            this.doPlayerRide(player);
+        }
+        return InteractionResult.sidedSuccess(this.level.isClientSide);
     }
 
     protected boolean handleEating(Player player, ItemStack stack) {
@@ -162,7 +187,13 @@ public class Giraffe extends Animal implements IAnimatable {
             foodHealAmount = 2.0f;
             ageUpAmount = 20;
             if (!this.level.isClientSide()) {
-                this.setTameTicks(this.getTameTicks() + 600);
+                if (this.getTameTicks() > 0) {
+                    this.level.broadcastEntityEvent(this, (byte)6);
+                } else {
+                    shouldEat = true;
+                    this.setTameTicks(600);
+                    this.level.broadcastEntityEvent(this, (byte)7);
+                }
             }
         }
         if (this.getHealth() < this.getMaxHealth() && foodHealAmount > 0) {
@@ -177,46 +208,11 @@ public class Giraffe extends Animal implements IAnimatable {
             shouldEat = true;
         }
         if (shouldEat) {
-            if (!this.isSilent()) {
-                this.level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.LLAMA_EAT, this.getSoundSource(), 1.0f, 1.0f + (this.random.nextFloat() - this.random.nextFloat()) * 0.2f);
-            }
+            this.level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.HORSE_EAT, this.getSoundSource(), 1.0f, 1.0f + (this.random.nextFloat() - this.random.nextFloat()) * 0.2f);
+            this.swing(InteractionHand.MAIN_HAND);
             this.gameEvent(GameEvent.EAT);
         }
         return shouldEat;
-    }
-
-    protected void doPlayerRide(Player player) {
-        if (!this.level.isClientSide) {
-            player.setYRot(this.getYRot());
-            player.setXRot(this.getXRot());
-            player.startRiding(this);
-        }
-    }
-
-    @Override
-    public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
-        if (!this.isBaby()) {
-            if (this.isVehicle()) {
-                return super.mobInteract(player, hand);
-            }
-        }
-        if (!stack.isEmpty()) {
-            if (this.isFood(stack)) {
-                return this.fedFood(player, stack);
-            }
-            InteractionResult interactionResult = stack.interactLivingEntity(player, this, hand);
-            if (interactionResult.consumesAction()) {
-                return interactionResult;
-            }
-        }
-        if (this.isBaby()) {
-            return super.mobInteract(player, hand);
-        }
-        if (this.isTame()) {
-            this.doPlayerRide(player);
-        }
-        return InteractionResult.sidedSuccess(this.level.isClientSide);
     }
 
     @Override
@@ -374,10 +370,20 @@ public class Giraffe extends Animal implements IAnimatable {
         return PlayState.CONTINUE;
     }
 
+    private <E extends IAnimatable> PlayState eatPredicate(AnimationEvent<E> event) {
+        if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
+            event.getController().markNeedsReload();
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("giraffe.eat", false));
+            this.swinging = false;
+        }
+        return PlayState.CONTINUE;
+    }
+
     @Override
     public void registerControllers(AnimationData data) {
         data.setResetSpeedInTicks(10);
         data.addAnimationController(new AnimationController<>(this, "controller", 10, this::predicate));
+        data.addAnimationController(new AnimationController<>(this, "eatController", 0, this::eatPredicate));
     }
 
     @Override
