@@ -20,6 +20,7 @@
   "entity.naturalist.snake": "Snake",
   "entity.naturalist.zebra": "Zebra",
   "entity.naturalist.vulture": "Vulture",
+  "entity.naturalist.boar": "Boar",
   "item.naturalist.bluejay_spawn_egg": "Bluejay Spawn Egg",
   "item.naturalist.butterfly_spawn_egg": "Butterfly Spawn Egg",
   "item.naturalist.canary_spawn_egg": "Canary Spawn Egg",
@@ -40,6 +41,7 @@
   "item.naturalist.snake_spawn_egg": "Snake Spawn Egg",
   "item.naturalist.zebra_spawn_egg": "Zebra Spawn Egg",
   "item.naturalist.vulture_spawn_egg": "Vulture Spawn Egg",
+  "item.naturalist.boar_spawn_egg": "Boar Spawn Egg",
   "item.naturalist.antler": "Antler",
   "item.naturalist.snail_bucket": "Bucket of Snail",
   "block.naturalist.chrysalis": "Chrysalis",
@@ -122,5 +124,6 @@
   "text.autoconfig.naturalist.option.giraffeSpawnWeight": "Giraffe Spawn Weight",
   "text.autoconfig.naturalist.option.hippoSpawnWeight": "Hippo Spawn Weight",
   "text.autoconfig.naturalist.option.vultureSpawnWeight": "Vulture Spawn Weight",
+  "text.autoconfig.naturalist.option.boarSpawnWeight": "Boar Spawn Weight",
   "text.autoconfig.naturalist.option.removeSavannaFarmAnimals": "Remove Farm Animals in Savanna Biomes"
 }

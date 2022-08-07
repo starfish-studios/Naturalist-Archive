@@ -78,7 +78,6 @@
 		"boar.walk": {
 			"loop": true,
 			"animation_length": 1,
-			"override_previous_animation": true,
 			"bones": {
 				"trunk": {
 					"rotation": {

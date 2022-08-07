@@ -1,0 +1,11 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": "#naturalist:has_boar",
+  "spawners": {
+    "type": "naturalist:boar",
+    "weight": 15,
+    "minCount": 4,
+    "maxCount": 4
+  },
+  "category": "creature"
+}
