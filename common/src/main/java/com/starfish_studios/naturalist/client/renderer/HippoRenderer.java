@@ -51,7 +51,7 @@ public class HippoRenderer extends GeoEntityRenderer<Hippo> {
             stack.mulPose(Vector3f.XP.rotationDegrees(0));
             stack.mulPose(Vector3f.YP.rotationDegrees(0));
             stack.mulPose(Vector3f.ZP.rotationDegrees(0));
-            stack.translate(-0.4D, 0.82D, -1.8D);
+            stack.translate(-0.4D, 0.76D, -1.8D);
             stack.scale(0.675F,0.675F,0.675F);
             Minecraft.getInstance().getBlockRenderer().renderSingleBlock(blockItem.getBlock().defaultBlockState(), stack, this.rtb, packedLightIn, packedOverlayIn);
             stack.popPose();

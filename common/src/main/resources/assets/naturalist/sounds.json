@@ -317,5 +317,26 @@
       "naturalist:vulture_death"
     ],
     "subtitle": "naturalist.subtitles.entity.vulture.death"
+  },
+  "entity.giraffe.ambient": {
+    "sounds": [
+      "naturalist:giraffe_idle"
+    ],
+    "subtitle": "naturalist.subtitles.entity.giraffe.ambient"
+  },
+  "entity.hippo.ambient": {
+    "sounds": [
+      "naturalist:hippo_idle1",
+      "naturalist:hippo_idle2"
+    ],
+    "subtitle": "naturalist.subtitles.entity.hippo.ambient"
+  },
+  "entity.hippo.hurt": {
+    "sounds": [
+      "naturalist:hippo_hurt1",
+      "naturalist:hippo_hurt2",
+      "naturalist:hippo_hurt3"
+    ],
+    "subtitle": "naturalist.subtitles.entity.hippo.hurt"
   }
 }

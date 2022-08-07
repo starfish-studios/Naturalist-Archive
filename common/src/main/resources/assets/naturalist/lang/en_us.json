@@ -96,6 +96,9 @@
   "naturalist.subtitles.entity.vulture.ambient": "Vulture squawks",
   "naturalist.subtitles.entity.vulture.hurt": "Vulture hurts",
   "naturalist.subtitles.entity.vulture.death": "Vulture dies",
+  "naturalist.subtitles.entity.giraffe.ambient": "Giraffe breathes",
+  "naturalist.subtitles.entity.hippo.ambient": "Hippo growls",
+  "naturalist.subtitles.entity.hippo.hurt": "Hippo hurts",
 
   "text.autoconfig.naturalist.title": "Naturalist Config",
   "text.autoconfig.naturalist.option.bluejaySpawnWeight": "Bluejay Spawn Weight",
