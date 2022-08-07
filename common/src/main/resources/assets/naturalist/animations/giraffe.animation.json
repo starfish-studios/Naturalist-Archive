@@ -174,12 +174,15 @@
 			}
 		},
 		"giraffe.eat": {
-			"loop": true,
-			"animation_length": 1,
+			"animation_length": 0.5,
 			"bones": {
 				"snout": {
-					"rotation": ["Math.cos((query.anim_time - 1) * 1440) * 6", 0, 0],
-					"position": [0, "Math.cos((query.anim_time - 0.0) * 1440) * -0.1", 0]
+					"rotation": {
+						"vector": ["Math.cos((query.anim_time - 1) * 1440) * 6", 0, 0]
+					},
+					"position": {
+						"vector": [0, "Math.cos((query.anim_time - 0.0) * 1440) * -0.1", 0]
+					}
 				}
 			}
 		}
