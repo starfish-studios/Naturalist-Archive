@@ -101,7 +101,8 @@ public class Caterpillar extends ClimbingAnimal implements IAnimatable {
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
+        data.setResetSpeedInTicks(5);
+        data.addAnimationController(new AnimationController<>(this, "controller", 5, this::predicate));
     }
 
     @Override
