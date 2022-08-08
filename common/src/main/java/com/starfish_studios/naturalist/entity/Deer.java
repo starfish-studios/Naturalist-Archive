@@ -2,6 +2,7 @@ package com.starfish_studios.naturalist.entity;
 
 import com.starfish_studios.naturalist.entity.ai.goal.AlertOthersPanicGoal;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
+import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.AnimalMateGoal;
@@ -26,6 +27,7 @@ import net.minecraft.item.Items;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -77,6 +79,23 @@ public class Deer extends AnimalEntity implements IAnimatable {
         this.goalSelector.add(7, new WanderAroundFarGoal(this, 1.0D));
         this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 6.0F));
         this.goalSelector.add(9, new LookAroundGoal(this));
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSource) {
+        return this.isBaby() ? NaturalistSoundEvents.DEER_HURT_BABY.get() : NaturalistSoundEvents.DEER_HURT.get();
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return this.isBaby() ? NaturalistSoundEvents.DEER_AMBIENT_BABY.get() : NaturalistSoundEvents.DEER_AMBIENT.get();
+    }
+
+    @Override
+    public float getSoundPitch() {
+        return this.isBaby() ? super.getSoundPitch() * 0.65F : super.getSoundPitch();
     }
 
     @Override
@@ -162,20 +181,19 @@ public class Deer extends AnimalEntity implements IAnimatable {
         if (this.isEating()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("deer.eat", true));
             event.getController().setAnimationSpeed(1.0D);
-            return PlayState.CONTINUE;
-        } else if (event.isMoving()) {
+        } else if (this.getVelocity().horizontalLengthSquared() > 1.0E-6) {
             if (this.isSprinting()) {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("deer.run", true));
                 event.getController().setAnimationSpeed(2.0D);
             } else {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("deer.walk", true));
-                event.getController().setAnimationSpeed(1.0D);
+                event.getController().setAnimationSpeed(1.25D);
             }
-            return PlayState.CONTINUE;
+        } else {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("deer.idle", true));
+            event.getController().setAnimationSpeed(1.0D);
         }
-        event.getController().setAnimationSpeed(1.0D);
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
+        return PlayState.CONTINUE;
     }
 
     @Override

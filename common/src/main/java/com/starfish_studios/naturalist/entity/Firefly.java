@@ -5,11 +5,7 @@ import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityPose;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.Flutterer;
-import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.control.FlightMoveControl;
 import net.minecraft.entity.ai.goal.MoveToTargetPosGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
@@ -198,6 +194,11 @@ public class Firefly extends AnimalEntity implements Flutterer, IAnimatable {
     @Override
     public boolean isInAir() {
         return true;
+    }
+
+    @Override
+    public boolean canImmediatelyDespawn(double distanceToClosestPlayer) {
+        return !this.hasCustomName();
     }
 
     @Nullable

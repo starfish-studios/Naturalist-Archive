@@ -8,6 +8,7 @@ import com.starfish_studios.naturalist.registry.NaturalistMobCategories;
 import com.starfish_studios.naturalist.registry.forge.NaturalistConfigForge;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.passive.HorseBaseEntity;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.SpawnSettings;
 import net.minecraftforge.common.MinecraftForge;
@@ -68,6 +69,14 @@ public class NaturalistForge {
         event.put(NaturalistEntityTypes.CARDINAL.get(), Bird.createAttributes().build());
         event.put(NaturalistEntityTypes.ROBIN.get(), Bird.createAttributes().build());
         event.put(NaturalistEntityTypes.CATERPILLAR.get(), Caterpillar.createAttributes().build());
+        event.put(NaturalistEntityTypes.RHINO.get(), Rhino.createAttributes().build());
+        event.put(NaturalistEntityTypes.LION.get(), Lion.createAttributes().build());
+        event.put(NaturalistEntityTypes.ELEPHANT.get(), Elephant.createAttributes().build());
+        event.put(NaturalistEntityTypes.ZEBRA.get(), HorseBaseEntity.createBaseHorseAttributes().build());
+        event.put(NaturalistEntityTypes.GIRAFFE.get(), Giraffe.createAttributes().build());
+        event.put(NaturalistEntityTypes.HIPPO.get(), Hippo.createAttributes().build());
+        event.put(NaturalistEntityTypes.VULTURE.get(), Vulture.createAttributes().build());
+        event.put(NaturalistEntityTypes.BOAR.get(), Boar.createAttributes().build());
     }
 
     @SubscribeEvent
@@ -86,11 +95,28 @@ public class NaturalistForge {
         addMobSpawn(event, List.of(Biome.Category.FOREST, Biome.Category.PLAINS, Biome.Category.MOUNTAIN), SpawnGroup.CREATURE, NaturalistEntityTypes.ROBIN.get(), NaturalistConfigForge.ROBIN_SPAWN_WEIGHT.get(), 1, 4);
         addMobSpawn(event, List.of(Biome.Category.FOREST), SpawnGroup.CREATURE, EntityType.RABBIT, NaturalistConfigForge.FOREST_RABBIT_SPAWN_WEIGHT.get(), 2, 3);
         addMobSpawn(event, List.of(Biome.Category.FOREST), SpawnGroup.CREATURE, EntityType.FOX, NaturalistConfigForge.FOREST_FOX_SPAWN_WEIGHT.get(), 2, 4);
+        addMobSpawn(event, List.of(Biome.Category.SAVANNA), SpawnGroup.CREATURE, NaturalistEntityTypes.RHINO.get(), NaturalistConfigForge.RHINO_SPAWN_WEIGHT.get(), 1, 3);
+        addMobSpawn(event, List.of(Biome.Category.SAVANNA), SpawnGroup.CREATURE, NaturalistEntityTypes.LION.get(), NaturalistConfigForge.LION_SPAWN_WEIGHT.get(), 3, 5);
+        addMobSpawn(event, List.of(Biome.Category.SAVANNA), SpawnGroup.CREATURE, NaturalistEntityTypes.ELEPHANT.get(), NaturalistConfigForge.ELEPHANT_SPAWN_WEIGHT.get(), 2, 3);
+        addMobSpawn(event, List.of(Biome.Category.SAVANNA), SpawnGroup.CREATURE, NaturalistEntityTypes.ZEBRA.get(), NaturalistConfigForge.ZEBRA_SPAWN_WEIGHT.get(), 2, 3);
+        addMobSpawn(event, List.of(Biome.Category.SAVANNA), SpawnGroup.CREATURE, NaturalistEntityTypes.GIRAFFE.get(), NaturalistConfigForge.GIRAFFE_SPAWN_WEIGHT.get(), 2, 4);
+        addMobSpawn(event, List.of(Biome.Category.SAVANNA, Biome.Category.JUNGLE), SpawnGroup.CREATURE, NaturalistEntityTypes.HIPPO.get(), NaturalistConfigForge.HIPPO_SPAWN_WEIGHT.get(), 3, 4);
+        addMobSpawn(event, List.of(Biome.Category.SAVANNA, Biome.Category.DESERT), SpawnGroup.CREATURE, NaturalistEntityTypes.VULTURE.get(), NaturalistConfigForge.VULTURE_SPAWN_WEIGHT.get(), 2, 4);
+        addMobSpawn(event, List.of(Biome.Category.SAVANNA), SpawnGroup.CREATURE, NaturalistEntityTypes.BOAR.get(), NaturalistConfigForge.BOAR_SPAWN_WEIGHT.get(), 4, 4);
+        if (NaturalistConfigForge.REMOVE_SAVANNA_FARM_ANIMALS.get()) {
+            removeMobSpawn(event, List.of(Biome.Category.SAVANNA), List.of(EntityType.SHEEP, EntityType.PIG, EntityType.CHICKEN, EntityType.COW));
+        }
     }
 
     private static void addMobSpawn(BiomeLoadingEvent event, List<Biome.Category> categories, SpawnGroup spawnGroup, EntityType<?> entityType, int weight, int minGroupSize, int maxGroupSize) {
         if (categories.contains(event.getCategory())) {
             event.getSpawns().spawn(spawnGroup, new SpawnSettings.SpawnEntry(entityType, weight, minGroupSize, maxGroupSize));
+        }
+    }
+
+    private static void removeMobSpawn(BiomeLoadingEvent event, List<Biome.Category> categories, List<EntityType<?>> entityTypes) {
+        if (categories.contains(event.getCategory())) {
+            event.getSpawns().getSpawner(SpawnGroup.CREATURE).removeIf(entry -> entityTypes.contains(entry.type));
         }
     }
 }

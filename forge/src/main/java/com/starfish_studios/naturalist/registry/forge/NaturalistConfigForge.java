@@ -21,6 +21,15 @@ public class NaturalistConfigForge {
     public static final ForgeConfigSpec.IntValue BUTTERFLY_SPAWN_WEIGHT;
     public static final ForgeConfigSpec.IntValue FOREST_RABBIT_SPAWN_WEIGHT;
     public static final ForgeConfigSpec.IntValue FOREST_FOX_SPAWN_WEIGHT;
+    public static final ForgeConfigSpec.IntValue RHINO_SPAWN_WEIGHT;
+    public static final ForgeConfigSpec.IntValue LION_SPAWN_WEIGHT;
+    public static final ForgeConfigSpec.IntValue ELEPHANT_SPAWN_WEIGHT;
+    public static final ForgeConfigSpec.IntValue ZEBRA_SPAWN_WEIGHT;
+    public static final ForgeConfigSpec.IntValue GIRAFFE_SPAWN_WEIGHT;
+    public static final ForgeConfigSpec.IntValue HIPPO_SPAWN_WEIGHT;
+    public static final ForgeConfigSpec.IntValue VULTURE_SPAWN_WEIGHT;
+    public static final ForgeConfigSpec.IntValue BOAR_SPAWN_WEIGHT;
+    public static final ForgeConfigSpec.BooleanValue REMOVE_SAVANNA_FARM_ANIMALS;
 
     static {
         ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
@@ -41,7 +50,15 @@ public class NaturalistConfigForge {
         BUTTERFLY_SPAWN_WEIGHT = COMMON_BUILDER.comment("Butterfly spawn weight").defineInRange("butterflySpawnWeight", 6, 0, 1000);
         FOREST_RABBIT_SPAWN_WEIGHT = COMMON_BUILDER.comment("Rabbit spawn weight in forest biomes").defineInRange("forestRabbitSpawnWeight", 6, 0, 1000);
         FOREST_FOX_SPAWN_WEIGHT = COMMON_BUILDER.comment("Fox spawn weight in forest biomes").defineInRange("forestFoxSpawnWeight", 6, 0, 1000);
-
+        RHINO_SPAWN_WEIGHT = COMMON_BUILDER.comment("Rhino spawn weight").defineInRange("rhinoSpawnWeight", 15, 0, 1000);
+        LION_SPAWN_WEIGHT = COMMON_BUILDER.comment("Lion spawn weight").defineInRange("lionSpawnWeight", 15, 0, 1000);
+        ELEPHANT_SPAWN_WEIGHT = COMMON_BUILDER.comment("Elephant spawn weight").defineInRange("elephantSpawnWeight", 10, 0, 1000);
+        ZEBRA_SPAWN_WEIGHT = COMMON_BUILDER.comment("Zebra spawn weight").defineInRange("zebraSpawnWeight", 10, 0, 1000);
+        GIRAFFE_SPAWN_WEIGHT = COMMON_BUILDER.comment("Giraffe spawn weight").defineInRange("giraffeSpawnWeight", 10, 0, 1000);
+        HIPPO_SPAWN_WEIGHT = COMMON_BUILDER.comment("Hippo spawn weight").defineInRange("hippoSpawnWeight", 15, 0, 1000);
+        VULTURE_SPAWN_WEIGHT = COMMON_BUILDER.comment("Vulture spawn weight").defineInRange("vultureSpawnWeight", 15, 0, 1000);
+        BOAR_SPAWN_WEIGHT = COMMON_BUILDER.comment("Boar spawn weight").defineInRange("boarSpawnWeight", 15, 0, 1000);
+        REMOVE_SAVANNA_FARM_ANIMALS = COMMON_BUILDER.comment("Remove farm animals from savanna biomes (sheep, pig, chicken, cow)").define("removeSavannaFarmAnimals", true);
         COMMON_BUILDER.pop();
 
         COMMON_CONFIG = COMMON_BUILDER.build();

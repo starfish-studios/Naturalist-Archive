@@ -20,6 +20,14 @@ public class NaturalistEntityTypes {
     public static final Supplier<EntityType<Bird>> CARDINAL = CommonPlatformHelper.registerEntityType("cardinal", Bird::new, SpawnGroup.CREATURE, 0.5F, 0.6F, 8);
     public static final Supplier<EntityType<Bird>> ROBIN = CommonPlatformHelper.registerEntityType("robin", Bird::new, SpawnGroup.CREATURE, 0.5F, 0.6F, 8);
     public static final Supplier<EntityType<Caterpillar>> CATERPILLAR = CommonPlatformHelper.registerEntityType("caterpillar", Caterpillar::new, SpawnGroup.CREATURE, 0.4F, 0.4F, 10);
+    public static final Supplier<EntityType<Rhino>> RHINO = CommonPlatformHelper.registerEntityType("rhino", Rhino::new, SpawnGroup.CREATURE, 1.95F, 2.2F, 10);
+    public static final Supplier<EntityType<Lion>> LION = CommonPlatformHelper.registerEntityType("lion", Lion::new, SpawnGroup.CREATURE, 1.5F, 1.8F, 10);
+    public static final Supplier<EntityType<Elephant>> ELEPHANT = CommonPlatformHelper.registerEntityType("elephant", Elephant::new, SpawnGroup.CREATURE, 2.5F, 3.5F, 10);
+    public static final Supplier<EntityType<Zebra>> ZEBRA = CommonPlatformHelper.registerEntityType("zebra", Zebra::new, SpawnGroup.CREATURE, 1.3964844f, 1.6f, 10);
+    public static final Supplier<EntityType<Giraffe>> GIRAFFE = CommonPlatformHelper.registerEntityType("giraffe", Giraffe::new, SpawnGroup.CREATURE, 1.9f, 5.4f, 10);
+    public static final Supplier<EntityType<Hippo>> HIPPO = CommonPlatformHelper.registerEntityType("hippo", Hippo::new, SpawnGroup.CREATURE, 1.8F, 1.8F, 10);
+    public static final Supplier<EntityType<Vulture>> VULTURE = CommonPlatformHelper.registerEntityType("vulture", Vulture::new, SpawnGroup.CREATURE, 0.9f, 0.5f, 10);
+    public static final Supplier<EntityType<Boar>> BOAR = CommonPlatformHelper.registerEntityType("boar", Boar::new, SpawnGroup.CREATURE, 0.9f, 0.9f, 10);
 
     public static void init() {}
 }

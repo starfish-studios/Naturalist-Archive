@@ -1,27 +1,15 @@
 package com.starfish_studios.naturalist.entity;
 
+import com.starfish_studios.naturalist.entity.ai.goal.FollowAdultGoal;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.LeavesBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityPose;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.Flutterer;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.FuzzyTargeting;
 import net.minecraft.entity.ai.control.FlightMoveControl;
-import net.minecraft.entity.ai.goal.FleeEntityGoal;
-import net.minecraft.entity.ai.goal.FlyGoal;
-import net.minecraft.entity.ai.goal.FollowMobGoal;
-import net.minecraft.entity.ai.goal.FollowOwnerGoal;
-import net.minecraft.entity.ai.goal.LookAtEntityGoal;
-import net.minecraft.entity.ai.goal.SitGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.ai.goal.TemptGoal;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.ai.pathing.BirdNavigation;
 import net.minecraft.entity.ai.pathing.EntityNavigation;
 import net.minecraft.entity.ai.pathing.PathNodeType;
@@ -47,7 +35,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
-import net.minecraft.world.entity.*;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -85,7 +72,7 @@ public class Bird extends TameableShoulderEntity implements Flutterer, IAnimatab
         this.goalSelector.add(3, new SitGoal(this));
         this.goalSelector.add(3, new FollowOwnerGoal(this, 1.5D, 5.0F, 1.0F, true));
         this.goalSelector.add(4, new BirdWanderGoal(this, 1.0D));
-        this.goalSelector.add(5, new BirdFlockGoal(this, 1.0D, 3.0F, 7.0F));
+        this.goalSelector.add(5, new BirdFlockGoal(this, 1.0D, 6.0F, 12.0F));
         this.goalSelector.add(6, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
     }
 
@@ -363,7 +350,7 @@ public class Bird extends TameableShoulderEntity implements Flutterer, IAnimatab
         }
     }
 
-    static class BirdFlockGoal extends FollowMobGoal {
+    static class BirdFlockGoal extends FollowAdultGoal {
         private final Bird bird;
 
         public BirdFlockGoal(Bird pMob, double pSpeedModifier, float pStopDistance, float pAreaSize) {

@@ -1,38 +1,13 @@
 package com.starfish_studios.naturalist.entity;
 
-import com.starfish_studios.naturalist.entity.ai.goal.SleepGoal;
-import com.starfish_studios.naturalist.entity.ai.goal.DistancedFollowParentGoal;
-import com.starfish_studios.naturalist.entity.ai.goal.SearchForItemsGoal;
+import com.starfish_studios.naturalist.entity.ai.goal.*;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
-import net.minecraft.block.BeehiveBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SweetBerryBushBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.CampfireBlockEntity;
-import net.minecraft.entity.EntityData;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityPose;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.goal.ActiveTargetGoal;
-import net.minecraft.entity.ai.goal.AnimalMateGoal;
-import net.minecraft.entity.ai.goal.EscapeDangerGoal;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.LookAroundGoal;
-import net.minecraft.entity.ai.goal.LookAtEntityGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.ai.goal.MoveToTargetPosGoal;
-import net.minecraft.entity.ai.goal.RevengeGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.ai.goal.TemptGoal;
-import net.minecraft.entity.ai.goal.UniversalAngerGoal;
-import net.minecraft.entity.ai.goal.WanderAroundGoal;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -62,11 +37,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.LocalDifficulty;
-import net.minecraft.world.ServerWorldAccess;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldView;
+import net.minecraft.world.*;
 import net.minecraft.world.event.GameEvent;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -135,7 +106,7 @@ public class Bear extends AnimalEntity implements Angerable, IAnimatable, Sleepi
         this.goalSelector.add(1, new AnimalMateGoal(this, 1.0D));
         this.goalSelector.add(2, new BearMeleeAttackGoal(this, 1.25D, true));
         this.goalSelector.add(3, new BearTemptGoal(this, 1.0D, FOOD_ITEMS, false));
-        this.goalSelector.add(3, new BearPanicGoal(this, 2.0D));
+        this.goalSelector.add(3, new BabyPanicGoal(this, 2.0D));
         this.goalSelector.add(4, new BearSleepGoal(this));
         this.goalSelector.add(5, new DistancedFollowParentGoal(this, 1.25D, 48.0D, 8.0D, 12.0D));
         this.goalSelector.add(5, new SearchForItemsGoal(this, 1.2F, FOOD_ITEMS, 8, 2));
@@ -144,7 +115,7 @@ public class Bear extends AnimalEntity implements Angerable, IAnimatable, Sleepi
         this.goalSelector.add(8, new WanderAroundGoal(this, 1.0D));
         this.goalSelector.add(9, new LookAtEntityGoal(this, PlayerEntity.class, 6.0F));
         this.goalSelector.add(10, new LookAroundGoal(this));
-        this.targetSelector.add(1, new BearHurtByTargetGoal(this));
+        this.targetSelector.add(1, new BabyHurtByTargetGoal(this));
         this.targetSelector.add(2, new BearAttackPlayerNearBabiesGoal(this, PlayerEntity.class, 20, false, true, null));
         this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, 10, true, false, this::shouldAngerAt));
         this.targetSelector.add(4, new ActiveTargetGoal<>(this, PathAwareEntity.class, 10, true, false, (entity) -> entity.getType().isIn(NaturalistTags.EntityTypes.BEAR_HOSTILES) && !this.isSleeping() && !this.isBaby()));
@@ -391,7 +362,7 @@ public class Bear extends AnimalEntity implements Angerable, IAnimatable, Sleepi
     @Nullable
     @Override
     protected SoundEvent getHurtSound(DamageSource pDamageSource) {
-        return NaturalistSoundEvents.BEAR_HURT.get();
+        return this.isBaby() ? NaturalistSoundEvents.BEAR_HURT_BABY.get() : NaturalistSoundEvents.BEAR_HURT.get();
     }
 
     @Nullable
@@ -408,7 +379,7 @@ public class Bear extends AnimalEntity implements Angerable, IAnimatable, Sleepi
 
     @Override
     public float getSoundPitch() {
-        return this.isSleeping() ? super.getSoundPitch() * 0.25F : super.getSoundPitch();
+        return this.isSleeping() ? super.getSoundPitch() * 0.3F : this.isBaby() ? super.getSoundPitch() * 0.4F : super.getSoundPitch();
     }
 
     @Override
@@ -478,42 +449,6 @@ public class Bear extends AnimalEntity implements Angerable, IAnimatable, Sleepi
     }
 
     // GOALS
-
-    static class BearPanicGoal extends EscapeDangerGoal {
-        public BearPanicGoal(PathAwareEntity pMob, double pSpeedModifier) {
-            super(pMob, pSpeedModifier);
-        }
-
-        @Override
-        protected boolean isInDanger() {
-            return mob.getAttacker() != null && mob.isBaby() || mob.isOnFire();
-        }
-    }
-
-    static class BearHurtByTargetGoal extends RevengeGoal {
-        private final Bear bear;
-
-        public BearHurtByTargetGoal(Bear pMob, Class<?>... pToIgnoreDamage) {
-            super(pMob, pToIgnoreDamage);
-            this.bear = pMob;
-        }
-
-        @Override
-        public void start() {
-            super.start();
-            if (bear.isBaby()) {
-                this.callSameTypeForRevenge();
-                this.stop();
-            }
-        }
-
-        @Override
-        protected void setMobEntityTarget(MobEntity pMob, LivingEntity pTarget) {
-            if (pMob instanceof Bear && !pMob.isBaby()) {
-                super.setMobEntityTarget(pMob, pTarget);
-            }
-        }
-    }
 
     static class BearAttackPlayerNearBabiesGoal extends ActiveTargetGoal<PlayerEntity> {
         private final Bear bear;

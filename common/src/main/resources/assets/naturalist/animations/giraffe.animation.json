@@ -1,0 +1,191 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"giraffe.idle": {
+			"loop": true,
+			"animation_length": 2,
+			"bones": {
+				"body": {
+					"position": [0, "Math.sin((query.anim_time - 0.0) * 180) * 0.4", 0],
+					"scale": {
+						"0.0": [1.01, 1.01, 1.01],
+						"0.1667": [1.01, 1.01, 1.01],
+						"0.3333": [1.01, 1.01, 1.01],
+						"0.5": [1.01, 1.01, 1.01],
+						"0.6667": [1.01, 1.01, 1.01],
+						"0.8333": [1.01, 1.01, 1.01],
+						"1.0": [1.01, 1.01, 1.01],
+						"1.1667": [1.01, 1.01, 1.01],
+						"1.3333": [1.01, 1.01, 1.01],
+						"1.5": [1.01, 1.01, 1.01],
+						"1.6667": [1.01, 1.01, 1.01],
+						"1.8333": [1.01, 1.01, 1.01],
+						"2.0": [1.01, 1.01, 1.01]
+					}
+				},
+				"head": {
+					"position": [0, "-0.4 + Math.cos((query.anim_time - 0.0) * 180) * -0.4", 0.1]
+				},
+				"tail": {
+					"rotation": {
+						"0.0": [-17.43, 0, 0],
+						"0.1667": [-17.98, 0, 0],
+						"0.3333": [-17.74, 0, 0],
+						"0.5": [-16.76, 0, 0],
+						"0.6667": [-15.31, 0, 0],
+						"0.8333": [-13.78, 0, 0],
+						"1.0": [-12.57, 0, 0],
+						"1.1667": [-12.02, 0, 0],
+						"1.3333": [-12.26, 0, 0],
+						"1.5": [-13.24, 0, 0],
+						"1.6667": [-14.69, 0, 0],
+						"1.8333": [-16.22, 0, 0],
+						"2.0": [-17.43, 0, 0]
+					}
+				},
+				"root": {
+					"position": [0, 0, 0]
+				}
+			}
+		},
+		"giraffe.walk": {
+			"loop": true,
+			"animation_length": 1,
+			"bones": {
+				"tail2": {
+					"rotation": ["45 + Math.cos((query.anim_time - 0.2) * 360) * -4", 0, 0]
+				},
+				"mane": {
+					"rotation": [0, 0, "Math.cos((query.anim_time - 0.2) * 360) * 0.5"],
+					"position": [0, "Math.sin((query.anim_time - 0.6) * 360) * 0.5", 0]
+				},
+				"body": {
+					"rotation": ["Math.cos((query.anim_time - 0.0) * 360) * 1", 0, "Math.sin((query.anim_time - 0.0) * 360) * 1"],
+					"position": [0, "Math.sin((query.anim_time - 0.0) * 360) * 0.5", 0]
+				},
+				"head": {
+					"rotation": ["-5 + Math.cos((query.anim_time - 0.2) * 360) * 1", 0, 0],
+					"position": [0, "Math.sin((query.anim_time - 0.3) * 360) * 0.3", 0]
+				},
+				"tail": {
+					"rotation": ["-10 + Math.cos((query.anim_time - 0.0) * 360) * -4", 0, "Math.cos((query.anim_time - 0.3) * 360) * -8"]
+				},
+				"left_arm": {
+					"rotation": ["Math.sin((query.anim_time - 0.0) * 360) * 10", 0, 0],
+					"position": {
+						"0.25": [0, 0, 0],
+						"0.5": [0, 3, 0],
+						"0.75": [0, 0, 0]
+					}
+				},
+				"right_arm": {
+					"rotation": ["Math.sin((query.anim_time - 0.0) * 360) * -20", 0, 0],
+					"position": {
+						"0.0": [0, 3, 0],
+						"0.25": [0, 0, 0],
+						"0.75": [0, 0, 0],
+						"1.0": [0, 3, 0]
+					}
+				},
+				"left_leg": {
+					"rotation": ["Math.cos((query.anim_time - 0.0) * 360) * 20", 0, 0],
+					"position": {
+						"0.0": [0, 0, 0],
+						"0.25": [0, 3, 0],
+						"0.5": [0, 0, 0]
+					}
+				},
+				"right_leg": {
+					"rotation": ["Math.cos((query.anim_time - 0.0) * 360) * -20", 0, 0],
+					"position": {
+						"0.5": [0, 0, 0],
+						"0.75": [0, 3, 0],
+						"1.0": [0, 0, 0]
+					}
+				},
+				"root": {
+					"position": [0, 0, 0]
+				}
+			}
+		},
+		"giraffe.run": {
+			"loop": true,
+			"animation_length": 1,
+			"bones": {
+				"tail2": {
+					"rotation": ["Math.sin((query.anim_time - 0.1) * 360) * 16", 0, 0]
+				},
+				"body": {
+					"rotation": ["Math.cos((query.anim_time - 0.0) * 360) * 8", 0, "Math.sin((query.anim_time - 0.0) * 360) * 1"],
+					"position": [0, 0, 0],
+					"scale": 1.01
+				},
+				"head": {
+					"rotation": ["-10 + Math.cos((query.anim_time - 0.2) * 360) * -8", 0, "Math.cos((query.anim_time - 0.3) * 360) * -4"],
+					"position": [0, 0, 0]
+				},
+				"tail": {
+					"rotation": ["15 + Math.cos((query.anim_time - 0.2) * 360) * 16", 0, "Math.cos((query.anim_time - 0.3) * 360) * -16"]
+				},
+				"front_legs": {
+					"position": ["easeInOutSine", "easeInOutSine", "easeInOutSine"]
+				},
+				"left_arm": {
+					"rotation": ["Math.cos((query.anim_time - 0.0) * 360) * 32", 0, 0],
+					"position": {
+						"0.0": [0, 2, 0],
+						"0.25": [0, 0, 0],
+						"0.75": [0, 0, 0],
+						"1.0": [0, 2, 0]
+					}
+				},
+				"right_arm": {
+					"rotation": ["Math.sin((query.anim_time - 0.0) * 360) * 32", 0, 0],
+					"position": {
+						"0.0": [0, "-2+Math.cos((query.anim_time - 0.0) * 360) * 2", 0],
+						"0.25": [0, 0, 0],
+						"0.5": [0, 2, 0],
+						"1.0": [0, 0, 0]
+					}
+				},
+				"back_legs": {
+					"position": [0, "Math.cos((query.anim_time - 0.0) * 360) * 0.8", 0]
+				},
+				"left_leg": {
+					"rotation": ["Math.cos((query.anim_time - 0.3) * 360) * -20", 0, "Math.cos((query.anim_time - 0.3) * 360) * 2"],
+					"position": {
+						"0.0": [0, 0, 0],
+						"0.25": [0, 1, 0],
+						"0.5": [0, 0, 0]
+					}
+				},
+				"right_leg": {
+					"rotation": ["Math.cos((query.anim_time - 0.1) * 360) * -20", 0, "Math.cos((query.anim_time - 0.3) * 360) * -2"],
+					"position": {
+						"0.25": [0, 0, 0],
+						"0.5": [0, 0, 0],
+						"0.75": [0, 0, 0],
+						"1.0": [0, 0, 0]
+					}
+				},
+				"root": {
+					"position": [0, 0, 0]
+				}
+			}
+		},
+		"giraffe.eat": {
+			"animation_length": 0.5,
+			"bones": {
+				"snout": {
+					"rotation": {
+						"vector": ["Math.cos((query.anim_time - 1) * 1440) * 6", 0, 0]
+					},
+					"position": {
+						"vector": [0, "Math.cos((query.anim_time - 0.0) * 1440) * -0.1", 0]
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

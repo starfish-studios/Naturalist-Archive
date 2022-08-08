@@ -17,6 +17,7 @@ public class NaturalistSoundEvents {
     public static final Supplier<SoundEvent> BEAR_DEATH = CommonPlatformHelper.registerSoundEvent("bear_death", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.bear.death")));
     public static final Supplier<SoundEvent> BEAR_AMBIENT = CommonPlatformHelper.registerSoundEvent("bear_ambient", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.bear.ambient")));
     public static final Supplier<SoundEvent> BEAR_AMBIENT_BABY = CommonPlatformHelper.registerSoundEvent("bear_ambient_baby", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.bear.ambient_baby")));
+    public static final Supplier<SoundEvent> BEAR_HURT_BABY = CommonPlatformHelper.registerSoundEvent("bear_hurt_baby", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.bear.hurt_baby")));
     public static final Supplier<SoundEvent> BEAR_SLEEP = CommonPlatformHelper.registerSoundEvent("bear_sleep", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.bear.sleep")));
     public static final Supplier<SoundEvent> BEAR_SNIFF = CommonPlatformHelper.registerSoundEvent("bear_sniff", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.bear.sniff")));
     public static final Supplier<SoundEvent> BEAR_SPIT = CommonPlatformHelper.registerSoundEvent("bear_spit", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.bear.spit")));
@@ -32,6 +33,26 @@ public class NaturalistSoundEvents {
     public static final Supplier<SoundEvent> FIREFLY_HURT = CommonPlatformHelper.registerSoundEvent("firefly_hurt", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.firefly.hurt")));
     public static final Supplier<SoundEvent> FIREFLY_DEATH = CommonPlatformHelper.registerSoundEvent("firefly_death", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.firefly.death")));
     public static final Supplier<SoundEvent> FIREFLY_HIDE = CommonPlatformHelper.registerSoundEvent("firefly_hide", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.firefly.hide")));
-    
+    public static final Supplier<SoundEvent> RHINO_SCRAPE = CommonPlatformHelper.registerSoundEvent("rhino_scrape", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.rhino.scrape")));
+    public static final Supplier<SoundEvent> RHINO_AMBIENT = CommonPlatformHelper.registerSoundEvent("rhino_ambient", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.rhino.ambient")));
+    public static final Supplier<SoundEvent> RHINO_AMBIENT_BABY = CommonPlatformHelper.registerSoundEvent("rhino_ambient_baby", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.rhino.ambient_baby")));
+    public static final Supplier<SoundEvent> LION_HURT = CommonPlatformHelper.registerSoundEvent("lion_hurt", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.lion.hurt")));
+    public static final Supplier<SoundEvent> LION_AMBIENT = CommonPlatformHelper.registerSoundEvent("lion_ambient", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.lion.ambient")));
+    public static final Supplier<SoundEvent> LION_ROAR = CommonPlatformHelper.registerSoundEvent("lion_roar", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.lion.roar")));
+    public static final Supplier<SoundEvent> ELEPHANT_HURT = CommonPlatformHelper.registerSoundEvent("elephant_hurt", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.elephant.hurt")));
+    public static final Supplier<SoundEvent> ELEPHANT_AMBIENT = CommonPlatformHelper.registerSoundEvent("elephant_ambient", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.elephant.ambient")));
+    public static final Supplier<SoundEvent> DEER_AMBIENT = CommonPlatformHelper.registerSoundEvent("deer_ambient", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.deer.ambient")));
+    public static final Supplier<SoundEvent> DEER_HURT = CommonPlatformHelper.registerSoundEvent("deer_hurt", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.deer.hurt")));
+    public static final Supplier<SoundEvent> DEER_AMBIENT_BABY = CommonPlatformHelper.registerSoundEvent("deer_ambient_baby", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.deer.ambient_baby")));
+    public static final Supplier<SoundEvent> DEER_HURT_BABY = CommonPlatformHelper.registerSoundEvent("deer_hurt_baby", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.deer.hurt_baby")));
+    public static final Supplier<SoundEvent> ZEBRA_AMBIENT = CommonPlatformHelper.registerSoundEvent("zebra_ambient", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.zebra.ambient")));
+    public static final Supplier<SoundEvent> ZEBRA_HURT = CommonPlatformHelper.registerSoundEvent("zebra_hurt", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.zebra.hurt")));
+    public static final Supplier<SoundEvent> VULTURE_AMBIENT = CommonPlatformHelper.registerSoundEvent("vulture_ambient", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.vulture.ambient")));
+    public static final Supplier<SoundEvent> VULTURE_HURT = CommonPlatformHelper.registerSoundEvent("vulture_hurt", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.vulture.hurt")));
+    public static final Supplier<SoundEvent> VULTURE_DEATH = CommonPlatformHelper.registerSoundEvent("vulture_death", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.vulture.death")));
+    public static final Supplier<SoundEvent> GIRAFFE_AMBIENT = CommonPlatformHelper.registerSoundEvent("giraffe_ambient", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.giraffe.ambient")));
+    public static final Supplier<SoundEvent> HIPPO_AMBIENT = CommonPlatformHelper.registerSoundEvent("hippo_ambient", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.hippo.ambient")));
+    public static final Supplier<SoundEvent> HIPPO_HURT = CommonPlatformHelper.registerSoundEvent("hippo_hurt", () -> new SoundEvent(new Identifier(Naturalist.MOD_ID, "entity.hippo.hurt")));
+
     public static void init() {}
 }
