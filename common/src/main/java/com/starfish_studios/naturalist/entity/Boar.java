@@ -50,7 +50,7 @@ public class Boar extends Animal implements NeutralMob, IAnimatable {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 14.0).add(Attributes.MOVEMENT_SPEED, 0.25).add(Attributes.ATTACK_DAMAGE, 1.0D);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 14.0).add(Attributes.MOVEMENT_SPEED, 0.2).add(Attributes.ATTACK_DAMAGE, 1.0D);
     }
 
     @Nullable
@@ -64,7 +64,7 @@ public class Boar extends Animal implements NeutralMob, IAnimatable {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new BreedGoal(this, 1.0));
         this.goalSelector.addGoal(2, new TemptGoal(this, 1.2, FOOD_ITEMS, false));
-        this.goalSelector.addGoal(3, new BoarAvoidPlayerGoal(this, Player.class, 16.0f, 1.7D, 1.7D, entity -> !entity.isHolding(FOOD_ITEMS)));
+        this.goalSelector.addGoal(3, new BoarAvoidPlayerGoal(this, Player.class, 16.0f, 1.5D, 1.5D, entity -> !entity.isHolding(FOOD_ITEMS)));
         this.goalSelector.addGoal(4, new BoarMeleeAttackGoal(this, 1.2, false));
         this.goalSelector.addGoal(5, new BabyPanicGoal(this, 1.4));
         this.goalSelector.addGoal(6, new FollowParentGoal(this, 1.1));
@@ -183,7 +183,7 @@ public class Boar extends Animal implements NeutralMob, IAnimatable {
                 event.getController().setAnimationSpeed(2.0D);
             } else {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("boar.walk", true));
-                event.getController().setAnimationSpeed(1.0D);
+                event.getController().setAnimationSpeed(1.5D);
             }
         } else {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("boar.idle", true));
