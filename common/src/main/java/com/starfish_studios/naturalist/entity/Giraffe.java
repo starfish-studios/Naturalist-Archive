@@ -27,10 +27,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
@@ -244,6 +241,11 @@ public class Giraffe extends AnimalEntity implements IAnimatable {
         }
         this.updateLimbs(this, false);
         this.tryCheckBlockCollision();
+    }
+
+    @Override
+    public boolean canBeControlledByRider() {
+        return this.getPrimaryPassenger() != null;
     }
 
     @Override
