@@ -108,12 +108,10 @@
   "naturalist.subtitles.entity.giraffe.ambient": "Giraffe breathes",
   "naturalist.subtitles.entity.hippo.ambient": "Hippo growls",
   "naturalist.subtitles.entity.hippo.hurt": "Hippo hurts",
-
   "advancements.husbandry.ride_giraffe_with_map.title": "I can show you the world!",
   "advancements.husbandry.ride_giraffe_with_map.description": "Use a map while riding a giraffe to increase its range",
   "advancements.husbandry.feed_hippo_melon.title": "Hungry Hungry Hippos",
   "advancements.husbandry.feed_hippo_melon.description": "Feed a melon block to a hippo to breed it when in water",
-
   "text.autoconfig.naturalist.title": "Naturalist Config",
   "text.autoconfig.naturalist.option.bluejaySpawnWeight": "Bluejay Spawn Weight",
   "text.autoconfig.naturalist.option.butterflySpawnWeight": "Butterfly Spawn Weight",

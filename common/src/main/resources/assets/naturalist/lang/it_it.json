@@ -118,5 +118,22 @@
   "text.autoconfig.naturalist.option.giraffeSpawnWeight": "Giraffe Spawn Weight",
   "text.autoconfig.naturalist.option.hippoSpawnWeight": "Hippo Spawn Weight",
   "text.autoconfig.naturalist.option.vultureSpawnWeight": "Vulture Spawn Weight",
-  "text.autoconfig.naturalist.option.removeSavannaFarmAnimals": "Remove Farm Animals in Savanna Biomes"
+  "text.autoconfig.naturalist.option.removeSavannaFarmAnimals": "Remove Farm Animals in Savanna Biomes",
+  "entity.naturalist.boar": "Boar",
+  "item.naturalist.boar_spawn_egg": "Boar Spawn Egg",
+  "naturalist.subtitles.item.bucket.fill_snail": "Snail scooped",
+  "naturalist.subtitles.item.bucket.empty_snail": "Bucket empties snail",
+  "naturalist.subtitles.entity.zebra.death": "Zebra dies",
+  "naturalist.subtitles.entity.zebra.eat": "Zebra eats",
+  "naturalist.subtitles.entity.zebra.breathe": "Zebra breathes",
+  "naturalist.subtitles.entity.zebra.jump": "Zebra jumps",
+  "naturalist.subtitles.entity.zebra.angry": "Zebra whinnies",
+  "naturalist.subtitles.entity.giraffe.ambient": "Giraffe breathes",
+  "naturalist.subtitles.entity.hippo.ambient": "Hippo growls",
+  "naturalist.subtitles.entity.hippo.hurt": "Hippo hurts",
+  "advancements.husbandry.ride_giraffe_with_map.title": "I can show you the world!",
+  "advancements.husbandry.ride_giraffe_with_map.description": "Use a map while riding a giraffe to increase its range",
+  "advancements.husbandry.feed_hippo_melon.title": "Hungry Hungry Hippos",
+  "advancements.husbandry.feed_hippo_melon.description": "Feed a melon block to a hippo to breed it when in water",
+  "text.autoconfig.naturalist.option.boarSpawnWeight": "Boar Spawn Weight"
 }

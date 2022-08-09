@@ -1,6 +1,5 @@
 {
 	"itemGroup.naturalist.tab": "Naturalist",
-
 	"entity.naturalist.butterfly": "Bươm bướm",
 	"entity.naturalist.bluejay": "Chim Giẻ cùi lam",
 	"entity.naturalist.canary": "Chim Hoàng Yến",
@@ -21,7 +20,6 @@
 	"entity.naturalist.snake": "Rắn",
 	"entity.naturalist.zebra": "Ngựa vằn",
 	"entity.naturalist.vulture": "Kền kền",
-
 	"item.naturalist.bluejay_spawn_egg": "Trứng sinh ra Chim Giẻ cùi lam",
 	"item.naturalist.butterfly_spawn_egg": "Trứng sinh ra Bươm bướm",
 	"item.naturalist.canary_spawn_egg": "Trứng sinh ra Chim Hoàng Yến",
@@ -42,7 +40,6 @@
 	"item.naturalist.snake_spawn_egg": "Trứng sinh ra Rắn",
 	"item.naturalist.zebra_spawn_egg": "Trứng sinh ra Ngựa vằn",
 	"item.naturalist.vulture_spawn_egg": "Trứng sinh ra Kền kền",
-
 	"item.naturalist.antler": "Sừng hươu nai",
 	"item.naturalist.snail_bucket": "Xô ốc sên",
 	"block.naturalist.chrysalis": "Nhộng",
@@ -57,7 +54,6 @@
 	"item.minecraft.potion.effect.glowing": "Thuốc phát sáng",
 	"item.minecraft.splash_potion.effect.glowing": "Thuốc phát sáng có thể ném được",
 	"item.minecraft.lingering_potion.effect.glowing": "Thuốc phát sáng kéo dài",
-
 	"naturalist.subtitles.entity.bird.hurt": "Chim bị thương",
 	"naturalist.subtitles.entity.bird.death": "Chim chết",
 	"naturalist.subtitles.entity.bird.eat": "Chim ăn",
@@ -99,7 +95,6 @@
 	"naturalist.subtitles.entity.vulture.ambient": "Kền kền kêu",
 	"naturalist.subtitles.entity.vulture.hurt": "Kền kền bị thương",
 	"naturalist.subtitles.entity.vulture.death": "Kền kền chết",
-
 	"text.autoconfig.naturalist.title": "Cấu hình Naturalist",
 	"text.autoconfig.naturalist.option.bluejaySpawnWeight": "Bluejay Spawn Weight",
 	"text.autoconfig.naturalist.option.butterflySpawnWeight": "Butterfly Spawn Weight",
@@ -123,5 +118,22 @@
 	"text.autoconfig.naturalist.option.hippoSpawnWeight": "Hippo Spawn Weight",
 	"text.autoconfig.naturalist.option.vultureSpawnWeight": "Vulture Spawn Weight",
 	"text.autoconfig.naturalist.option.removeSavannaFarmAnimals": "Remove Farm Animals in Savanna Biomes",
-	"item.minecraft.tipped_arrow.effect.glowing": "Arrow of Glowing"
+	"item.minecraft.tipped_arrow.effect.glowing": "Arrow of Glowing",
+	"entity.naturalist.boar": "Boar",
+	"item.naturalist.boar_spawn_egg": "Boar Spawn Egg",
+	"naturalist.subtitles.item.bucket.fill_snail": "Snail scooped",
+	"naturalist.subtitles.item.bucket.empty_snail": "Bucket empties snail",
+	"naturalist.subtitles.entity.zebra.death": "Zebra dies",
+	"naturalist.subtitles.entity.zebra.eat": "Zebra eats",
+	"naturalist.subtitles.entity.zebra.breathe": "Zebra breathes",
+	"naturalist.subtitles.entity.zebra.jump": "Zebra jumps",
+	"naturalist.subtitles.entity.zebra.angry": "Zebra whinnies",
+	"naturalist.subtitles.entity.giraffe.ambient": "Giraffe breathes",
+	"naturalist.subtitles.entity.hippo.ambient": "Hippo growls",
+	"naturalist.subtitles.entity.hippo.hurt": "Hippo hurts",
+	"advancements.husbandry.ride_giraffe_with_map.title": "I can show you the world!",
+	"advancements.husbandry.ride_giraffe_with_map.description": "Use a map while riding a giraffe to increase its range",
+	"advancements.husbandry.feed_hippo_melon.title": "Hungry Hungry Hippos",
+	"advancements.husbandry.feed_hippo_melon.description": "Feed a melon block to a hippo to breed it when in water",
+	"text.autoconfig.naturalist.option.boarSpawnWeight": "Boar Spawn Weight"
 }
