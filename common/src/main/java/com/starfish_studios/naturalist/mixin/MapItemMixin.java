@@ -21,7 +21,7 @@ public class MapItemMixin {
     }
 
     @ModifyVariable(method = "update", at = @At("STORE"), ordinal = 5)
-    private int onUpdate(int i) {
+    private int modifyRange(int i) {
         if (this.isRidingGiraffe) {
             return (int) (1.5F * i);
         }
