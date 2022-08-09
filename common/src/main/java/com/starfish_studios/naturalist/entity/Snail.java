@@ -30,11 +30,9 @@ import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
-import net.minecraft.world.entity.*;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -163,7 +161,7 @@ public class Snail extends AnimalEntity implements IAnimatable, Bucketable {
 
     @Override
     public SoundEvent getBucketedSound() {
-        return SoundEvents.ITEM_BUCKET_FILL;
+        return NaturalistSoundEvents.BUCKET_FILL_SNAIL.get();
     }
 
     // SOUNDS
