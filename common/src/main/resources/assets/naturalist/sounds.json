@@ -300,6 +300,42 @@
     ],
     "subtitle": "naturalist.subtitles.entity.zebra.hurt"
   },
+  "entity.zebra.death": {
+    "sounds": [
+      "minecraft:mob/horse/death"
+    ],
+    "subtitle": "naturalist.subtitles.entity.zebra.death"
+  },
+  "entity.zebra.eat": {
+    "sounds": [
+      "minecraft:entity/horse/eat1",
+      "minecraft:entity/horse/eat2",
+      "minecraft:entity/horse/eat3",
+      "minecraft:entity/horse/eat4",
+      "minecraft:entity/horse/eat5"
+    ],
+    "subtitle": "naturalist.subtitles.entity.zebra.eat"
+  },
+  "entity.zebra.breathe": {
+    "sounds": [
+      "minecraft:mob/horse/breathe1",
+      "minecraft:mob/horse/breathe2",
+      "minecraft:mob/horse/breathe3"
+    ],
+    "subtitle": "naturalist.subtitles.entity.zebra.breathe"
+  },
+  "entity.zebra.angry": {
+    "sounds": [
+      "minecraft:mob/horse/angry"
+    ],
+    "subtitle": "naturalist.subtitles.entity.zebra.angry"
+  },
+  "entity.zebra.jump": {
+    "sounds": [
+      "minecraft:mob/horse/jump"
+    ],
+    "subtitle": "naturalist.subtitles.entity.zebra.jump"
+  },
   "entity.vulture.ambient": {
     "sounds": [
       "naturalist:vulture_idle"
