@@ -82,7 +82,7 @@ public class Vulture extends PathfinderMob implements IAnimatable, FlyingAnimal 
         this.goalSelector.addGoal(3, new VultureWanderGoal(this));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Monster.class, 10, false, false, entity -> entity.getMobType().equals(MobType.UNDEAD) && !FOOD_ITEMS.test(this.getMainHandItem())));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Monster.class, 10, false, false, entity -> entity.getType().is(NaturalistTags.EntityTypes.VULTURE_HOSTILES) && !FOOD_ITEMS.test(this.getMainHandItem())));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, false, false, entity -> entity.getHealth() <= 6 && !entity.getMainHandItem().isEmpty() && !FOOD_ITEMS.test(this.getMainHandItem())));
     }
 
@@ -305,12 +305,24 @@ public class Vulture extends PathfinderMob implements IAnimatable, FlyingAnimal 
 
         @Override
         public boolean canUse() {
-            return super.canUse() && this.mob.getMainHandItem().isEmpty();
+            LivingEntity target = this.mob.getTarget();
+            if (target instanceof Player player) {
+                if (player.getHealth() > 6 || player.getMainHandItem().isEmpty())  {
+                    return false;
+                }
+            }
+            return this.mob.getMainHandItem().isEmpty() && super.canUse();
         }
 
         @Override
         public boolean canContinueToUse() {
-            return super.canContinueToUse() && this.mob.getMainHandItem().isEmpty();
+            LivingEntity target = this.mob.getTarget();
+            if (target instanceof Player player) {
+                if (player.getHealth() > 6 || player.getMainHandItem().isEmpty())  {
+                    return false;
+                }
+            }
+            return this.mob.getMainHandItem().isEmpty() && super.canContinueToUse();
         }
 
         @Override
