@@ -338,7 +338,7 @@
   },
   "entity.zebra.angry": {
     "sounds": [
-      "minecraft:mob/horse/angry"
+      "minecraft:mob/horse/angry1"
     ],
     "subtitle": "naturalist.subtitles.entity.zebra.angry"
   },
