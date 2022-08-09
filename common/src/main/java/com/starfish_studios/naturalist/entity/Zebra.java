@@ -92,10 +92,13 @@ public class Zebra extends AbstractChestedHorse {
 
     @Override
     protected void playGallopSound(SoundType soundType) {
-        super.playGallopSound(soundType);
         if (this.random.nextInt(10) == 0) {
-            this.playSound(SoundEvents.HORSE_BREATHE, soundType.getVolume() * 0.6f, soundType.getPitch());
+            this.playSound(NaturalistSoundEvents.ZEBRA_BREATHE.get(), soundType.getVolume() * 0.6f, soundType.getPitch());
         }
+    }
+    @Override
+    protected void playJumpSound() {
+        this.playSound(NaturalistSoundEvents.ZEBRA_JUMP.get(), 0.4F, 1.0F);
     }
 
     @Override
@@ -106,14 +109,13 @@ public class Zebra extends AbstractChestedHorse {
 
     @Override
     protected SoundEvent getDeathSound() {
-        super.getDeathSound();
-        return SoundEvents.HORSE_DEATH;
+        return NaturalistSoundEvents.ZEBRA_DEATH.get();
     }
 
     @Override
     @Nullable
     protected SoundEvent getEatingSound() {
-        return SoundEvents.HORSE_EAT;
+        return NaturalistSoundEvents.ZEBRA_EAT.get();
     }
 
     @Override
@@ -125,7 +127,7 @@ public class Zebra extends AbstractChestedHorse {
     @Override
     protected SoundEvent getAngrySound() {
         super.getAngrySound();
-        return SoundEvents.HORSE_ANGRY;
+        return NaturalistSoundEvents.ZEBRA_ANGRY.get();
     }
 
     @Override
