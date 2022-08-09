@@ -90,6 +90,8 @@
   "naturalist.subtitles.entity.rhino.ambient": "Rhino growls",
   "naturalist.subtitles.entity.snail.crush": "Snail crushes",
   "naturalist.subtitles.entity.snail.move": "Snail inches",
+  "naturalist.subtitles.item.bucket.fill_snail": "Snail scooped",
+  "naturalist.subtitles.item.bucket.empty_snail": "Bucket empties snail",
   "naturalist.subtitles.entity.snake.hiss": "Snake hisses",
   "naturalist.subtitles.entity.snake.hurt": "Snake hurts",
   "naturalist.subtitles.entity.snake.rattle": "Snake rattles",

@@ -158,7 +158,7 @@ public class Snail extends Animal implements IAnimatable, Bucketable {
 
     @Override
     public SoundEvent getPickupSound() {
-        return SoundEvents.BUCKET_FILL;
+        return NaturalistSoundEvents.BUCKET_FILL_SNAIL.get();
     }
 
     // SOUNDS

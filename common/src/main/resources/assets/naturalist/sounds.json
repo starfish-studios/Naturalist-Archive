@@ -39,6 +39,18 @@
     ],
     "subtitle": "naturalist.subtitles.entity.snail.move"
   },
+  "item.bucket.fill_snail": {
+    "sounds": [
+      "naturalist:bucket_fill_snail"
+    ],
+    "subtitle": "naturalist.subtitles.item.bucket.fill_snail"
+  },
+  "item.bucket.empty_snail": {
+    "sounds": [
+      "naturalist:bucket_empty_snail"
+    ],
+    "subtitle": "naturalist.subtitles.item.bucket.empty_snail"
+  },
   "entity.bear.hurt": {
     "sounds": [
       "minecraft:mob/polarbear/hurt1",
