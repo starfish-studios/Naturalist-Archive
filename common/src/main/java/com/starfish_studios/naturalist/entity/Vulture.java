@@ -92,7 +92,7 @@ public class Vulture extends PathAwareEntity implements IAnimatable, Flutterer {
         this.goalSelector.add(3, new VultureWanderGoal(this));
         this.goalSelector.add(4, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(5, new LookAroundGoal(this));
-        this.targetSelector.add(1, new ActiveTargetGoal<>(this, HostileEntity.class, 10, false, false, entity -> entity.getGroup().equals(EntityGroup.UNDEAD) && !FOOD_ITEMS.test(this.getMainHandStack())));
+        this.targetSelector.add(1, new ActiveTargetGoal<>(this, HostileEntity.class, 10, false, false, entity -> entity.getType().isIn(NaturalistTags.EntityTypes.VULTURE_HOSTILES) && !FOOD_ITEMS.test(this.getMainHandStack())));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, 10, false, false, entity -> entity.getHealth() <= 6 && !entity.getMainHandStack().isEmpty() && !FOOD_ITEMS.test(this.getMainHandStack())));
     }
 
@@ -326,12 +326,24 @@ public class Vulture extends PathAwareEntity implements IAnimatable, Flutterer {
 
         @Override
         public boolean canStart() {
-            return super.canStart() && this.mob.getMainHandStack().isEmpty();
+            LivingEntity target = this.mob.getTarget();
+            if (target instanceof PlayerEntity player) {
+                if (player.getHealth() > 6 || player.getMainHandStack().isEmpty())  {
+                    return false;
+                }
+            }
+            return this.mob.getMainHandStack().isEmpty() && super.canStart();
         }
 
         @Override
         public boolean shouldContinue() {
-            return super.shouldContinue() && this.mob.getMainHandStack().isEmpty();
+            LivingEntity target = this.mob.getTarget();
+            if (target instanceof PlayerEntity player) {
+                if (player.getHealth() > 6 || player.getMainHandStack().isEmpty())  {
+                    return false;
+                }
+            }
+            return this.mob.getMainHandStack().isEmpty() && super.shouldContinue();
         }
 
         @Override

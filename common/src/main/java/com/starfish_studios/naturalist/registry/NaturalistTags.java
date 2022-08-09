@@ -38,6 +38,7 @@ public class NaturalistTags {
         public static final TagKey<EntityType<?>> SNAKE_HOSTILES = tag("snake_hostiles");
         public static final TagKey<EntityType<?>> DEER_PREDATORS = tag("deer_predators");
         public static final TagKey<EntityType<?>> LION_HOSTILES = tag("lion_hostiles");
+        public static final TagKey<EntityType<?>> VULTURE_HOSTILES = tag("vulture_hostiles");
 
         private static TagKey<EntityType<?>> tag(String name) {
             return TagKey.of(Registry.ENTITY_TYPE_KEY, new Identifier(Naturalist.MOD_ID, name));
