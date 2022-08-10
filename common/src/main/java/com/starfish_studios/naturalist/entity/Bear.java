@@ -2,6 +2,7 @@ package com.starfish_studios.naturalist.entity;
 
 import com.starfish_studios.naturalist.entity.ai.goal.*;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
+import com.starfish_studios.naturalist.registry.NaturalistItems;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.block.*;
@@ -28,8 +29,10 @@ import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.TimeHelper;
@@ -53,12 +56,13 @@ import java.util.EnumSet;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class Bear extends AnimalEntity implements Angerable, IAnimatable, SleepingAnimal {
+public class Bear extends AnimalEntity implements Angerable, IAnimatable, SleepingAnimal, Shearable {
     private final AnimationFactory factory = new AnimationFactory(this);
     private static final Ingredient FOOD_ITEMS = Ingredient.fromTag(NaturalistTags.ItemTags.BEAR_TEMPT_ITEMS);
     private static final TrackedData<Boolean> SLEEPING = DataTracker.registerData(Bear.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> SNIFFING = DataTracker.registerData(Bear.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> SITTING = DataTracker.registerData(Bear.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final TrackedData<Boolean> SHEARED = DataTracker.registerData(Bear.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Integer> EAT_COUNTER = DataTracker.registerData(Bear.class, TrackedDataHandlerRegistry.INTEGER);
     private static final UniformIntProvider PERSISTENT_ANGER_TIME = TimeHelper.betweenSeconds(20, 39);
     private static final TrackedData<Integer> REMAINING_ANGER_TIME = DataTracker.registerData(Bear.class, TrackedDataHandlerRegistry.INTEGER);
@@ -169,6 +173,7 @@ public class Bear extends AnimalEntity implements Angerable, IAnimatable, Sleepi
         this.dataTracker.startTracking(SLEEPING, false);
         this.dataTracker.startTracking(SNIFFING, false);
         this.dataTracker.startTracking(SITTING, false);
+        this.dataTracker.startTracking(SHEARED, false);
         this.dataTracker.startTracking(EAT_COUNTER, 0);
         this.dataTracker.startTracking(REMAINING_ANGER_TIME, 0);
     }
@@ -177,12 +182,16 @@ public class Bear extends AnimalEntity implements Angerable, IAnimatable, Sleepi
     public void readCustomDataFromNbt(NbtCompound pCompound) {
         super.readCustomDataFromNbt(pCompound);
         this.readAngerFromNbt(this.world, pCompound);
+        if (pCompound.contains("Sheared")) {
+            this.setSheared(pCompound.getBoolean("Sheared"));
+        }
     }
 
     @Override
     public void writeCustomDataToNbt(NbtCompound pCompound) {
         super.writeCustomDataToNbt(pCompound);
         this.writeAngerToNbt(pCompound);
+        pCompound.putBoolean("Sheared", this.isSheared());
     }
 
     @Override
@@ -215,6 +224,14 @@ public class Bear extends AnimalEntity implements Angerable, IAnimatable, Sleepi
 
     public void setSitting(boolean sitting) {
         this.dataTracker.set(SITTING, sitting);
+    }
+
+    public boolean isSheared() {
+        return this.dataTracker.get(SHEARED);
+    }
+
+    public void setSheared(boolean sheared) {
+        this.dataTracker.set(SHEARED, sheared);
     }
 
     public boolean isEating() {
@@ -276,6 +293,7 @@ public class Bear extends AnimalEntity implements Angerable, IAnimatable, Sleepi
                     if (!this.world.isClient) {
                         this.equipStack(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
                         this.emitGameEvent(GameEvent.EAT);
+                        this.setSheared(false);
                     }
                     this.setSitting(false);
                 }
@@ -336,6 +354,42 @@ public class Bear extends AnimalEntity implements Angerable, IAnimatable, Sleepi
             this.equipStack(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
         }
         return super.damage(pSource, pAmount);
+    }
+
+    // SHEARING
+
+    @Override
+    public ActionResult interactMob(PlayerEntity player, Hand hand) {
+        ItemStack itemStack = player.getStackInHand(hand);
+        if (itemStack.isOf(Items.SHEARS) && this.isShearable()) {
+            if (!this.isSleeping()) {
+                this.setAttacker(player);
+            }
+            this.sheared(SoundCategory.PLAYERS);
+            this.emitGameEvent(GameEvent.SHEAR, player);
+            if (!this.world.isClient) {
+                itemStack.damage(1, player, p -> p.sendToolBreakStatus(hand));
+            }
+            return ActionResult.success(this.world.isClient);
+        }
+        return ActionResult.PASS;
+    }
+
+    @Override
+    public void sheared(SoundCategory category) {
+        this.world.playSound(null, this.getBlockPos(), SoundEvents.ENTITY_SHEEP_SHEAR, category, 1.0f, 1.0f);
+        this.setSheared(true);
+        int amount = 1 + this.random.nextInt(2);
+        for (int j = 0; j < amount; ++j) {
+            ItemEntity itemEntity = this.dropItem(NaturalistItems.BEAR_FUR.get(), 1);
+            if (itemEntity == null) continue;
+            itemEntity.setVelocity(itemEntity.getVelocity().add((this.random.nextFloat() - this.random.nextFloat()) * 0.1f, this.random.nextFloat() * 0.05f, (this.random.nextFloat() - this.random.nextFloat()) * 0.1f));
+        }
+    }
+
+    @Override
+    public boolean isShearable() {
+        return this.isAlive() && !this.isSheared() && !this.isBaby();
     }
 
     // MOVEMENT
