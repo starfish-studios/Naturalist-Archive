@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "naturalist:block/teddy",
-		"particle": "naturalist:block/teddy"
+		"0": "naturalist:block/teddy_bear",
+		"particle": "naturalist:block/teddy_bear"
 	},
 	"elements": [
 		{

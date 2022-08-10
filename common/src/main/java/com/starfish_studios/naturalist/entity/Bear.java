@@ -388,7 +388,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
     public void shear(SoundSource source) {
         this.level.playSound(null, this, SoundEvents.SHEEP_SHEAR, source, 1.0f, 1.0f);
         this.setSheared(true);
-        int amount = 1 + this.random.nextInt(3);
+        int amount = 1 + this.random.nextInt(2);
         for (int j = 0; j < amount; ++j) {
             ItemEntity itemEntity = this.spawnAtLocation(NaturalistItems.BEAR_FUR.get(), 1);
             if (itemEntity == null) continue;
