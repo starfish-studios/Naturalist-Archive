@@ -291,13 +291,13 @@
     "sounds": [
       "naturalist:fawn_idle"
     ],
-    "subtitle": "naturalist.subtitles.entity.fawn.ambient"
+    "subtitle": "naturalist.subtitles.entity.deer.ambient_baby"
   },
   "entity.deer.hurt_baby": {
     "sounds": [
       "naturalist:fawn_hurt"
     ],
-    "subtitle": "naturalist.subtitles.entity.fawn.hurt"
+    "subtitle": "naturalist.subtitles.entity.deer.hurt_baby"
   },
   "entity.zebra.ambient": {
     "sounds": [
