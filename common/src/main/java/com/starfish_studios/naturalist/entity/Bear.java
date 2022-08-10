@@ -2,6 +2,7 @@ package com.starfish_studios.naturalist.entity;
 
 import com.starfish_studios.naturalist.entity.ai.goal.*;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
+import com.starfish_studios.naturalist.registry.NaturalistItems;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.core.BlockPos;
@@ -15,11 +16,13 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.Containers;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -61,12 +64,13 @@ import java.util.EnumSet;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAnimal {
+public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAnimal, Shearable {
     private final AnimationFactory factory = new AnimationFactory(this);
     private static final Ingredient FOOD_ITEMS = Ingredient.of(NaturalistTags.ItemTags.BEAR_TEMPT_ITEMS);
     private static final EntityDataAccessor<Boolean> SLEEPING = SynchedEntityData.defineId(Bear.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> SNIFFING = SynchedEntityData.defineId(Bear.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(Bear.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> SHEARED = SynchedEntityData.defineId(Bear.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> EAT_COUNTER = SynchedEntityData.defineId(Bear.class, EntityDataSerializers.INT);
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
     private static final EntityDataAccessor<Integer> REMAINING_ANGER_TIME = SynchedEntityData.defineId(Bear.class, EntityDataSerializers.INT);
@@ -177,6 +181,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
         this.entityData.define(SLEEPING, false);
         this.entityData.define(SNIFFING, false);
         this.entityData.define(SITTING, false);
+        this.entityData.define(SHEARED, false);
         this.entityData.define(EAT_COUNTER, 0);
         this.entityData.define(REMAINING_ANGER_TIME, 0);
     }
@@ -185,12 +190,16 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         this.readPersistentAngerSaveData(this.level, pCompound);
+        if (pCompound.contains("Sheared")) {
+            this.setSheared(pCompound.getBoolean("Sheared"));
+        }
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         this.addPersistentAngerSaveData(pCompound);
+        pCompound.putBoolean("Sheared", this.isSheared());
     }
 
     @Override
@@ -223,6 +232,14 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
 
     public void setSitting(boolean sitting) {
         this.entityData.set(SITTING, sitting);
+    }
+
+    public boolean isSheared() {
+        return this.entityData.get(SHEARED);
+    }
+
+    public void setSheared(boolean sheared) {
+        this.entityData.set(SHEARED, sheared);
     }
 
     public boolean isEating() {
@@ -284,6 +301,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
                     if (!this.level.isClientSide) {
                         this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
                         this.gameEvent(GameEvent.EAT);
+                        this.setSheared(false);
                     }
                     this.setSitting(false);
                 }
@@ -344,6 +362,43 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
             this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
         }
         return super.hurt(pSource, pAmount);
+    }
+
+    // SHEARING
+
+
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemStack = player.getItemInHand(hand);
+        if (itemStack.is(Items.SHEARS) && this.readyForShearing()) {
+            if (!this.isSleeping()) {
+                this.setLastHurtByMob(player);
+            }
+            this.shear(SoundSource.PLAYERS);
+            this.gameEvent(GameEvent.SHEAR, player);
+            if (!this.level.isClientSide) {
+                itemStack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+            }
+            return InteractionResult.sidedSuccess(this.level.isClientSide);
+        }
+        return InteractionResult.PASS;
+    }
+
+    @Override
+    public void shear(SoundSource source) {
+        this.level.playSound(null, this, SoundEvents.SHEEP_SHEAR, source, 1.0f, 1.0f);
+        this.setSheared(true);
+        int amount = 1 + this.random.nextInt(3);
+        for (int j = 0; j < amount; ++j) {
+            ItemEntity itemEntity = this.spawnAtLocation(NaturalistItems.BEAR_FUR.get(), 1);
+            if (itemEntity == null) continue;
+            itemEntity.setDeltaMovement(itemEntity.getDeltaMovement().add((this.random.nextFloat() - this.random.nextFloat()) * 0.1f, this.random.nextFloat() * 0.05f, (this.random.nextFloat() - this.random.nextFloat()) * 0.1f));
+        }
+    }
+
+    @Override
+    public boolean readyForShearing() {
+        return this.isAlive() && !this.isSheared() && !this.isBaby();
     }
 
     // MOVEMENT

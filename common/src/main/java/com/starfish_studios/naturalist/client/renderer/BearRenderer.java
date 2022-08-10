@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import com.starfish_studios.naturalist.client.model.BearModel;
+import com.starfish_studios.naturalist.client.renderer.layers.BearShearedLayer;
 import com.starfish_studios.naturalist.entity.Bear;
 import com.starfish_studios.naturalist.platform.ClientPlatformHelper;
 import net.fabricmc.api.EnvType;
@@ -22,6 +23,7 @@ public class BearRenderer extends GeoEntityRenderer<Bear> {
     public BearRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new BearModel());
         this.shadowRadius = 0.9F;
+        this.addLayer(new BearShearedLayer(this));
     }
 
     @Override
