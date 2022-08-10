@@ -1,3 +1,0 @@
-files:
-  - source: /common/src/main/resources/assets/naturalist/lang
-    translation: /common/src/main/resources/assets/naturalist/lang/%locale_with_underscore%.json
