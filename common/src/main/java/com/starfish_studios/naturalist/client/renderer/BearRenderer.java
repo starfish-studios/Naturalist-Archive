@@ -1,6 +1,7 @@
 package com.starfish_studios.naturalist.client.renderer;
 
 import com.starfish_studios.naturalist.client.model.BearModel;
+import com.starfish_studios.naturalist.client.renderer.layers.BearShearedLayer;
 import com.starfish_studios.naturalist.entity.Bear;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -20,6 +21,7 @@ public class BearRenderer extends GeoEntityRenderer<Bear> {
     public BearRenderer(EntityRendererFactory.Context renderManager) {
         super(renderManager, new BearModel());
         this.shadowRadius = 0.9F;
+        this.addLayer(new BearShearedLayer(this));
     }
 
     @Override
