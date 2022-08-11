@@ -18,8 +18,6 @@ import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
 
 @Environment(EnvType.CLIENT)
 public class SleepLayer<T extends LivingEntity & IAnimatable> extends GeoLayerRenderer<T> {
-    private static final ResourceLocation LAYER = new ResourceLocation(Naturalist.MOD_ID, "textures/entity/lion_sleep.png");
-    private static final ResourceLocation MODEL = new ResourceLocation(Naturalist.MOD_ID, "geo/lion.geo.json");
     private final ResourceLocation model;
     private final ResourceLocation sleepLayer;
 
