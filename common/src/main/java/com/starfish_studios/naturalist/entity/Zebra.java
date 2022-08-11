@@ -91,10 +91,17 @@ public class Zebra extends AbstractDonkeyEntity {
 
     @Override
     protected void playWalkSound(BlockSoundGroup soundType) {
+        super.playWalkSound(soundType);
         if (this.random.nextInt(10) == 0) {
             this.playSound(NaturalistSoundEvents.ZEBRA_BREATHE.get(), soundType.getVolume() * 0.6f, soundType.getPitch());
         }
     }
+
+    @Override
+    public double getMountedHeightOffset() {
+        return super.getMountedHeightOffset() + 0.25;
+    }
+
     @Override
     protected void playJumpSound() {
         this.playSound(NaturalistSoundEvents.ZEBRA_JUMP.get(), 0.4F, 1.0F);
