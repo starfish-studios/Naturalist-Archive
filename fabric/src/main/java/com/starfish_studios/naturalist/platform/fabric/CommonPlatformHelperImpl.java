@@ -57,7 +57,7 @@ public class CommonPlatformHelperImpl {
     }
 
     public static <T extends Entity> Supplier<EntityType<T>> registerEntityType(String name, EntityType.EntityFactory<T> factory, SpawnGroup category, float width, float height, int clientTrackingRange) {
-        var registry = Registry.register(Registry.ENTITY_TYPE, new Identifier(Naturalist.MOD_ID, name), FabricEntityTypeBuilder.create(category, factory).dimensions(EntityDimensions.fixed(width, height)).trackRangeChunks(clientTrackingRange).build());
+        var registry = Registry.register(Registry.ENTITY_TYPE, new Identifier(Naturalist.MOD_ID, name), FabricEntityTypeBuilder.create(category, factory).dimensions(EntityDimensions.changing(width, height)).trackRangeChunks(clientTrackingRange).build());
         return () -> registry;
     }
 
