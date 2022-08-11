@@ -105,7 +105,7 @@ public class Lion extends AnimalEntity implements IAnimatable, SleepingAnimal {
         this.goalSelector.add(1, new LionPreyGoal(this));
         this.goalSelector.add(2, new BabyPanicGoal(this, 2.0D));
         this.goalSelector.add(3, new SleepGoal<>(this));
-        this.goalSelector.add(4, new FollowParentGoal(this, 1.1));
+        this.goalSelector.add(4, new LionFollowParentGoal(this, 1.1));
         this.goalSelector.add(5, new WanderAroundFarGoal(this, 1.0));
         this.goalSelector.add(6, new LionFollowLeaderGoal(this, 1.1D, 8.0F, 24.0F));
         this.goalSelector.add(7, new LookAtEntityGoal(this, PlayerEntity.class, 6.0f));
@@ -146,7 +146,6 @@ public class Lion extends AnimalEntity implements IAnimatable, SleepingAnimal {
             this.sidewaysSpeed = 0.0F;
             this.forwardSpeed = 0.0F;
         }
-        this.calculateDimensions();
     }
 
     @Override
@@ -482,6 +481,25 @@ public class Lion extends AnimalEntity implements IAnimatable, SleepingAnimal {
 
         protected double getAttackReachSqr(LivingEntity attackTarget) {
             return this.mob.getWidth() * 2.0f * (this.mob.getWidth() * 2.0f) + attackTarget.getWidth();
+        }
+    }
+
+    static class LionFollowParentGoal extends FollowParentGoal {
+        private final Lion lion;
+
+        public LionFollowParentGoal(Lion animal, double speedModifier) {
+            super(animal, speedModifier);
+            this.lion = animal;
+        }
+
+        @Override
+        public boolean canStart() {
+            return !this.lion.isSleeping() && super.canStart();
+        }
+
+        @Override
+        public boolean shouldContinue() {
+            return !this.lion.isSleeping() && super.shouldContinue();
         }
     }
 }

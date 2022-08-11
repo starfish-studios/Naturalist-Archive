@@ -1,8 +1,5 @@
 package com.starfish_studios.naturalist.client.renderer.layers;
 
-import com.starfish_studios.naturalist.Naturalist;
-import com.starfish_studios.naturalist.entity.SleepingAnimal;
-import com.starfish_studios.naturalist.entity.Snake;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.OverlayTexture;
@@ -17,8 +14,6 @@ import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
 
 @Environment(EnvType.CLIENT)
 public class SleepLayer<T extends LivingEntity & IAnimatable> extends GeoLayerRenderer<T> {
-    private static final Identifier LAYER = new Identifier(Naturalist.MOD_ID, "textures/entity/lion_sleep.png");
-    private static final Identifier MODEL = new Identifier(Naturalist.MOD_ID, "geo/lion.geo.json");
     private final Identifier model;
     private final Identifier sleepLayer;
 

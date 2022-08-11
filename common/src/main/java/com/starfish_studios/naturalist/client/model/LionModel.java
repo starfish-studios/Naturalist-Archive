@@ -23,7 +23,7 @@ public class LionModel extends AnimatedGeoModel<Lion> {
 
     @Override
     public Identifier getTextureLocation(Lion lion) {
-        return new Identifier(Naturalist.MOD_ID, "textures/entity/lion.png");
+        return lion.isSleeping() ? new Identifier(Naturalist.MOD_ID, "textures/entity/lion_sleep.png") : new Identifier(Naturalist.MOD_ID, "textures/entity/lion.png");
     }
 
     @Override
