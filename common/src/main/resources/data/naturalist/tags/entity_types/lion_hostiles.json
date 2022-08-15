@@ -1,6 +1,8 @@
 {
   "values": [
     "naturalist:rhino",
+    "naturalist:zebra",
+    "naturalist:boar",
     "minecraft:horse"
   ]
 }
