@@ -1,0 +1,27 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"catfish.swim": {
+			"loop": true,
+			"animation_length": 1,
+			"bones": {
+				"body": {
+					"rotation": {
+						"vector": [0, "Math.cos((query.anim_time - 0.0) * 360 ) * 4", 0]
+					}
+				},
+				"tail": {
+					"rotation": {
+						"vector": [0, "Math.cos((query.anim_time - 0.2) * 360 ) * 6", 0]
+					}
+				},
+				"head": {
+					"rotation": {
+						"vector": [0, "Math.cos((query.anim_time - 0.2) * 360 ) * -4", 0]
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}
