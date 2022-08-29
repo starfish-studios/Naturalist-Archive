@@ -34,10 +34,12 @@ public class Dragonfly extends PathfinderMob implements IAnimatable {
     private static final EntityDataAccessor<Integer> VARIANT_ID = SynchedEntityData.defineId(Dragonfly.class, EntityDataSerializers.INT);
     @Nullable
     private BlockPos targetPosition;
+    private int hoverTicks;
     private final AnimationFactory factory = new AnimationFactory(this);
 
     public Dragonfly(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
+        this.setHoverTicks(30);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -58,6 +60,14 @@ public class Dragonfly extends PathfinderMob implements IAnimatable {
 
     public void setVariant(int variant) {
         this.entityData.set(VARIANT_ID, variant);
+    }
+
+    public int getHoverTicks() {
+        return hoverTicks;
+    }
+
+    public void setHoverTicks(int hoverTicks) {
+        this.hoverTicks = hoverTicks;
     }
 
     @Override
@@ -107,22 +117,32 @@ public class Dragonfly extends PathfinderMob implements IAnimatable {
     @Override
     protected void customServerAiStep() {
         super.customServerAiStep();
+        if (this.getHoverTicks() > 0) {
+            this.setHoverTicks(Math.max(0, this.getHoverTicks() - 1));
+        }
         if (!(this.targetPosition == null || this.level.isEmptyBlock(this.targetPosition) && this.targetPosition.getY() > this.level.getMinBuildHeight())) {
             this.targetPosition = null;
         }
-        if (this.targetPosition == null || this.random.nextInt(30) == 0 || this.targetPosition.closerToCenterThan(this.position(), 2.0)) {
-            this.targetPosition = new BlockPos(this.getX() + (double)this.random.nextInt(7) - (double)this.random.nextInt(7), this.getY() + (double)this.random.nextInt(6) - 2.0, this.getZ() + (double)this.random.nextInt(7) - (double)this.random.nextInt(7));
+        if (this.getHoverTicks() <= 0 && (this.targetPosition == null || this.targetPosition.closerToCenterThan(this.position(), 2.0))) {
+            this.targetPosition = new BlockPos(
+                    this.getX() + this.random.nextInt(6) - this.random.nextInt(6),
+                    this.getY() + this.random.nextInt(6) - 2.0,
+                    this.getZ() + this.random.nextInt(6) - this.random.nextInt(6)
+            );
+            this.setHoverTicks(30);
         }
-        double d = (double)this.targetPosition.getX() + 0.5 - this.getX();
-        double e = (double)this.targetPosition.getY() + 0.1 - this.getY();
-        double f = (double)this.targetPosition.getZ() + 0.5 - this.getZ();
-        Vec3 vec3 = this.getDeltaMovement();
-        Vec3 vec32 = vec3.add((Math.signum(d) * 0.5 - vec3.x) * (double)0.1f, (Math.signum(e) * (double)0.7f - vec3.y) * (double)0.1f, (Math.signum(f) * 0.5 - vec3.z) * (double)0.1f);
-        this.setDeltaMovement(vec32);
-        float g = (float)(Mth.atan2(vec32.z, vec32.x) * 57.2957763671875) - 90.0f;
-        float h = Mth.wrapDegrees(g - this.getYRot());
-        this.zza = 0.5f;
-        this.setYRot(this.getYRot() + h);
+        if (this.targetPosition != null) {
+            double x = this.targetPosition.getX() + 0.5 - this.getX();
+            double y = this.targetPosition.getY() + 0.1 - this.getY();
+            double z = this.targetPosition.getZ() + 0.5 - this.getZ();
+            Vec3 vec3 = this.getDeltaMovement();
+            Vec3 vec32 = vec3.add((Math.signum(x) * 0.5 - vec3.x) * 0.1f, (Math.signum(y) * 0.7f - vec3.y) * 0.1f, (Math.signum(z) * 0.5 - vec3.z) * 0.1f);
+            this.setDeltaMovement(vec32);
+            this.zza = 1.0f;
+            float g = (float) (Mth.atan2(vec32.z, vec32.x) * Mth.RAD_TO_DEG) - 90.0f;
+            float h = Mth.wrapDegrees(g - this.getYRot());
+            this.setYRot(this.getYRot() + h);
+        }
     }
 
     @Override
