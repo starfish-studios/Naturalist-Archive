@@ -29,7 +29,7 @@ public class NaturalistEntityTypes {
     public static final Supplier<EntityType<Hippo>> HIPPO = CommonPlatformHelper.registerEntityType("hippo", Hippo::new, MobCategory.CREATURE, 1.8F, 1.8F, 10);
     public static final Supplier<EntityType<Vulture>> VULTURE = CommonPlatformHelper.registerEntityType("vulture", Vulture::new, MobCategory.CREATURE, 0.9f, 0.5f, 10);
     public static final Supplier<EntityType<Boar>> BOAR = CommonPlatformHelper.registerEntityType("boar", Boar::new, MobCategory.CREATURE, 0.9f, 0.9f, 10);
-    public static final Supplier<EntityType<Dragonfly>> DRAGONFLY = CommonPlatformHelper.registerEntityType("dragonfly", Dragonfly::new, MobCategory.CREATURE, 0.7F, 0.6F, 10);
+    public static final Supplier<EntityType<Dragonfly>> DRAGONFLY = CommonPlatformHelper.registerEntityType("dragonfly", Dragonfly::new, MobCategory.CREATURE, 0.9F, 0.7F, 10);
 
     public static void init() {}
 }
