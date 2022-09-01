@@ -14,6 +14,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -40,6 +42,7 @@ public class Dragonfly extends PathfinderMob implements IAnimatable {
     public Dragonfly(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
         this.setHoverTicks(30);
+        this.setNoGravity(true);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -117,28 +120,30 @@ public class Dragonfly extends PathfinderMob implements IAnimatable {
     @Override
     protected void customServerAiStep() {
         super.customServerAiStep();
-        if (this.getHoverTicks() > 0) {
-            this.setHoverTicks(Math.max(0, this.getHoverTicks() - 1));
-        }
         if (!(this.targetPosition == null || this.level.isEmptyBlock(this.targetPosition) && this.targetPosition.getY() > this.level.getMinBuildHeight())) {
             this.targetPosition = null;
         }
-        if (this.getHoverTicks() <= 0 && (this.targetPosition == null || this.targetPosition.closerToCenterThan(this.position(), 2.0))) {
-            this.targetPosition = new BlockPos(
-                    this.getX() + this.random.nextInt(6) - this.random.nextInt(6),
+        if (this.getHoverTicks() > 0) {
+            this.setHoverTicks(Math.max(0, this.getHoverTicks() - 1));
+        } else if (this.targetPosition == null || this.targetPosition.closerToCenterThan(this.position(), 2.0)) {
+            Vec3 randomPos = RandomPos.generateRandomPos(this, () -> new BlockPos(
+                    this.getX() + this.random.nextInt(7) - this.random.nextInt(7),
                     this.getY() + this.random.nextInt(6) - 2.0,
-                    this.getZ() + this.random.nextInt(6) - this.random.nextInt(6)
-            );
-            this.setHoverTicks(30);
+                    this.getZ() + this.random.nextInt(7) - this.random.nextInt(7)
+            ));
+            if (randomPos != null) {
+                this.targetPosition = new BlockPos(randomPos);
+                this.setHoverTicks(15);
+            }
         }
-        if (this.targetPosition != null) {
+        if (this.targetPosition != null && this.getHoverTicks() <= 0) {
             double x = this.targetPosition.getX() + 0.5 - this.getX();
             double y = this.targetPosition.getY() + 0.1 - this.getY();
             double z = this.targetPosition.getZ() + 0.5 - this.getZ();
             Vec3 vec3 = this.getDeltaMovement();
             Vec3 vec32 = vec3.add((Math.signum(x) * 0.5 - vec3.x) * 0.1f, (Math.signum(y) * 0.7f - vec3.y) * 0.1f, (Math.signum(z) * 0.5 - vec3.z) * 0.1f);
             this.setDeltaMovement(vec32);
-            this.zza = 1.0f;
+            this.zza = 5.0f;
             float g = (float) (Mth.atan2(vec32.z, vec32.x) * Mth.RAD_TO_DEG) - 90.0f;
             float h = Mth.wrapDegrees(g - this.getYRot());
             this.setYRot(this.getYRot() + h);
@@ -163,14 +168,13 @@ public class Dragonfly extends PathfinderMob implements IAnimatable {
     }
 
     @Override
+    protected void doWaterSplashEffect() {
+    }
+
+    @Override
     public float getWalkTargetValue(BlockPos blockPos) {
-        if (this.level.getBlockState(blockPos).isAir()) {
-            for (int i = 0; i < 4; i++) {
-                if (this.level.isWaterAt(blockPos.below(i))) {
-                    return 10.0F;
-                }
-            }
-            return 5.0F;
+        if (this.level.getBlockState(blockPos).isAir() && this.level.isWaterAt(blockPos.below(2))) {
+            return 10.0F;
         }
         return 0.0F;
     }
