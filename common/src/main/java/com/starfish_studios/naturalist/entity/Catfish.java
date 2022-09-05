@@ -33,13 +33,18 @@ public class Catfish extends AbstractFish implements IAnimatable {
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("catfish.swim", true));
+        if (!this.isInWater()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("catfish.flop", true));
+        } else {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("catfish.swim", true));
+        }
         return PlayState.CONTINUE;
     }
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
+        data.setResetSpeedInTicks(5);
+        data.addAnimationController(new AnimationController<>(this, "controller", 5, this::predicate));
     }
 
     @Override
