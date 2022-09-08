@@ -33,7 +33,7 @@
 					"parent": "head",
 					"pivot": [0, 4.25, -9],
 					"cubes": [
-						{"origin": [-4, -1.25, -9.5], "size": [8, 5, 7], "inflate": 0.01, "pivot": [0, 1.25, -6], "rotation": [-10, 0, 0], "uv": [56, 19]}
+						{"origin": [-4, -1.25, -12.5], "size": [8, 5, 7], "inflate": 0.01, "pivot": [0, 1.25, -6], "rotation": [-10, 0, 0], "uv": [56, 19]}
 					]
 				},
 				{
@@ -46,7 +46,7 @@
 					]
 				},
 				{
-					"name": "lfin",
+					"name": "left_fin",
 					"parent": "body",
 					"pivot": [5.5, 5, -5],
 					"rotation": [0, -45.0001, 0],
@@ -55,7 +55,7 @@
 					]
 				},
 				{
-					"name": "rfin",
+					"name": "right_fin",
 					"parent": "body",
 					"pivot": [-5.5, 5, -5],
 					"rotation": [0, 45.0001, 0],
