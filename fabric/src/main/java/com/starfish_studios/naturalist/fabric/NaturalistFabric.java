@@ -64,6 +64,7 @@ public class NaturalistFabric implements ModInitializer {
         FabricDefaultAttributeRegistry.register(NaturalistEntityTypes.BOAR.get(), Boar.createAttributes());
         FabricDefaultAttributeRegistry.register(NaturalistEntityTypes.DRAGONFLY.get(), Dragonfly.createAttributes());
         FabricDefaultAttributeRegistry.register(NaturalistEntityTypes.CATFISH.get(), AbstractFish.createAttributes());
+        FabricDefaultAttributeRegistry.register(NaturalistEntityTypes.ALLIGATOR.get(), Alligator.createAttributes());
     }
 
     void addSpawns() {
