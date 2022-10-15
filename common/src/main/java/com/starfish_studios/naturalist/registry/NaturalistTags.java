@@ -27,6 +27,7 @@ public class NaturalistTags {
         public static final TagKey<Item> BIRD_FOOD_ITEMS = tag("bird_food_items");
         public static final TagKey<Item> GIRAFFE_FOOD_ITEMS = tag("giraffe_food_items");
         public static final TagKey<Item> BOAR_FOOD_ITEMS = tag("boar_food_items");
+        public static final TagKey<Item> ALLIGATOR_FOOD_ITEMS = tag("alligator_food_items");
 
         private static TagKey<Item> tag(String name) {
             return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(Naturalist.MOD_ID, name));

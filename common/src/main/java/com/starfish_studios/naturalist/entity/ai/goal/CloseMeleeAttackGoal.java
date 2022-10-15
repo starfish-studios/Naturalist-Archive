@@ -1,5 +1,6 @@
 package com.starfish_studios.naturalist.entity.ai.goal;
 
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
@@ -11,6 +12,6 @@ public class CloseMeleeAttackGoal extends MeleeAttackGoal {
 
     @Override
     protected double getAttackReachSqr(LivingEntity pAttackTarget) {
-        return 4.0F + pAttackTarget.getBbWidth();
+        return Mth.square(this.mob.getBbWidth() * 1.2f);
     }
 }
