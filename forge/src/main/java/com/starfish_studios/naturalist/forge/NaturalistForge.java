@@ -2,8 +2,8 @@ package com.starfish_studios.naturalist.forge;
 
 import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.entity.*;
-import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import com.starfish_studios.naturalist.platform.forge.CommonPlatformHelperImpl;
+import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraftforge.common.MinecraftForge;
@@ -66,5 +66,6 @@ public class NaturalistForge {
         event.put(NaturalistEntityTypes.DRAGONFLY.get(), Dragonfly.createAttributes().build());
         event.put(NaturalistEntityTypes.CATFISH.get(), AbstractFish.createAttributes().build());
         event.put(NaturalistEntityTypes.ALLIGATOR.get(), Alligator.createAttributes().build());
+        event.put(NaturalistEntityTypes.BASS.get(), AbstractFish.createAttributes().build());
     }
 }
