@@ -64,7 +64,7 @@ public class NaturalistForge {
         event.put(NaturalistEntityTypes.VULTURE.get(), Vulture.createAttributes().build());
         event.put(NaturalistEntityTypes.BOAR.get(), Boar.createAttributes().build());
         event.put(NaturalistEntityTypes.DRAGONFLY.get(), Dragonfly.createAttributes().build());
-        event.put(NaturalistEntityTypes.CATFISH.get(), AbstractFish.createAttributes().build());
+        event.put(NaturalistEntityTypes.CATFISH.get(), Catfish.createAttributes().build());
         event.put(NaturalistEntityTypes.ALLIGATOR.get(), Alligator.createAttributes().build());
         event.put(NaturalistEntityTypes.BASS.get(), AbstractFish.createAttributes().build());
     }
