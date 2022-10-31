@@ -46,8 +46,8 @@ public class NaturalistItems {
     public static final Supplier<Item> SNAIL_BUCKET = CommonPlatformHelper.registerNoFluidMobBucketItem("snail_bucket", NaturalistEntityTypes.SNAIL, () -> Fluids.EMPTY, NaturalistSoundEvents.BUCKET_EMPTY_SNAIL);
     public static final Supplier<Item> BEAR_FUR = CommonPlatformHelper.registerItem("bear_fur", () -> new Item(new Item.Properties().tab(Naturalist.TAB)));
     public static final Supplier<Item> CATFISH_BUCKET = CommonPlatformHelper.registerMobBucketItem("catfish_bucket", NaturalistEntityTypes.CATFISH, () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH);
-    public static final Supplier<Item> CATFISH = CommonPlatformHelper.registerItem("catfish", () -> new Item(new Item.Properties().tab(Naturalist.TAB).food(Foods.SALMON)));
-    public static final Supplier<Item> COOKED_CATFISH = CommonPlatformHelper.registerItem("cooked_catfish", () -> new Item(new Item.Properties().tab(Naturalist.TAB).food(Foods.COOKED_SALMON)));
+    public static final Supplier<Item> FISH_FILLET = CommonPlatformHelper.registerItem("fish_fillet", () -> new Item(new Item.Properties().tab(Naturalist.TAB).food(Foods.SALMON)));
+    public static final Supplier<Item> COOKED_FISH_FILLET = CommonPlatformHelper.registerItem("cooked_fish_fillet", () -> new Item(new Item.Properties().tab(Naturalist.TAB).food(Foods.COOKED_SALMON)));
     public static final Supplier<Item> BASS_BUCKET = CommonPlatformHelper.registerMobBucketItem("bass_bucket", NaturalistEntityTypes.BASS, () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH);
 
     public static void init() {}
