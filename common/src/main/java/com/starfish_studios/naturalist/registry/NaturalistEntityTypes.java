@@ -33,6 +33,8 @@ public class NaturalistEntityTypes {
     public static final Supplier<EntityType<Catfish>> CATFISH = CommonPlatformHelper.registerEntityType("catfish", Catfish::new, MobCategory.WATER_AMBIENT, 1.0F, 1.0F, 4);
     public static final Supplier<EntityType<Alligator>> ALLIGATOR = CommonPlatformHelper.registerEntityType("alligator", Alligator::new, MobCategory.CREATURE, 1.8F, 0.8F, 10);
     public static final Supplier<EntityType<Bass>> BASS = CommonPlatformHelper.registerEntityType("bass", Bass::new, MobCategory.WATER_AMBIENT, 0.7f, 0.4f, 4);
+    public static final Supplier<EntityType<Lizard>> LIZARD = CommonPlatformHelper.registerEntityType("lizard", Lizard::new, MobCategory.CREATURE, 0.6F, 0.7F, 10);
+    public static final Supplier<EntityType<LizardTail>> LIZARD_TAIL = CommonPlatformHelper.registerEntityType("lizard_tail", LizardTail::new, MobCategory.CREATURE, 0.7f, 0.5f, 10);
 
     public static void init() {}
 }
