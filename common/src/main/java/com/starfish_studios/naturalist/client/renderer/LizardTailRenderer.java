@@ -33,7 +33,7 @@ public class LizardTailRenderer extends GeoEntityRenderer<LizardTail> {
 
     @Override
     public void renderLate(LizardTail animatable, PoseStack stackIn, float partialTicks, MultiBufferSource renderTypeBuffer, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        stackIn.translate(0, -0.5, 0);
+        stackIn.translate(0, -0.3, 0);
         super.renderLate(animatable, stackIn, partialTicks, renderTypeBuffer, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
     }
 }

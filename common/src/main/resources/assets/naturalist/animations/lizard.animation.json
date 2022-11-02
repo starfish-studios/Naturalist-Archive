@@ -41,6 +41,21 @@
 					}
 				}
 			}
+		},
+		"lizard.sit": {
+			"loop": true,
+			"bones": {
+				"body": {
+					"position": {
+						"vector": [0, -1, 0]
+					}
+				},
+				"legs": {
+					"position": {
+						"vector": [0, -1, 0]
+					}
+				}
+			}
 		}
 	},
 	"geckolib_format_version": 2

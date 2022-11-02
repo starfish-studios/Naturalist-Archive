@@ -43,6 +43,7 @@ public class Lizard extends TamableAnimal implements IAnimatable {
     private static final EntityDataAccessor<Boolean> HAS_TAIL = SynchedEntityData.defineId(Lizard.class, EntityDataSerializers.BOOLEAN);
     private static final Ingredient TEMPT_INGREDIENT = Ingredient.of(NaturalistTags.ItemTags.LIZARD_TEMPT_ITEMS);
     private LizardAvoidEntityGoal<Player> avoidPlayersGoal;
+    private int tailRegrowCooldown = 0;
 
     public Lizard(EntityType<? extends TamableAnimal> entityType, Level level) {
         super(entityType, level);
@@ -108,7 +109,10 @@ public class Lizard extends TamableAnimal implements IAnimatable {
                 if (!player.getAbilities().instabuild) {
                     itemStack.shrink(1);
                 }
-                this.heal(item.getFoodProperties().getNutrition());
+                this.heal(5);
+                if (!this.hasTail() && this.getHealth() >= this.getMaxHealth()) {
+                    this.setHasTail(true);
+                }
                 return InteractionResult.SUCCESS;
             }
             InteractionResult interactionResult = super.mobInteract(player, hand);
@@ -192,8 +196,22 @@ public class Lizard extends TamableAnimal implements IAnimatable {
             for (Mob mob : this.level.getEntitiesOfClass(Mob.class, this.getBoundingBox().inflate(8.0), entity -> entity.getTarget() == this)) {
                 mob.setTarget(lizardTail);
             }
+            this.tailRegrowCooldown = 12000;
         }
         return super.hurt(source, amount);
+    }
+
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        if (!this.hasTail() && !this.level.isClientSide()) {
+            if (this.tailRegrowCooldown > 0) {
+                --this.tailRegrowCooldown;
+            } else {
+                this.playSound(SoundEvents.SLIME_SQUISH, 1.0f, 1.0f);
+                this.setHasTail(true);
+            }
+        }
     }
 
     @Override
