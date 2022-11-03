@@ -44,6 +44,7 @@
 		},
 		"lizard.sit": {
 			"loop": true,
+<<<<<<< Updated upstream
 			"bones": {
 				"body": {
 					"position": {
@@ -54,6 +55,36 @@
 					"position": {
 						"vector": [0, -1, 0]
 					}
+=======
+			"animation_length": 1,
+			"bones": {
+				"body": {
+					"rotation": [-15, 0, 0],
+					"position": [0, 0.25, 0]
+				},
+				"head": {
+					"rotation": [15, 0, 0]
+				},
+				"tail": {
+					"rotation": [15, 0, 0],
+					"position": [0, 0.99, -0.06]
+				},
+				"left_arm": {
+					"rotation": [0.11349, -2.70647, 17.31229],
+					"position": [0, 1, -1]
+				},
+				"right_arm": {
+					"rotation": [0.11349, 2.70647, -17.31229],
+					"position": [0, 1, -1]
+				},
+				"left_leg": {
+					"rotation": [-3.78631, 79.60693, -24.46383],
+					"position": [0, -1.75, 1]
+				},
+				"right_leg": {
+					"rotation": [-3.78631, -79.60693, 24.46383],
+					"position": [0, -1.75, 1]
+>>>>>>> Stashed changes
 				}
 			}
 		}
