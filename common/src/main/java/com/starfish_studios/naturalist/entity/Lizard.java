@@ -98,20 +98,20 @@ public class Lizard extends TamableAnimal implements IAnimatable {
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        ItemStack itemStack = player.getItemInHand(hand);
-        Item item = itemStack.getItem();
+        ItemStack stack = player.getItemInHand(hand);
         if (this.level.isClientSide) {
-            boolean bl = this.isOwnedBy(player) || this.isTame() || itemStack.is(Items.BONE) && !this.isTame();
+            boolean bl = this.isOwnedBy(player) || this.isTame() || TEMPT_INGREDIENT.test(stack) && !this.isTame();
             return bl ? InteractionResult.CONSUME : InteractionResult.PASS;
         }
         if (this.isTame()) {
-            if (this.isFood(itemStack) && this.getHealth() < this.getMaxHealth()) {
+            if (TEMPT_INGREDIENT.test(stack) && this.getHealth() < this.getMaxHealth()) {
                 if (!player.getAbilities().instabuild) {
-                    itemStack.shrink(1);
+                    stack.shrink(1);
                 }
                 this.heal(5);
                 if (!this.hasTail() && this.getHealth() >= this.getMaxHealth()) {
                     this.setHasTail(true);
+                    this.playSound(SoundEvents.SLIME_SQUISH, 1.0f, 1.0f);
                 }
                 return InteractionResult.SUCCESS;
             }
@@ -123,9 +123,9 @@ public class Lizard extends TamableAnimal implements IAnimatable {
             this.setTarget(null);
             return InteractionResult.SUCCESS;
         }
-        if (!TEMPT_INGREDIENT.test(itemStack)) return super.mobInteract(player, hand);
+        if (!TEMPT_INGREDIENT.test(stack)) return super.mobInteract(player, hand);
         if (!player.getAbilities().instabuild) {
-            itemStack.shrink(1);
+            stack.shrink(1);
         }
         if (this.random.nextInt(3) == 0) {
             this.tame(player);
@@ -142,7 +142,7 @@ public class Lizard extends TamableAnimal implements IAnimatable {
 
     @Override
     public boolean isFood(ItemStack stack) {
-        return TEMPT_INGREDIENT.test(stack);
+        return false;
     }
 
     public int getVariant() {
