@@ -234,6 +234,7 @@ public class Lizard extends TamableAnimal implements IAnimatable {
             return PlayState.CONTINUE;
         } else if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("lizard.walk", true));
+            event.getController().setAnimationSpeed(2.0D);
             return PlayState.CONTINUE;
         }
         event.getController().markNeedsReload();
