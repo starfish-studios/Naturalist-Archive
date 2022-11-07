@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "naturalist:block/red_froglass"
+    "all": "naturalist:block/azure_froglass"
   }
 }
