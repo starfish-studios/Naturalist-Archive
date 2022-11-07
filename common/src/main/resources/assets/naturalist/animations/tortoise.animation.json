@@ -6,37 +6,23 @@
 			"animation_length": 2,
 			"bones": {
 				"body": {
-					"rotation": {
-						"vector": [0, "Math.lerp((query.anim_time - 0.0) * 2) * 360", 0]
-					},
-					"position": {
-						"vector": [0, -2, 0]
-					}
+					"rotation": [0, "q.anim_time * 720", 0],
+					"position": [0, -2, 0]
 				},
 				"head": {
-					"scale": {
-						"vector": [0, 0, 1]
-					}
+					"scale": [0, 0, 1]
 				},
 				"left_arm": {
-					"scale": {
-						"vector": [0, 0, 1]
-					}
+					"scale": [0, 0, 1]
 				},
 				"right_arm": {
-					"scale": {
-						"vector": [0, 0, 1]
-					}
+					"scale": [0, 0, 1]
 				},
 				"right_leg": {
-					"scale": {
-						"vector": [0, 0, 1]
-					}
+					"scale": [0, 0, 1]
 				},
 				"left_leg": {
-					"scale": {
-						"vector": [0, 0, 1]
-					}
+					"scale": [0, 0, 1]
 				}
 			}
 		},
