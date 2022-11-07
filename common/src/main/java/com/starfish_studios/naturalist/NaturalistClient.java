@@ -9,6 +9,9 @@ import net.minecraft.client.renderer.RenderType;
 public class NaturalistClient {
     public static void init() {
         ClientPlatformHelper.setRenderLayer(NaturalistBlocks.CHRYSALIS, RenderType.cutout());
+        ClientPlatformHelper.setRenderLayer(NaturalistBlocks.BLUE_FROGLASS, RenderType.translucent());
+        ClientPlatformHelper.setRenderLayer(NaturalistBlocks.GREEN_FROGLASS, RenderType.translucent());
+        ClientPlatformHelper.setRenderLayer(NaturalistBlocks.RED_FROGLASS, RenderType.translucent());
 
         ClientPlatformHelper.registerEntityRenderers(NaturalistEntityTypes.SNAIL, SnailRenderer::new);
         ClientPlatformHelper.registerEntityRenderers(NaturalistEntityTypes.BEAR, BearRenderer::new);

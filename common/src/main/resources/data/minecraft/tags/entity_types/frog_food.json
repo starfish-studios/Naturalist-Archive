@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "naturalist:firefly"
+    "naturalist:firefly",
+    "naturalist:dragonfly"
   ]
 }
