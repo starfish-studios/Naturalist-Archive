@@ -2,6 +2,7 @@ package com.starfish_studios.naturalist.registry;
 
 import com.starfish_studios.naturalist.entity.*;
 import com.starfish_studios.naturalist.platform.CommonPlatformHelper;
+import io.netty.util.Attribute;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 
@@ -35,6 +36,7 @@ public class NaturalistEntityTypes {
     public static final Supplier<EntityType<Bass>> BASS = CommonPlatformHelper.registerEntityType("bass", Bass::new, MobCategory.WATER_AMBIENT, 0.7f, 0.4f, 4);
     public static final Supplier<EntityType<Lizard>> LIZARD = CommonPlatformHelper.registerEntityType("lizard", Lizard::new, MobCategory.CREATURE, 0.8F, 0.5F, 10);
     public static final Supplier<EntityType<LizardTail>> LIZARD_TAIL = CommonPlatformHelper.registerEntityType("lizard_tail", LizardTail::new, MobCategory.CREATURE, 0.7f, 0.5f, 10);
+    public static final Supplier<EntityType<Tortoise>> TORTOISE = CommonPlatformHelper.registerEntityType("tortoise", Tortoise::new, MobCategory.CREATURE, 0.8F, 0.5F, 10);
 
     public static void init() {}
 }
