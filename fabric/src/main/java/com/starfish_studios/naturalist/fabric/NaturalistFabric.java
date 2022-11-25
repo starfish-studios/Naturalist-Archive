@@ -99,7 +99,7 @@ public class NaturalistFabric implements ModInitializer {
     void removeSpawn(TagKey<Biome> tag, List<EntityType<?>> entityTypes) {
         entityTypes.forEach(entityType -> {
             ResourceLocation id = Registry.ENTITY_TYPE.getKey(entityType);
-            Preconditions.checkState(id != Registry.ENTITY_TYPE.getDefaultKey(), "Unregistered entity type: %s", entityType);
+            Preconditions.checkState(Registry.ENTITY_TYPE.containsKey(id), "Unregistered entity type: %s", entityType);
             BiomeModifications.create(id).add(ModificationPhase.REMOVALS, biomeSelector -> biomeSelector.hasTag(tag), context -> context.getSpawnSettings().removeSpawnsOfEntityType(entityType));
         });
     }
