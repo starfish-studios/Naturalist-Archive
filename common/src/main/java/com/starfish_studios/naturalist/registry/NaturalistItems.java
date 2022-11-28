@@ -6,6 +6,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -56,6 +57,5 @@ public class NaturalistItems {
     public static final Supplier<Item> COOKED_BASS = CommonPlatformHelper.registerItem("cooked_bass", () -> new Item(new Item.Properties().tab(Naturalist.TAB).food(Foods.COOKED_COD)));
     public static final Supplier<Item> LIZARD_TAIL = CommonPlatformHelper.registerItem("lizard_tail", () -> new Item(new Item.Properties().tab(Naturalist.TAB).food(new FoodProperties.Builder().nutrition(2).saturationMod(0.8F).meat().effect(new MobEffectInstance(MobEffects.POISON, 100, 0), 1.0f).build())));
     public static final Supplier<Item> COOKED_LIZARD_TAIL = CommonPlatformHelper.registerItem("cooked_lizard_tail", () -> new Item(new Item.Properties().tab(Naturalist.TAB).food(Foods.BAKED_POTATO)));
-
     public static void init() {}
 }
