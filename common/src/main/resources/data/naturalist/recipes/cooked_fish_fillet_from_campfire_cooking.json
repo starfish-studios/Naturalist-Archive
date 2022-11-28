@@ -1,0 +1,9 @@
+{
+      "type": "minecraft:campfire_cooking",
+      "ingredient": {
+        "item": "naturalist:fish_fillet"
+      },
+      "result": "naturalist:cooked_fish_fillet",
+      "experience": 0.35,
+      "cookingtime": 600
+    }
