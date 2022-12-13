@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "naturalist:blue_froglass",
+          "name": "naturalist:azure_froglass",
           "conditions": [
             {
               "condition": "minecraft:entity_properties",
@@ -20,7 +20,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "naturalist:green_froglass",
+          "name": "naturalist:verdant_froglass",
           "conditions": [
             {
               "condition": "minecraft:entity_properties",
@@ -33,7 +33,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "naturalist:red_froglass",
+          "name": "naturalist:crimson_froglass",
           "conditions": [
             {
               "condition": "minecraft:entity_properties",
