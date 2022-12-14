@@ -1,5 +1,6 @@
 package com.starfish_studios.naturalist.entity;
 
+import com.starfish_studios.naturalist.entity.ai.goal.HideGoal;
 import com.starfish_studios.naturalist.registry.NaturalistItems;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -10,17 +11,14 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
-import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.player.Player;
@@ -40,11 +38,10 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 
-public class Snail extends Animal implements IAnimatable, Bucketable {
+public class Snail extends Animal implements IAnimatable, Bucketable, HidingAnimal {
     private final AnimationFactory factory = new AnimationFactory(this);
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(Snail.class, EntityDataSerializers.BOOLEAN);
 
@@ -171,7 +168,8 @@ public class Snail extends Animal implements IAnimatable, Bucketable {
 
     // ANIMATION
 
-    private boolean canHide() {
+    @Override
+    public boolean canHide() {
         List<Player> players = this.level.getNearbyPlayers(TargetingConditions.forNonCombat().range(5.0D).selector(EntitySelector.NO_CREATIVE_OR_SPECTATOR::test), this, this.getBoundingBox().inflate(5.0D, 3.0D, 5.0D));
         return !players.isEmpty();
     }
@@ -208,27 +206,6 @@ public class Snail extends Animal implements IAnimatable, Bucketable {
     @Override
     public AnimationFactory getFactory() {
         return factory;
-    }
-
-    static class HideGoal extends Goal {
-        private final Snail snail;
-
-        public HideGoal(Snail mob) {
-            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.JUMP));
-            this.snail = mob;
-        }
-
-        @Override
-        public boolean canUse() {
-            return snail.canHide();
-        }
-
-        @Override
-        public void start() {
-            snail.setJumping(false);
-            snail.getNavigation().stop();
-            snail.getMoveControl().setWantedPosition(snail.getX(), snail.getY(), snail.getZ(), 0.0D);
-        }
     }
 
     static class SnailStrollGoal extends WaterAvoidingRandomStrollGoal {
