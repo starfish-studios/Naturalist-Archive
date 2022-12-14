@@ -3,6 +3,7 @@ package com.starfish_studios.naturalist.entity;
 import com.starfish_studios.naturalist.entity.ai.goal.HideGoal;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -11,6 +12,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
@@ -21,13 +23,14 @@ import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ShearsItem;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -59,6 +62,17 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob otherParent) {
         return NaturalistEntityTypes.TORTOISE.get().create(level);
+    }
+
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag) {
+        Holder<Biome> holder = level.getBiome(this.blockPosition());
+        if (holder.is(Biomes.SWAMP) || holder.is(Biomes.MANGROVE_SWAMP)) {
+            this.setVariant(1);
+        } else {
+            this.setVariant(0);
+        }
+        return super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
     }
 
     @Override
@@ -195,7 +209,7 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
     }
 
     public int getVariant() {
-        return Mth.clamp(this.entityData.get(VARIANT_ID), 0, 2);
+        return Mth.clamp(this.entityData.get(VARIANT_ID), 0, 1);
     }
 
     public void setVariant(int variant) {
