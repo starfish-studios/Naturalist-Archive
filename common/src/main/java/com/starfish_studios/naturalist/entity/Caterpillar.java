@@ -34,9 +34,10 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class Caterpillar extends ClimbingAnimal implements IAnimatable {
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public Caterpillar(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
@@ -92,7 +93,7 @@ public class Caterpillar extends ClimbingAnimal implements IAnimatable {
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (!(event.getLimbSwingAmount() > -0.05F && event.getLimbSwingAmount() < 0.05F)) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("caterpillar.move", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("caterpillar.move"));
             return PlayState.CONTINUE;
         }
         event.getController().markNeedsReload();

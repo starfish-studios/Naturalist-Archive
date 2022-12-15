@@ -40,12 +40,13 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.List;
 
 public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal {
     public static final int MAX_MOSS_LEVEL = 3;
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private static final Ingredient TEMPT_ITEMS = Ingredient.of(NaturalistTags.ItemTags.TORTOISE_TEMPT_ITEMS);
     private static final EntityDataAccessor<Integer> VARIANT_ID = SynchedEntityData.defineId(Tortoise.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> MOSS_LEVEL = SynchedEntityData.defineId(Tortoise.class, EntityDataSerializers.INT);
@@ -183,7 +184,7 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
     public void aiStep() {
         super.aiStep();
         if (!this.level.isClientSide) {
-            if (this.getMossLevel() < MAX_MOSS_LEVEL && this.random.nextInt(500) == 0) {
+            if (this.getMossLevel() < MAX_MOSS_LEVEL && this.random.nextInt(1000) == 0) {
                 this.setMossLevel(this.getMossLevel() + 1);
             }
         }

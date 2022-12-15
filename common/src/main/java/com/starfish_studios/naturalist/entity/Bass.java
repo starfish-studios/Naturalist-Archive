@@ -16,9 +16,10 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class Bass extends AbstractSchoolingFish implements IAnimatable {
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public Bass(EntityType<? extends AbstractSchoolingFish> entityType, Level level) {
         super(entityType, level);
@@ -56,9 +57,9 @@ public class Bass extends AbstractSchoolingFish implements IAnimatable {
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (!this.isInWater()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("bass.flop", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("bass.flop"));
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("bass.swim", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("bass.swim"));
         }
         return PlayState.CONTINUE;
     }

@@ -33,9 +33,10 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class Alligator extends Animal implements IAnimatable {
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private static final Ingredient FOOD_ITEMS = Ingredient.of(NaturalistTags.ItemTags.ALLIGATOR_FOOD_ITEMS);
 
     public Alligator(EntityType<? extends Animal> entityType, Level level) {
@@ -97,12 +98,12 @@ public class Alligator extends Animal implements IAnimatable {
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
             if (this.isInWater()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("alligator.swim", true));
+                event.getController().setAnimation(new AnimationBuilder().loop("alligator.swim"));
             } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("alligator.walk", true));
+                event.getController().setAnimation(new AnimationBuilder().loop("alligator.walk"));
             }
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("alligator.idle", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("alligator.idle"));
         }
         return PlayState.CONTINUE;
     }
@@ -110,7 +111,7 @@ public class Alligator extends Animal implements IAnimatable {
     private <E extends IAnimatable> PlayState attackPredicate(AnimationEvent<E> event) {
         if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
             event.getController().markNeedsReload();
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("alligator.bite", false));
+            event.getController().setAnimation(new AnimationBuilder().playOnce("alligator.bite"));
             this.swinging = false;
         }
         return PlayState.CONTINUE;

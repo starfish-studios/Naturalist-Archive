@@ -29,11 +29,12 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.List;
 
 public class Deer extends Animal implements IAnimatable {
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private int panicTicks = 0;
     private int eatAnimationTick;
     private EatBlockGoal eatBlockGoal;
@@ -169,18 +170,18 @@ public class Deer extends Animal implements IAnimatable {
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.isEating()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("deer.eat", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("deer.eat"));
             event.getController().setAnimationSpeed(1.0D);
         } else if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
             if (this.isSprinting()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("deer.run", true));
+                event.getController().setAnimation(new AnimationBuilder().loop("deer.run"));
                 event.getController().setAnimationSpeed(2.0D);
             } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("deer.walk", true));
+                event.getController().setAnimation(new AnimationBuilder().loop("deer.walk"));
                 event.getController().setAnimationSpeed(1.25D);
             }
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("deer.idle", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("deer.idle"));
             event.getController().setAnimationSpeed(1.0D);
         }
         return PlayState.CONTINUE;

@@ -58,6 +58,7 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -65,7 +66,7 @@ import java.util.UUID;
 import java.util.function.Predicate;
 
 public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAnimal, Shearable {
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private static final Ingredient FOOD_ITEMS = Ingredient.of(NaturalistTags.ItemTags.BEAR_TEMPT_ITEMS);
     private static final EntityDataAccessor<Boolean> SLEEPING = SynchedEntityData.defineId(Bear.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> SNIFFING = SynchedEntityData.defineId(Bear.class, EntityDataSerializers.BOOLEAN);
@@ -454,16 +455,16 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.isSleeping()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("bear.sleep", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("bear.sleep"));
             return PlayState.CONTINUE;
         } else if (this.isSitting()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("bear.sit", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("bear.sit"));
             return PlayState.CONTINUE;
         } else if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("bear.walk", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("bear.walk"));
             return PlayState.CONTINUE;
         } else if (!this.isSniffing()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("bear.idle", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("bear.idle"));
             return PlayState.CONTINUE;
         }
         event.getController().markNeedsReload();
@@ -472,7 +473,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
 
     private <E extends IAnimatable> PlayState sniffPredicate(AnimationEvent<E> event) {
         if (this.isSniffing()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("bear.sniff", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("bear.sniff"));
             return PlayState.CONTINUE;
         }
         event.getController().markNeedsReload();
@@ -482,7 +483,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
     private <E extends IAnimatable> PlayState swingPredicate(AnimationEvent<E> event) {
         if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
             event.getController().markNeedsReload();
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("bear.swing", false));
+            event.getController().setAnimation(new AnimationBuilder().playOnce("bear.swing"));
             this.swinging = false;
         }
         return PlayState.CONTINUE;
@@ -490,7 +491,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
 
     private <E extends IAnimatable> PlayState eatPredicate(AnimationEvent<E> event) {
         if (this.isEating()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("bear.eat", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("bear.eat"));
             return PlayState.CONTINUE;
         }
         event.getController().markNeedsReload();

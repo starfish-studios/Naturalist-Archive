@@ -42,13 +42,14 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.Random;
 
 public class Firefly extends Animal implements FlyingAnimal, IAnimatable {
     private static final EntityDataAccessor<Integer> GLOW_TICKS_REMAINING = SynchedEntityData.defineId(Firefly.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> SUN_TICKS = SynchedEntityData.defineId(Firefly.class, EntityDataSerializers.INT);
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public Firefly(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
@@ -216,7 +217,7 @@ public class Firefly extends Animal implements FlyingAnimal, IAnimatable {
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.isFlying()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("firefly.fly", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("firefly.fly"));
             return PlayState.CONTINUE;
         }
         event.getController().markNeedsReload();

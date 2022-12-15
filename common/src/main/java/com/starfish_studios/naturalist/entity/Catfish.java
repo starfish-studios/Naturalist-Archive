@@ -1,13 +1,11 @@
 package com.starfish_studios.naturalist.entity;
 
-import com.starfish_studios.naturalist.entity.ai.goal.CloseMeleeAttackGoal;
 import com.starfish_studios.naturalist.registry.NaturalistItems;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
@@ -23,9 +21,10 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class Catfish extends AbstractFish implements IAnimatable {
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public Catfish(EntityType<? extends AbstractFish> entityType, Level level) {
         super(entityType, level);
@@ -54,9 +53,9 @@ public class Catfish extends AbstractFish implements IAnimatable {
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (!this.isInWater()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("catfish.flop", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("catfish.flop"));
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("catfish.swim", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("catfish.swim"));
         }
         return PlayState.CONTINUE;
     }

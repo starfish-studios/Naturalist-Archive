@@ -36,11 +36,12 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 
 public class Butterfly extends Animal implements IAnimatable, FlyingAnimal {
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private static final EntityDataAccessor<Boolean> HAS_NECTAR = SynchedEntityData.defineId(Butterfly.class, EntityDataSerializers.BOOLEAN);
     private int numCropsGrownSincePollination;
 
@@ -154,7 +155,7 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal {
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.isFlying()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("butterfly.fly", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("butterfly.fly"));
             return PlayState.CONTINUE;
         }
         event.getController().markNeedsReload();

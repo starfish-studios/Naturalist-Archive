@@ -49,13 +49,14 @@ import software.bernie.geckolib3.core.event.SoundKeyframeEvent;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
 public class Snake extends ClimbingAnimal implements SleepingAnimal, NeutralMob, IAnimatable {
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private static final Ingredient FOOD_ITEMS = Ingredient.of(NaturalistTags.ItemTags.SNAKE_TEMPT_ITEMS);
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
     private static final EntityDataAccessor<Integer> REMAINING_ANGER_TIME = SynchedEntityData.defineId(Snake.class, EntityDataSerializers.INT);
@@ -343,13 +344,13 @@ public class Snake extends ClimbingAnimal implements SleepingAnimal, NeutralMob,
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.isSleeping()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("snake.sleep", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("snake.sleep"));
             return PlayState.CONTINUE;
         } else if (this.isClimbing()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("snake.climb", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("snake.climb"));
             return PlayState.CONTINUE;
         } else if (!(event.getLimbSwingAmount() > -0.04F && event.getLimbSwingAmount() < 0.04F)) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("snake.move", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("snake.move"));
             return PlayState.CONTINUE;
         }
         event.getController().markNeedsReload();
@@ -359,7 +360,7 @@ public class Snake extends ClimbingAnimal implements SleepingAnimal, NeutralMob,
     private <E extends IAnimatable> PlayState attackPredicate(AnimationEvent<E> event) {
         if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
             event.getController().markNeedsReload();
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("snake.attack", false));
+            event.getController().setAnimation(new AnimationBuilder().playOnce("snake.attack"));
             this.swinging = false;
         }
         return PlayState.CONTINUE;
@@ -368,14 +369,14 @@ public class Snake extends ClimbingAnimal implements SleepingAnimal, NeutralMob,
     private <E extends IAnimatable> PlayState tonguePredicate(AnimationEvent<E> event) {
         if (this.random.nextInt(1000) < this.ambientSoundTime && !this.isSleeping() && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
             event.getController().markNeedsReload();
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("snake.tongue", false));
+            event.getController().setAnimation(new AnimationBuilder().playOnce("snake.tongue"));
         }
         return PlayState.CONTINUE;
     }
 
     private <E extends IAnimatable> PlayState rattlePredicate(AnimationEvent<E> event) {
         if (this.canRattle() && !this.isSleeping()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("snake.rattle", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("snake.rattle"));
             return PlayState.CONTINUE;
         }
         event.getController().markNeedsReload();

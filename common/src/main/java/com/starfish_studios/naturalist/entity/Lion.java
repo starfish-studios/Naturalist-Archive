@@ -41,13 +41,14 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Predicate;
 
 public class Lion extends Animal implements IAnimatable, SleepingAnimal {
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private static final EntityDataAccessor<Boolean> SLEEPING = SynchedEntityData.defineId(Lion.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> HAS_MANE = SynchedEntityData.defineId(Lion.class, EntityDataSerializers.BOOLEAN);
 
@@ -210,21 +211,21 @@ public class Lion extends Animal implements IAnimatable, SleepingAnimal {
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.isSleeping()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(this.hasMane() || this.isBaby() ? "lion.sleep2" : "lion.sleep", true));
+            event.getController().setAnimation(new AnimationBuilder().loop(this.hasMane() || this.isBaby() ? "lion.sleep2" : "lion.sleep"));
             event.getController().setAnimationSpeed(1.0F);
         } else if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
             if (this.isSprinting()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("lion.run", true));
+                event.getController().setAnimation(new AnimationBuilder().loop("lion.run"));
                 event.getController().setAnimationSpeed(2.5F);
             } else if (this.isCrouching()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("lion.prey", true));
+                event.getController().setAnimation(new AnimationBuilder().loop("lion.prey"));
                 event.getController().setAnimationSpeed(0.8F);
             } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("lion.walk", true));
+                event.getController().setAnimation(new AnimationBuilder().loop("lion.walk"));
                 event.getController().setAnimationSpeed(1.0F);
             }
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("lion.idle", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("lion.idle"));
             event.getController().setAnimationSpeed(1.0F);
         }
         return PlayState.CONTINUE;
@@ -233,7 +234,7 @@ public class Lion extends Animal implements IAnimatable, SleepingAnimal {
     private <E extends IAnimatable> PlayState attackPredicate(AnimationEvent<E> event) {
         if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
             event.getController().markNeedsReload();
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("lion.swing", false));
+            event.getController().setAnimation(new AnimationBuilder().playOnce("lion.swing"));
             this.swinging = false;
         }
         return PlayState.CONTINUE;

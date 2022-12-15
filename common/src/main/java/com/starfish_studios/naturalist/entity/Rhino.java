@@ -46,12 +46,13 @@ import software.bernie.geckolib3.core.event.SoundKeyframeEvent;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.EnumSet;
 import java.util.List;
 
 public class Rhino extends Animal implements IAnimatable {
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private static final EntityDataAccessor<Integer> CHARGE_COOLDOWN_TICKS = SynchedEntityData.defineId(Rhino.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> HAS_TARGET = SynchedEntityData.defineId(Rhino.class, EntityDataSerializers.BOOLEAN);
     private int stunnedTick;
@@ -236,21 +237,21 @@ public class Rhino extends Animal implements IAnimatable {
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.stunnedTick > 0) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("rhino.stunned", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("rhino.stunned"));
             event.getController().setAnimationSpeed(1.0F);
         } else if (event.isMoving()) {
             if (this.isSprinting()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("rhino.run", true));
+                event.getController().setAnimation(new AnimationBuilder().loop("rhino.run"));
                 event.getController().setAnimationSpeed(3.0F);
             } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("rhino.walk", true));
+                event.getController().setAnimation(new AnimationBuilder().loop("rhino.walk"));
                 event.getController().setAnimationSpeed(1.0F);
             }
         } else if (this.hasChargeCooldown() && this.hasTarget()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("rhino.foot", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("rhino.foot"));
             event.getController().setAnimationSpeed(1.0F);
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("rhino.idle", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("rhino.idle"));
             event.getController().setAnimationSpeed(1.0F);
         }
         return PlayState.CONTINUE;
@@ -268,7 +269,7 @@ public class Rhino extends Animal implements IAnimatable {
     private <E extends IAnimatable> PlayState attackPredicate(AnimationEvent<E> event) {
         if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
             event.getController().markNeedsReload();
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("rhino.attack", false));
+            event.getController().setAnimation(new AnimationBuilder().playOnce("rhino.attack"));
             this.swinging = false;
         }
         return PlayState.CONTINUE;

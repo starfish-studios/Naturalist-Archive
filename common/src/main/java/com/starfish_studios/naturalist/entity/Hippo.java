@@ -44,12 +44,13 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.EnumSet;
 import java.util.List;
 
 public class Hippo extends Animal implements IAnimatable {
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private static final Ingredient FOOD_ITEMS = Ingredient.of(Blocks.MELON.asItem());
     private int eatingTicks;
 
@@ -175,10 +176,10 @@ public class Hippo extends Animal implements IAnimatable {
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("hippo.walk", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("hippo.walk"));
             event.getController().setAnimationSpeed(1.0D);
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("hippo.idle", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("hippo.idle"));
             event.getController().setAnimationSpeed(1.0D);
         }
         return PlayState.CONTINUE;
@@ -187,7 +188,7 @@ public class Hippo extends Animal implements IAnimatable {
     private <E extends IAnimatable> PlayState attackPredicate(AnimationEvent<E> event) {
         if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
             event.getController().markNeedsReload();
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("hippo.bite", false));
+            event.getController().setAnimation(new AnimationBuilder().playOnce("hippo.bite"));
             this.swinging = false;
         }
         return PlayState.CONTINUE;

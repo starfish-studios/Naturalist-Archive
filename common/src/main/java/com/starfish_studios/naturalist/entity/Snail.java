@@ -37,12 +37,13 @@ import software.bernie.geckolib3.core.event.SoundKeyframeEvent;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.List;
 import java.util.Optional;
 
 public class Snail extends Animal implements IAnimatable, Bucketable, HidingAnimal {
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(Snail.class, EntityDataSerializers.BOOLEAN);
 
     public Snail(EntityType<? extends Animal> type, Level level) {
@@ -176,9 +177,9 @@ public class Snail extends Animal implements IAnimatable, Bucketable, HidingAnim
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.canHide()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("snail.retreat", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("snail.retreat"));
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("snail.move", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("snail.move"));
         }
         return PlayState.CONTINUE;
     }

@@ -46,12 +46,13 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 
 public class Elephant extends Animal implements IAnimatable {
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private static final EntityDataAccessor<Integer> DIRTY_TICKS = SynchedEntityData.defineId(Elephant.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DRINKING = SynchedEntityData.defineId(Elephant.class, EntityDataSerializers.BOOLEAN);
     @Nullable
@@ -199,11 +200,11 @@ public class Elephant extends Animal implements IAnimatable {
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("elephant.walk", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("elephant.walk"));
         } else if (this.isDrinking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("elephant.water", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("elephant.water"));
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("elephant.idle", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("elephant.idle"));
         }
         return PlayState.CONTINUE;
     }
@@ -211,7 +212,7 @@ public class Elephant extends Animal implements IAnimatable {
     private <E extends IAnimatable> PlayState swingPredicate(AnimationEvent<E> event) {
         if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
             event.getController().markNeedsReload();
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("elephant.swing", false));
+            event.getController().setAnimation(new AnimationBuilder().playOnce("elephant.swing"));
             this.swinging = false;
         }
         return PlayState.CONTINUE;

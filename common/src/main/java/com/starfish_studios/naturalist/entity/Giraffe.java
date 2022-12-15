@@ -40,10 +40,11 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class Giraffe extends Animal implements IAnimatable {
     private static final Ingredient FOOD_ITEMS = Ingredient.of(NaturalistTags.ItemTags.GIRAFFE_FOOD_ITEMS);
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private static final EntityDataAccessor<Integer> TAME_TICKS = SynchedEntityData.defineId(Giraffe.class, EntityDataSerializers.INT);
 
     public Giraffe(EntityType<? extends Animal> entityType, Level level) {
@@ -357,14 +358,14 @@ public class Giraffe extends Animal implements IAnimatable {
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
             if (this.isSprinting() || !this.getPassengers().isEmpty()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("giraffe.run", true));
+                event.getController().setAnimation(new AnimationBuilder().loop("giraffe.run"));
                 event.getController().setAnimationSpeed(2.0D);
             } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("giraffe.walk", true));
+                event.getController().setAnimation(new AnimationBuilder().loop("giraffe.walk"));
                 event.getController().setAnimationSpeed(1.0D);
             }
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("giraffe.idle", true));
+            event.getController().setAnimation(new AnimationBuilder().loop("giraffe.idle"));
             event.getController().setAnimationSpeed(1.0D);
         }
         return PlayState.CONTINUE;
@@ -373,7 +374,7 @@ public class Giraffe extends Animal implements IAnimatable {
     private <E extends IAnimatable> PlayState eatPredicate(AnimationEvent<E> event) {
         if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
             event.getController().markNeedsReload();
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("giraffe.eat", false));
+            event.getController().setAnimation(new AnimationBuilder().playOnce("giraffe.eat"));
             this.swinging = false;
         }
         return PlayState.CONTINUE;

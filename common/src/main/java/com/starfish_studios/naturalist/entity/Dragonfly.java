@@ -27,6 +27,7 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 
@@ -35,7 +36,7 @@ public class Dragonfly extends PathfinderMob implements IAnimatable {
     @Nullable
     private BlockPos targetPosition;
     private int hoverTicks;
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public Dragonfly(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
@@ -178,7 +179,7 @@ public class Dragonfly extends PathfinderMob implements IAnimatable {
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("dragonfly.fly", true));
+        event.getController().setAnimation(new AnimationBuilder().loop("dragonfly.fly"));
         return PlayState.CONTINUE;
     }
 
