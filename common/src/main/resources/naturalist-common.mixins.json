@@ -11,7 +11,8 @@
     "CropBlockMixin",
     "MapItemMixin",
     "MobMixin",
-    "MonsterMixin"
+    "MonsterMixin",
+    "ZombieMixin"
   ],
   "injectors": {
     "defaultRequire": 1
