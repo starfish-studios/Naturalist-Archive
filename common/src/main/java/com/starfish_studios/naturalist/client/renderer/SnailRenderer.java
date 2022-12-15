@@ -23,11 +23,6 @@ public class SnailRenderer extends GeoEntityRenderer<Snail> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(Snail entity) {
-        return ClientPlatformHelper.arch$getTextureLocation(modelProvider, entity);
-    }
-
-    @Override
     public RenderType getRenderType(Snail animatable, float partialTicks, PoseStack stack, @Nullable MultiBufferSource renderTypeBuffer, @Nullable VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
         return RenderType.entityCutoutNoCull(textureLocation);
     }

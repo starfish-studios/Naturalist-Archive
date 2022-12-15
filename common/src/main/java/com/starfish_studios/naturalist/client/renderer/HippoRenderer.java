@@ -27,11 +27,6 @@ public class HippoRenderer extends GeoEntityRenderer<Hippo> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(Hippo entity) {
-        return ClientPlatformHelper.arch$getTextureLocation(modelProvider, entity);
-    }
-
-    @Override
     public void renderEarly(Hippo animatable, PoseStack stackIn, float ticks, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float partialTicks) {
         super.renderEarly(animatable, stackIn, ticks, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, partialTicks);
         if (animatable.isBaby()) {

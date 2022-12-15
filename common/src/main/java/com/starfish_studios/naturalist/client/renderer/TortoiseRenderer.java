@@ -24,11 +24,6 @@ public class TortoiseRenderer extends GeoEntityRenderer<Tortoise> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(Tortoise entity) {
-        return ClientPlatformHelper.arch$getTextureLocation(modelProvider, entity);
-    }
-
-    @Override
     public void renderEarly(Tortoise animatable, PoseStack stackIn, float ticks, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float partialTicks) {
         super.renderEarly(animatable, stackIn, ticks, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, partialTicks);
         if (animatable.isBaby()) {

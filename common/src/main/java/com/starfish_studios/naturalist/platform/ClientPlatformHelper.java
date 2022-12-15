@@ -22,9 +22,4 @@ public class ClientPlatformHelper {
     public static <T extends Entity> void registerEntityRenderers(Supplier<EntityType<T>> type, EntityRendererProvider<T> renderProvider) {
         throw new AssertionError();
     }
-
-    @ExpectPlatform
-    public static <T extends IAnimatable> ResourceLocation arch$getTextureLocation(AnimatedGeoModel<T> model, T entity) {
-        throw new AssertionError();
-    }
 }

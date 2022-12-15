@@ -21,8 +21,4 @@ public class ClientPlatformHelperImpl {
     public static <T extends Entity> void registerEntityRenderers(Supplier<EntityType<T>> type, EntityRendererProvider<T> renderProvider) {
         EntityRendererRegistry.register(type.get(), renderProvider);
     }
-
-    public static <T extends IAnimatable> ResourceLocation arch$getTextureLocation(AnimatedGeoModel<T> model, T entity) {
-        return model.getTextureResource(entity);
-    }
 }

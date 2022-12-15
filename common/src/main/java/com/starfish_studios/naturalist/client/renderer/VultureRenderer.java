@@ -26,11 +26,6 @@ public class VultureRenderer extends GeoEntityRenderer<Vulture> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(Vulture entity) {
-        return ClientPlatformHelper.arch$getTextureLocation(modelProvider, entity);
-    }
-
-    @Override
     public RenderType getRenderType(Vulture animatable, float partialTicks, PoseStack stack, @Nullable MultiBufferSource renderTypeBuffer, @Nullable VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
         return RenderType.entityCutoutNoCull(textureLocation);
     }

@@ -22,11 +22,6 @@ public class BassRenderer extends GeoEntityRenderer<Bass> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(Bass entity) {
-        return ClientPlatformHelper.arch$getTextureLocation(modelProvider, entity);
-    }
-
-    @Override
     public RenderType getRenderType(Bass animatable, float partialTicks, PoseStack stack, @Nullable MultiBufferSource renderTypeBuffer, @Nullable VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
         return RenderType.entityCutoutNoCull(textureLocation);
     }

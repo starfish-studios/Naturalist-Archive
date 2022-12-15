@@ -22,11 +22,6 @@ public class LizardTailRenderer extends GeoEntityRenderer<LizardTail> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(LizardTail entity) {
-        return ClientPlatformHelper.arch$getTextureLocation(modelProvider, entity);
-    }
-
-    @Override
     public RenderType getRenderType(LizardTail animatable, float partialTicks, PoseStack stack, @Nullable MultiBufferSource renderTypeBuffer, @Nullable VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
         return RenderType.entityCutoutNoCull(textureLocation);
     }

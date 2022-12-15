@@ -18,9 +18,4 @@ public class SnakeRenderer extends GeoEntityRenderer<Snake> {
         this.shadowRadius = 0.4F;
         this.addLayer(new SleepLayer<>(this, new ResourceLocation(Naturalist.MOD_ID, "geo/snake.geo.json"), new ResourceLocation(Naturalist.MOD_ID, "textures/entity/snake/snake_sleep.png")));
     }
-
-    @Override
-    public ResourceLocation getTextureLocation(Snake entity) {
-        return ClientPlatformHelper.arch$getTextureLocation(modelProvider, entity);
-    }
 }

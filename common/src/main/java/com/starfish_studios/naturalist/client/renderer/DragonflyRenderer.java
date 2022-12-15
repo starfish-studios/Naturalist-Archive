@@ -22,11 +22,6 @@ public class DragonflyRenderer extends GeoEntityRenderer<Dragonfly> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(Dragonfly entity) {
-        return ClientPlatformHelper.arch$getTextureLocation(modelProvider, entity);
-    }
-
-    @Override
     public RenderType getRenderType(Dragonfly animatable, float partialTicks, PoseStack stack, @Nullable MultiBufferSource renderTypeBuffer, @Nullable VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
         return RenderType.entityCutoutNoCull(textureLocation);
     }
