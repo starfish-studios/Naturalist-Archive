@@ -56,7 +56,7 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.2f).add(Attributes.MAX_HEALTH, 8.0).add(Attributes.ATTACK_DAMAGE, 2.0);
+        return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.2f).add(Attributes.MAX_HEALTH, 20.0).add(Attributes.ATTACK_DAMAGE, 2.0);
     }
 
     @Nullable
@@ -74,6 +74,18 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
             this.setVariant(0);
         }
         return super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
+    }
+
+    @Override
+    public void setTame(boolean tamed) {
+        super.setTame(tamed);
+        if (tamed) {
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(30.0);
+            this.setHealth(20.0f);
+        } else {
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0);
+        }
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(4.0);
     }
 
     @Override
