@@ -103,8 +103,8 @@
   "naturalist.subtitles.entity.bear.hurt": "Grizzly Bear hurts",
   "naturalist.subtitles.entity.bear.death": "Grizzly Bear dies",
   "naturalist.subtitles.entity.bear.ambient": "Grizzly Bear groans",
-  "naturalist.subtitles.entity.bear.ambient_baby": "Grizzly Bear Cub hums",
-  "naturalist.subtitles.entity.bear.hurt_baby": "Grizzly Bear Cub hurts",
+  "naturalist.subtitles.entity.bear.ambient_baby": "Grizzly Bear cub hums",
+  "naturalist.subtitles.entity.bear.hurt_baby": "Grizzly Bear cub hurts",
   "naturalist.subtitles.entity.bear.sleep": "Grizzly Bear snores",
   "naturalist.subtitles.entity.bear.sniff": "Grizzly Bear sniffs",
   "naturalist.subtitles.entity.bear.spit": "Grizzly Bear spits",
@@ -114,6 +114,7 @@
   "naturalist.subtitles.entity.lion.roar": "Lion roars",
   "naturalist.subtitles.entity.rhino.scrape": "Rhino scrapes foot",
   "naturalist.subtitles.entity.rhino.ambient": "Rhino growls",
+  "naturalist.subtitles.entity.rhino.ambient_baby": "Rhino baby coos",
   "naturalist.subtitles.entity.snail.crush": "Snail crushes",
   "naturalist.subtitles.entity.snail.move": "Snail inches",
   "naturalist.subtitles.item.bucket.fill_snail": "Snail scooped",
@@ -134,6 +135,19 @@
   "naturalist.subtitles.entity.giraffe.ambient": "Giraffe breathes",
   "naturalist.subtitles.entity.hippo.ambient": "Hippo growls",
   "naturalist.subtitles.entity.hippo.hurt": "Hippo hurts",
+
+  "naturalist.subtitles.entity.alligator.hurt": "Alligator hurts",
+  "naturalist.subtitles.entity.alligator.death": "Alligator dies",
+  "naturalist.subtitles.entity.alligator.ambient": "Alligator bellows",
+  "naturalist.subtitles.entity.alligator.ambient_baby": "Alligator baby chirps",
+
+  "naturalist.subtitles.entity.boar.ambient": "Boar grunts",
+  "naturalist.subtitles.entity.boar.hurt": "Boar hurts",
+  "naturalist.subtitles.entity.boar.death": "Boar dies",
+
+  "naturalist.subtitles.entity.catfish.flop": "Catfish flops",
+  "naturalist.subtitles.entity.bass.flop": "Bass flops",
+
   "advancements.husbandry.ride_giraffe_with_map.title": "I can show you the world!",
   "advancements.husbandry.ride_giraffe_with_map.description": "Use a map while riding a giraffe to increase its range",
   "advancements.husbandry.feed_hippo_melon.title": "Hungry Hungry Hippos",

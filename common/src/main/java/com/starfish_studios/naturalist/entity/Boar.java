@@ -2,6 +2,7 @@ package com.starfish_studios.naturalist.entity;
 
 import com.starfish_studios.naturalist.entity.ai.goal.BabyPanicGoal;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
+import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -107,19 +108,22 @@ public class Boar extends Animal implements NeutralMob, IAnimatable {
         super.customServerAiStep();
     }
 
+    @Nullable
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.PIG_AMBIENT;
+        return NaturalistSoundEvents.BOAR_AMBIENT.get();
     }
 
+    @Nullable
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return SoundEvents.PIG_HURT;
+        return NaturalistSoundEvents.BOAR_HURT.get();
     }
 
+    @Nullable
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.PIG_DEATH;
+        return NaturalistSoundEvents.BOAR_DEATH.get();
     }
 
     @Override
@@ -129,7 +133,7 @@ public class Boar extends Animal implements NeutralMob, IAnimatable {
 
     @Override
     public float getVoicePitch() {
-        return (this.random.nextFloat() - this.random.nextFloat()) * 0.2f + 0.5f;
+        return this.isBaby() ? (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 0.75F : (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 0.5F;
     }
 
     @Override

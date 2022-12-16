@@ -237,7 +237,7 @@
     "sounds": [
       "naturalist:rhino_idle_baby"
     ],
-    "subtitle": "naturalist.subtitles.entity.rhino.ambient"
+    "subtitle": "naturalist.subtitles.entity.rhino.ambient_baby"
   },
   "entity.lion.hurt": {
     "sounds": [
@@ -386,5 +386,109 @@
       "naturalist:hippo_hurt3"
     ],
     "subtitle": "naturalist.subtitles.entity.hippo.hurt"
+  },
+  "entity.alligator.hurt": {
+    "sounds": [
+      "naturalist:gator_hurt1",
+      "naturalist:gator_hurt2",
+      "naturalist:gator_hurt3"
+    ],
+    "subtitle": "naturalist.subtitles.entity.alligator.hurt"
+  },
+  "entity.alligator.death": {
+    "sounds": [
+      "naturalist:gator_death"
+    ],
+    "subtitle": "naturalist.subtitles.entity.alligator.death"
+  },
+  "entity.alligator.ambient": {
+    "sounds": [
+      "naturalist:gator_idle1",
+      "naturalist:gator_idle2"
+    ],
+    "subtitle": "naturalist.subtitles.entity.alligator.ambient"
+  },
+  "entity.alligator.ambient_baby": {
+    "sounds": [
+      "naturalist:gator_baby_idle"
+    ],
+    "subtitle": "naturalist.subtitles.entity.alligator.ambient_baby"
+  },
+  "entity.boar.ambient": {
+    "sounds": [
+      "minecraft:mob/pig/say1",
+      "minecraft:mob/pig/say2",
+      "minecraft:mob/pig/say3"
+    ],
+    "subtitle": "naturalist.subtitles.entity.boar.ambient"
+  },
+    "entity.boar.hurt": {
+        "sounds": [
+        "minecraft:mob/pig/say1",
+        "minecraft:mob/pig/say2",
+        "minecraft:mob/pig/say3"
+        ],
+        "subtitle": "naturalist.subtitles.entity.boar.hurt"
+    },
+    "entity.boar.death": {
+        "sounds": [
+        "minecraft:mob/pig/death"
+        ],
+        "subtitle": "naturalist.subtitles.entity.boar.death"
+    },
+  "entity.boar.step": {
+    "sounds": [
+      "minecraft:mob/pig/step1",
+      "minecraft:mob/pig/step2",
+      "minecraft:mob/pig/step3",
+      "minecraft:mob/pig/step4"
+    ],
+    "subtitle": "naturalist.subtitles.entity.boar.step"
+  },
+  "entity.catfish.flop": {
+    "sounds": [
+      {
+        "name": "minecraft:entity/pufferfish/flop1",
+        "volume": 0.3
+      },
+      {
+        "name": "minecraft:entity/pufferfish/flop2",
+        "volume": 0.3
+      },
+      {
+        "name": "minecraft:entity/pufferfish/flop3",
+        "volume": 0.3
+      },
+      {
+        "name": "minecraft:entity/pufferfish/flop4",
+        "volume": 0.3
+      }
+    ],
+    "subtitle": "naturalist.subtitles.entity.catfish.flop"
+  },
+  "entity.bass.flop": {
+    "sounds": [
+      {
+        "name": "minecraft:entity/fish/flop1",
+        "pitch": 0.8,
+        "volume": 0.3
+      },
+      {
+        "name": "minecraft:entity/fish/flop2",
+        "pitch": 0.8,
+        "volume": 0.3
+      },
+      {
+        "name": "minecraft:entity/fish/flop3",
+        "pitch": 0.8,
+        "volume": 0.3
+      },
+      {
+        "name": "minecraft:entity/fish/flop4",
+        "pitch": 0.8,
+        "volume": 0.3
+      }
+    ],
+    "subtitle": "naturalist.subtitles.entity.bass.flop"
   }
 }

@@ -5,11 +5,14 @@ import com.starfish_studios.naturalist.entity.ai.goal.BabyPanicGoal;
 import com.starfish_studios.naturalist.entity.ai.goal.CloseMeleeAttackGoal;
 import com.starfish_studios.naturalist.registry.NaturalistBlocks;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
+import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -48,6 +51,29 @@ public class Alligator extends Animal implements IAnimatable {
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0f);
         this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0f);
         this.maxUpStep = 1.0f;
+    }
+    
+    @javax.annotation.Nullable
+    @Override
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+        return this.isBaby() ? NaturalistSoundEvents.GATOR_AMBIENT_BABY.get() : NaturalistSoundEvents.GATOR_HURT.get();
+    }
+
+    @javax.annotation.Nullable
+    @Override
+    protected SoundEvent getDeathSound() {
+        return this.isBaby() ? NaturalistSoundEvents.GATOR_AMBIENT_BABY.get() : NaturalistSoundEvents.GATOR_DEATH.get();
+    }
+
+    @Override
+    public float getVoicePitch() {
+        return this.isBaby() ? super.getVoicePitch() * 0.65F : super.getVoicePitch();
+    }
+
+    @javax.annotation.Nullable
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return this.isBaby() ? NaturalistSoundEvents.GATOR_AMBIENT_BABY.get() : NaturalistSoundEvents.GATOR_AMBIENT.get();
     }
 
     @Nullable

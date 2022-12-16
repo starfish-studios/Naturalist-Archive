@@ -1,6 +1,7 @@
 package com.starfish_studios.naturalist.entity;
 
 import com.starfish_studios.naturalist.registry.NaturalistItems;
+import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -43,7 +44,7 @@ public class Catfish extends AbstractFish implements IAnimatable {
 
     @Override
     protected SoundEvent getFlopSound() {
-        return SoundEvents.PUFFER_FISH_FLOP;
+        return NaturalistSoundEvents.CATFISH_FLOP.get();
     }
 
     @Override

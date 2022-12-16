@@ -1,6 +1,7 @@
 package com.starfish_studios.naturalist.entity;
 
 import com.starfish_studios.naturalist.registry.NaturalistItems;
+import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
@@ -52,7 +53,7 @@ public class Bass extends AbstractSchoolingFish implements IAnimatable {
 
     @Override
     protected SoundEvent getFlopSound() {
-        return SoundEvents.SALMON_FLOP;
+        return NaturalistSoundEvents.BASS_FLOP.get();
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
