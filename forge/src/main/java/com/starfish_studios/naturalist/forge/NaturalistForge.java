@@ -4,20 +4,28 @@ import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.entity.*;
 import com.starfish_studios.naturalist.platform.forge.CommonPlatformHelperImpl;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
+import com.starfish_studios.naturalist.registry.forge.NaturalistBiomeModifiers;
+import com.starfish_studios.naturalist.registry.forge.NaturalistConfigForge;
 import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLPaths;
 
 @Mod(Naturalist.MOD_ID)
 public class NaturalistForge {
 
     public NaturalistForge() {
         Naturalist.init();
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, NaturalistConfigForge.COMMON_CONFIG, "naturalist.toml");
+        NaturalistConfigForge.loadConfig(NaturalistConfigForge.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve("naturalist.toml").toString());
 
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 
@@ -26,6 +34,7 @@ public class NaturalistForge {
         CommonPlatformHelperImpl.SOUND_EVENTS.register(bus);
         CommonPlatformHelperImpl.ENTITY_TYPES.register(bus);
         CommonPlatformHelperImpl.POTIONS.register(bus);
+        NaturalistBiomeModifiers.BIOME_MODIFIER_SERIALIZERS.register(bus);
 
         bus.addListener(this::setup);
         bus.addListener(this::createAttributes);

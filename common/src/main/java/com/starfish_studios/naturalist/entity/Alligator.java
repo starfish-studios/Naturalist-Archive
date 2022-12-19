@@ -86,10 +86,6 @@ public class Alligator extends Animal implements IAnimatable {
         return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.2).add(Attributes.MAX_HEALTH, 30.0).add(Attributes.ATTACK_DAMAGE, 10.0);
     }
 
-    public static boolean checkAlligatorSpawnRules(EntityType<? extends Animal> type, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return level.getBlockState(pos.below()).is(BlockTags.FROGS_SPAWNABLE_ON) && Animal.isBrightEnoughToSpawn(level, pos);
-    }
-
     @Override
     protected void registerGoals() {
         super.registerGoals();
