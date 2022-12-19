@@ -26,6 +26,11 @@ public class TortoiseMossLayer extends GeoLayerRenderer<Tortoise> {
     }
 
     @Override
+    public void render(PoseStack PoseStackIn, MultiBufferSource bufferIn, int packedLightIn, Tortoise entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+
+    }
+
+   /* @Override
     public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, Tortoise entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (entitylivingbaseIn.getMossLevel() > 0) {
             RenderType renderType = RenderType.entityCutoutNoCull(LAYERS[entitylivingbaseIn.getMossLevel() - 1]);
@@ -35,4 +40,6 @@ public class TortoiseMossLayer extends GeoLayerRenderer<Tortoise> {
             matrixStackIn.popPose();
         }
     }
+
+    */
 }

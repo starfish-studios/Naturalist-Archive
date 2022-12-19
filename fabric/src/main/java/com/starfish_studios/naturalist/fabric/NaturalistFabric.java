@@ -23,6 +23,7 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 
 import java.util.List;
@@ -69,6 +70,8 @@ public class NaturalistFabric implements ModInitializer {
         FabricDefaultAttributeRegistry.register(NaturalistEntityTypes.LIZARD.get(), Lizard.createAttributes());
         FabricDefaultAttributeRegistry.register(NaturalistEntityTypes.LIZARD_TAIL.get(), LizardTail.createAttributes());
         FabricDefaultAttributeRegistry.register(NaturalistEntityTypes.TORTOISE.get(), Tortoise.createAttributes());
+        FabricDefaultAttributeRegistry.register(NaturalistEntityTypes.ALLIGATOR.get(), Alligator.createAttributes());
+        FabricDefaultAttributeRegistry.register(NaturalistEntityTypes.DRAGONFLY.get(), Dragonfly.createAttributes());
     }
 
     void addSpawns() {
@@ -95,8 +98,13 @@ public class NaturalistFabric implements ModInitializer {
         addMobSpawn(NaturalistTags.Biomes.HAS_HIPPO, MobCategory.CREATURE, NaturalistEntityTypes.HIPPO.get(), config.hippoSpawnWeight, 3, 4);
         addMobSpawn(NaturalistTags.Biomes.HAS_VULTURE, MobCategory.CREATURE, NaturalistEntityTypes.VULTURE.get(), config.vultureSpawnWeight, 2, 4);
         addMobSpawn(NaturalistTags.Biomes.HAS_BOAR, MobCategory.CREATURE, NaturalistEntityTypes.BOAR.get(), config.boarSpawnWeight, 4, 4);
+        addMobSpawn((NaturalistTags.Biomes.HAS_ALLIGATOR), MobCategory.CREATURE, NaturalistEntityTypes.ALLIGATOR.get(), config.alligatorSpawnWeight, 2, 3);
+
         if (config.removeSavannaFarmAnimals) {
             removeSpawn(BiomeTags.IS_SAVANNA, List.of(EntityType.SHEEP, EntityType.PIG, EntityType.CHICKEN, EntityType.COW));
+        }
+        if (config.removeSwampFarmAnimals) {
+            removeSpawn(NaturalistTags.Biomes.HAS_ALLIGATOR, List.of(EntityType.SHEEP, EntityType.PIG, EntityType.CHICKEN, EntityType.COW));
         }
     }
 
