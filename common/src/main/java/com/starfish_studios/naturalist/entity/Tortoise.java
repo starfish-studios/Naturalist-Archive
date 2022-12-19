@@ -242,7 +242,7 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
     }
 
     // ENTITY DATA
-
+    // pee and poop
     /*
     public int getMossLevel() {
         return Mth.clamp(this.entityData.get(MOSS_LEVEL), 0, MAX_MOSS_LEVEL);
