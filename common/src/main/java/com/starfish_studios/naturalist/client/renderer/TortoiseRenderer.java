@@ -19,7 +19,7 @@ import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 public class TortoiseRenderer extends GeoEntityRenderer<Tortoise> {
     public TortoiseRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new TortoiseModel());
-        this.shadowRadius = 0.5F;
+        this.shadowRadius = 0.8F;
         this.addLayer(new TortoiseMossLayer(this));
     }
 
