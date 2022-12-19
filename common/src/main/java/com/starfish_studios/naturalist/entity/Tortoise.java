@@ -2,9 +2,7 @@ package com.starfish_studios.naturalist.entity;
 
 import com.starfish_studios.naturalist.entity.ai.goal.HideGoal;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
-import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -13,7 +11,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -34,7 +31,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -59,19 +55,8 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
         super(entityType, level);
     }
 
-    @Override
-    protected float getStandingEyeHeight(Pose pose, EntityDimensions size) {
-        return 0.35f;
-    }
-
-    @Override
-    protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(SoundEvents.PANDA_STEP, 0.5f, 1.0f);
-    }
-
-
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.1f).add(Attributes.MAX_HEALTH, 20.0).add(Attributes.ATTACK_DAMAGE, 2.0);
+        return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.2f).add(Attributes.MAX_HEALTH, 20.0).add(Attributes.ATTACK_DAMAGE, 2.0);
     }
 
     @Nullable
@@ -83,11 +68,9 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag) {
         Holder<Biome> holder = level.getBiome(this.blockPosition());
-        if (holder.is(BiomeTags.IS_JUNGLE) || holder.is(Biomes.DARK_FOREST)) {
-            this.setVariant(2);
-        } else if (holder.is(Biomes.SWAMP) || holder.is(Biomes.MANGROVE_SWAMP) || holder.is(BiomeTags.IS_FOREST)) {
+        if (holder.is(Biomes.SWAMP) || holder.is(Biomes.MANGROVE_SWAMP)) {
             this.setVariant(1);
-        } else if (holder.is(Biomes.DESERT) || holder.is(BiomeTags.IS_BADLANDS)){
+        } else {
             this.setVariant(0);
         }
         return super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
@@ -111,10 +94,11 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(1, new HideGoal<>(this));
-        this.goalSelector.addGoal(2, new TemptGoal(this, 1.0, TEMPT_ITEMS, false));
-        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 0.8));
+        this.goalSelector.addGoal(2, new TemptGoal(this, 0.6, TEMPT_ITEMS, false));
+        this.goalSelector.addGoal(3, new FollowOwnerGoal(this, 1.0, 10.0f, 5.0f, false));
         this.goalSelector.addGoal(4, new BreedGoal(this, 0.8));
-        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 10.0f));
+        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 10.0f));
     }
 
     @Override
@@ -147,22 +131,17 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
                 return InteractionResult.SUCCESS;
             }
             if (this.isFood(itemStack) && (this.getHealth() < this.getMaxHealth() || !this.isTame())) {
-                if (!this.isSilent()) {
-                    this.level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.PANDA_EAT, this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
-                }
                 return InteractionResult.SUCCESS;
             }
-            /*
             if (itemStack.getItem() instanceof ShearsItem) {
                 return InteractionResult.SUCCESS;
             }
             if (itemStack.is(Items.BONE_MEAL)) {
                 return InteractionResult.SUCCESS;
             }
-            */
             return InteractionResult.PASS;
         }
-        /* if (itemStack.is(Items.BONE_MEAL) && this.getMossLevel() < MAX_MOSS_LEVEL) {
+        if (itemStack.is(Items.BONE_MEAL) && this.getMossLevel() < MAX_MOSS_LEVEL) {
             this.setMossLevel(MAX_MOSS_LEVEL);
             this.usePlayerItem(player, hand, itemStack);
             return InteractionResult.CONSUME;
@@ -182,15 +161,11 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
             });
             return InteractionResult.SUCCESS;
         }
-        */
         if (this.isTame()) {
             if (this.isOwnedBy(player)) {
                 if (this.isFood(itemStack) && this.getHealth() < this.getMaxHealth()) {
                     this.usePlayerItem(player, hand, itemStack);
                     this.heal(3.0F);
-                    if (!this.isSilent()) {
-                        this.level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.PANDA_EAT, this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
-                    }
                     return InteractionResult.CONSUME;
                 }
                 InteractionResult interactionResult2 = super.mobInteract(player, hand);
@@ -209,9 +184,6 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
                 this.level.broadcastEntityEvent(this, (byte)6);
             }
             this.setPersistenceRequired();
-            if (!this.isSilent()) {
-                this.level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.PANDA_EAT, this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
-            }
             return InteractionResult.CONSUME;
         }
         if ((interactionResult = super.mobInteract(player, hand)).consumesAction()) {
@@ -220,7 +192,6 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
         return interactionResult;
     }
 
-    /*
     @Override
     public void aiStep() {
         super.aiStep();
@@ -231,7 +202,6 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
         }
     }
 
-    */
     @Override
     public boolean canHide() {
         if (this.isTame()) {
@@ -243,7 +213,6 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
 
     // ENTITY DATA
 
-    /*
     public int getMossLevel() {
         return Mth.clamp(this.entityData.get(MOSS_LEVEL), 0, MAX_MOSS_LEVEL);
     }
@@ -251,10 +220,9 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
     public void setMossLevel(int mossLevel) {
         this.entityData.set(MOSS_LEVEL, mossLevel);
     }
-    */
 
     public int getVariant() {
-        return Mth.clamp(this.entityData.get(VARIANT_ID), 0, 2);
+        return Mth.clamp(this.entityData.get(VARIANT_ID), 0, 1);
     }
 
     public void setVariant(int variant) {
@@ -272,14 +240,14 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("Variant", this.getVariant());
-        // compound.putInt("MossLevel", this.getMossLevel());
+        compound.putInt("MossLevel", this.getMossLevel());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.setVariant(compound.getInt("Variant"));
-        // this.setVariant(compound.getInt("MossLevel"));
+        this.setVariant(compound.getInt("MossLevel"));
     }
 
     @Override
@@ -289,14 +257,11 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
     }
 
     private <T extends IAnimatable> PlayState predicate(AnimationEvent<T> event) {
-        if (this.canHide()) {
+        if (this.isInSittingPose() || this.canHide()) {
             event.getController().setAnimation(new AnimationBuilder().loop("tortoise.retreat"));
-        } else if (this.isInSittingPose() /*|| this.canHide()*/) {
-            event.getController().setAnimation(new AnimationBuilder().loop("tortoise.sit"));
             return PlayState.CONTINUE;
         } else if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
             event.getController().setAnimation(new AnimationBuilder().loop("tortoise.walk"));
-            event.getController().setAnimationSpeed(0.8D);
             return PlayState.CONTINUE;
         }
         event.getController().markNeedsReload();
