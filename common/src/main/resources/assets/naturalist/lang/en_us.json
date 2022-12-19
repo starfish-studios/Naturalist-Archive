@@ -64,6 +64,7 @@
   "block.naturalist.verdant_froglass": "Verdant Froglass",
   "block.naturalist.crimson_froglass": "Crimson Froglass",
   "item.naturalist.cooked_venison": "Cooked Venison",
+  "item.naturalist.raw_bass": "Raw Bass",
   "item.naturalist.cooked_bass": "Cooked Bass",
   "item.naturalist.glow_goop": "Glow Goop",
   "item.naturalist.venison": "Venison",
@@ -75,6 +76,8 @@
   "item.naturalist.snail_shell": "Snail Shell",
   "item.naturalist.lizard_tail": "Lizard Tail",
   "item.naturalist.cooked_lizard_tail": "Cooked Lizard Tail",
+  "item.naturalist.reptile_skin": "Reptile Skin",
+
   "item.minecraft.tipped_arrow.effect.forest_dasher": "Arrow of the Forest Dasher",
   "item.minecraft.potion.effect.forest_dasher": "Potion of the Forest Dasher",
   "item.minecraft.splash_potion.effect.forest_dasher": "Splash Potion of the Forest Dasher",
@@ -83,6 +86,7 @@
   "item.minecraft.potion.effect.glowing": "Potion of Glowing",
   "item.minecraft.splash_potion.effect.glowing": "Splash Potion of Glowing",
   "item.minecraft.lingering_potion.effect.glowing": "Lingering Potion of Glowing",
+
   "naturalist.subtitles.entity.bird.hurt": "Bird hurts",
   "naturalist.subtitles.entity.bird.death": "Bird dies",
   "naturalist.subtitles.entity.bird.eat": "Bird eats",
