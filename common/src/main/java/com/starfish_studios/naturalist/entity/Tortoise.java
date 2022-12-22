@@ -2,7 +2,6 @@ package com.starfish_studios.naturalist.entity;
 
 import com.starfish_studios.naturalist.entity.ai.goal.HideGoal;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
-import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
@@ -12,7 +11,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
@@ -25,17 +23,14 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ShearsItem;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
-import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -49,18 +44,16 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 import java.util.List;
 
 public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal {
-    public static final int MAX_MOSS_LEVEL = 3;
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private static final Ingredient TEMPT_ITEMS = Ingredient.of(NaturalistTags.ItemTags.TORTOISE_TEMPT_ITEMS);
     private static final EntityDataAccessor<Integer> VARIANT_ID = SynchedEntityData.defineId(Tortoise.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> MOSS_LEVEL = SynchedEntityData.defineId(Tortoise.class, EntityDataSerializers.INT);
 
     public Tortoise(EntityType<? extends TamableAnimal> entityType, Level level) {
         super(entityType, level);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.14f).add(Attributes.MAX_HEALTH, 20.0).add(Attributes.ATTACK_DAMAGE, 2.0);
+        return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.14f).add(Attributes.MAX_HEALTH, 20.0).add(Attributes.ATTACK_DAMAGE, 2.0).add(Attributes.KNOCKBACK_RESISTANCE, 0.6);
     }
 
     @Nullable
@@ -72,7 +65,15 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob otherParent) {
-        return NaturalistEntityTypes.TORTOISE.get().create(level);
+        Tortoise tortoise = NaturalistEntityTypes.TORTOISE.get().create(level);
+        if (otherParent instanceof Tortoise tortoiseParent) {
+            if (this.getVariant() == tortoiseParent.getVariant()) {
+                tortoise.setVariant(this.getVariant());
+            } else {
+                tortoise.setVariant(this.random.nextBoolean() ? tortoiseParent.getVariant() : this.getVariant());
+            }
+        }
+        return tortoise;
     }
 
     @Override
@@ -80,6 +81,8 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
         Holder<Biome> holder = level.getBiome(this.blockPosition());
         if (holder.is(Biomes.SWAMP) || holder.is(Biomes.MANGROVE_SWAMP)) {
             this.setVariant(1);
+        } else if (holder.is(BiomeTags.IS_JUNGLE) || holder.is(Biomes.DARK_FOREST)) {
+            this.setVariant(2);
         } else {
             this.setVariant(0);
         }
@@ -129,7 +132,12 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
 
     @Override
     public void knockback(double strength, double x, double z) {
-        super.knockback(this.isInSittingPose() || this.canHide() ? strength / 2 : strength, x, z);
+        super.knockback(this.isInSittingPose() || this.canHide() ? strength / 4 : strength, x, z);
+    }
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        return super.hurt(source, this.canHide() ? amount * 0.8F : amount);
     }
 
     @Override
@@ -146,30 +154,7 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
             if (itemStack.getItem() instanceof ShearsItem) {
                 return InteractionResult.SUCCESS;
             }
-            if (itemStack.is(Items.BONE_MEAL)) {
-                return InteractionResult.SUCCESS;
-            }
             return InteractionResult.PASS;
-        }
-        if (itemStack.is(Items.BONE_MEAL) && this.getMossLevel() < MAX_MOSS_LEVEL) {
-            this.setMossLevel(MAX_MOSS_LEVEL);
-            this.usePlayerItem(player, hand, itemStack);
-            return InteractionResult.CONSUME;
-        }
-        if (itemStack.getItem() instanceof ShearsItem && this.getMossLevel() > 0) {
-            this.level.playSound(null, this, SoundEvents.SHEEP_SHEAR, SoundSource.PLAYERS, 1.0F, 1.0F);
-            for(int j = 0; j < this.getMossLevel(); ++j) {
-                ItemEntity itemEntity = this.spawnAtLocation(Items.MOSS_CARPET, 1);
-                if (itemEntity != null) {
-                    itemEntity.setDeltaMovement(itemEntity.getDeltaMovement().add((this.random.nextFloat() - this.random.nextFloat()) * 0.1F, this.random.nextFloat() * 0.05F, (this.random.nextFloat() - this.random.nextFloat()) * 0.1F));
-                }
-            }
-            this.setMossLevel(0);
-            this.gameEvent(GameEvent.SHEAR, player);
-            itemStack.hurtAndBreak(1, player, (playerx) -> {
-                playerx.broadcastBreakEvent(hand);
-            });
-            return InteractionResult.SUCCESS;
         }
         if (this.isTame()) {
             if (this.isOwnedBy(player)) {
@@ -203,16 +188,6 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
     }
 
     @Override
-    public void aiStep() {
-        super.aiStep();
-        if (!this.level.isClientSide) {
-            if (this.getMossLevel() < MAX_MOSS_LEVEL && this.random.nextInt(1000) == 0) {
-                this.setMossLevel(this.getMossLevel() + 1);
-            }
-        }
-    }
-
-    @Override
     public boolean canHide() {
         if (this.isTame()) {
             return false;
@@ -223,16 +198,8 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
 
     // ENTITY DATA
 
-    public int getMossLevel() {
-        return Mth.clamp(this.entityData.get(MOSS_LEVEL), 0, MAX_MOSS_LEVEL);
-    }
-
-    public void setMossLevel(int mossLevel) {
-        this.entityData.set(MOSS_LEVEL, mossLevel);
-    }
-
     public int getVariant() {
-        return Mth.clamp(this.entityData.get(VARIANT_ID), 0, 1);
+        return Mth.clamp(this.entityData.get(VARIANT_ID), 0, 2);
     }
 
     public void setVariant(int variant) {
@@ -243,21 +210,18 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(VARIANT_ID, 0);
-        this.entityData.define(MOSS_LEVEL, 0);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("Variant", this.getVariant());
-        compound.putInt("MossLevel", this.getMossLevel());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.setVariant(compound.getInt("Variant"));
-        this.setVariant(compound.getInt("MossLevel"));
     }
 
     @Override

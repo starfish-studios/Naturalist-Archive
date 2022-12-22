@@ -39,10 +39,15 @@ public class TortoiseModel extends AnimatedGeoModel<Tortoise> {
                         return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/tortoise/raphael.png");
                 }
             }
-        } else if (tortoise.getVariant() == 0) {
-            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/tortoise/brown.png");
+        } else {
+            switch (tortoise.getVariant()) {
+                case 1:
+                    return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/tortoise/green.png");
+                case 2:
+                    return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/tortoise/black.png");
+            }
         }
-        return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/tortoise/green.png");
+        return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/tortoise/brown.png");
     }
 
     @Override

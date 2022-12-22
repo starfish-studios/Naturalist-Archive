@@ -3,9 +3,7 @@ package com.starfish_studios.naturalist.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.starfish_studios.naturalist.client.model.TortoiseModel;
-import com.starfish_studios.naturalist.client.renderer.layers.TortoiseMossLayer;
 import com.starfish_studios.naturalist.entity.Tortoise;
-import com.starfish_studios.naturalist.platform.ClientPlatformHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -20,7 +18,6 @@ public class TortoiseRenderer extends GeoEntityRenderer<Tortoise> {
     public TortoiseRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new TortoiseModel());
         this.shadowRadius = 0.8F;
-        this.addLayer(new TortoiseMossLayer(this));
     }
 
     @Override
