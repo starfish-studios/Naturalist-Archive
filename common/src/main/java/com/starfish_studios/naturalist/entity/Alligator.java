@@ -140,6 +140,7 @@ public class Alligator extends Animal implements IAnimatable {
                 event.getController().setAnimation(new AnimationBuilder().loop("alligator.swim"));
             } else {
                 event.getController().setAnimation(new AnimationBuilder().loop("alligator.walk"));
+                event.getController().setAnimationSpeed(1.5D);
             }
         } else {
             event.getController().setAnimation(new AnimationBuilder().loop("alligator.idle"));
