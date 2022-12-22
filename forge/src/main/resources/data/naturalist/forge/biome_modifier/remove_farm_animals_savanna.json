@@ -1,0 +1,10 @@
+{
+  "type": "forge:remove_spawns",
+  "biomes": "#minecraft:is_savanna",
+  "entity_types": [
+    "minecraft:sheep",
+    "minecraft:pig",
+    "minecraft:chicken",
+    "minecraft:cow"
+  ]
+}
