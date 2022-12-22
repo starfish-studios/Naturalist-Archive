@@ -267,7 +267,10 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
     }
 
     private <T extends IAnimatable> PlayState predicate(AnimationEvent<T> event) {
-        if (this.isInSittingPose() || this.canHide()) {
+        if (this.isInSittingPose()) {
+            event.getController().setAnimation(new AnimationBuilder().loop("tortoise.sit"));
+            return PlayState.CONTINUE;
+        } else if (this.canHide()) {
             event.getController().setAnimation(new AnimationBuilder().loop("tortoise.hide"));
             return PlayState.CONTINUE;
         } else if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
