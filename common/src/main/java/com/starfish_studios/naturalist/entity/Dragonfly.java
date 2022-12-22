@@ -2,19 +2,28 @@ package com.starfish_studios.naturalist.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.util.RandomPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -176,6 +185,34 @@ public class Dragonfly extends PathfinderMob implements IAnimatable {
             return 10.0F;
         }
         return 0.0F;
+    }
+
+    @Override
+    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (stack.is(Items.CHORUS_FRUIT)) {
+            this.playSound(SoundEvents.PLAYER_BURP);
+            if (!player.getAbilities().instabuild) {
+                stack.shrink(1);
+            }
+            if (!this.level.isClientSide) {
+                AreaEffectCloud areaEffectCloud = new AreaEffectCloud(this.level, this.getX(), this.getY(), this.getZ());
+                areaEffectCloud.setOwner(this);
+                areaEffectCloud.setParticle(ParticleTypes.DRAGON_BREATH);
+                areaEffectCloud.setRadius(0.5f);
+                areaEffectCloud.setDuration(200);
+                areaEffectCloud.addEffect(new MobEffectInstance(MobEffects.HARM, 1, 1));
+                areaEffectCloud.setPos(this.getX(), this.getY(), this.getZ());
+                this.level.addFreshEntity(areaEffectCloud);
+            }
+            return InteractionResult.sidedSuccess(this.level.isClientSide);
+        }
+        return super.mobInteract(player , hand);
+    }
+
+    @Override
+    public boolean isInvertedHealAndHarm() {
+        return true;
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
