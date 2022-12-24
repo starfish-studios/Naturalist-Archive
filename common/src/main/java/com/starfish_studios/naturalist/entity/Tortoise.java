@@ -206,6 +206,16 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
         return dimensions.height * 0.3F;
     }
 
+    @Override
+    public double getFluidJumpThreshold() {
+        return 0.4;
+    }
+
+    @Override
+    public boolean canBreatheUnderwater() {
+        return true;
+    }
+
     // ENTITY DATA
 
     public int getVariant() {
