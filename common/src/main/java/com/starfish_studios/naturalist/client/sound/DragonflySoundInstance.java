@@ -1,6 +1,7 @@
 package com.starfish_studios.naturalist.client.sound;
 
 import com.starfish_studios.naturalist.entity.Dragonfly;
+import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
@@ -14,7 +15,7 @@ public class DragonflySoundInstance extends AbstractTickableSoundInstance {
     protected final Dragonfly dragonfly;
 
     public DragonflySoundInstance(Dragonfly dragonfly) {
-        super(SoundEvents.BEE_LOOP, SoundSource.NEUTRAL, SoundInstance.createUnseededRandom());
+        super(NaturalistSoundEvents.DRAGONFLY_LOOP.get(), SoundSource.NEUTRAL, SoundInstance.createUnseededRandom());
         this.dragonfly = dragonfly;
         this.x = (float)dragonfly.getX();
         this.y = (float)dragonfly.getY();
@@ -44,17 +45,11 @@ public class DragonflySoundInstance extends AbstractTickableSoundInstance {
     }
 
     private float getMinPitch() {
-        if (this.dragonfly.isBaby()) {
-            return 1.1f;
-        }
-        return 0.7f;
+        return 1.1f;
     }
 
     private float getMaxPitch() {
-        if (this.dragonfly.isBaby()) {
-            return 1.5f;
-        }
-        return 1.1f;
+        return 1.5f;
     }
 
     @Override

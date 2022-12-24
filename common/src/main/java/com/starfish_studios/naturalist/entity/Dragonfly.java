@@ -191,7 +191,7 @@ public class Dragonfly extends PathfinderMob implements IAnimatable {
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (stack.is(Items.CHORUS_FRUIT)) {
-            this.playSound(SoundEvents.PLAYER_BURP);
+            this.playSound(SoundEvents.GENERIC_EAT);
             if (!player.getAbilities().instabuild) {
                 stack.shrink(1);
             }

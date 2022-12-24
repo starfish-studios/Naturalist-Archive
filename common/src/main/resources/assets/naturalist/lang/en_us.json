@@ -135,18 +135,16 @@
   "naturalist.subtitles.entity.giraffe.ambient": "Giraffe breathes",
   "naturalist.subtitles.entity.hippo.ambient": "Hippo growls",
   "naturalist.subtitles.entity.hippo.hurt": "Hippo hurts",
-
   "naturalist.subtitles.entity.alligator.hurt": "Alligator hurts",
   "naturalist.subtitles.entity.alligator.death": "Alligator dies",
   "naturalist.subtitles.entity.alligator.ambient": "Alligator bellows",
   "naturalist.subtitles.entity.alligator.ambient_baby": "Alligator baby chirps",
-
   "naturalist.subtitles.entity.boar.ambient": "Boar grunts",
   "naturalist.subtitles.entity.boar.hurt": "Boar hurts",
   "naturalist.subtitles.entity.boar.death": "Boar dies",
-
   "naturalist.subtitles.entity.catfish.flop": "Catfish flops",
   "naturalist.subtitles.entity.bass.flop": "Bass flops",
+  "naturalist.subtitles.entity.dragonfly.loop": "Dragonfly buzzes",
 
   "advancements.husbandry.ride_giraffe_with_map.title": "I can show you the world!",
   "advancements.husbandry.ride_giraffe_with_map.description": "Use a map while riding a giraffe to increase its range",

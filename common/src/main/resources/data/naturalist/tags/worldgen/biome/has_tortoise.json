@@ -3,6 +3,7 @@
     "minecraft:swamp",
     "minecraft:mangrove_swamp",
     "minecraft:desert",
+    "#minecraft:is_jungle",
     {
       "id": "#forge:is_swamp",
       "required": false
@@ -17,6 +18,10 @@
     },
     {
       "id": "#c:desert",
+      "required": false
+    },
+    {
+      "id": "#c:jungle",
       "required": false
     }
   ]

@@ -490,5 +490,15 @@
       }
     ],
     "subtitle": "naturalist.subtitles.entity.bass.flop"
+  },
+  "entity.dragonfly.loop": {
+    "sounds": [
+      "minecraft:mob/bee/loop1",
+      "minecraft:mob/bee/loop2",
+      "minecraft:mob/bee/loop3",
+      "minecraft:mob/bee/loop4",
+      "minecraft:mob/bee/loop5"
+    ],
+    "subtitle": "naturalist.subtitles.entity.dragonfly.loop"
   }
 }

@@ -61,18 +61,16 @@ public class NaturalistSoundEvents {
     public static final Supplier<SoundEvent> GIRAFFE_AMBIENT = CommonPlatformHelper.registerSoundEvent("giraffe_ambient", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.giraffe.ambient")));
     public static final Supplier<SoundEvent> HIPPO_AMBIENT = CommonPlatformHelper.registerSoundEvent("hippo_ambient", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.hippo.ambient")));
     public static final Supplier<SoundEvent> HIPPO_HURT = CommonPlatformHelper.registerSoundEvent("hippo_hurt", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.hippo.hurt")));
-
     public static final Supplier<SoundEvent> GATOR_AMBIENT = CommonPlatformHelper.registerSoundEvent("alligator_ambient", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.alligator.ambient")));
     public static final Supplier<SoundEvent> GATOR_AMBIENT_BABY = CommonPlatformHelper.registerSoundEvent("alligator_ambient_baby", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.alligator.ambient_baby")));
     public static final Supplier<SoundEvent> GATOR_HURT = CommonPlatformHelper.registerSoundEvent("alligator_hurt", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.alligator.hurt")));
     public static final Supplier<SoundEvent> GATOR_DEATH = CommonPlatformHelper.registerSoundEvent("alligator_death", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.alligator.death")));
-
     public static final Supplier<SoundEvent> BOAR_AMBIENT = CommonPlatformHelper.registerSoundEvent("boar_ambient", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.boar.ambient")));
     public static final Supplier<SoundEvent> BOAR_HURT = CommonPlatformHelper.registerSoundEvent("boar_hurt", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.boar.hurt")));
     public static final Supplier<SoundEvent> BOAR_DEATH = CommonPlatformHelper.registerSoundEvent("boar_death", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.boar.death")));
-
-     public static final Supplier<SoundEvent> CATFISH_FLOP = CommonPlatformHelper.registerSoundEvent("catfish_flop", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.catfish.flop")));
-     public static final Supplier<SoundEvent> BASS_FLOP = CommonPlatformHelper.registerSoundEvent("bass_flop", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.bass.flop")));
+    public static final Supplier<SoundEvent> CATFISH_FLOP = CommonPlatformHelper.registerSoundEvent("catfish_flop", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.catfish.flop")));
+    public static final Supplier<SoundEvent> BASS_FLOP = CommonPlatformHelper.registerSoundEvent("bass_flop", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.bass.flop")));
+    public static final Supplier<SoundEvent> DRAGONFLY_LOOP = CommonPlatformHelper.registerSoundEvent("dragonfly_loop", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.dragonfly.loop")));
 
     public static void init() {}
 }
