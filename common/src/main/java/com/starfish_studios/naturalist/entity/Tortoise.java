@@ -53,7 +53,7 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.14f).add(Attributes.MAX_HEALTH, 20.0).add(Attributes.ATTACK_DAMAGE, 2.0).add(Attributes.KNOCKBACK_RESISTANCE, 0.6);
+        return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.17f).add(Attributes.MAX_HEALTH, 20.0).add(Attributes.ATTACK_DAMAGE, 2.0).add(Attributes.KNOCKBACK_RESISTANCE, 0.6);
     }
 
     @Nullable
@@ -94,7 +94,7 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
         super.setTame(tamed);
         if (tamed) {
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(30.0);
-            this.setHealth(20.0f);
+            this.setHealth(30.0f);
         } else {
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0);
         }
@@ -104,13 +104,13 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(1, new FloatGoal(this));
+        this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(1, new HideGoal<>(this));
         this.goalSelector.addGoal(2, new TemptGoal(this, 1.0, TEMPT_ITEMS, false));
         this.goalSelector.addGoal(3, new FollowOwnerGoal(this, 1.0, 10.0f, 5.0f, false));
-        this.goalSelector.addGoal(4, new BreedGoal(this, 0.8));
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8));
+        this.goalSelector.addGoal(4, new BreedGoal(this, 1.0));
+        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 10.0f));
     }
 
@@ -194,6 +194,16 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
         }
         List<Player> players = this.level.getNearbyPlayers(TargetingConditions.forNonCombat().range(5.0D).selector(livingEntity -> EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingEntity) && !livingEntity.isDiscrete() && !livingEntity.isHolding(TEMPT_ITEMS)), this, this.getBoundingBox().inflate(5.0D, 3.0D, 5.0D));
         return !players.isEmpty();
+    }
+
+    @Override
+    protected float getWaterSlowDown() {
+        return 0.96f;
+    }
+
+    @Override
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return dimensions.height * 0.3F;
     }
 
     // ENTITY DATA
