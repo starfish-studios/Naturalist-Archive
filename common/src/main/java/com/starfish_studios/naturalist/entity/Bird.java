@@ -22,9 +22,7 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
-import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.FlyingAnimal;
-import net.minecraft.world.entity.animal.ShoulderRidingEntity;
+import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -66,7 +64,9 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new BirdTemptGoal(this, 1.0D, TAME_FOOD, true));
+        this.goalSelector.addGoal(1, new BirdAvoidEntityGoal<>(this, Ocelot.class, 16.0F, 1.0, 1.5));
+        this.goalSelector.addGoal(1, new BirdAvoidEntityGoal<>(this, Cat.class, 16.0F, 1.0, 1.5));
+        this.goalSelector.addGoal(2, new BirdTemptGoal(this, 1.0D, TAME_FOOD, true));
         this.goalSelector.addGoal(3, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(3, new FollowOwnerGoal(this, 1.5D, 5.0F, 1.0F, true));
         this.goalSelector.addGoal(4, new BirdWanderGoal(this, 1.0D));
