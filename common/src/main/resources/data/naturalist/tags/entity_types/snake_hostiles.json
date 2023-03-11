@@ -3,6 +3,9 @@
     "minecraft:rabbit",
     "minecraft:chicken",
     "minecraft:silverfish",
-    "naturalist:snail"
+    "naturalist:snail",
+    "alexsmobs:jerboa",
+    "alexmobs:banana_slug",
+    "alexmobs:platypus"
   ]
 }

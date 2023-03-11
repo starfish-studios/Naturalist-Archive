@@ -3,6 +3,14 @@
     "naturalist:rhino",
     "naturalist:zebra",
     "naturalist:boar",
-    "minecraft:horse"
+    "minecraft:horse",
+    "alexsmobs:capuchin_monkey",
+    "alexsmobs:emu",
+    "alexsmobs:gazelle",
+    "alexsmobs:tasmanian_devil",
+    "alexmobs:rhinoceros",
+    "alexmobs:gelada_monkey",
+    "alexmobs:kangaroo",
+    "alexmobs:caiman"
   ]
 }

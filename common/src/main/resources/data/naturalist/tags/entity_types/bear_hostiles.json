@@ -3,6 +3,11 @@
     "minecraft:tropical_fish",
     "minecraft:salmon",
     "minecraft:cod",
-    "naturalist:deer"
+    "naturalist:deer",
+    "alexsmobs:gazelle",
+    "alexsmobs:platypus",
+    "alexsmobs:tasmanian_devil",
+    "alexsmobs:jerboa",
+    "alexmobs:bison"
   ]
 }
