@@ -15,6 +15,8 @@ public class NaturalistTags {
         public static final TagKey<Block> RHINO_CHARGE_BREAKABLE = tag("rhino_charge_breakable");
         public static final TagKey<Block> VULTURE_PERCH_BLOCKS = tag("vulture_perch_blocks");
         public static final TagKey<Block> VULTURES_SPAWNABLE_ON = tag("vultures_spawnable_on");
+        public static final TagKey<Block> ALLIGATOR_EGG_LAYABLE_ON = tag("alligator_egg_layable_on");
+        public static final TagKey<Block> TORTOISE_EGG_LAYABLE_ON = tag("tortoise_egg_layable_on");
 
         private static TagKey<Block> tag(String name) {
             return TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(Naturalist.MOD_ID, name));

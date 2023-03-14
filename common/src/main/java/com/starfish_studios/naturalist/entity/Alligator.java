@@ -1,16 +1,19 @@
 package com.starfish_studios.naturalist.entity;
 
-import com.starfish_studios.naturalist.entity.ai.goal.BabyHurtByTargetGoal;
-import com.starfish_studios.naturalist.entity.ai.goal.BabyPanicGoal;
-import com.starfish_studios.naturalist.entity.ai.goal.CloseMeleeAttackGoal;
+import com.starfish_studios.naturalist.entity.ai.goal.*;
 import com.starfish_studios.naturalist.registry.NaturalistBlocks;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -18,16 +21,15 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.Cow;
-import net.minecraft.world.entity.animal.Pig;
-import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.TurtleEggBlock;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.AnimationState;
@@ -42,14 +44,16 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.List;
 
-public class Alligator extends Animal implements IAnimatable {
+public class Alligator extends Animal implements IAnimatable, EggLayingAnimal {
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private static final Ingredient FOOD_ITEMS = Ingredient.of(NaturalistTags.ItemTags.ALLIGATOR_FOOD_ITEMS);
+    private static final EntityDataAccessor<Boolean> HAS_EGG = SynchedEntityData.defineId(Alligator.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> LAYING_EGG = SynchedEntityData.defineId(Alligator.class, EntityDataSerializers.BOOLEAN);
+    int layEggCounter;
 
     public Alligator(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0f);
-        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0f);
         this.maxUpStep = 1.0f;
     }
     
@@ -90,7 +94,8 @@ public class Alligator extends Animal implements IAnimatable {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(1, new EggLayingBreedGoal<>(this, 1.0));
+        this.goalSelector.addGoal(1, new LayEggGoal<>(this, 1.0));
         this.goalSelector.addGoal(2, new CloseMeleeAttackGoal(this, 1.25D, true));
         this.goalSelector.addGoal(3, new BabyPanicGoal(this, 2.0D));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
@@ -132,6 +137,81 @@ public class Alligator extends Animal implements IAnimatable {
     @Override
     public boolean canBreatheUnderwater() {
         return true;
+    }
+
+    @Override
+    public boolean hasEgg() {
+        return this.entityData.get(HAS_EGG);
+    }
+
+    @Override
+    public void setHasEgg(boolean hasEgg) {
+        this.entityData.set(HAS_EGG, hasEgg);
+    }
+
+    @Override
+    public Block getEggBlock() {
+        return NaturalistBlocks.ALLIGATOR_EGG.get();
+    }
+
+    @Override
+    public TagKey<Block> getEggLayableBlockTag() {
+        return NaturalistTags.BlockTags.ALLIGATOR_EGG_LAYABLE_ON;
+    }
+
+    @Override
+    public boolean isLayingEgg() {
+        return this.entityData.get(LAYING_EGG);
+    }
+
+    @Override
+    public void setLayingEgg(boolean isLayingEgg) {
+        this.layEggCounter = isLayingEgg ? 1 : 0;
+        this.entityData.set(LAYING_EGG, isLayingEgg);
+    }
+
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(HAS_EGG, false);
+        this.entityData.define(LAYING_EGG, false);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putBoolean("HasEgg", this.hasEgg());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.setHasEgg(compound.getBoolean("HasEgg"));
+    }
+
+    @Override
+    public int getLayEggCounter() {
+        return this.layEggCounter;
+    }
+
+    @Override
+    public void setLayEggCounter(int layEggCounter) {
+        this.layEggCounter = layEggCounter;
+    }
+
+    @Override
+    public boolean canFallInLove() {
+        return super.canFallInLove() && !this.hasEgg();
+    }
+
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        BlockPos pos = this.blockPosition();
+        if (this.isAlive() && this.isLayingEgg() && this.layEggCounter >= 1 && this.layEggCounter % 5 == 0 && this.level.getBlockState(pos.below()).is(this.getEggLayableBlockTag())) {
+            this.level.levelEvent(2001, pos, Block.getId(this.level.getBlockState(pos.below())));
+        }
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {

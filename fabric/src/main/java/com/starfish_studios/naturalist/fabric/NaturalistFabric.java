@@ -120,5 +120,6 @@ public class NaturalistFabric implements ModInitializer {
             Preconditions.checkState(Registry.ENTITY_TYPE.containsKey(id), "Unregistered entity type: %s", entityType);
             BiomeModifications.create(id).add(ModificationPhase.REMOVALS, biomeSelector -> biomeSelector.hasTag(tag), context -> context.getSpawnSettings().removeSpawnsOfEntityType(entityType));
         });
+        
     }
 }
