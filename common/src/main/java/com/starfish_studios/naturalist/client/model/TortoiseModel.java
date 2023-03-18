@@ -25,27 +25,11 @@ public class TortoiseModel extends AnimatedGeoModel<Tortoise> {
 
     @Override
     public ResourceLocation getTextureResource(Tortoise tortoise) {
-        if (tortoise.hasCustomName()) {
-            String name = ChatFormatting.stripFormatting(tortoise.getName().getString());
-            if (name != null) {
-                switch (name) {
-                    case "Donatello":
-                        return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/tortoise/donatello.png");
-                    case "Leonardo":
-                        return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/tortoise/leonardo.png");
-                    case "Michaelangelo":
-                        return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/tortoise/michaelangelo.png");
-                    case "Raphael":
-                        return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/tortoise/raphael.png");
-                }
-            }
-        } else {
-            switch (tortoise.getVariant()) {
-                case 1:
-                    return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/tortoise/green.png");
-                case 2:
-                    return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/tortoise/black.png");
-            }
+        switch (tortoise.getVariant()) {
+            case 1:
+                return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/tortoise/green.png");
+            case 2:
+                return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/tortoise/black.png");
         }
         return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/tortoise/brown.png");
     }

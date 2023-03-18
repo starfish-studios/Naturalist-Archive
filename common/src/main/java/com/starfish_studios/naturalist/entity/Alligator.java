@@ -87,7 +87,7 @@ public class Alligator extends Animal implements IAnimatable, EggLayingAnimal {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.2).add(Attributes.MAX_HEALTH, 30.0).add(Attributes.ATTACK_DAMAGE, 10.0);
+        return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.2).add(Attributes.MAX_HEALTH, 30.0).add(Attributes.ATTACK_DAMAGE, 6.0).add(Attributes.KNOCKBACK_RESISTANCE, 0.60);
     }
 
     @Override
@@ -230,8 +230,8 @@ public class Alligator extends Animal implements IAnimatable, EggLayingAnimal {
 
     private <E extends IAnimatable> PlayState attackPredicate(AnimationEvent<E> event) {
         if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
-            event.getController().markNeedsReload();
             event.getController().setAnimation(new AnimationBuilder().playOnce("alligator.bite"));
+            event.getController().markNeedsReload();
             this.swinging = false;
         }
         return PlayState.CONTINUE;
@@ -247,5 +247,17 @@ public class Alligator extends Animal implements IAnimatable, EggLayingAnimal {
     @Override
     public AnimationFactory getFactory() {
         return factory;
+    }
+
+    static class AlligatorBreedGoal extends BreedGoal {
+
+        public AlligatorBreedGoal(Animal animal, double d) {
+            super(animal, d);
+        }
+
+        @Override
+        protected void breed() {
+
+        }
     }
 }

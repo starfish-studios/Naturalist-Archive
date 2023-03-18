@@ -2,7 +2,9 @@ package com.starfish_studios.naturalist.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.client.model.TortoiseModel;
+import com.starfish_studios.naturalist.client.renderer.layers.TortoiseSkinLayer;
 import com.starfish_studios.naturalist.entity.Tortoise;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -18,6 +20,7 @@ public class TortoiseRenderer extends GeoEntityRenderer<Tortoise> {
     public TortoiseRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new TortoiseModel());
         this.shadowRadius = 0.8F;
+        this.addLayer(new TortoiseSkinLayer(this, new ResourceLocation(Naturalist.MOD_ID, "geo/tortoise.geo.json")));
     }
 
     @Override
