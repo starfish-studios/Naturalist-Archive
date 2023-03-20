@@ -23,7 +23,7 @@ public class BoarModel extends AnimatedGeoModel<Boar> {
 
     @Override
     public ResourceLocation getTextureResource(Boar boar) {
-        return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/boar.png");
+        return new ResourceLocation(Naturalist.MOD_ID, boar.isSaddled() ? "textures/entity/boar_saddle.png" : "textures/entity/boar.png");
     }
 
     @Override

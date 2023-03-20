@@ -4,8 +4,8 @@
 		{
 			"description": {
 				"identifier": "geometry.unknown",
-				"texture_width": 64,
-				"texture_height": 64,
+				"texture_width": 128,
+				"texture_height": 128,
 				"visible_bounds_width": 3,
 				"visible_bounds_height": 3.5,
 				"visible_bounds_offset": [0, 1.25, 0]
@@ -25,15 +25,23 @@
 					]
 				},
 				{
+					"name": "saddle",
+					"parent": "body",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [-5, 7, -8], "size": [10, 10, 16], "inflate": 0.25, "uv": [61, 5]}
+					]
+				},
+				{
 					"name": "head",
 					"parent": "body",
-					"pivot": [0, 11.72619, -8],
+					"pivot": [-0.5, 11.51406, -8.3226],
 					"cubes": [
-						{"origin": [3.5, 24.16776, -2.63097], "size": [3, 4, 1], "pivot": [0, 9.00604, 4.98387], "rotation": [45, 0, 0], "uv": [0, 8]},
-						{"origin": [-4.5, 19.16776, -12.63097], "size": [9, 5, 12], "pivot": [0, 9.00604, 4.98387], "rotation": [45, 0, 0], "uv": [0, 27]},
-						{"origin": [3.5, 21.16776, -11.63097], "size": [2, 5, 2], "pivot": [0, 9.00604, 4.98387], "rotation": [45, 0, 0], "uv": [0, 0]},
-						{"origin": [-6.5, 24.16776, -2.63097], "size": [3, 4, 1], "pivot": [0, 9.00604, 4.98387], "rotation": [45, 0, 0], "uv": [0, 8], "mirror": true},
-						{"origin": [-5.5, 21.16776, -11.63097], "size": [2, 5, 2], "pivot": [0, 9.00604, 4.98387], "rotation": [45, 0, 0], "uv": [0, 0], "mirror": true}
+						{"origin": [3.5, 27.51406, -2.3226], "size": [3, 4, 1], "pivot": [0.5, 11.51406, 9.6774], "rotation": [45, 0, 0], "uv": [0, 8]},
+						{"origin": [-4.5, 22.51406, -12.3226], "size": [9, 5, 12], "pivot": [0.5, 11.51406, 9.6774], "rotation": [45, 0, 0], "uv": [0, 27]},
+						{"origin": [3.5, 24.51406, -11.3226], "size": [2, 5, 2], "pivot": [0.5, 11.51406, 9.6774], "rotation": [45, 0, 0], "uv": [0, 0]},
+						{"origin": [-6.5, 27.51406, -2.3226], "size": [3, 4, 1], "pivot": [-0.5, 11.51406, 9.6774], "rotation": [45, 0, 0], "uv": [0, 8], "mirror": true},
+						{"origin": [-5.5, 24.51406, -11.3226], "size": [2, 5, 2], "pivot": [-0.5, 11.51406, 9.6774], "rotation": [45, 0, 0], "uv": [0, 0], "mirror": true}
 					]
 				},
 				{

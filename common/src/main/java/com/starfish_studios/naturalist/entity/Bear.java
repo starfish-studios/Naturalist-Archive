@@ -28,7 +28,6 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraft.world.entity.animal.AbstractSchoolingFish;
@@ -78,10 +77,13 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
     @Nullable
     private UUID persistentAngerTarget;
 
+    public int shearTime;
+
     public Bear(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
         this.maxUpStep = 1.0F;
         this.setCanPickUpLoot(true);
+        this.shearTime = this.random.nextInt(6000) + 6000;
     }
 
     // BREEDING
@@ -162,6 +164,12 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
             }
         }
         this.level.getProfiler().pop();
+
+        if (!this.level.isClientSide && this.isAlive() && !this.isBaby() && --this.shearTime <= 0) {
+            this.playSound(SoundEvents.CHICKEN_EGG, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
+            this.setSheared(false);
+            this.shearTime = this.random.nextInt(6000) + 6000;
+        }
     }
 
     @Override

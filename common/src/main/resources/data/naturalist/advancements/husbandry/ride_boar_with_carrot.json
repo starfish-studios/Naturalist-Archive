@@ -1,0 +1,72 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:saddle"
+    },
+    "title": {
+      "translate": "advancements.husbandry.ride_hog_with_carrot.title"
+    },
+    "description": {
+      "translate": "advancements.husbandry.ride_hog_with_carrot.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "minecraft:husbandry/root",
+  "criteria": {
+    "holding_carrot_mainhand": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "equipment": {
+                "mainhand": {
+                  "items": [
+                    "minecraft:carrot_on_a_stick"
+                  ]
+                }
+              },
+              "vehicle": {
+                "type": "naturalist:boar"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "holding_carrot_offhand": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "equipment": {
+                "offhand": {
+                  "items": [
+                    "minecraft:carrot_on_a_stick"
+                  ]
+                }
+              },
+              "vehicle": {
+                "type": "naturalist:boar"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "holding_carrot_mainhand",
+      "holding_carrot_offhand"
+    ]
+  ]
+}
