@@ -57,6 +57,7 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
     private static final EntityDataAccessor<Boolean> HAS_EGG = SynchedEntityData.defineId(Tortoise.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> LAYING_EGG = SynchedEntityData.defineId(Tortoise.class, EntityDataSerializers.BOOLEAN);
     int layEggCounter;
+    boolean isDigging;
 
     public Tortoise(EntityType<? extends TamableAnimal> entityType, Level level) {
         super(entityType, level);
@@ -263,6 +264,11 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
     }
 
     @Override
+    public void animateHurt() {
+        super.animateHurt();
+    }
+
+    @Override
     public void registerControllers(AnimationData animationData) {
         animationData.setResetSpeedInTicks(5);
         animationData.addAnimationController(new AnimationController<>(this, "controller", 5, this::predicate));
@@ -274,17 +280,22 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
     }
 
     private <T extends IAnimatable> PlayState predicate(AnimationEvent<T> event) {
+        AnimationBuilder builder = new AnimationBuilder();
+        if(this.hurtTime > 0) {
+            event.getController().setAnimation(builder.loop("tortoise.hurt"));
+            return PlayState.CONTINUE;
+        }
         if (this.isInSittingPose()) {
-            event.getController().setAnimation(new AnimationBuilder().loop("tortoise.sit"));
+            event.getController().setAnimation(builder.loop("tortoise.sit"));
             return PlayState.CONTINUE;
         } else if (this.canHide()) {
-            event.getController().setAnimation(new AnimationBuilder().loop("tortoise.hide"));
+            event.getController().setAnimation(builder.loop("tortoise.hide"));
             return PlayState.CONTINUE;
         } else if (this.isLayingEgg())  {
-            event.getController().setAnimation(new AnimationBuilder().loop("tortoise.dig"));
+            event.getController().setAnimation(builder.loop("tortoise.dig"));
             return PlayState.CONTINUE;
         } else if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
-            event.getController().setAnimation(new AnimationBuilder().loop("tortoise.walk"));
+            event.getController().setAnimation(builder.loop("tortoise.walk"));
             if (this.isBaby()) {
                 event.getController().setAnimationSpeed(2.0D);
             } else {

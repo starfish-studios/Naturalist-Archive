@@ -4,6 +4,7 @@ import com.starfish_studios.naturalist.entity.EggLayingAnimal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.Level;
@@ -35,6 +36,12 @@ public class LayEggGoal<T extends Animal & EggLayingAnimal> extends MoveToBlockG
     public void tick() {
         super.tick();
         BlockPos blockPos = this.animal.blockPosition();
+        if(this.animal instanceof TamableAnimal ta){
+            if(ta.isInSittingPose()) {
+                this.animal.setLayingEgg(false);
+                return;
+            }
+        }
         if (!this.animal.isInWater() && this.isReachedTarget()) {
             if (this.animal.getLayEggCounter() < 1) {
                 this.animal.setLayingEgg(true);

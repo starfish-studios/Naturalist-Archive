@@ -50,6 +50,7 @@ public class Alligator extends Animal implements IAnimatable, EggLayingAnimal {
     private static final EntityDataAccessor<Boolean> HAS_EGG = SynchedEntityData.defineId(Alligator.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> LAYING_EGG = SynchedEntityData.defineId(Alligator.class, EntityDataSerializers.BOOLEAN);
     int layEggCounter;
+    boolean isDigging;
 
     public Alligator(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
