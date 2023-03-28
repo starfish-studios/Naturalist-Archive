@@ -478,14 +478,6 @@
 						"vector": [0, -1, 0]
 					}
 				},
-				"head": {
-					"rotation": {
-						"vector": [17.5, "Math.sin((query.anim_time - 0.0) * 720) * 8", 0]
-					},
-					"position": {
-						"vector": [0, 3, 0]
-					}
-				},
 				"left_arm": {
 					"rotation": {
 						"vector": ["21.8472 + Math.cos((query.anim_time - 0.0) * 720) * 45", 3.4947, 23.87189]
@@ -494,6 +486,29 @@
 				"right_arm": {
 					"rotation": {
 						"vector": ["21.8472 + Math.cos((query.anim_time - 0.0) * 720) * -45", -3.4947, -23.87189]
+					}
+				},
+				"head_rot": {
+					"rotation": {
+						"vector": [17.5, "Math.sin((query.anim_time - 0.0) * 720) * 8", 0]
+					},
+					"position": {
+						"vector": [0, 3, 0]
+					}
+				}
+			}
+		},
+		"tortoise.hurt": {
+			"animation_length": 0.25,
+			"bones": {
+				"body": {
+					"rotation": {
+						"vector": [0, 0, "Math.sin((query.anim_time - 0.0) * 1440) * 4"]
+					}
+				},
+				"head_rot": {
+					"rotation": {
+						"vector": [0, 0, "Math.sin((query.anim_time - 0.0) * 1440) * -4"]
 					}
 				}
 			}
