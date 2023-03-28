@@ -272,6 +272,8 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
     public void registerControllers(AnimationData animationData) {
         animationData.setResetSpeedInTicks(5);
         animationData.addAnimationController(new AnimationController<>(this, "controller", 5, this::predicate));
+        // hurtPredicate
+        animationData.addAnimationController(new AnimationController<>(this, "hurtController", 5, this::hurtPredicate));
     }
 
     @Override
@@ -281,10 +283,6 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
 
     private <T extends IAnimatable> PlayState predicate(AnimationEvent<T> event) {
         AnimationBuilder builder = new AnimationBuilder();
-        if(this.hurtTime > 0) {
-            event.getController().setAnimation(builder.loop("tortoise.hurt"));
-            return PlayState.CONTINUE;
-        }
         if (this.isInSittingPose()) {
             event.getController().setAnimation(builder.loop("tortoise.sit"));
             return PlayState.CONTINUE;
@@ -301,6 +299,16 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
             } else {
                 event.getController().setAnimationSpeed(1.1D);
             }
+            return PlayState.CONTINUE;
+        }
+        event.getController().markNeedsReload();
+        return PlayState.STOP;
+    }
+
+    private <T extends IAnimatable> PlayState hurtPredicate(AnimationEvent<T> event) {
+        AnimationBuilder builder = new AnimationBuilder();
+        if(this.hurtTime > 0) {
+            event.getController().setAnimation(builder.loop("tortoise.hurt"));
             return PlayState.CONTINUE;
         }
         event.getController().markNeedsReload();
