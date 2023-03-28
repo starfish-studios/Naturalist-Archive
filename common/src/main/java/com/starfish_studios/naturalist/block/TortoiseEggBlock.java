@@ -1,6 +1,7 @@
 package com.starfish_studios.naturalist.block;
 
 import com.starfish_studios.naturalist.entity.Alligator;
+import com.starfish_studios.naturalist.entity.Tortoise;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -8,9 +9,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.Turtle;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
@@ -21,8 +20,8 @@ import net.minecraft.world.level.block.TurtleEggBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 
-public class AlligatorEggBlock extends TurtleEggBlock {
-    public AlligatorEggBlock(Properties properties) {
+public class TortoiseEggBlock extends TurtleEggBlock {
+    public TortoiseEggBlock(Properties properties) {
         super(properties);
     }
 
@@ -38,10 +37,10 @@ public class AlligatorEggBlock extends TurtleEggBlock {
                 level.removeBlock(pos, false);
                 for (int j = 0; j < state.getValue(EGGS); ++j) {
                     level.levelEvent(2001, pos, Block.getId(state));
-                    Alligator alligator = NaturalistEntityTypes.ALLIGATOR.get().create(level);
-                    alligator.setAge(-24000);
-                    alligator.moveTo((double)pos.getX() + 0.3 + (double)j * 0.2, pos.getY(), (double)pos.getZ() + 0.3, 0.0f, 0.0f);
-                    level.addFreshEntity(alligator);
+                    Tortoise tortoise = NaturalistEntityTypes.TORTOISE.get().create(level);
+                    tortoise.setAge(-24000);
+                    tortoise.moveTo((double)pos.getX() + 0.3 + (double)j * 0.2, pos.getY(), (double)pos.getZ() + 0.3, 0.0f, 0.0f);
+                    level.addFreshEntity(tortoise);
                 }
             }
         }

@@ -1,8 +1,12 @@
 package com.starfish_studios.naturalist.entity;
 
+import com.starfish_studios.naturalist.entity.ai.goal.EggLayingBreedGoal;
 import com.starfish_studios.naturalist.entity.ai.goal.HideGoal;
+import com.starfish_studios.naturalist.entity.ai.goal.LayEggGoal;
+import com.starfish_studios.naturalist.registry.NaturalistBlocks;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -12,6 +16,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BiomeTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -31,6 +36,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -43,10 +50,13 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.List;
 
-public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal {
+public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal, EggLayingAnimal {
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private static final Ingredient TEMPT_ITEMS = Ingredient.of(NaturalistTags.ItemTags.TORTOISE_TEMPT_ITEMS);
     private static final EntityDataAccessor<Integer> VARIANT_ID = SynchedEntityData.defineId(Tortoise.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> HAS_EGG = SynchedEntityData.defineId(Tortoise.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> LAYING_EGG = SynchedEntityData.defineId(Tortoise.class, EntityDataSerializers.BOOLEAN);
+    int layEggCounter;
 
     public Tortoise(EntityType<? extends TamableAnimal> entityType, Level level) {
         super(entityType, level);
@@ -72,6 +82,8 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
             } else {
                 tortoise.setVariant(this.random.nextBoolean() ? tortoiseParent.getVariant() : this.getVariant());
             }
+            // IF SHOULD BE TAMED BY SAME PLAYER AS A PARENT UNCOMMENT THIS
+            //tortoise.setOwnerUUID(this.random.nextBoolean() ? tortoiseParent.getOwnerUUID() : this.getOwnerUUID());
         }
         return tortoise;
     }
@@ -105,6 +117,8 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new EggLayingBreedGoal<>(this, 1.0));
+        this.goalSelector.addGoal(1, new LayEggGoal<>(this, 1.0));
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(1, new HideGoal<>(this));
         this.goalSelector.addGoal(2, new TemptGoal(this, 1.0, TEMPT_ITEMS, false));
@@ -230,24 +244,33 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(VARIANT_ID, 0);
+        this.entityData.define(HAS_EGG, false);
+        this.entityData.define(LAYING_EGG, false);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("Variant", this.getVariant());
+        compound.putBoolean("HasEgg", this.hasEgg());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.setVariant(compound.getInt("Variant"));
+        this.setHasEgg(compound.getBoolean("HasEgg"));
     }
 
     @Override
     public void registerControllers(AnimationData animationData) {
         animationData.setResetSpeedInTicks(5);
         animationData.addAnimationController(new AnimationController<>(this, "controller", 5, this::predicate));
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pos, BlockState state) {
+        super.playStepSound(pos, state);
     }
 
     private <T extends IAnimatable> PlayState predicate(AnimationEvent<T> event) {
@@ -257,6 +280,8 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
         } else if (this.canHide()) {
             event.getController().setAnimation(new AnimationBuilder().loop("tortoise.hide"));
             return PlayState.CONTINUE;
+        } else if (this.isLayingEgg())  {
+            event.getController().setAnimation(new AnimationBuilder().loop("tortoise.digging"));
         } else if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
             event.getController().setAnimation(new AnimationBuilder().loop("tortoise.walk"));
             if (this.isBaby()) {
@@ -273,5 +298,59 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
     @Override
     public AnimationFactory getFactory() {
         return factory;
+    }
+
+    @Override
+    public boolean hasEgg() {
+        return this.entityData.get(HAS_EGG);
+    }
+
+    @Override
+    public void setHasEgg(boolean hasEgg) {
+        this.entityData.set(HAS_EGG, hasEgg);
+    }
+
+    @Override
+    public boolean isLayingEgg() {
+        return this.entityData.get(LAYING_EGG);
+    }
+
+    @Override
+    public void setLayingEgg(boolean isLayingEgg) {
+        this.entityData.set(LAYING_EGG, isLayingEgg);
+    }
+
+    @Override
+    public int getLayEggCounter() {
+        return this.layEggCounter;
+    }
+
+    @Override
+    public void setLayEggCounter(int layEggCounter) {
+        this.layEggCounter = layEggCounter;
+    }
+
+    @Override
+    public Block getEggBlock() {
+        return NaturalistBlocks.TORTOISE_EGG.get();
+    }
+
+    @Override
+    public TagKey<Block> getEggLayableBlockTag() {
+        return NaturalistTags.BlockTags.TORTOISE_EGG_LAYABLE_ON;
+    }
+
+    @Override
+    public boolean canFallInLove() {
+        return super.canFallInLove() && !this.hasEgg();
+    }
+
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        BlockPos pos = this.blockPosition();
+        if (this.isAlive() && this.isLayingEgg() && this.layEggCounter >= 1 && this.layEggCounter % 5 == 0 && this.level.getBlockState(pos.below()).is(this.getEggLayableBlockTag())) {
+            this.level.levelEvent(2001, pos, Block.getId(this.level.getBlockState(pos.below())));
+        }
     }
 }

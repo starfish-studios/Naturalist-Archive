@@ -1,13 +1,16 @@
 package com.starfish_studios.naturalist.registry;
 
 import com.starfish_studios.naturalist.Naturalist;
+import com.starfish_studios.naturalist.item.NaturalistArmorMaterials;
 import com.starfish_studios.naturalist.platform.CommonPlatformHelper;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.food.Foods;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
@@ -46,6 +49,7 @@ public class NaturalistItems {
     public static final Supplier<Item> VENISON = CommonPlatformHelper.registerItem("venison", () -> new Item(new Item.Properties().tab(Naturalist.TAB).food(Foods.MUTTON)));
     public static final Supplier<Item> COOKED_VENISON = CommonPlatformHelper.registerItem("cooked_venison", () -> new Item(new Item.Properties().tab(Naturalist.TAB).food(Foods.COOKED_MUTTON)));
     public static final Supplier<Item> ANTLER = CommonPlatformHelper.registerItem("antler", () -> new Item(new Item.Properties().tab(Naturalist.TAB)));
+    public static final Supplier<Item> REPTILE_SKIN = CommonPlatformHelper.registerItem("reptile_skin", () -> new Item(new Item.Properties().tab(Naturalist.TAB)));
     public static final Supplier<Item> GLOW_GOOP = CommonPlatformHelper.registerItem("glow_goop", () -> new Item(new Item.Properties().tab(Naturalist.TAB)));
     public static final Supplier<Item> SNAIL_SHELL = CommonPlatformHelper.registerItem("snail_shell", () -> new Item(new Item.Properties().tab(Naturalist.TAB)));
     public static final Supplier<Item> CHRYSALIS = CommonPlatformHelper.registerItem("chrysalis", () -> new BlockItem(NaturalistBlocks.CHRYSALIS.get(), new Item.Properties().tab(Naturalist.TAB).stacksTo(1)));
@@ -58,5 +62,12 @@ public class NaturalistItems {
     public static final Supplier<Item> COOKED_BASS = CommonPlatformHelper.registerItem("cooked_bass", () -> new Item(new Item.Properties().tab(Naturalist.TAB).food(Foods.COOKED_COD)));
     public static final Supplier<Item> LIZARD_TAIL = CommonPlatformHelper.registerItem("lizard_tail", () -> new Item(new Item.Properties().tab(Naturalist.TAB).food(new FoodProperties.Builder().nutrition(2).saturationMod(0.8F).meat().effect(new MobEffectInstance(MobEffects.POISON, 100, 0), 1.0f).build())));
     public static final Supplier<Item> COOKED_LIZARD_TAIL = CommonPlatformHelper.registerItem("cooked_lizard_tail", () -> new Item(new Item.Properties().tab(Naturalist.TAB).food(Foods.BAKED_POTATO)));
+//
+//    // Armor
+//    public static final Supplier<Item> REPTILE_SKIN_HELMET = CommonPlatformHelper.registerItem("reptile_skin_helmet", () -> new ArmorItem(NaturalistArmorMaterials.REPTILE, EquipmentSlot.HEAD, new Item.Properties().tab(Naturalist.TAB)));
+//    public static final Supplier<Item> REPTILE_SKIN_CHESTPLATE = CommonPlatformHelper.registerItem("reptile_skin_chestplate", () -> new ArmorItem(NaturalistArmorMaterials.REPTILE, EquipmentSlot.CHEST, new Item.Properties().tab(Naturalist.TAB)));
+//    public static final Supplier<Item> REPTILE_SKIN_LEGGINGS = CommonPlatformHelper.registerItem("reptile_skin_leggings", () -> new ArmorItem(NaturalistArmorMaterials.REPTILE, EquipmentSlot.LEGS, new Item.Properties().tab(Naturalist.TAB)));
+//    public static final Supplier<Item> REPTILE_SKIN_BOOTS = CommonPlatformHelper.registerItem("reptile_skin_boots", () -> new ArmorItem(NaturalistArmorMaterials.REPTILE, EquipmentSlot.FEET, new Item.Properties().tab(Naturalist.TAB)));
+
     public static void init() {}
 }
