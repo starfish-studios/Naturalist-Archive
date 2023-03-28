@@ -281,7 +281,8 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
             event.getController().setAnimation(new AnimationBuilder().loop("tortoise.hide"));
             return PlayState.CONTINUE;
         } else if (this.isLayingEgg())  {
-            event.getController().setAnimation(new AnimationBuilder().loop("tortoise.digging"));
+            event.getController().setAnimation(new AnimationBuilder().loop("tortoise.dig"));
+            return PlayState.CONTINUE;
         } else if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
             event.getController().setAnimation(new AnimationBuilder().loop("tortoise.walk"));
             if (this.isBaby()) {
