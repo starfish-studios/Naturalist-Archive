@@ -18,6 +18,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -35,11 +37,13 @@ import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ShearsItem;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.pathfinder.Path;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -55,9 +59,10 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-public class Snake extends ClimbingAnimal implements SleepingAnimal, NeutralMob, IAnimatable {
+public class Snake extends TamableClimbingAnimal implements SleepingAnimal, NeutralMob, IAnimatable {
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private static final Ingredient FOOD_ITEMS = Ingredient.of(NaturalistTags.ItemTags.SNAKE_TEMPT_ITEMS);
+    private static final Ingredient TAME_ITEMS = Ingredient.of(NaturalistTags.ItemTags.SNAKE_TAME_ITEMS);
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
     private static final EntityDataAccessor<Integer> REMAINING_ANGER_TIME = SynchedEntityData.defineId(Snake.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> SLEEPING = SynchedEntityData.defineId(Snake.class, EntityDataSerializers.BOOLEAN);
@@ -65,7 +70,7 @@ public class Snake extends ClimbingAnimal implements SleepingAnimal, NeutralMob,
     @Nullable
     private UUID persistentAngerTarget;
 
-    public Snake(EntityType<? extends Animal> entityType, Level level) {
+    public Snake(EntityType<? extends TamableAnimal> entityType, Level level) {
         super(entityType, level);
         this.setCanPickUpLoot(true);
     }
@@ -131,7 +136,11 @@ public class Snake extends ClimbingAnimal implements SleepingAnimal, NeutralMob,
 
     @Override
     public boolean isFood(ItemStack pStack) {
-        return false;
+        return FOOD_ITEMS.test(pStack);
+    }
+
+    public boolean isTameFood(ItemStack pStack) {
+        return TAME_ITEMS.test(pStack);
     }
 
     @Override
@@ -324,12 +333,61 @@ public class Snake extends ClimbingAnimal implements SleepingAnimal, NeutralMob,
 
     private boolean canRattle() {
         List<Player> players = this.getLevel().getNearbyPlayers(TargetingConditions.forNonCombat().range(4.0D), this, this.getBoundingBox().inflate(4.0D, 2.0D, 4.0D));
+        if(!players.isEmpty() && this.getType().equals(NaturalistEntityTypes.RATTLESNAKE.get()) && !players.get(0).isCreative()){
+            this.setTarget(players.get(0));
+        } else {
+            this.setTarget(null);
+        }
         return !players.isEmpty() && this.getType().equals(NaturalistEntityTypes.RATTLESNAKE.get());
     }
 
     @Override
     protected float getSoundVolume() {
         return 0.15F;
+    }
+
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        InteractionResult interactionResult;
+        ItemStack itemStack = player.getItemInHand(hand);
+        if (this.level.isClientSide) {
+            if (this.isTame() && this.isOwnedBy(player)) {
+                return InteractionResult.SUCCESS;
+            }
+            if (this.isFood(itemStack) && (this.getHealth() < this.getMaxHealth() || !this.isTame())) {
+                return InteractionResult.SUCCESS;
+            }
+            return InteractionResult.PASS;
+        }
+        if (this.isTame()) {
+            if (this.isOwnedBy(player)) {
+                if (this.isFood(itemStack) && this.getHealth() < this.getMaxHealth()) {
+                    this.usePlayerItem(player, hand, itemStack);
+                    this.heal(3.0F);
+                    return InteractionResult.CONSUME;
+                }
+                InteractionResult interactionResult2 = super.mobInteract(player, hand);
+                if (!interactionResult2.consumesAction() || this.isBaby()) {
+                    this.setOrderedToSit(!this.isOrderedToSit());
+                }
+                return interactionResult2;
+            }
+        } else if (this.isTameFood(itemStack)) {
+            this.usePlayerItem(player, hand, itemStack);
+            if (this.random.nextInt(3) == 0) {
+                this.tame(player);
+                this.setOrderedToSit(true);
+                this.level.broadcastEntityEvent(this, (byte)7);
+            } else {
+                this.level.broadcastEntityEvent(this, (byte)6);
+            }
+            this.setPersistenceRequired();
+            return InteractionResult.CONSUME;
+        }
+        if ((interactionResult = super.mobInteract(player, hand)).consumesAction()) {
+            this.setPersistenceRequired();
+        }
+        return interactionResult;
     }
 
     // SOUNDS
@@ -412,13 +470,38 @@ public class Snake extends ClimbingAnimal implements SleepingAnimal, NeutralMob,
 
     static class SnakeMeleeAttackGoal extends MeleeAttackGoal {
 
+        private long lastCanUseCheck;
+        private Path path;
+
         public SnakeMeleeAttackGoal(PathfinderMob pMob, double pSpeedModifier, boolean pFollowingTargetEvenIfNotSeen) {
             super(pMob, pSpeedModifier, pFollowingTargetEvenIfNotSeen);
         }
 
         @Override
         public boolean canUse() {
-            return mob.getMainHandItem().isEmpty() && super.canUse();
+            return mob.getMainHandItem().isEmpty() && testUse();
+        }
+
+        boolean testUse(){
+            long l = this.mob.level.getGameTime();
+            if (l - this.lastCanUseCheck < 20L) {
+                return false;
+            } else {
+                this.lastCanUseCheck = l;
+                LivingEntity livingEntity = this.mob.getTarget();
+                if (livingEntity == null) {
+                    return false;
+                } else if (!livingEntity.isAlive()) {
+                    return false;
+                } else {
+                    this.path = this.mob.getNavigation().createPath(livingEntity, 0);
+                    if (this.path != null) {
+                        return true;
+                    } else {
+                        return this.getAttackReachSqr(livingEntity) >= this.mob.distanceToSqr(livingEntity.getX(), livingEntity.getY(), livingEntity.getZ());
+                    }
+                }
+            }
         }
 
         @Override

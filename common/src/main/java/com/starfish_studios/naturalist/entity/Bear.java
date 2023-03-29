@@ -382,7 +382,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
             }
             return InteractionResult.sidedSuccess(this.level.isClientSide);
         }
-        return InteractionResult.PASS;
+        return super.mobInteract(player, hand);
     }
 
     @Override
