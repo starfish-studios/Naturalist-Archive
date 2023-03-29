@@ -61,6 +61,8 @@ public class NaturalistItems {
     public static final Supplier<Item> COOKED_BASS = CommonPlatformHelper.registerItem("cooked_bass", () -> new Item(new Item.Properties().tab(Naturalist.TAB).food(Foods.COOKED_COD)));
     public static final Supplier<Item> LIZARD_TAIL = CommonPlatformHelper.registerItem("lizard_tail", () -> new Item(new Item.Properties().tab(Naturalist.TAB).food(new FoodProperties.Builder().nutrition(2).saturationMod(0.8F).meat().effect(new MobEffectInstance(MobEffects.POISON, 100, 0), 1.0f).build())));
     public static final Supplier<Item> COOKED_LIZARD_TAIL = CommonPlatformHelper.registerItem("cooked_lizard_tail", () -> new Item(new Item.Properties().tab(Naturalist.TAB).food(Foods.BAKED_POTATO)));
+
+    public static final Supplier<Item> WORM = CommonPlatformHelper.registerItem("worm", () -> new Item(new Item.Properties().tab(Naturalist.TAB)));
 //
 //    // Armor
 //    public static final Supplier<Item> REPTILE_SKIN_HELMET = CommonPlatformHelper.registerItem("reptile_skin_helmet", () -> new ArmorItem(NaturalistArmorMaterials.REPTILE, EquipmentSlot.HEAD, new Item.Properties().tab(Naturalist.TAB)));

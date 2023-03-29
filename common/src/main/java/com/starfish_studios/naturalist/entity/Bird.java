@@ -2,6 +2,7 @@ package com.starfish_studios.naturalist.entity;
 
 import com.starfish_studios.naturalist.entity.ai.goal.FollowAdultGoal;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
+import com.starfish_studios.naturalist.registry.NaturalistItems;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.core.BlockPos;
@@ -55,6 +56,8 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
     private float flapping = 1.0F;
     private float nextFlap = 1.0F;
 
+    private boolean isPecking = false;
+
     public Bird(EntityType<? extends ShoulderRidingEntity> entityType, Level level) {
         super(entityType, level);
         this.moveControl = new FlyingMoveControl(this, 10, false);
@@ -72,6 +75,7 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
         this.goalSelector.addGoal(4, new BirdWanderGoal(this, 1.0D));
         this.goalSelector.addGoal(5, new BirdFlockGoal(this, 1.0D, 6.0F, 12.0F));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(7, new BirdPeckAtGroundGoal(this));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -280,6 +284,9 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
         } else if (this.isFlying()) {
             event.getController().setAnimation(new AnimationBuilder().loop("bird.fly"));
             return PlayState.CONTINUE;
+        } else if (this.isPecking) {
+            event.getController().setAnimation(new AnimationBuilder().loop("bird.eat"));
+            return PlayState.CONTINUE;
         }
         event.getController().markNeedsReload();
         return PlayState.STOP;
@@ -364,6 +371,33 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
         @Override
         public boolean canContinueToUse() {
             return !this.bird.isTame() && super.canContinueToUse();
+        }
+    }
+
+    static class BirdPeckAtGroundGoal extends Goal {
+        private final Bird bird;
+
+        public BirdPeckAtGroundGoal(Bird bird) {
+            this.bird = bird;
+        }
+        @Override
+        public boolean canUse() {
+            return this.bird.isOnGround() && this.bird.getRandom().nextInt(100) == 0;
+        }
+
+        @Override
+        public void tick() {
+            this.bird.isPecking = true;
+            if(this.bird.getRandom().nextInt(100) <= 25 ) {
+                ItemStack worm = new ItemStack(NaturalistItems.WORM.get());
+                this.bird.spawnAtLocation(worm);
+                this.bird.isPecking = false;
+            }
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return this.canUse();
         }
     }
 

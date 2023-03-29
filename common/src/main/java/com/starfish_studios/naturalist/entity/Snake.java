@@ -91,6 +91,8 @@ public class Snake extends TamableClimbingAnimal implements SleepingAnimal, Neut
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(7, new SitWhenOrderedToGoal(this));
+        this.goalSelector.addGoal(8, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Mob.class, 5, true, false, livingEntity -> livingEntity.getType().is(NaturalistTags.EntityTypes.SNAKE_HOSTILES) || (livingEntity instanceof Slime slime && slime.isTiny())));
