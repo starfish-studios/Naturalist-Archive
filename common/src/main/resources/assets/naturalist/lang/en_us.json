@@ -82,6 +82,12 @@
   "block.naturalist.tortoise_egg": "Tortoise Egg",
   "item.naturalist.worm": "Worm",
 
+  "block.naturalist.limestone": "Limestone",
+  "block.naturalist.limestone_bricks": "Limestone Bricks",
+  "block.naturalist.cut_limestone": "Cut Limestone",
+  "block.naturalist.smooth_limestone": "Smooth Limestone",
+
+
 
   "item.minecraft.tipped_arrow.effect.forest_dasher": "Arrow of the Forest Dasher",
   "item.minecraft.potion.effect.forest_dasher": "Potion of the Forest Dasher",
