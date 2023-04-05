@@ -57,6 +57,7 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
     private float nextFlap = 1.0F;
 
     private boolean isPecking = false;
+    private boolean isWet;
 
     public Bird(EntityType<? extends ShoulderRidingEntity> entityType, Level level) {
         super(entityType, level);
@@ -266,14 +267,18 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
     @Nullable
     @Override
     protected SoundEvent getAmbientSound() {
-        if (this.getType().equals(NaturalistEntityTypes.BLUEJAY.get())) {
-            return NaturalistSoundEvents.BIRD_AMBIENT_BLUEJAY.get();
-        } else if (this.getType().equals(NaturalistEntityTypes.CANARY.get())) {
-            return NaturalistSoundEvents.BIRD_AMBIENT_CANARY.get();
-        } else if (this.getType().equals(NaturalistEntityTypes.CARDINAL.get())) {
-            return NaturalistSoundEvents.BIRD_AMBIENT_CARDINAL.get();
+        if (this.level.isNight()) {
+            return null;
         } else {
-            return NaturalistSoundEvents.BIRD_AMBIENT_ROBIN.get();
+            if (this.getType().equals(NaturalistEntityTypes.BLUEJAY.get())) {
+                return NaturalistSoundEvents.BIRD_AMBIENT_BLUEJAY.get();
+            } else if (this.getType().equals(NaturalistEntityTypes.CANARY.get())) {
+                return NaturalistSoundEvents.BIRD_AMBIENT_CANARY.get();
+            } else if (this.getType().equals(NaturalistEntityTypes.CARDINAL.get())) {
+                return NaturalistSoundEvents.BIRD_AMBIENT_CARDINAL.get();
+            } else {
+                return NaturalistSoundEvents.BIRD_AMBIENT_ROBIN.get();
+            }
         }
     }
 
