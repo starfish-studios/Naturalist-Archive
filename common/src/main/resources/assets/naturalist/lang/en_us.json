@@ -185,5 +185,12 @@
   "text.autoconfig.naturalist.option.hippoSpawnWeight": "Hippo Spawn Weight",
   "text.autoconfig.naturalist.option.vultureSpawnWeight": "Vulture Spawn Weight",
   "text.autoconfig.naturalist.option.boarSpawnWeight": "Boar Spawn Weight",
-  "text.autoconfig.naturalist.option.removeSavannaFarmAnimals": "Remove Farm Animals in Savanna Biomes"
+  "text.autoconfig.naturalist.option.dragonflySpawnWeight": "Dragonfly Spawn Weight",
+  "text.autoconfig.naturalist.option.catfishSpawnWeight": "Catfish Spawn Weight",
+  "text.autoconfig.naturalist.option.alligatorSpawnWeight": "Alligator Spawn Weight",
+  "text.autoconfig.naturalist.option.bassSpawnWeight": "Bass Spawn Weight",
+  "text.autoconfig.naturalist.option.lizardSpawnWeight": "Lizard Spawn Weight",
+  "text.autoconfig.naturalist.option.tortoiseSpawnWeight": "Tortoise Spawn Weight",
+  "text.autoconfig.naturalist.option.removeSavannaFarmAnimals": "Remove Farm Animals in Savanna Biomes",
+  "text.autoconfig.naturalist.option.removeSwampFarmAnimals": "Remove Farm Animals in Swamp Biomes"
 }
