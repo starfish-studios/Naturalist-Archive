@@ -58,11 +58,7 @@ public class Dragonfly extends PathfinderMob implements IAnimatable {
     }
 
     public static boolean checkDragonflySpawnRules(EntityType<Dragonfly> dragonfly, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        BlockPos.MutableBlockPos mutable = pos.mutable();
-        do {
-            mutable.move(Direction.UP);
-        } while (level.getFluidState(mutable).is(FluidTags.WATER));
-        return level.getBlockState(mutable).isAir();
+        return level.getFluidState(pos.below()).is(FluidTags.WATER) && level.getBlockState(pos).isAir();
     }
 
     public int getVariant() {
