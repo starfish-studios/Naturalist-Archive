@@ -28,6 +28,8 @@
   "entity.naturalist.lizard": "Lizard",
   "entity.naturalist.lizard_tail": "Lizard Tail",
   "entity.naturalist.tortoise": "Tortoise",
+
+
   "item.naturalist.bluejay_spawn_egg": "Bluejay Spawn Egg",
   "item.naturalist.butterfly_spawn_egg": "Butterfly Spawn Egg",
   "item.naturalist.canary_spawn_egg": "Canary Spawn Egg",
@@ -55,6 +57,8 @@
   "item.naturalist.bass_spawn_egg": "Bass Spawn Egg",
   "item.naturalist.lizard_spawn_egg": "Lizard Spawn Egg",
   "item.naturalist.tortoise_spawn_egg": "Tortoise Spawn Egg",
+
+
   "item.naturalist.antler": "Antler",
   "item.naturalist.snail_bucket": "Bucket of Snail",
   "block.naturalist.chrysalis": "Chrysalis",
@@ -75,6 +79,10 @@
   "item.naturalist.snail_shell": "Snail Shell",
   "item.naturalist.lizard_tail": "Lizard Tail",
   "item.naturalist.cooked_lizard_tail": "Cooked Lizard Tail",
+  "block.naturalist.tortoise_egg": "Tortoise Egg",
+  "item.naturalist.worm": "Worm",
+
+
   "item.minecraft.tipped_arrow.effect.forest_dasher": "Arrow of the Forest Dasher",
   "item.minecraft.potion.effect.forest_dasher": "Potion of the Forest Dasher",
   "item.minecraft.splash_potion.effect.forest_dasher": "Splash Potion of the Forest Dasher",
@@ -83,6 +91,8 @@
   "item.minecraft.potion.effect.glowing": "Potion of Glowing",
   "item.minecraft.splash_potion.effect.glowing": "Splash Potion of Glowing",
   "item.minecraft.lingering_potion.effect.glowing": "Lingering Potion of Glowing",
+
+
   "naturalist.subtitles.entity.bird.hurt": "Bird hurts",
   "naturalist.subtitles.entity.bird.death": "Bird dies",
   "naturalist.subtitles.entity.bird.eat": "Bird eats",
@@ -150,6 +160,8 @@
   "advancements.husbandry.ride_giraffe_with_map.description": "Use a map while riding a giraffe to increase its range",
   "advancements.husbandry.feed_hippo_melon.title": "Hungry Hungry Hippos",
   "advancements.husbandry.feed_hippo_melon.description": "Feed a melon block to a hippo to breed it when in water",
+
+
   "text.autoconfig.naturalist.title": "Naturalist Config",
   "text.autoconfig.naturalist.option.bluejaySpawnWeight": "Bluejay Spawn Weight",
   "text.autoconfig.naturalist.option.butterflySpawnWeight": "Butterfly Spawn Weight",

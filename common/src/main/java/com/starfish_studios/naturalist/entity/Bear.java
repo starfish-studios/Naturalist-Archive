@@ -84,6 +84,16 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
         this.setCanPickUpLoot(true);
     }
 
+    @Override
+    public void customServerAiStep() {
+        if (this.getMoveControl().hasWanted()) {
+            this.setSprinting(this.getMoveControl().getSpeedModifier() >= 1.25D);
+        } else {
+            this.setSprinting(false);
+        }
+        super.customServerAiStep();
+    }
+
     // BREEDING
 
     @Nullable
@@ -456,19 +466,20 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.isSleeping()) {
             event.getController().setAnimation(new AnimationBuilder().loop("bear.sleep"));
-            return PlayState.CONTINUE;
         } else if (this.isSitting()) {
             event.getController().setAnimation(new AnimationBuilder().loop("bear.sit"));
-            return PlayState.CONTINUE;
-        } else if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().loop("bear.walk"));
-            return PlayState.CONTINUE;
-        } else if (!this.isSniffing()) {
-            event.getController().setAnimation(new AnimationBuilder().loop("bear.idle"));
-            return PlayState.CONTINUE;
+        } else if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
+            if (this.isSprinting()) {
+                event.getController().setAnimation(new AnimationBuilder().loop("run"));
+                event.getController().setAnimationSpeed(1.8D);
+            } else {
+                event.getController().setAnimation(new AnimationBuilder().loop("walk"));
+                event.getController().setAnimationSpeed(1.4D);
+            }
+        } else {
+            event.getController().setAnimation(new AnimationBuilder().loop("idle"));
         }
-        event.getController().markNeedsReload();
-        return PlayState.STOP;
+        return PlayState.CONTINUE;
     }
 
     private <E extends IAnimatable> PlayState sniffPredicate(AnimationEvent<E> event) {
@@ -500,10 +511,10 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.setResetSpeedInTicks(10);
-        data.addAnimationController(new AnimationController<>(this, "controller", 10, this::predicate));
-        data.addAnimationController(new AnimationController<>(this, "sniffController", 0, this::sniffPredicate));
-        data.addAnimationController(new AnimationController<>(this, "swingController", 0, this::swingPredicate));
+        data.setResetSpeedInTicks(5);
+        data.addAnimationController(new AnimationController<>(this, "controller", 5, this::predicate));
+        data.addAnimationController(new AnimationController<>(this, "sniffController", 2, this::sniffPredicate));
+        data.addAnimationController(new AnimationController<>(this, "swingController", 2, this::swingPredicate));
         data.addAnimationController(new AnimationController<>(this, "eatController", 5, this::eatPredicate));
     }
 
