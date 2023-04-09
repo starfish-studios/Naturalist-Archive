@@ -7,8 +7,12 @@ import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -49,14 +53,13 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private BirdAvoidEntityGoal<Player> avoidPlayersGoal;
     private static final Ingredient TAME_FOOD = Ingredient.of(NaturalistTags.ItemTags.BIRD_FOOD_ITEMS);
+    private static final EntityDataAccessor<Boolean> IS_PECKING = SynchedEntityData.defineId(Bird.class, EntityDataSerializers.BOOLEAN);
     public float flap;
     public float flapSpeed;
     public float oFlapSpeed;
     public float oFlap;
     private float flapping = 1.0F;
     private float nextFlap = 1.0F;
-
-    private boolean isPecking = false;
     private boolean isWet;
 
     public Bird(EntityType<? extends ShoulderRidingEntity> entityType, Level level) {
@@ -252,6 +255,20 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
         }
     }
 
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(IS_PECKING, false);
+    }
+
+    public boolean isPecking() {
+        return this.entityData.get(IS_PECKING);
+    }
+
+    public void setPecking(boolean isPecking) {
+        this.entityData.set(IS_PECKING, isPecking);
+    }
+
     @Nullable
     @Override
     protected SoundEvent getHurtSound(DamageSource pDamageSource) {
@@ -289,8 +306,8 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
         } else if (this.isFlying()) {
             event.getController().setAnimation(new AnimationBuilder().loop("bird.fly"));
             return PlayState.CONTINUE;
-        } else if (this.isPecking) {
-            event.getController().setAnimation(new AnimationBuilder().loop("bird.eat"));
+        } else if (this.isPecking()) {
+            event.getController().setAnimation(new AnimationBuilder().loop("bird.peck"));
             return PlayState.CONTINUE;
         }
         event.getController().markNeedsReload();
@@ -392,11 +409,12 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
 
         @Override
         public void tick() {
-            this.bird.isPecking = true;
+            this.bird.setPecking(true);
             if(this.bird.getRandom().nextInt(100) <= 25 ) {
                 ItemStack worm = new ItemStack(NaturalistItems.WORM.get());
                 this.bird.spawnAtLocation(worm);
-                this.bird.isPecking = false;
+                this.bird.playSound(SoundEvents.ITEM_PICKUP);
+                this.bird.setPecking(false);
             }
         }
 
