@@ -67,10 +67,10 @@ public class NaturalistConfigForge {
         HIPPO_SPAWN_WEIGHT = COMMON_BUILDER.comment("Hippo spawn weight").defineInRange("hippoSpawnWeight", 15, 0, 1000);
         VULTURE_SPAWN_WEIGHT = COMMON_BUILDER.comment("Vulture spawn weight").defineInRange("vultureSpawnWeight", 15, 0, 1000);
         BOAR_SPAWN_WEIGHT = COMMON_BUILDER.comment("Boar spawn weight").defineInRange("boarSpawnWeight", 8, 0, 1000);
-        DRAGONFLY_SPAWN_WEIGHT = COMMON_BUILDER.comment("Dragonfly spawn weight").defineInRange("dragonflySpawnWeight", 15, 0, 1000);
-        CATFISH_SPAWN_WEIGHT = COMMON_BUILDER.comment("Catfish spawn weight").defineInRange("catfishSpawnWeight", 15, 0, 1000);
+        DRAGONFLY_SPAWN_WEIGHT = COMMON_BUILDER.comment("Dragonfly spawn weight").defineInRange("dragonflySpawnWeight", 1, 0, 1000);
+        CATFISH_SPAWN_WEIGHT = COMMON_BUILDER.comment("Catfish spawn weight").defineInRange("catfishSpawnWeight", 5, 0, 1000);
         ALLIGATOR_SPAWN_WEIGHT = COMMON_BUILDER.comment("Alligator spawn weight").defineInRange("alligatorSpawnWeight", 15, 0, 1000);
-        BASS_SPAWN_WEIGHT = COMMON_BUILDER.comment("Bass spawn weight").defineInRange("bassSpawnWeight", 15, 0, 1000);
+        BASS_SPAWN_WEIGHT = COMMON_BUILDER.comment("Bass spawn weight").defineInRange("bassSpawnWeight", 8, 0, 1000);
         LIZARD_SPAWN_WEIGHT = COMMON_BUILDER.comment("Lizard spawn weight").defineInRange("lizardSpawnWeight", 15, 0, 1000);
         TORTOISE_SPAWN_WEIGHT = COMMON_BUILDER.comment("Tortoise spawn weight").defineInRange("tortoiseSpawnWeight", 15, 0, 1000);
         COMMON_BUILDER.pop();
