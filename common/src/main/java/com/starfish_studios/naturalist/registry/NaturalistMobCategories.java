@@ -8,4 +8,9 @@ public class NaturalistMobCategories {
     public static MobCategory getFireflyCategory() {
         throw new AssertionError();
     }
+
+    @ExpectPlatform
+    public static MobCategory getDragonflyCategory() {
+        throw new AssertionError();
+    }
 }

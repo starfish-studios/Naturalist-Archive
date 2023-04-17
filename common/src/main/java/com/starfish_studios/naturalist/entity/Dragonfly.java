@@ -1,5 +1,6 @@
 package com.starfish_studios.naturalist.entity;
 
+import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -21,6 +22,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.util.RandomPos;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -57,8 +59,8 @@ public class Dragonfly extends PathfinderMob implements IAnimatable {
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 6.0);
     }
 
-    public static boolean checkDragonflySpawnRules(EntityType<Dragonfly> dragonfly, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return level.getFluidState(pos.below()).is(FluidTags.WATER) && level.getBlockState(pos).isAir();
+    public static boolean checkDragonflySpawnRules(EntityType<? extends Dragonfly> pType, ServerLevelAccessor pLevel, MobSpawnType pReason, BlockPos pPos, RandomSource pRandom) {
+        return pLevel.getBlockState(pPos.below()).is(NaturalistTags.BlockTags.DRAGONFLIES_SPAWNABLE_ON);
     }
 
     public int getVariant() {
