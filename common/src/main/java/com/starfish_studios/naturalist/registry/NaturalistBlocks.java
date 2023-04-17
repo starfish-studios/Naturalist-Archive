@@ -1,10 +1,7 @@
 package com.starfish_studios.naturalist.registry;
 
 import com.starfish_studios.naturalist.Naturalist;
-import com.starfish_studios.naturalist.block.AlligatorEggBlock;
-import com.starfish_studios.naturalist.block.ChrysalisBlock;
-import com.starfish_studios.naturalist.block.TeddyBearBlock;
-import com.starfish_studios.naturalist.block.TortoiseEggBlock;
+import com.starfish_studios.naturalist.block.*;
 import com.starfish_studios.naturalist.platform.CommonPlatformHelper;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -25,7 +22,7 @@ public class NaturalistBlocks {
 
     // SWAMP BLOCKS
 
-    public static final Supplier<Block> CATTAIL = registerBlock("cattail", () -> new DoublePlantBlock(BlockBehaviour
+    public static final Supplier<Block> CATTAIL = registerBlock("cattail", () -> new CattailBlock(BlockBehaviour
             .Properties.of(Material.REPLACEABLE_PLANT)
             .noCollission()
             .randomTicks()

@@ -19,6 +19,10 @@ public class NaturalistTags {
         public static final TagKey<Block> ALLIGATOR_EGG_LAYABLE_ON = tag("alligator_egg_layable_on");
         public static final TagKey<Block> TORTOISE_EGG_LAYABLE_ON = tag("tortoise_egg_layable_on");
 
+        // Cattail Placeable
+        public static final TagKey<Block> CATTAIL_PLACEABLE = tag("cattail_placeable");
+
+
         private static TagKey<Block> tag(String name) {
             return TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(Naturalist.MOD_ID, name));
         }
