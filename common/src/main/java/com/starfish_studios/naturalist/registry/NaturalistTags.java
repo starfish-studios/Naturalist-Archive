@@ -85,6 +85,7 @@ public class NaturalistTags {
         public static final TagKey<Biome> HAS_BASS = tag("has_bass");
         public static final TagKey<Biome> HAS_LIZARD = tag("has_lizard");
         public static final TagKey<Biome> HAS_TORTOISE = tag("has_tortoise");
+        public static final TagKey<Biome> HAS_DUCK = tag("has_duck");
 
         private static TagKey<Biome> tag(String name) {
             return TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(Naturalist.MOD_ID, name));

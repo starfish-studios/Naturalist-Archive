@@ -500,5 +500,35 @@
       "minecraft:mob/bee/loop5"
     ],
     "subtitle": "naturalist.subtitles.entity.dragonfly.loop"
+  },
+  "entity.duck.ambient": {
+    "sounds": [
+      "naturalist:entity/duck/idle1",
+      "naturalist:entity/duck/idle2"
+    ],
+    "subtitle": "naturalist.subtitles.entity.duck.ambient"
+  },
+  "entity.duck.hurt": {
+      "sounds": [
+      "naturalist:entity/duck/hurt1",
+      "naturalist:entity/duck/hurt2"
+      ],
+      "subtitle": "naturalist.subtitles.entity.duck.hurt"
+  },
+  "entity.duck.death": {
+      "sounds": [
+        "naturalist:entity/duck/hurt1",
+        "naturalist:entity/duck/hurt2"
+      ],
+      "subtitle": "naturalist.subtitles.entity.duck.death"
+  },
+  "entity.duck.step": {
+      "sounds": [
+      "minecraft:mob/chicken/step1",
+      "minecraft:mob/chicken/step2",
+      "minecraft:mob/chicken/step3",
+      "minecraft:mob/chicken/step4"
+      ],
+      "subtitle": "naturalist.subtitles.entity.duck.step"
   }
 }

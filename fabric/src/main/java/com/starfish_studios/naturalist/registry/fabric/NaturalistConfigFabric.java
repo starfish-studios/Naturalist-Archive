@@ -47,6 +47,7 @@ public class NaturalistConfigFabric implements ConfigData {
     public int bassSpawnWeight = 8;
     public int lizardSpawnWeight = 15;
     public int tortoiseSpawnWeight = 6;
+    public int duckSpawnWeight = 8;
 
 
     // ADD VANILLA ANIMALS

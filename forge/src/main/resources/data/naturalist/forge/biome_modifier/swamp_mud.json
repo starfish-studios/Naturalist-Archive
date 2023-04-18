@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "minecraft:swamp",
+  "features": "naturalist:swamp_mud",
+  "step": "raw_generation"
+}

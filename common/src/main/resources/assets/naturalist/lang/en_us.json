@@ -28,6 +28,7 @@
   "entity.naturalist.lizard": "Lizard",
   "entity.naturalist.lizard_tail": "Lizard Tail",
   "entity.naturalist.tortoise": "Tortoise",
+  "entity.naturalist.duck": "Duck",
 
 
   "item.naturalist.bluejay_spawn_egg": "Bluejay Spawn Egg",
@@ -57,6 +58,7 @@
   "item.naturalist.bass_spawn_egg": "Bass Spawn Egg",
   "item.naturalist.lizard_spawn_egg": "Lizard Spawn Egg",
   "item.naturalist.tortoise_spawn_egg": "Tortoise Spawn Egg",
+  "item.naturalist.duck_spawn_egg": "Duck Spawn Egg",
 
 
   "item.naturalist.antler": "Antler",
@@ -161,6 +163,13 @@
   "naturalist.subtitles.entity.catfish.flop": "Catfish flops",
   "naturalist.subtitles.entity.bass.flop": "Bass flops",
   "naturalist.subtitles.entity.dragonfly.loop": "Dragonfly buzzes",
+
+  "naturalist.subtitles.entity.duck.ambient": "Duck quacks",
+  "naturalist.subtitles.entity.duck.hurt": "Duck hurts",
+  "naturalist.subtitles.entity.duck.death": "Duck dies",
+  "naturalist.subtitles.entity.duck.ambient_baby": "Duckling quacks",
+  "naturalist.subtitles.entity.duck.hurt_baby": "Duckling hurts",
+  "naturalist.subtitles.entity.duck.death_baby": "Duckling dies",
 
   "advancements.husbandry.ride_giraffe_with_map.title": "I can show you the world!",
   "advancements.husbandry.ride_giraffe_with_map.description": "Use a map while riding a giraffe to increase its range",
