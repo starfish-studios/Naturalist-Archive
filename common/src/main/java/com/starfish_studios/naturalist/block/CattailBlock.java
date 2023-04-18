@@ -103,6 +103,7 @@ public class CattailBlock extends DoublePlantBlock implements SimpleWaterloggedB
         return 0.2F;
     }
 
+
     static {
         WATERLOGGED = BlockStateProperties.WATERLOGGED;
         SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 13.0, 14.0);

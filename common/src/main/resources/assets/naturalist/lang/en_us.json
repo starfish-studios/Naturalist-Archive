@@ -75,6 +75,8 @@
   "item.naturalist.glow_goop": "Glow Goop",
   "item.naturalist.venison": "Venison",
   "item.naturalist.bear_fur": "Bear Fur",
+  "item.naturalist.catfish": "Raw Catfish",
+  "item.naturalist.cooked_catfish": "Cooked Catfish",
   "item.naturalist.catfish_bucket": "Bucket of Catfish",
   "item.naturalist.fish_fillet": "Raw Fish Fillet",
   "item.naturalist.cooked_fish_fillet": "Cooked Fish Fillet",
@@ -92,6 +94,7 @@
   "item.naturalist.reptile_hide": "Reptile Hide",
 
   "block.naturalist.cattail": "Cattail",
+  "item.naturalist.cattail_fluff": "Cattail Fluff",
   "block.naturalist.duckweed": "Duckweed",
 
   "block.naturalist.limestone": "Limestone",

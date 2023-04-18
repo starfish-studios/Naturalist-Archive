@@ -1,9 +1,9 @@
 {
       "type": "minecraft:smoking",
       "ingredient": {
-        "item": "naturalist:fish_fillet"
+        "item": "naturalist:catfish"
       },
-      "result": "naturalist:cooked_fish_fillet",
+      "result": "naturalist:cooked_catfish",
       "experience": 0.35,
       "cookingtime": 100
     }

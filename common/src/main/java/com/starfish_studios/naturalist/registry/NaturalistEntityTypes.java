@@ -1,14 +1,26 @@
 package com.starfish_studios.naturalist.registry;
 
 import com.starfish_studios.naturalist.entity.*;
+import com.starfish_studios.naturalist.entity.projectile.ThrownDuckEgg;
 import com.starfish_studios.naturalist.platform.CommonPlatformHelper;
 import io.netty.util.Attribute;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.projectile.ThrownEgg;
 
 import java.util.function.Supplier;
 
+import static io.netty.util.internal.ObjectCleaner.register;
+
 public class NaturalistEntityTypes {
+
+    // PROJECTILES
+
+
+    public static final Supplier<EntityType<ThrownDuckEgg>> DUCK_EGG = CommonPlatformHelper.registerEntityType("duck_egg", ThrownDuckEgg::new, MobCategory.MISC, 0.25F, 0.25F, 16);
+
+    // MOBS
+
     public static final Supplier<EntityType<Snail>> SNAIL = CommonPlatformHelper.registerEntityType("snail", Snail::new, MobCategory.CREATURE, 0.4F, 0.4F, 10);
     public static final Supplier<EntityType<Bear>> BEAR = CommonPlatformHelper.registerEntityType("bear", Bear::new, MobCategory.CREATURE, 1.4F, 1.7F, 10);
     public static final Supplier<EntityType<Butterfly>> BUTTERFLY = CommonPlatformHelper.registerEntityType("butterfly", Butterfly::new, MobCategory.CREATURE, 0.7F, 0.6F, 8);
