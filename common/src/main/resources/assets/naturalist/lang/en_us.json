@@ -70,6 +70,7 @@
   "block.naturalist.verdant_froglass": "Verdant Froglass",
   "block.naturalist.crimson_froglass": "Crimson Froglass",
   "item.naturalist.cooked_venison": "Cooked Venison",
+  "item.naturalist.bass": "Raw Bass",
   "item.naturalist.cooked_bass": "Cooked Bass",
   "item.naturalist.glow_goop": "Glow Goop",
   "item.naturalist.venison": "Venison",
@@ -83,6 +84,15 @@
   "item.naturalist.cooked_lizard_tail": "Cooked Lizard Tail",
   "block.naturalist.tortoise_egg": "Tortoise Egg",
   "item.naturalist.worm": "Worm",
+
+  "item.naturalist.duck": "Raw Duck",
+  "item.naturalist.cooked_duck": "Cooked Duck",
+  "item.naturalist.duck_egg": "Duck Egg",
+  "item.naturalist.cooked_egg": "Cooked Egg",
+  "item.naturalist.reptile_hide": "Reptile Hide",
+
+  "block.naturalist.cattail": "Cattail",
+  "block.naturalist.duckweed": "Duckweed",
 
   "block.naturalist.limestone": "Limestone",
   "block.naturalist.limestone_bricks": "Limestone Bricks",
