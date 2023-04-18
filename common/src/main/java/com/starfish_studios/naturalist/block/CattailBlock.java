@@ -100,7 +100,7 @@ public class CattailBlock extends DoublePlantBlock implements SimpleWaterloggedB
     }
 
     public float getMaxVerticalOffset() {
-        return 0.1F;
+        return 0.2F;
     }
 
     static {

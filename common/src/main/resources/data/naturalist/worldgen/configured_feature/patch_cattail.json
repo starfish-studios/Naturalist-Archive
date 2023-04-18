@@ -1,9 +1,9 @@
 {
   "type": "minecraft:random_patch",
   "config": {
-    "tries": 512,
-    "xz_spread": 4,
-    "y_spread": 0,
+    "tries": 20,
+    "xz_spread": 1,
+    "y_spread": 1,
     "feature": {
       "feature": {
         "type": "minecraft:simple_block",
@@ -24,12 +24,11 @@
             "predicates": [
               {
                 "type": "minecraft:matching_blocks",
-                "blocks": "minecraft:air"
-              },
-              {
-                "type": "minecraft:has_sturdy_face",
-                "direction": "down"
-              },
+                "blocks": [
+                  "minecraft:air",
+                  "minecraft:water"
+                ]
+                  },
               {
                 "type": "minecraft:any_of",
                 "predicates": [
