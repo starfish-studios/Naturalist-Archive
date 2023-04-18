@@ -2,14 +2,13 @@ package com.starfish_studios.naturalist.entity.projectile;
 
 import com.starfish_studios.naturalist.entity.Duck;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
-import com.starfish_studios.naturalist.registry.NaturalistItems;
+import com.starfish_studios.naturalist.registry.NaturalistRegistry;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
-import net.minecraft.world.entity.projectile.ThrownEgg;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
@@ -68,6 +67,6 @@ public class ThrownDuckEgg extends ThrowableItemProjectile {
 
     @Override
     protected Item getDefaultItem() {
-        return NaturalistItems.DUCK_EGG.get();
+        return NaturalistRegistry.DUCK_EGG.get();
     }
 }

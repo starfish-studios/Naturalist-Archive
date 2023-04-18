@@ -3,23 +3,15 @@ package com.starfish_studios.naturalist;
 import com.starfish_studios.naturalist.entity.*;
 import com.starfish_studios.naturalist.platform.CommonPlatformHelper;
 import com.starfish_studios.naturalist.registry.*;
-import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.entity.animal.AbstractFish;
-import net.minecraft.world.entity.animal.AbstractSchoolingFish;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potions;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,18 +24,17 @@ public class Naturalist {
 
     public static void init() {
         GeckoLib.initialize();
-        NaturalistBlocks.init();
-        NaturalistItems.init();
+        NaturalistRegistry.init();
         NaturalistSoundEvents.init();
         NaturalistEntityTypes.init();
         NaturalistPotions.init();
     }
     
     public static void registerBrewingRecipes() {
-        CommonPlatformHelper.registerBrewingRecipe(Potions.AWKWARD, NaturalistItems.ANTLER.get(), NaturalistPotions.FOREST_DASHER.get());
+        CommonPlatformHelper.registerBrewingRecipe(Potions.AWKWARD, NaturalistRegistry.ANTLER.get(), NaturalistPotions.FOREST_DASHER.get());
         CommonPlatformHelper.registerBrewingRecipe(NaturalistPotions.FOREST_DASHER.get(), Items.REDSTONE, NaturalistPotions.LONG_FOREST_DASHER.get());
         CommonPlatformHelper.registerBrewingRecipe(NaturalistPotions.FOREST_DASHER.get(), Items.GLOWSTONE_DUST, NaturalistPotions.STRONG_FOREST_DASHER.get());
-        CommonPlatformHelper.registerBrewingRecipe(Potions.AWKWARD, NaturalistItems.GLOW_GOOP.get(), NaturalistPotions.GLOWING.get());
+        CommonPlatformHelper.registerBrewingRecipe(Potions.AWKWARD, NaturalistRegistry.GLOW_GOOP.get(), NaturalistPotions.GLOWING.get());
         CommonPlatformHelper.registerBrewingRecipe(NaturalistPotions.GLOWING.get(), Items.REDSTONE, NaturalistPotions.LONG_GLOWING.get());
     }
 
@@ -79,6 +70,6 @@ public class Naturalist {
 
 
     public static void registerCompostables() {
-        CommonPlatformHelper.registerCompostable(0.65F, NaturalistItems.SNAIL_SHELL.get());
+        CommonPlatformHelper.registerCompostable(0.65F, NaturalistRegistry.SNAIL_SHELL.get());
     }
 }

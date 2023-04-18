@@ -1,10 +1,7 @@
 package com.starfish_studios.naturalist.entity;
 
 import com.starfish_studios.naturalist.entity.ai.goal.*;
-import com.starfish_studios.naturalist.registry.NaturalistBlocks;
-import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
-import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
-import com.starfish_studios.naturalist.registry.NaturalistTags;
+import com.starfish_studios.naturalist.registry.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -22,14 +19,12 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.*;
-import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.TurtleEggBlock;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.AnimationState;
@@ -41,8 +36,6 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
-
-import java.util.List;
 
 public class Alligator extends Animal implements IAnimatable, EggLayingAnimal {
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
@@ -114,7 +107,7 @@ public class Alligator extends Animal implements IAnimatable, EggLayingAnimal {
             Iterable<BlockPos> list = BlockPos.betweenClosed(entity.blockPosition().offset(-2, -2, -2), entity.blockPosition().offset(2, 2, 2));
             boolean isEntityNearAlligatorEggs = false;
             for (BlockPos pos : list) {
-                if (level.getBlockState(pos).is(NaturalistBlocks.ALLIGATOR_EGG.get())) {
+                if (level.getBlockState(pos).is(NaturalistRegistry.ALLIGATOR_EGG.get())) {
                     isEntityNearAlligatorEggs = true;
                     break;
                 }
@@ -156,7 +149,7 @@ public class Alligator extends Animal implements IAnimatable, EggLayingAnimal {
 
     @Override
     public Block getEggBlock() {
-        return NaturalistBlocks.ALLIGATOR_EGG.get();
+        return NaturalistRegistry.ALLIGATOR_EGG.get();
     }
 
     @Override

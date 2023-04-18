@@ -1,6 +1,6 @@
 package com.starfish_studios.naturalist.entity;
 
-import com.starfish_studios.naturalist.registry.NaturalistItems;
+import com.starfish_studios.naturalist.registry.NaturalistRegistry;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -8,7 +8,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.AbstractSchoolingFish;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -33,7 +32,7 @@ public class Bass extends AbstractSchoolingFish implements IAnimatable {
 
     @Override
     public ItemStack getBucketItemStack() {
-        return new ItemStack(NaturalistItems.BASS_BUCKET.get());
+        return new ItemStack(NaturalistRegistry.BASS_BUCKET.get());
     }
 
     @Override

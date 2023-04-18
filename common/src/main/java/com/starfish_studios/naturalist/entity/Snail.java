@@ -1,7 +1,7 @@
 package com.starfish_studios.naturalist.entity;
 
 import com.starfish_studios.naturalist.entity.ai.goal.HideGoal;
-import com.starfish_studios.naturalist.registry.NaturalistItems;
+import com.starfish_studios.naturalist.registry.NaturalistRegistry;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.nbt.CompoundTag;
@@ -151,7 +151,7 @@ public class Snail extends Animal implements IAnimatable, Bucketable, HidingAnim
 
     @Override
     public ItemStack getBucketItemStack() {
-        return new ItemStack(NaturalistItems.SNAIL_BUCKET.get());
+        return new ItemStack(NaturalistRegistry.SNAIL_BUCKET.get());
     }
 
     @Override

@@ -1,10 +1,9 @@
 package com.starfish_studios.naturalist.entity;
 
-import com.starfish_studios.naturalist.registry.NaturalistItems;
+import com.starfish_studios.naturalist.registry.NaturalistRegistry;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -49,7 +48,7 @@ public class Catfish extends AbstractFish implements IAnimatable {
 
     @Override
     public ItemStack getBucketItemStack() {
-        return new ItemStack(NaturalistItems.CATFISH_BUCKET.get());
+        return new ItemStack(NaturalistRegistry.CATFISH_BUCKET.get());
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {

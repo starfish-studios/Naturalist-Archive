@@ -2,7 +2,7 @@ package com.starfish_studios.naturalist.entity;
 
 import com.starfish_studios.naturalist.entity.ai.goal.*;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
-import com.starfish_studios.naturalist.registry.NaturalistItems;
+import com.starfish_studios.naturalist.registry.NaturalistRegistry;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.core.BlockPos;
@@ -28,7 +28,6 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraft.world.entity.animal.AbstractSchoolingFish;
@@ -401,7 +400,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
         this.setSheared(true);
         int amount = 1 + this.random.nextInt(2);
         for (int j = 0; j < amount; ++j) {
-            ItemEntity itemEntity = this.spawnAtLocation(NaturalistItems.BEAR_FUR.get(), 1);
+            ItemEntity itemEntity = this.spawnAtLocation(NaturalistRegistry.BEAR_FUR.get(), 1);
             if (itemEntity == null) continue;
             itemEntity.setDeltaMovement(itemEntity.getDeltaMovement().add((this.random.nextFloat() - this.random.nextFloat()) * 0.1f, this.random.nextFloat() * 0.05f, (this.random.nextFloat() - this.random.nextFloat()) * 0.1f));
         }

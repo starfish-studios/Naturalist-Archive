@@ -1,7 +1,7 @@
 package com.starfish_studios.naturalist.entity;
 
 import com.starfish_studios.naturalist.block.ChrysalisBlock;
-import com.starfish_studios.naturalist.registry.NaturalistBlocks;
+import com.starfish_studios.naturalist.registry.NaturalistRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -156,10 +156,10 @@ public class Caterpillar extends ClimbingAnimal implements IAnimatable {
             Level level = caterpillar.level;
             if (this.isValidTarget(level, caterpillar.blockPosition())) {
                 if (!level.isClientSide) {
-                    ((ServerLevel)level).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, NaturalistBlocks.CHRYSALIS.get().defaultBlockState()), caterpillar.getX(), caterpillar.getY(), caterpillar.getZ(), 50, caterpillar.getBbWidth() / 4.0F, caterpillar.getBbHeight() / 4.0F, caterpillar.getBbWidth() / 4.0F, 0.05D);
+                    ((ServerLevel)level).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, NaturalistRegistry.CHRYSALIS.get().defaultBlockState()), caterpillar.getX(), caterpillar.getY(), caterpillar.getZ(), 50, caterpillar.getBbWidth() / 4.0F, caterpillar.getBbHeight() / 4.0F, caterpillar.getBbWidth() / 4.0F, 0.05D);
                 }
                 caterpillar.discard();
-                level.setBlockAndUpdate(caterpillar.blockPosition(), NaturalistBlocks.CHRYSALIS.get().defaultBlockState().setValue(ChrysalisBlock.FACING, facing));
+                level.setBlockAndUpdate(caterpillar.blockPosition(), NaturalistRegistry.CHRYSALIS.get().defaultBlockState().setValue(ChrysalisBlock.FACING, facing));
                 level.playSound(null, caterpillar.blockPosition(), SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 0.7F, 0.9F + level.random.nextFloat() * 0.2F);
             }
         }

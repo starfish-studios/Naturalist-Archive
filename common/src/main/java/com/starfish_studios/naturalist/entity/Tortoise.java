@@ -3,8 +3,8 @@ package com.starfish_studios.naturalist.entity;
 import com.starfish_studios.naturalist.entity.ai.goal.EggLayingBreedGoal;
 import com.starfish_studios.naturalist.entity.ai.goal.HideGoal;
 import com.starfish_studios.naturalist.entity.ai.goal.LayEggGoal;
-import com.starfish_studios.naturalist.registry.NaturalistBlocks;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
+import com.starfish_studios.naturalist.registry.NaturalistRegistry;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -352,7 +352,7 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
 
     @Override
     public Block getEggBlock() {
-        return NaturalistBlocks.TORTOISE_EGG.get();
+        return NaturalistRegistry.TORTOISE_EGG.get();
     }
 
     @Override

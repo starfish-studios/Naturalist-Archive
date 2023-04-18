@@ -2,17 +2,12 @@ package com.starfish_studios.naturalist.entity;
 
 import com.starfish_studios.naturalist.entity.ai.goal.FollowAdultGoal;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
-import com.starfish_studios.naturalist.registry.NaturalistItems;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -53,7 +48,7 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private BirdAvoidEntityGoal<Player> avoidPlayersGoal;
     private static final Ingredient TAME_FOOD = Ingredient.of(NaturalistTags.ItemTags.BIRD_FOOD_ITEMS);
-    private static final EntityDataAccessor<Boolean> IS_PECKING = SynchedEntityData.defineId(Bird.class, EntityDataSerializers.BOOLEAN);
+    // private static final EntityDataAccessor<Boolean> IS_PECKING = SynchedEntityData.defineId(Bird.class, EntityDataSerializers.BOOLEAN);
     public float flap;
     public float flapSpeed;
     public float oFlapSpeed;
@@ -79,7 +74,7 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
         this.goalSelector.addGoal(4, new BirdWanderGoal(this, 1.0D));
         this.goalSelector.addGoal(5, new BirdFlockGoal(this, 1.0D, 6.0F, 12.0F));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(7, new BirdPeckAtGroundGoal(this));
+        // this.goalSelector.addGoal(7, new BirdPeckAtGroundGoal(this));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -258,9 +253,10 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(IS_PECKING, false);
+        // this.entityData.define(IS_PECKING, false);
     }
 
+    /*
     public boolean isPecking() {
         return this.entityData.get(IS_PECKING);
     }
@@ -268,6 +264,7 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
     public void setPecking(boolean isPecking) {
         this.entityData.set(IS_PECKING, isPecking);
     }
+     */
 
     @Nullable
     @Override
@@ -306,10 +303,10 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
         } else if (this.isFlying()) {
             event.getController().setAnimation(new AnimationBuilder().loop("bird.fly"));
             return PlayState.CONTINUE;
-        } else if (this.isPecking()) {
+        } /* else if (this.isPecking()) {
             event.getController().setAnimation(new AnimationBuilder().loop("bird.peck"));
             return PlayState.CONTINUE;
-        }
+        */
         event.getController().markNeedsReload();
         return PlayState.STOP;
     }
@@ -396,6 +393,7 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
         }
     }
 
+        /*
     static class BirdPeckAtGroundGoal extends Goal {
         private final Bird bird;
 
@@ -423,6 +421,7 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
             return this.canUse();
         }
     }
+         */
 
     static class BirdTemptGoal extends TemptGoal {
         @Nullable

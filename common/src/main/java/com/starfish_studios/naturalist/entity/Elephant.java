@@ -107,7 +107,6 @@ public class Elephant extends Animal implements IAnimatable {
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 6.0f));
         this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new BabyHurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new AttackPlayerNearBabiesGoal(this, 0.5F));
     }
 
     @Override
