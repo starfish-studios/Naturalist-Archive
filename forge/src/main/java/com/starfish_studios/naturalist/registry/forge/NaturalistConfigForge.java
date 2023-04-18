@@ -39,6 +39,7 @@ public class NaturalistConfigForge {
     public static final ForgeConfigSpec.IntValue BASS_SPAWN_WEIGHT;
     public static final ForgeConfigSpec.IntValue LIZARD_SPAWN_WEIGHT;
     public static final ForgeConfigSpec.IntValue TORTOISE_SPAWN_WEIGHT;
+    public static final ForgeConfigSpec.IntValue DUCK_SPAWN_WEIGHT;
 
     static {
         ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
@@ -64,6 +65,7 @@ public class NaturalistConfigForge {
         CARDINAL_SPAWN_WEIGHT = COMMON_BUILDER.comment("Cardinal Spawn Weight").defineInRange("cardinalSpawnWeight", 8, 0, 1000);
         ROBIN_SPAWN_WEIGHT = COMMON_BUILDER.comment("Robin Spawn Weight").defineInRange("robinSpawnWeight", 8, 0, 1000);
         BUTTERFLY_SPAWN_WEIGHT = COMMON_BUILDER.comment("Butterfly Spawn Weight").defineInRange("butterflySpawnWeight", 6, 0, 1000);
+        DUCK_SPAWN_WEIGHT = COMMON_BUILDER.comment("Duck Spawn Weight").defineInRange("duckSpawnWeight", 6, 0, 1000);
 
 
         // FOREST SPAWN WEIGHTS

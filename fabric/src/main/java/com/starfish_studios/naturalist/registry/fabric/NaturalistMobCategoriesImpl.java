@@ -7,8 +7,12 @@ public class NaturalistMobCategoriesImpl {
         MobCategory.values();
     }
     public static MobCategory FIREFLIES;
+    public static MobCategory DRAGONFLIES;
 
     public static MobCategory getFireflyCategory() {
         return FIREFLIES;
+    }
+    public static MobCategory getDragonflyCategory() {
+        return DRAGONFLIES;
     }
 }

@@ -11,11 +11,13 @@ import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
-import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
+import net.fabricmc.fabric.impl.biome.modification.BuiltInRegistryKeys;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
@@ -24,10 +26,14 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 import java.util.List;
-import java.util.function.Predicate;
+
+import static com.starfish_studios.naturalist.Naturalist.MOD_ID;
+import static com.starfish_studios.naturalist.Naturalist.registerSpawnPlacements;
 
 public class NaturalistFabric implements ModInitializer {
     @Override
@@ -35,11 +41,37 @@ public class NaturalistFabric implements ModInitializer {
         AutoConfig.register(NaturalistConfigFabric.class, GsonConfigSerializer::new);
         Naturalist.init();
         addSpawns();
+        addFeatures();
         registerEntityAttributes();
         Naturalist.registerBrewingRecipes();
         Naturalist.registerCompostables();
         Naturalist.registerSpawnPlacements();
     }
+
+
+    public void addFeatures() {
+        BiomeModifications.addFeature(
+                (biomeSelector) -> biomeSelector.getBiomeKey().equals(Biomes.SWAMP),
+                GenerationStep.Decoration.VEGETAL_DECORATION,
+                getPlacedFeatureKey("patch_cattail")
+        );
+        BiomeModifications.addFeature(
+                (biomeSelector) -> biomeSelector.getBiomeKey().equals(Biomes.SWAMP),
+                GenerationStep.Decoration.RAW_GENERATION,
+                getPlacedFeatureKey("swamp_mud")
+        );
+        BiomeModifications.addFeature(
+                (biomeSelector) -> biomeSelector.getBiomeKey().equals(Biomes.SWAMP),
+                GenerationStep.Decoration.VEGETAL_DECORATION,
+                getPlacedFeatureKey("patch_duckweed")
+        );
+    }
+
+
+    private ResourceKey<PlacedFeature> getPlacedFeatureKey(String key) {
+        return ResourceKey.create(Registry.PLACED_FEATURE_REGISTRY, new ResourceLocation(Naturalist.MOD_ID, key));
+    }
+
 
     void registerEntityAttributes() {
         FabricDefaultAttributeRegistry.register(NaturalistEntityTypes.SNAIL.get(), Snail.createAttributes());
@@ -70,6 +102,7 @@ public class NaturalistFabric implements ModInitializer {
         FabricDefaultAttributeRegistry.register(NaturalistEntityTypes.LIZARD.get(), Lizard.createAttributes());
         FabricDefaultAttributeRegistry.register(NaturalistEntityTypes.LIZARD_TAIL.get(), LizardTail.createAttributes());
         FabricDefaultAttributeRegistry.register(NaturalistEntityTypes.TORTOISE.get(), Tortoise.createAttributes());
+        FabricDefaultAttributeRegistry.register(NaturalistEntityTypes.DUCK.get(), Duck.createAttributes());
     }
 
     void addSpawns() {

@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "minecraft:swamp",
+  "features": "naturalist:patch_duckweed",
+  "step": "vegetal_decoration"
+}

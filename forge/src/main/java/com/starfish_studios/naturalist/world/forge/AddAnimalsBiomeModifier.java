@@ -47,6 +47,7 @@ public class AddAnimalsBiomeModifier implements BiomeModifier {
             addMobSpawn(builder, biome, NaturalistTags.Biomes.HAS_BASS, MobCategory.WATER_AMBIENT, NaturalistEntityTypes.BASS.get(), NaturalistConfigForge.BASS_SPAWN_WEIGHT.get(), 2, 4);
             addMobSpawn(builder, biome, NaturalistTags.Biomes.HAS_LIZARD, MobCategory.CREATURE, NaturalistEntityTypes.LIZARD.get(), NaturalistConfigForge.LIZARD_SPAWN_WEIGHT.get(), 1, 2);
             addMobSpawn(builder, biome, NaturalistTags.Biomes.HAS_TORTOISE, MobCategory.CREATURE, NaturalistEntityTypes.TORTOISE.get(), NaturalistConfigForge.TORTOISE_SPAWN_WEIGHT.get(), 1, 2);
+            addMobSpawn(builder, biome, NaturalistTags.Biomes.HAS_DUCK, MobCategory.CREATURE, NaturalistEntityTypes.DUCK.get(), NaturalistConfigForge.DUCK_SPAWN_WEIGHT.get(), 2, 4);
         }
     }
 
