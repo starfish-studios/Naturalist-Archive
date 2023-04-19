@@ -27,6 +27,9 @@ public class DuckModel extends AnimatedGeoModel<Duck> {
         if (animal.getName().getString().equals("Queso")) {
             return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/duck/queso.png");
         }
+        else if (animal.getName().getString().equals("Ducky")) {
+            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/duck/rubber_ducky.png");
+        }
         return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/duck/duck.png");
     }
 

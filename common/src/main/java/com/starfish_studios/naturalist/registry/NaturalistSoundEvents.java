@@ -94,6 +94,10 @@ public class NaturalistSoundEvents {
     public static final Supplier<SoundEvent> DUCK_HURT = CommonPlatformHelper.registerSoundEvent("duck_hurt", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.duck.hurt")));
     public static final Supplier<SoundEvent> DUCK_DEATH = CommonPlatformHelper.registerSoundEvent("duck_death", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.duck.death")));
     public static final Supplier<SoundEvent> DUCK_STEP = CommonPlatformHelper.registerSoundEvent("duck_step", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.duck.step")));
+    // RUBBER DUCKY SOUNDS
+    public static final Supplier<SoundEvent> RUBBER_DUCKY_AMBIENT = CommonPlatformHelper.registerSoundEvent("rubber_ducky_ambient", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.rubber_ducky.ambient")));
+    public static final Supplier<SoundEvent> RUBBER_DUCKY_HURT = CommonPlatformHelper.registerSoundEvent("rubber_ducky_hurt", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.rubber_ducky.hurt")));
+    public static final Supplier<SoundEvent> RUBBER_DUCKY_DEATH = CommonPlatformHelper.registerSoundEvent("rubber_ducky_death", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.rubber_ducky.death")));
 
 
     public static void init() {}

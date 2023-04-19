@@ -530,6 +530,20 @@
       "naturalist:entity/duck/step4",
       "naturalist:entity/duck/step5"
       ],
-      "subtitle": "minecraft.subtitles.block.generic.footsteps"
-  }
+      "subtitle": "subtitles.block.generic.footsteps"
+  },
+    "entity.rubber_ducky.ambient": {
+        "sounds": [
+        "naturalist:entity/duck/rubber_ducky/idle1",
+        "naturalist:entity/duck/rubber_ducky/idle2"
+        ],
+        "subtitle": "naturalist.subtitles.entity.duck.ambient"
+    },
+    "entity.rubber_ducky.hurt": {
+        "sounds": [
+        "naturalist:entity/duck/rubber_ducky/hurt1",
+        "naturalist:entity/duck/rubber_ducky/hurt2"
+        ],
+        "subtitle": "naturalist.subtitles.entity.duck.hurt"
+    }
 }

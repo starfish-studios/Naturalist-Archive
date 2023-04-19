@@ -1,10 +1,12 @@
 package com.starfish_studios.naturalist.entity;
 
+import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import com.starfish_studios.naturalist.registry.NaturalistRegistry;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -53,18 +55,27 @@ public class Duck extends Chicken implements IAnimatable {
     @Nullable
     @Override
     protected SoundEvent getAmbientSound() {
+        if (this.getName().getString().equals("Ducky")) {
+            return NaturalistSoundEvents.RUBBER_DUCKY_AMBIENT.get();
+        }
         return NaturalistSoundEvents.DUCK_AMBIENT.get();
     }
 
     @Nullable
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
+        if (this.getName().getString().equals("Ducky")) {
+            return NaturalistSoundEvents.RUBBER_DUCKY_HURT.get();
+        }
         return NaturalistSoundEvents.DUCK_HURT.get();
     }
 
     @Nullable
     @Override
     protected SoundEvent getDeathSound() {
+        if (this.getName().getString().equals("Ducky")) {
+            return NaturalistSoundEvents.RUBBER_DUCKY_DEATH.get();
+        }
         return NaturalistSoundEvents.DUCK_DEATH.get();
     }
 
