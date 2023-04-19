@@ -1,7 +1,7 @@
 {
       "type": "minecraft:smelting",
       "ingredient": {
-        "item": "naturalist:bass_bucket"
+        "item": "naturalist:bass"
       },
       "result": "naturalist:cooked_bass",
       "experience": 0.35,

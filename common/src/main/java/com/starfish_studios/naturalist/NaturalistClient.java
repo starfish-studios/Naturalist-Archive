@@ -2,19 +2,20 @@ package com.starfish_studios.naturalist;
 
 import com.starfish_studios.naturalist.client.renderer.*;
 import com.starfish_studios.naturalist.platform.ClientPlatformHelper;
+import com.starfish_studios.naturalist.registry.NaturalistBlocks;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import com.starfish_studios.naturalist.registry.NaturalistRegistry;
 import net.minecraft.client.renderer.RenderType;
 
 public class NaturalistClient {
     public static void init() {
-        ClientPlatformHelper.setRenderLayer(NaturalistRegistry.CHRYSALIS, RenderType.cutout());
+        ClientPlatformHelper.setRenderLayer(NaturalistBlocks.CHRYSALIS, RenderType.cutout());
         ClientPlatformHelper.setRenderLayer(NaturalistRegistry.AZURE_FROGLASS, RenderType.translucent());
         ClientPlatformHelper.setRenderLayer(NaturalistRegistry.VERDANT_FROGLASS, RenderType.translucent());
         ClientPlatformHelper.setRenderLayer(NaturalistRegistry.CRIMSON_FROGLASS, RenderType.translucent());
 
         ClientPlatformHelper.setRenderLayer(NaturalistRegistry.CATTAIL, RenderType.cutout());
-        ClientPlatformHelper.setRenderLayer(NaturalistRegistry.DUCKWEED, RenderType.cutout());
+        ClientPlatformHelper.setRenderLayer(NaturalistBlocks.DUCKWEED, RenderType.cutout());
 
         ClientPlatformHelper.registerEntityRenderers(NaturalistEntityTypes.SNAIL, SnailRenderer::new);
         ClientPlatformHelper.registerEntityRenderers(NaturalistEntityTypes.BEAR, BearRenderer::new);

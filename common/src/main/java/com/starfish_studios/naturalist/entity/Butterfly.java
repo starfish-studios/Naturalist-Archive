@@ -2,6 +2,7 @@ package com.starfish_studios.naturalist.entity;
 
 import com.starfish_studios.naturalist.entity.ai.goal.FlyingWanderGoal;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
+import com.starfish_studios.naturalist.registry.NaturalistRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -212,7 +213,7 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal {
 
         @Override
         protected boolean isValidTarget(LevelReader pLevel, BlockPos pPos) {
-            return pLevel.getBlockState(pPos).is(BlockTags.FLOWERS);
+            return pLevel.getBlockState(pPos).is(BlockTags.FLOWERS) || pLevel.getBlockState(pPos).is(NaturalistRegistry.CATTAIL.get());
         }
 
         @Override

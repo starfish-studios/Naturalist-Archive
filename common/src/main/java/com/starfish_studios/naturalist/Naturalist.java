@@ -19,11 +19,12 @@ import software.bernie.geckolib3.GeckoLib;
 
 public class Naturalist {
     public static final String MOD_ID = "naturalist";
-    public static final CreativeModeTab TAB = CommonPlatformHelper.registerCreativeModeTab(new ResourceLocation(MOD_ID, "tab"), () -> new ItemStack(Items.FERN));
+    public static final CreativeModeTab TAB = CommonPlatformHelper.registerCreativeModeTab(new ResourceLocation(MOD_ID, "tab"), () -> new ItemStack(NaturalistRegistry.TEDDY_BEAR.get()));
     public static final Logger LOGGER = LogManager.getLogger();
 
     public static void init() {
         GeckoLib.initialize();
+        NaturalistBlocks.init();
         NaturalistRegistry.init();
         NaturalistSoundEvents.init();
         NaturalistEntityTypes.init();

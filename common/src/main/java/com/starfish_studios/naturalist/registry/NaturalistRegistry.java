@@ -27,7 +27,8 @@ public class NaturalistRegistry {
 
         // LINE 1
 
-        public static final Supplier<Block> DUCKWEED = registerBlock("duckweed", () -> new WaterlilyBlock(BlockBehaviour.Properties.of(Material.REPLACEABLE_PLANT).noCollission().randomTicks().instabreak().sound(SoundType.SMALL_DRIPLEAF)));
+        public static final Supplier<Item> DUCKWEED = CommonPlatformHelper.registerItem("duckweed", () -> new PlaceOnWaterBlockItem(NaturalistBlocks.DUCKWEED.get(), new Item.Properties().tab(Naturalist.TAB)));
+
         public static final Supplier<Block> CATTAIL = registerBlock("cattail", () -> new CattailBlock(BlockBehaviour
                 .Properties.of(Material.REPLACEABLE_PLANT)
                 .noCollission()
@@ -65,7 +66,7 @@ public class NaturalistRegistry {
         public static final Supplier<Item> BASS_BUCKET = CommonPlatformHelper.registerMobBucketItem("bass_bucket", NaturalistEntityTypes.BASS, () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH);
         public static final Supplier<Item> BASS = CommonPlatformHelper.registerItem("bass", () -> new Item(new Item.Properties().tab(Naturalist.TAB).food(Foods.COD)));
         public static final Supplier<Item> COOKED_BASS = CommonPlatformHelper.registerItem("cooked_bass", () -> new Item(new Item.Properties().tab(Naturalist.TAB).food(Foods.COOKED_COD)));
-        public static final Supplier<Block> CHRYSALIS = CommonPlatformHelper.registerBlock("chrysalis", () -> new ChrysalisBlock(BlockBehaviour.Properties.of(Material.PLANT).randomTicks().strength(0.2F, 3.0F).sound(SoundType.GRASS).noOcclusion().noCollission()));
+        public static final Supplier<Item> CHRYSALIS = CommonPlatformHelper.registerItem("chrysalis", () -> new BlockItem(NaturalistBlocks.CHRYSALIS.get(), new Item.Properties().tab(Naturalist.TAB).stacksTo(1)));
 
         // WIP OR DISABLED
 

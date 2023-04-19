@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:fishing",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "naturalist:bass",
+          "weight": 40
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}
