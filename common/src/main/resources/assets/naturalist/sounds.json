@@ -524,11 +524,12 @@
   },
   "entity.duck.step": {
       "sounds": [
-      "minecraft:mob/chicken/step1",
-      "minecraft:mob/chicken/step2",
-      "minecraft:mob/chicken/step3",
-      "minecraft:mob/chicken/step4"
+      "naturalist:entity/duck/step1",
+      "naturalist:entity/duck/step2",
+      "naturalist:entity/duck/step3",
+      "naturalist:entity/duck/step4",
+      "naturalist:entity/duck/step5"
       ],
-      "subtitle": "naturalist.subtitles.entity.duck.step"
+      "subtitle": "minecraft.subtitles.block.generic.footsteps"
   }
 }

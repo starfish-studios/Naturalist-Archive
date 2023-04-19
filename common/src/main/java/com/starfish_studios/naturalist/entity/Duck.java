@@ -70,7 +70,7 @@ public class Duck extends Chicken implements IAnimatable {
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(NaturalistSoundEvents.DUCK_STEP.get(), 0.15f, 1.0f);
+        this.playSound(NaturalistSoundEvents.DUCK_STEP.get(), 0.1f, 1.2f);
     }
 
 

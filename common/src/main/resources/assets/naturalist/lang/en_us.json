@@ -180,6 +180,7 @@
   "naturalist.subtitles.entity.duck.ambient": "Duck quacks",
   "naturalist.subtitles.entity.duck.hurt": "Duck hurts",
   "naturalist.subtitles.entity.duck.death": "Duck dies",
+  "naturalist.subtitles.entity.duck.step": "Duck steps",
   "naturalist.subtitles.entity.duck.ambient_baby": "Duckling quacks",
   "naturalist.subtitles.entity.duck.hurt_baby": "Duckling hurts",
   "naturalist.subtitles.entity.duck.death_baby": "Duckling dies",
@@ -219,6 +220,7 @@
   "text.autoconfig.naturalist.option.bassSpawnWeight": "Bass Spawn Weight",
   "text.autoconfig.naturalist.option.lizardSpawnWeight": "Lizard Spawn Weight",
   "text.autoconfig.naturalist.option.tortoiseSpawnWeight": "Tortoise Spawn Weight",
+  "text.autoconfig.naturalist.option.duckSpawnWeight": "Duck Spawn Weight",
   "text.autoconfig.naturalist.option.removeSavannaFarmAnimals": "Remove Farm Animals in Savanna Biomes",
   "text.autoconfig.naturalist.option.removeSwampFarmAnimals": "Remove Farm Animals in Swamp Biomes"
 }
