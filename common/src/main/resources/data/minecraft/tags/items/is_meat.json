@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "naturalist:bass",
+    "naturalist:cooked_bass",
+    "naturalist:catfish",
+    "naturalist:cooked_catfish",
+    "naturalist:lizard_tail",
+    "naturalist:cooked_lizard_tail",
+    "naturalist:duck",
+    "naturalist:cooked_duck"
+  ]
+}

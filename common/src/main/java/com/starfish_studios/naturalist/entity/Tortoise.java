@@ -83,8 +83,7 @@ public class Tortoise extends TamableAnimal implements IAnimatable, HidingAnimal
             } else {
                 tortoise.setVariant(this.random.nextBoolean() ? tortoiseParent.getVariant() : this.getVariant());
             }
-            // IF SHOULD BE TAMED BY SAME PLAYER AS A PARENT UNCOMMENT THIS
-            //tortoise.setOwnerUUID(this.random.nextBoolean() ? tortoiseParent.getOwnerUUID() : this.getOwnerUUID());
+            tortoise.setOwnerUUID(this.random.nextBoolean() ? tortoiseParent.getOwnerUUID() : this.getOwnerUUID());
         }
         return tortoise;
     }

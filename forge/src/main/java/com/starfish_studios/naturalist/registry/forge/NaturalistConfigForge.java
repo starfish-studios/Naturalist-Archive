@@ -77,7 +77,7 @@ public class NaturalistConfigForge {
         // DRYLANDS SPAWN WEIGHTS
 
         RHINO_SPAWN_WEIGHT = COMMON_BUILDER.comment("Rhino Spawn Weight").defineInRange("rhinoSpawnWeight", 15, 0, 1000);
-        LION_SPAWN_WEIGHT = COMMON_BUILDER.comment("Lion Spawn Weight").defineInRange("lionSpawnWeight", 15, 0, 1000);
+        LION_SPAWN_WEIGHT = COMMON_BUILDER.comment("Lion Spawn Weight").defineInRange("lionSpawnWeight", 8, 0, 1000);
         ELEPHANT_SPAWN_WEIGHT = COMMON_BUILDER.comment("Elephant Spawn Weight").defineInRange("elephantSpawnWeight", 10, 0, 1000);
         ZEBRA_SPAWN_WEIGHT = COMMON_BUILDER.comment("Zebra Spawn Weight").defineInRange("zebraSpawnWeight", 10, 0, 1000);
         GIRAFFE_SPAWN_WEIGHT = COMMON_BUILDER.comment("Giraffe Spawn Weight").defineInRange("giraffeSpawnWeight", 10, 0, 1000);

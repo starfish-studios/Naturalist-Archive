@@ -3,6 +3,7 @@ package com.starfish_studios.naturalist.registry.fabric;
 import com.starfish_studios.naturalist.Naturalist;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
+import me.shedaniel.autoconfig.annotation.ConfigEntry;
 
 @Config(name = Naturalist.MOD_ID)
 public class NaturalistConfigFabric implements ConfigData {
@@ -30,7 +31,7 @@ public class NaturalistConfigFabric implements ConfigData {
     // DRYLAND ANIMALS
 
     public int rhinoSpawnWeight = 15;
-    public int lionSpawnWeight = 15;
+    public int lionSpawnWeight = 8;
     public int elephantSpawnWeight = 10;
     public int zebraSpawnWeight = 10;
     public int giraffeSpawnWeight = 10;

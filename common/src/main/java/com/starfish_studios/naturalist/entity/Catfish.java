@@ -3,7 +3,13 @@ package com.starfish_studios.naturalist.entity;
 import com.starfish_studios.naturalist.registry.NaturalistRegistry;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -24,6 +30,8 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class Catfish extends AbstractFish implements IAnimatable {
+    private static final EntityDataAccessor<Integer> KILL_COOLDOWN = SynchedEntityData.defineId(Catfish.class, EntityDataSerializers.INT);
+
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public Catfish(EntityType<? extends AbstractFish> entityType, Level level) {
@@ -37,13 +45,63 @@ public class Catfish extends AbstractFish implements IAnimatable {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.2D, false));
+        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.2D, false)
+        {
+            public boolean canUse() {
+                return super.canUse() && !isBaby() && getKillCooldown() == 0;
+            }
+
+            public void stop() {
+                super.stop();
+                setKillCooldown(2400);
+            }
+        });
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, WaterAnimal.class, 10, true, false, (entity) -> entity.getType().is(NaturalistTags.EntityTypes.CATFISH_HOSTILES)));
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(KILL_COOLDOWN, 0);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putInt("KillCooldown", this.getKillCooldown());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.setKillCooldown(compound.getInt("KillCooldown"));
+    }
+
+    public void setKillCooldown(int ticks) {
+        this.entityData.set(KILL_COOLDOWN, ticks);
+    }
+
+    public int getKillCooldown() {
+        return this.entityData.get(KILL_COOLDOWN);
     }
 
     @Override
     protected SoundEvent getFlopSound() {
         return NaturalistSoundEvents.CATFISH_FLOP.get();
+    }
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return SoundEvents.SALMON_AMBIENT;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.SALMON_DEATH;
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSource) {
+        return SoundEvents.SALMON_HURT;
     }
 
     @Override

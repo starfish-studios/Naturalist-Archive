@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "minecraft:savanna",
+  "features": "naturalist:savanna_lake",
+  "step": "lakes"
+}

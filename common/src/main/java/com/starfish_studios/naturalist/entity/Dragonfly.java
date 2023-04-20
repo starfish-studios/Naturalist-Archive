@@ -31,6 +31,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -43,11 +44,17 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 import javax.annotation.Nullable;
 
 public class Dragonfly extends PathfinderMob implements IAnimatable {
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private static final EntityDataAccessor<Integer> VARIANT_ID = SynchedEntityData.defineId(Dragonfly.class, EntityDataSerializers.INT);
     @Nullable
     private BlockPos targetPosition;
     private int hoverTicks;
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+
+    @Override
+    @NotNull
+    public MobType getMobType() {
+        return MobType.ARTHROPOD;
+    }
 
     public Dragonfly(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);

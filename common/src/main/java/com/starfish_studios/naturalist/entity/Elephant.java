@@ -17,6 +17,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -260,7 +261,7 @@ public class Elephant extends Animal implements IAnimatable {
 
         @Override
         protected boolean isValidTarget(LevelReader level, BlockPos pos) {
-            if (level.getBlockState(pos).is(Blocks.GRASS_BLOCK)) {
+            if (level.getBlockState(pos).isFaceSturdy(level, pos, Direction.DOWN)) {
                 for (Direction direction : Direction.Plane.HORIZONTAL) {
                     if (level.getFluidState(pos.relative(direction)).is(Fluids.WATER)) {
                         this.elephant.waterPos = pos.relative(direction);

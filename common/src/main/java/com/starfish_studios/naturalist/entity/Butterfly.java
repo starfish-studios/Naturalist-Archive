@@ -30,6 +30,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -45,6 +46,12 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal {
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private static final EntityDataAccessor<Boolean> HAS_NECTAR = SynchedEntityData.defineId(Butterfly.class, EntityDataSerializers.BOOLEAN);
     private int numCropsGrownSincePollination;
+
+    @Override
+    @NotNull
+    public MobType getMobType() {
+        return MobType.ARTHROPOD;
+    }
 
     public Butterfly(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);

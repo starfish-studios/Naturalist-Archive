@@ -4,6 +4,7 @@
     "minecraft:mangrove_swamp",
     "minecraft:desert",
     "#minecraft:is_jungle",
+    "#minecraft:is_forest",
     {
       "id": "#forge:is_swamp",
       "required": false
@@ -22,6 +23,14 @@
     },
     {
       "id": "#c:jungle",
+      "required": false
+    },
+    {
+      "id": "#forge:is_forest",
+      "required": false
+    },
+    {
+      "id": "#c:forest",
       "required": false
     }
   ]

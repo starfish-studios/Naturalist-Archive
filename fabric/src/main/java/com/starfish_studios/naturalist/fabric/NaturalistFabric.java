@@ -65,6 +65,11 @@ public class NaturalistFabric implements ModInitializer {
                 GenerationStep.Decoration.VEGETAL_DECORATION,
                 getPlacedFeatureKey("patch_duckweed")
         );
+        BiomeModifications.addFeature(
+                (biomeSelector) -> biomeSelector.getBiomeKey().equals(Biomes.SAVANNA),
+                GenerationStep.Decoration.LAKES,
+                getPlacedFeatureKey("savanna_lake")
+        );
     }
 
 
