@@ -41,6 +41,7 @@ public class NaturalistTags {
         public static final TagKey<Item> ALLIGATOR_FOOD_ITEMS = tag("alligator_food_items");
         public static final TagKey<Item> LIZARD_TEMPT_ITEMS = tag("lizard_tempt_items");
         public static final TagKey<Item> TORTOISE_TEMPT_ITEMS = tag("tortoise_tempt_items");
+        public static final TagKey<Item> DUCK_FOOD_ITEMS = tag("duck_food_items");
 
         private static TagKey<Item> tag(String name) {
             return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(Naturalist.MOD_ID, name));
@@ -55,6 +56,7 @@ public class NaturalistTags {
         public static final TagKey<EntityType<?>> VULTURE_HOSTILES = tag("vulture_hostiles");
         public static final TagKey<EntityType<?>> CATFISH_HOSTILES = tag("catfish_hostiles");
         public static final TagKey<EntityType<?>> ALLIGATOR_HOSTILES = tag("alligator_hostiles");
+        public static final TagKey<EntityType<?>> BOAR_HOSTILES = tag("boar_hostiles");
 
         private static TagKey<EntityType<?>> tag(String name) {
             return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation(Naturalist.MOD_ID, name));

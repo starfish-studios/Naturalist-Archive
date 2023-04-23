@@ -1,22 +1,24 @@
 package com.starfish_studios.naturalist.entity;
 
-import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import com.starfish_studios.naturalist.registry.NaturalistRegistry;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.animal.Chicken;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,17 +34,46 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public class Duck extends Chicken implements IAnimatable {
+public class Duck extends Animal implements IAnimatable {
+    private static final Ingredient FOOD_ITEMS = Ingredient.of(NaturalistTags.ItemTags.DUCK_FOOD_ITEMS);
+    public float flap;
+    public float flapSpeed;
+    public float oFlapSpeed;
+    public float oFlap;
+    public float flapping = 1.0F;
+    private float nextFlap = 1.0F;
+    public int eggTime;
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
-    public Duck(EntityType<? extends Chicken> entityType, Level level) {
+    public Duck(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
+        this.eggTime = this.random.nextInt(100) + 100;
+    }
+
+    protected void registerGoals() {
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new PanicGoal(this, 1.4));
+        this.goalSelector.addGoal(2, new BreedGoal(this, 1.0));
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.0, FOOD_ITEMS, false));
+        this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.1));
+        this.goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+    }
+
+    @Override
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return this.isBaby() ? dimensions.height * 0.85F : dimensions.height * 0.92F;
+    }
+
+    public static AttributeSupplier.Builder createAttributes() {
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 4.0).add(Attributes.MOVEMENT_SPEED, 0.25);
     }
 
     @Nullable
     @Override
-    public Chicken getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
+    public Duck getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
         return NaturalistEntityTypes.DUCK.get().create(serverLevel);
     }
 
@@ -87,6 +118,18 @@ public class Duck extends Chicken implements IAnimatable {
 
     // AI
 
+    protected boolean isFlapping() {
+        return this.flyDist > this.nextFlap;
+    }
+
+    protected void onFlap() {
+        this.nextFlap = this.flyDist + this.flapSpeed / 2.0F;
+    }
+
+    public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
+        return false;
+    }
+
     @Override
     public void customServerAiStep() {
         if (this.getMoveControl().hasWanted()) {
@@ -116,13 +159,33 @@ public class Duck extends Chicken implements IAnimatable {
         }
 
         this.flap += this.flapping * 2.0F;
-        if (!this.level.isClientSide && this.isAlive() && !this.isBaby() && !this.isChickenJockey() && --this.eggTime <= 0) {
+        if (!this.level.isClientSide && this.isAlive() && !this.isBaby() && --this.eggTime <= 0) {
             this.playSound(SoundEvents.CHICKEN_EGG, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
             this.spawnAtLocation(NaturalistRegistry.DUCK_EGG.get());
             this.gameEvent(GameEvent.ENTITY_PLACE);
-            this.eggTime = this.random.nextInt(6000) + 6000;
+            this.eggTime = this.random.nextInt(100) + 100;
         }
 
+    }
+
+    @Override
+    public int getExperienceReward() {
+        return 10;
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        if (compound.contains("EggLayTime")) {
+            this.eggTime = compound.getInt("EggLayTime");
+        }
+
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putInt("EggLayTime", this.eggTime);
     }
 
     // ANIMATION
