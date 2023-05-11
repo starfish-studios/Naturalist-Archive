@@ -465,8 +465,10 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.isSleeping()) {
             event.getController().setAnimation(new AnimationBuilder().loop("bear.sleep"));
+            return PlayState.CONTINUE;
         } else if (this.isSitting()) {
             event.getController().setAnimation(new AnimationBuilder().loop("bear.sit"));
+            return PlayState.CONTINUE;
         } else if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
             if (this.isSprinting()) {
                 event.getController().setAnimation(new AnimationBuilder().loop("run"));
@@ -477,8 +479,10 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
             }
         } else {
             event.getController().setAnimation(new AnimationBuilder().loop("idle"));
+            return PlayState.CONTINUE;
         }
-        return PlayState.CONTINUE;
+        event.getController().markNeedsReload();
+        return PlayState.STOP;
     }
 
     private <E extends IAnimatable> PlayState sniffPredicate(AnimationEvent<E> event) {

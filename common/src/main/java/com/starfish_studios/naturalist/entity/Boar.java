@@ -1,19 +1,13 @@
 package com.starfish_studios.naturalist.entity;
 
 import com.starfish_studios.naturalist.entity.ai.goal.BabyPanicGoal;
-import com.starfish_studios.naturalist.entity.ai.goal.CloseMeleeAttackGoal;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.Difficulty;
@@ -31,10 +25,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -51,9 +43,6 @@ public class Boar extends Animal implements NeutralMob, IAnimatable {
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private static final Ingredient FOOD_ITEMS = Ingredient.of(NaturalistTags.ItemTags.BOAR_FOOD_ITEMS);
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
-    private static final EntityDataAccessor<Integer> KILL_COOLDOWN = SynchedEntityData.defineId(Boar.class, EntityDataSerializers.INT);
-
-
     private int remainingPersistentAngerTime;
     @Nullable
     private UUID persistentAngerTarget;
@@ -78,7 +67,7 @@ public class Boar extends Animal implements NeutralMob, IAnimatable {
         this.goalSelector.addGoal(1, new BreedGoal(this, 1.0));
         this.goalSelector.addGoal(2, new TemptGoal(this, 1.2, FOOD_ITEMS, false));
         this.goalSelector.addGoal(3, new BoarAvoidPlayerGoal(this, Player.class, 16.0f, 1.5D, 1.5D, entity -> !entity.isHolding(FOOD_ITEMS)));
-        this.goalSelector.addGoal(4, new CloseMeleeAttackGoal(this, 1.5, false));
+        this.goalSelector.addGoal(4, new BoarMeleeAttackGoal(this, 1.2, false));
         this.goalSelector.addGoal(5, new BabyPanicGoal(this, 1.4));
         this.goalSelector.addGoal(6, new FollowParentGoal(this, 1.1));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0));
@@ -86,34 +75,7 @@ public class Boar extends Animal implements NeutralMob, IAnimatable {
         this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, (entity) -> !this.isBaby() && entity.getType().is(NaturalistTags.EntityTypes.BOAR_HOSTILES)));
-        this.targetSelector.addGoal(4, new ResetUniversalAngerTargetGoal<>(this, false));
-    }
-
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        // this.entityData.define(KILL_COOLDOWN, 0);
-    }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag compound) {
-        super.addAdditionalSaveData(compound);
-        // compound.putInt("KillCooldown", this.getKillCooldown());
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
-        super.readAdditionalSaveData(compound);
-        // this.setKillCooldown(compound.getInt("KillCooldown"));
-    }
-
-    public void setKillCooldown(int ticks) {
-        // this.entityData.set(KILL_COOLDOWN, ticks);
-    }
-
-    public int getKillCooldown() {
-        return this.entityData.get(KILL_COOLDOWN);
+        this.targetSelector.addGoal(3, new ResetUniversalAngerTargetGoal<>(this, false));
     }
 
     public boolean isAggro() {
@@ -222,25 +184,15 @@ public class Boar extends Animal implements NeutralMob, IAnimatable {
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
             if (this.isSprinting()) {
-                event.getController().setAnimation(new AnimationBuilder().loop("run"));
-                event.getController().setAnimationSpeed(2.4D);
+                event.getController().setAnimation(new AnimationBuilder().loop("boar.run"));
+                event.getController().setAnimationSpeed(2.0D);
             } else {
-                event.getController().setAnimation(new AnimationBuilder().loop("walk"));
+                event.getController().setAnimation(new AnimationBuilder().loop("boar.walk"));
                 event.getController().setAnimationSpeed(1.5D);
             }
         } else {
-            event.getController().setAnimation(new AnimationBuilder().loop("idle"));
+            event.getController().setAnimation(new AnimationBuilder().loop("boar.idle"));
             event.getController().setAnimationSpeed(1.0D);
-        }
-        return PlayState.CONTINUE;
-    }
-
-    // ATTACK ANIMATION
-    private <E extends IAnimatable> PlayState attackPredicate(AnimationEvent<E> event) {
-        if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped))  {
-            event.getController().setAnimation(new AnimationBuilder().playOnce("attack"));
-            event.getController().markNeedsReload();
-            this.swinging = false;
         }
         return PlayState.CONTINUE;
     }
@@ -248,13 +200,31 @@ public class Boar extends Animal implements NeutralMob, IAnimatable {
     @Override
     public void registerControllers(AnimationData data) {
         data.setResetSpeedInTicks(10);
-        data.addAnimationController(new AnimationController<>(this, "controller", 5, this::predicate));
-        data.addAnimationController(new AnimationController<>(this, "attackController", 0, this::attackPredicate));
+        data.addAnimationController(new AnimationController<>(this, "controller", 10, this::predicate));
     }
 
     @Override
     public AnimationFactory getFactory() {
         return factory;
+    }
+
+    static class BoarMeleeAttackGoal extends MeleeAttackGoal {
+        private final Boar boar;
+
+        public BoarMeleeAttackGoal(Boar mob, double speedModifier, boolean followingTargetEvenIfNotSeen) {
+            super(mob, speedModifier, followingTargetEvenIfNotSeen);
+            this.boar = mob;
+        }
+
+        @Override
+        public boolean canUse() {
+            return this.boar.isAggro() && !this.boar.isBaby() && super.canUse();
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return this.boar.isAggro() && !this.boar.isBaby() && super.canContinueToUse();
+        }
     }
 
     static class BoarAvoidPlayerGoal extends AvoidEntityGoal<Player> {
