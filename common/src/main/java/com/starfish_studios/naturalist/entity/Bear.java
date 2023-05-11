@@ -473,13 +473,14 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
             if (this.isSprinting()) {
                 event.getController().setAnimation(new AnimationBuilder().loop("run"));
                 event.getController().setAnimationSpeed(1.8D);
+                return PlayState.CONTINUE;
             } else {
                 event.getController().setAnimation(new AnimationBuilder().loop("walk"));
                 event.getController().setAnimationSpeed(1.4D);
+                return PlayState.CONTINUE;
             }
         } else {
             event.getController().setAnimation(new AnimationBuilder().loop("idle"));
-            return PlayState.CONTINUE;
         }
         event.getController().markNeedsReload();
         return PlayState.STOP;

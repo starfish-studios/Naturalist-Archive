@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "naturalist:bass",
+    "naturalist:cooked_bass",
+    "naturalist:catfish",
+    "naturalist:cooked_catfish"
+  ]
+}

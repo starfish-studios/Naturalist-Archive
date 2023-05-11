@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -48,7 +49,7 @@ public class Duck extends Animal implements IAnimatable {
 
     public Duck(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
-        this.eggTime = this.random.nextInt(100) + 100;
+        this.eggTime = this.random.nextInt(6000) + 6000;
     }
 
     protected void registerGoals() {
@@ -57,9 +58,10 @@ public class Duck extends Animal implements IAnimatable {
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0));
         this.goalSelector.addGoal(3, new TemptGoal(this, 1.0, FOOD_ITEMS, false));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.1));
-        this.goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0));
-        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
-        this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(5, new RandomSwimmingGoal(this, 1.0, 10));
+        this.goalSelector.addGoal(6, new RandomStrollGoal(this, 1.0));
+        this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
     }
 
     @Override
@@ -71,6 +73,11 @@ public class Duck extends Animal implements IAnimatable {
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 4.0).add(Attributes.MOVEMENT_SPEED, 0.25);
     }
 
+    @Override
+    protected float getWaterSlowDown() {
+        return 0.9F;
+    }
+
     @Nullable
     @Override
     public Duck getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
@@ -78,7 +85,7 @@ public class Duck extends Animal implements IAnimatable {
     }
 
     public static boolean checkDuckSpawnRules(EntityType<? extends Duck> pType, ServerLevelAccessor pLevel, MobSpawnType pReason, BlockPos pPos, RandomSource pRandom) {
-        return pLevel.getBlockState(pPos.below()).is(NaturalistTags.BlockTags.DUCKS_SPAWNABLE_ON);
+        return pLevel.getBlockState(pPos.below()).is(NaturalistTags.BlockTags.DUCKS_SPAWNABLE_ON) || pLevel.getBlockState(pPos.below()).getFluidState().is(FluidTags.WATER);
     }
 
     // SOUNDS
@@ -163,7 +170,7 @@ public class Duck extends Animal implements IAnimatable {
             this.playSound(SoundEvents.CHICKEN_EGG, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
             this.spawnAtLocation(NaturalistRegistry.DUCK_EGG.get());
             this.gameEvent(GameEvent.ENTITY_PLACE);
-            this.eggTime = this.random.nextInt(100) + 100;
+            this.eggTime = this.random.nextInt(6000) + 6000;
         }
 
     }
@@ -187,6 +194,9 @@ public class Duck extends Animal implements IAnimatable {
         super.addAdditionalSaveData(compound);
         compound.putInt("EggLayTime", this.eggTime);
     }
+
+
+
 
     // ANIMATION
 
