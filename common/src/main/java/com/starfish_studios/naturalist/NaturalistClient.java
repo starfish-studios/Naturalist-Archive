@@ -7,6 +7,11 @@ import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import com.starfish_studios.naturalist.registry.NaturalistRegistry;
 import net.minecraft.client.renderer.RenderType;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 public class NaturalistClient {
     public static void init() {
         ClientPlatformHelper.setRenderLayer(NaturalistBlocks.CHRYSALIS, RenderType.cutout());
@@ -46,5 +51,29 @@ public class NaturalistClient {
         ClientPlatformHelper.registerEntityRenderers(NaturalistEntityTypes.LIZARD_TAIL, LizardTailRenderer::new);
         ClientPlatformHelper.registerEntityRenderers(NaturalistEntityTypes.TORTOISE, TortoiseRenderer::new);
         ClientPlatformHelper.registerEntityRenderers(NaturalistEntityTypes.DUCK, DuckRenderer::new);
+        copyOldModelsResources();
+
+    }
+
+    private static void copyOldModelsResources() {
+        File dir = new File(".", "resourcepacks");
+        File target = new File(dir, "Naturalist Old Models.zip");
+
+        if(!target.exists())
+            try {
+                dir.mkdirs();
+                InputStream in = Naturalist.class.getResourceAsStream("/assets/naturalist/old_models.zip");
+                FileOutputStream out = new FileOutputStream(target);
+
+                byte[] buf = new byte[16384];
+                int len;
+                while((len = in.read(buf)) > 0)
+                    out.write(buf, 0, len);
+
+                in.close();
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
     }
 }
