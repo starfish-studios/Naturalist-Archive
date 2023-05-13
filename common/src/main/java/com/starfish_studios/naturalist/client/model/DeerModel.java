@@ -24,7 +24,7 @@ public class DeerModel extends AnimatedGeoModel<Deer> {
     @Override
     public ResourceLocation getTextureResource(Deer deer) {
         if (deer.isBaby()) {
-            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/fawn.png");
+            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/deer.png");
         }
 
         return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/deer.png");
@@ -43,17 +43,15 @@ public class DeerModel extends AnimatedGeoModel<Deer> {
 
         List<EntityModelData> extraDataOfType = customPredicate.getExtraDataOfType(EntityModelData.class);
         IBone head = this.getAnimationProcessor().getBone("head");
-        IBone left_antler = this.getAnimationProcessor().getBone("left_antler");
-        IBone right_antler = this.getAnimationProcessor().getBone("right_antler");
+        IBone antlers = this.getAnimationProcessor().getBone("antlers");
 
         if (deer.isBaby()) {
-            head.setScaleX(1.6F);
-            head.setScaleY(1.6F);
-            head.setScaleZ(1.6F);
+            head.setScaleX(1.4F);
+            head.setScaleY(1.4F);
+            head.setScaleZ(1.4F);
         }
 
-        left_antler.setHidden(deer.isBaby());
-        right_antler.setHidden(deer.isBaby());
+        antlers.setHidden(deer.isBaby());
 
         if (!deer.isEating()) {
             head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD);

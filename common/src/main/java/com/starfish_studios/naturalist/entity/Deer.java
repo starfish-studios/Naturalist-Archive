@@ -170,18 +170,18 @@ public class Deer extends Animal implements IAnimatable {
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.isEating()) {
-            event.getController().setAnimation(new AnimationBuilder().loop("deer.eat"));
+            event.getController().setAnimation(new AnimationBuilder().loop("eat"));
             event.getController().setAnimationSpeed(1.0D);
         } else if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
             if (this.isSprinting()) {
-                event.getController().setAnimation(new AnimationBuilder().loop("deer.run"));
-                event.getController().setAnimationSpeed(2.0D);
+                event.getController().setAnimation(new AnimationBuilder().loop("run"));
+                event.getController().setAnimationSpeed(2.3D);
             } else {
-                event.getController().setAnimation(new AnimationBuilder().loop("deer.walk"));
-                event.getController().setAnimationSpeed(1.25D);
+                event.getController().setAnimation(new AnimationBuilder().loop("walk"));
+                event.getController().setAnimationSpeed(1.0D);
             }
         } else {
-            event.getController().setAnimation(new AnimationBuilder().loop("deer.idle"));
+            event.getController().setAnimation(new AnimationBuilder().loop("idle"));
             event.getController().setAnimationSpeed(1.0D);
         }
         return PlayState.CONTINUE;
@@ -190,7 +190,7 @@ public class Deer extends Animal implements IAnimatable {
     @Override
     public void registerControllers(AnimationData data) {
         data.setResetSpeedInTicks(10);
-        data.addAnimationController(new AnimationController<>(this, "controller", 10, this::predicate));
+        data.addAnimationController(new AnimationController<>(this, "controller", 5, this::predicate));
     }
 
     @Override

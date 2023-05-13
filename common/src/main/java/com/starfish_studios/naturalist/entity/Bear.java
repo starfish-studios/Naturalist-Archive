@@ -464,10 +464,10 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.isSleeping()) {
-            event.getController().setAnimation(new AnimationBuilder().loop("bear.sleep"));
+            event.getController().setAnimation(new AnimationBuilder().loop("sleep"));
             return PlayState.CONTINUE;
         } else if (this.isSitting()) {
-            event.getController().setAnimation(new AnimationBuilder().loop("bear.sit"));
+            event.getController().setAnimation(new AnimationBuilder().loop("sit"));
             return PlayState.CONTINUE;
         } else if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
             if (this.isSprinting()) {
@@ -488,17 +488,17 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
 
     private <E extends IAnimatable> PlayState sniffPredicate(AnimationEvent<E> event) {
         if (this.isSniffing()) {
-            event.getController().setAnimation(new AnimationBuilder().loop("bear.sniff"));
+            event.getController().setAnimation(new AnimationBuilder().loop("sniff"));
             return PlayState.CONTINUE;
         }
         event.getController().markNeedsReload();
         return PlayState.STOP;
     }
 
-    private <E extends IAnimatable> PlayState swingPredicate(AnimationEvent<E> event) {
+    private <E extends IAnimatable> PlayState attackPredicate(AnimationEvent<E> event) {
         if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
             event.getController().markNeedsReload();
-            event.getController().setAnimation(new AnimationBuilder().playOnce("bear.swing"));
+            event.getController().setAnimation(new AnimationBuilder().playOnce("attack"));
             this.swinging = false;
         }
         return PlayState.CONTINUE;
@@ -506,7 +506,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
 
     private <E extends IAnimatable> PlayState eatPredicate(AnimationEvent<E> event) {
         if (this.isEating()) {
-            event.getController().setAnimation(new AnimationBuilder().loop("bear.eat"));
+            event.getController().setAnimation(new AnimationBuilder().loop("eat"));
             return PlayState.CONTINUE;
         }
         event.getController().markNeedsReload();
@@ -518,7 +518,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
         data.setResetSpeedInTicks(5);
         data.addAnimationController(new AnimationController<>(this, "controller", 5, this::predicate));
         data.addAnimationController(new AnimationController<>(this, "sniffController", 2, this::sniffPredicate));
-        data.addAnimationController(new AnimationController<>(this, "swingController", 2, this::swingPredicate));
+        data.addAnimationController(new AnimationController<>(this, "attackController", 2, this::attackPredicate));
         data.addAnimationController(new AnimationController<>(this, "eatController", 5, this::eatPredicate));
     }
 
