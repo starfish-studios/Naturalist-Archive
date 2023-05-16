@@ -1,8 +1,8 @@
 {
   "values": [
-    "minecraft:tropical_fish",
     "minecraft:salmon",
     "minecraft:cod",
+    "naturalist:bass",
     "naturalist:deer"
   ]
 }

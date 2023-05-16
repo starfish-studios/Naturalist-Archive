@@ -62,7 +62,7 @@ public class NaturalistClient {
         if(!target.exists())
             try {
                 dir.mkdirs();
-                InputStream in = Naturalist.class.getResourceAsStream("/assets/naturalist/old_models.zip");
+                InputStream in = Naturalist.class.getResourceAsStream("/assets/naturalist/Naturalist Old Models.zip");
                 FileOutputStream out = new FileOutputStream(target);
 
                 byte[] buf = new byte[16384];
