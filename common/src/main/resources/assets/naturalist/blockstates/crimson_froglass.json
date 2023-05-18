@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "naturalist:block/crimson_froglass"
+      "model": "naturalist:block/froglass/crimson_froglass"
     }
   }
 }

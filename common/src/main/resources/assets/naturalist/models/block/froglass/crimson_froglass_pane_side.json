@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_glass_pane_side",
+  "textures": {
+    "edge": "naturalist:block/crimson_froglass_pane_top",
+    "pane": "naturalist:block/crimson_froglass"
+  }
+}

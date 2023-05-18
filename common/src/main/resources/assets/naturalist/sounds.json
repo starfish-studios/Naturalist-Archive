@@ -189,8 +189,9 @@
   },
   "entity.bird.ambient_robin": {
     "sounds": [
-      "naturalist:robin_idle",
-      "naturalist:robin_song"
+      "naturalist:entity/bird/robin/idle1",
+      "naturalist:entity/bird/robin/idle2",
+      "naturalist:entity/bird/robin/idle3"
     ],
     "subtitle": "naturalist.subtitles.entity.bird.ambient_robin"
   },

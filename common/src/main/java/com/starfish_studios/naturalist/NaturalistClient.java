@@ -16,8 +16,11 @@ public class NaturalistClient {
     public static void init() {
         ClientPlatformHelper.setRenderLayer(NaturalistBlocks.CHRYSALIS, RenderType.cutout());
         ClientPlatformHelper.setRenderLayer(NaturalistRegistry.AZURE_FROGLASS, RenderType.translucent());
+        ClientPlatformHelper.setRenderLayer(NaturalistRegistry.AZURE_FROGLASS_PANE, RenderType.translucent());
         ClientPlatformHelper.setRenderLayer(NaturalistRegistry.VERDANT_FROGLASS, RenderType.translucent());
+        ClientPlatformHelper.setRenderLayer(NaturalistRegistry.VERDANT_FROGLASS_PANE, RenderType.translucent());
         ClientPlatformHelper.setRenderLayer(NaturalistRegistry.CRIMSON_FROGLASS, RenderType.translucent());
+        ClientPlatformHelper.setRenderLayer(NaturalistRegistry.CRIMSON_FROGLASS_PANE, RenderType.translucent());
 
         ClientPlatformHelper.setRenderLayer(NaturalistRegistry.CATTAIL, RenderType.cutout());
         ClientPlatformHelper.setRenderLayer(NaturalistBlocks.DUCKWEED, RenderType.cutout());

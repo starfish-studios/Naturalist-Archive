@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "naturalist:block/verdant_froglass"
+      "model": "naturalist:block/froglass/verdant_froglass"
     }
   }
 }

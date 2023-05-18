@@ -6,6 +6,7 @@ import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
@@ -277,6 +278,14 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
     protected SoundEvent getDeathSound() {
         return NaturalistSoundEvents.BIRD_DEATH.get();
     }
+
+    /*
+    @Override
+    public void playAmbientSound() {
+        super.playAmbientSound();
+        level.addParticle(ParticleTypes.NOTE, this.getX() + 0.0, this.getY() + 1.0, this.getZ() + 0.0, 10, 0.0, 0.0);
+    }
+    */
 
     @Nullable
     @Override
