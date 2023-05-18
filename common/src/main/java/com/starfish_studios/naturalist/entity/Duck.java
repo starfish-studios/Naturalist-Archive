@@ -85,7 +85,7 @@ public class Duck extends Animal implements IAnimatable {
     }
 
     public static boolean checkDuckSpawnRules(EntityType<? extends Duck> pType, ServerLevelAccessor pLevel, MobSpawnType pReason, BlockPos pPos, RandomSource pRandom) {
-        return pLevel.getBlockState(pPos.below()).is(NaturalistTags.BlockTags.DUCKS_SPAWNABLE_ON) || pLevel.getBlockState(pPos.below()).getFluidState().is(FluidTags.WATER);
+        return pLevel.getBlockState(pPos.below()).is(NaturalistTags.BlockTags.SEMI_AQUATIC_SPAWNABLE_ON) || pLevel.getBlockState(pPos.below()).getFluidState().is(FluidTags.WATER);
     }
 
     // SOUNDS

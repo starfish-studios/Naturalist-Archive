@@ -67,7 +67,7 @@ public class Dragonfly extends PathfinderMob implements IAnimatable {
     }
 
     public static boolean checkDragonflySpawnRules(EntityType<? extends Dragonfly> pType, ServerLevelAccessor pLevel, MobSpawnType pReason, BlockPos pPos, RandomSource pRandom) {
-        return pLevel.getBlockState(pPos.below()).is(NaturalistTags.BlockTags.DRAGONFLIES_SPAWNABLE_ON);
+        return pLevel.getBlockState(pPos.below()).is(NaturalistTags.BlockTags.FLYING_SPAWNABLE_ON);
     }
 
     public int getVariant() {

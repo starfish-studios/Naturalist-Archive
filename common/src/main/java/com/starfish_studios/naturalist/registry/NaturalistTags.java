@@ -11,10 +11,13 @@ import net.minecraft.world.level.block.Block;
 
 public class NaturalistTags {
     public static class BlockTags {
+        public static final TagKey<Block> LAND_SPAWNABLE_ON = tag("land_spawnable_on");
+        public static final TagKey<Block> SEMI_AQUATIC_SPAWNABLE_ON = tag("semi_aquatic_spawnable_on");
+        public static final TagKey<Block> FLYING_SPAWNABLE_ON = tag("flying_spawnable_on");
+
+
         public static final TagKey<Block> FIREFLIES_SPAWNABLE_ON = tag("fireflies_spawnable_on");
-        public static final TagKey<Block> DRAGONFLIES_SPAWNABLE_ON = tag("dragonflies_spawnable_on");
         public static final TagKey<Block> VULTURES_SPAWNABLE_ON = tag("vultures_spawnable_on");
-        public static final TagKey<Block> DUCKS_SPAWNABLE_ON = tag("ducks_spawnable_on");
 
 
         public static final TagKey<Block> RHINO_CHARGE_BREAKABLE = tag("rhino_charge_breakable");

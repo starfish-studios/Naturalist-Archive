@@ -54,7 +54,7 @@ public class Alligator extends Animal implements IAnimatable, EggLayingAnimal {
     }
 
     public static boolean checkAlligatorSpawnRules(EntityType<? extends Alligator> type, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return level.getBlockState(pos.below()).is(BlockTags.FROGS_SPAWNABLE_ON) && level.getRawBrightness(pos, 0) > 8;
+        return level.getBlockState(pos.below()).is(NaturalistTags.BlockTags.LAND_SPAWNABLE_ON) && level.getRawBrightness(pos, 0) > 8;
     }
     
     @javax.annotation.Nullable
