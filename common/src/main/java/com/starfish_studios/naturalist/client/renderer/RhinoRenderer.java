@@ -27,6 +27,7 @@ public class RhinoRenderer extends GeoEntityRenderer<Rhino> {
         if (animatable.isBaby()) {
             stackIn.scale(0.5F, 0.5F, 0.5F);
         }
+        stackIn.scale(0.9F, 0.9F, 0.9F);
     }
 
     @Override

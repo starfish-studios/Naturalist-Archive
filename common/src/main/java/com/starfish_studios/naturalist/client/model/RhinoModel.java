@@ -42,11 +42,31 @@ public class RhinoModel extends AnimatedGeoModel<Rhino> {
         IBone bigHorn = this.getAnimationProcessor().getBone("big_horn");
         IBone smallHorn = this.getAnimationProcessor().getBone("small_horn");
         IBone babyHorn = this.getAnimationProcessor().getBone("baby_horn");
+        IBone leftEar = this.getAnimationProcessor().getBone("left_ear");
+        IBone rightEar = this.getAnimationProcessor().getBone("right_ear");
 
         if (rhino.isBaby()) {
-            head.setScaleX(1.75F);
-            head.setScaleY(1.75F);
-            head.setScaleZ(1.75F);
+            head.setScaleX(1.4F);
+            head.setScaleY(1.4F);
+            head.setScaleZ(1.4F);
+            leftEar.setScaleX(1.1F);
+            leftEar.setScaleY(1.1F);
+            leftEar.setScaleZ(1.1F);
+            rightEar.setScaleX(1.1F);
+            rightEar.setScaleY(1.1F);
+            rightEar.setScaleZ(1.1F);
+        }
+
+        if (!rhino.isBaby()) {
+            head.setScaleX(1.0F);
+            head.setScaleY(1.0F);
+            head.setScaleZ(1.0F);
+            leftEar.setScaleX(1.0F);
+            leftEar.setScaleY(1.0F);
+            leftEar.setScaleZ(1.0F);
+            rightEar.setScaleX(1.0F);
+            rightEar.setScaleY(1.0F);
+            rightEar.setScaleZ(1.0F);
         }
 
         if (!rhino.isSprinting()) {

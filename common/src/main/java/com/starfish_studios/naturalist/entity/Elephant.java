@@ -200,11 +200,16 @@ public class Elephant extends Animal implements IAnimatable {
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
-            event.getController().setAnimation(new AnimationBuilder().loop("elephant.walk"));
+            if (this.isBaby() || this.getSpeed() > 1.1) {
+                event.getController().setAnimationSpeed(0.8F);
+            }
+            event.getController().setAnimation(new AnimationBuilder().loop("walk"));
+            event.getController().setAnimationSpeed(0.6F);
         } else if (this.isDrinking()) {
             event.getController().setAnimation(new AnimationBuilder().loop("elephant.water"));
         } else {
-            event.getController().setAnimation(new AnimationBuilder().loop("elephant.idle"));
+            event.getController().setAnimation(new AnimationBuilder().loop("idle"));
+            event.getController().setAnimationSpeed(0.5F);
         }
         return PlayState.CONTINUE;
     }

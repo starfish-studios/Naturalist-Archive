@@ -26,6 +26,7 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.animal.AbstractSchoolingFish;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -237,21 +238,21 @@ public class Rhino extends Animal implements IAnimatable {
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.stunnedTick > 0) {
-            event.getController().setAnimation(new AnimationBuilder().loop("rhino.stunned"));
+            event.getController().setAnimation(new AnimationBuilder().loop("stunned"));
             event.getController().setAnimationSpeed(1.0F);
         } else if (event.isMoving()) {
             if (this.isSprinting()) {
-                event.getController().setAnimation(new AnimationBuilder().loop("rhino.run"));
+                event.getController().setAnimation(new AnimationBuilder().loop("charge"));
                 event.getController().setAnimationSpeed(3.0F);
             } else {
-                event.getController().setAnimation(new AnimationBuilder().loop("rhino.walk"));
+                event.getController().setAnimation(new AnimationBuilder().loop("walk"));
                 event.getController().setAnimationSpeed(1.0F);
             }
         } else if (this.hasChargeCooldown() && this.hasTarget()) {
-            event.getController().setAnimation(new AnimationBuilder().loop("rhino.foot"));
+            event.getController().setAnimation(new AnimationBuilder().loop("foot"));
             event.getController().setAnimationSpeed(1.0F);
         } else {
-            event.getController().setAnimation(new AnimationBuilder().loop("rhino.idle"));
+            event.getController().setAnimation(new AnimationBuilder().loop("idle"));
             event.getController().setAnimationSpeed(1.0F);
         }
         return PlayState.CONTINUE;
@@ -269,7 +270,8 @@ public class Rhino extends Animal implements IAnimatable {
     private <E extends IAnimatable> PlayState attackPredicate(AnimationEvent<E> event) {
         if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
             event.getController().markNeedsReload();
-            event.getController().setAnimation(new AnimationBuilder().playOnce("rhino.attack"));
+            event.getController().setAnimation(new AnimationBuilder().playOnce("attack"));
+            event.getController().setAnimationSpeed(0.8F);
             this.swinging = false;
         }
         return PlayState.CONTINUE;
@@ -281,7 +283,7 @@ public class Rhino extends Animal implements IAnimatable {
         AnimationController<Rhino> controller = new AnimationController<>(this, "controller", 5, this::predicate);
         controller.registerSoundListener(this::soundListener);
         data.addAnimationController(controller);
-        data.addAnimationController(new AnimationController<>(this, "attackController", 0, this::attackPredicate));
+        data.addAnimationController(new AnimationController<>(this, "attackController", 5, this::attackPredicate));
     }
 
     @Override
