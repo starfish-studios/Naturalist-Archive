@@ -14,19 +14,16 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.model.provider.data.EntityModelData;
 
 import java.util.List;
-import java.util.Locale;
 
 @Environment(EnvType.CLIENT)
 public class BearModel extends AnimatedGeoModel<Bear> {
     @Override
-    public ResourceLocation getModelResource(Bear bear) {
+    public ResourceLocation getModelResource(Bear crocodile) {
         return new ResourceLocation(Naturalist.MOD_ID, "geo/bear.geo.json");
     }
 
     @Override
     public ResourceLocation getTextureResource(Bear bear) {
-        // BEHAVIOR TEXTURES
-
         if (bear.isAngry()) {
             return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/bear/bear_angry.png");
         } else if (bear.isSleeping()) {
@@ -37,11 +34,7 @@ public class BearModel extends AnimatedGeoModel<Bear> {
             } else if (bear.getMainHandItem().is(Items.HONEYCOMB)) {
                 return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/bear/bear_honey.png");
             }
-            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/bear/bear.png");
         }
-
-        // NORMAL TEXTURE
-
         return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/bear/bear.png");
     }
 
