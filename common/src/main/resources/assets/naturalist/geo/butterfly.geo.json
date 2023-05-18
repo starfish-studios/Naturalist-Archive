@@ -6,7 +6,7 @@
 				"identifier": "geometry.unknown",
 				"texture_width": 32,
 				"texture_height": 32,
-				"visible_bounds_width": 4,
+				"visible_bounds_width": 3,
 				"visible_bounds_height": 2.5,
 				"visible_bounds_offset": [0, 0.75, 0]
 			},
@@ -15,7 +15,7 @@
 					"name": "main",
 					"pivot": [0, 7.5, -1],
 					"cubes": [
-						{"origin": [-1.5, 6, -5], "size": [3, 3, 10], "uv": [2, 19]}
+						{"origin": [-1.5, 6, -5], "size": [3, 3, 10], "uv": [2, 14]}
 					]
 				},
 				{
@@ -23,7 +23,7 @@
 					"parent": "main",
 					"pivot": [-1.5, 9, -2],
 					"cubes": [
-						{"origin": [-16.5, 9, -7], "size": [15, 0, 16], "inflate": 0.01, "uv": [-16, 0]}
+						{"origin": [-13.5, 9, -7], "size": [12, 0, 13], "inflate": 0.01, "uv": [-12, 0]}
 					]
 				},
 				{
@@ -31,7 +31,7 @@
 					"parent": "main",
 					"pivot": [1.5, 9, -2],
 					"cubes": [
-						{"origin": [1.5, 9, -7], "size": [15, 0, 16], "inflate": 0.01, "uv": [-16, 0], "mirror": true}
+						{"origin": [1.5, 9, -7], "size": [12, 0, 13], "inflate": 0.01, "uv": [-12, 0], "mirror": true}
 					]
 				},
 				{
@@ -39,7 +39,7 @@
 					"parent": "main",
 					"pivot": [0, 8, -5],
 					"cubes": [
-						{"origin": [-1.5, 8, -8], "size": [3, 2, 3], "uv": [0, 24]}
+						{"origin": [-1.5, 8, -8], "size": [3, 2, 3], "uv": [0, 19]}
 					]
 				},
 				{
@@ -53,7 +53,7 @@
 					"pivot": [0, 6, -2],
 					"rotation": [22.5, 0, 0],
 					"cubes": [
-						{"origin": [-1.5, 4, -2], "size": [3, 2, 0], "uv": [19, 27]}
+						{"origin": [-1.5, 4, -2], "size": [3, 2, 0], "uv": [2, 16]}
 					]
 				},
 				{
@@ -62,7 +62,7 @@
 					"pivot": [0, 6, 0],
 					"rotation": [22.5, 0, 0],
 					"cubes": [
-						{"origin": [-1.5, 4, 0], "size": [3, 2, 0], "uv": [19, 27]}
+						{"origin": [-1.5, 4, 0], "size": [3, 2, 0], "uv": [2, 16]}
 					]
 				},
 				{
@@ -71,7 +71,7 @@
 					"pivot": [0, 6, 2],
 					"rotation": [22.5, 0, 0],
 					"cubes": [
-						{"origin": [-1.5, 4, 2], "size": [3, 2, 0], "uv": [19, 27]}
+						{"origin": [-1.5, 4, 2], "size": [3, 2, 0], "uv": [2, 16]}
 					]
 				}
 			]

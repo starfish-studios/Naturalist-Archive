@@ -127,9 +127,9 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
         this.goalSelector.addGoal(0, new BearFloatGoal(this));
         this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(2, new BearMeleeAttackGoal(this, 1.25D, true));
-        this.goalSelector.addGoal(3, new BearSleepGoal(this));
-        this.goalSelector.addGoal(4, new BearTemptGoal(this, 1.0D, FOOD_ITEMS, false));
-        this.goalSelector.addGoal(4, new BabyPanicGoal(this, 2.0D));
+        this.goalSelector.addGoal(3, new BearTemptGoal(this, 1.0D, FOOD_ITEMS, false));
+        this.goalSelector.addGoal(3, new BabyPanicGoal(this, 2.0D));
+        this.goalSelector.addGoal(4, new BearSleepGoal(this));
         this.goalSelector.addGoal(5, new DistancedFollowParentGoal(this, 1.25D, 48.0D, 8.0D, 12.0D));
         this.goalSelector.addGoal(5, new SearchForItemsGoal(this, 1.2F, FOOD_ITEMS, 8, 2));
         this.goalSelector.addGoal(6, new BearHarvestFoodGoal(this, 1.2F, 12, 3));
@@ -333,7 +333,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
                 double y = (double)(-this.random.nextFloat()) * 0.6D - 0.3D;
                 Vec3 posVec = new Vec3(((double)this.random.nextFloat() - 0.5D) * 0.8D, y, 1.0D + ((double)this.random.nextFloat() - 0.5D) * 0.4D);
                 posVec = posVec.yRot(-this.yBodyRot * ((float)Math.PI / 180F));
-                posVec = posVec.add(this.getX(), this.getEyeY() - 0.2D, this.getZ() - 0.1D);
+                posVec = posVec.add(this.getX(), this.getEyeY() + 1.0D, this.getZ());
                 this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, this.getItemBySlot(EquipmentSlot.MAINHAND)), posVec.x, posVec.y, posVec.z, speedVec .x, speedVec .y + 0.05D, speedVec .z);
             }
         }
@@ -472,7 +472,7 @@ public class Bear extends Animal implements NeutralMob, IAnimatable, SleepingAni
         } else if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
             if (this.isSprinting()) {
                 event.getController().setAnimation(new AnimationBuilder().loop("run"));
-                event.getController().setAnimationSpeed(2.0D);
+                event.getController().setAnimationSpeed(1.8D);
                 return PlayState.CONTINUE;
             } else {
                 event.getController().setAnimation(new AnimationBuilder().loop("walk"));
