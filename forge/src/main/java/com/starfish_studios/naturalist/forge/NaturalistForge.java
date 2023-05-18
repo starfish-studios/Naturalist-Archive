@@ -47,6 +47,7 @@ public class NaturalistForge {
             Naturalist.registerBrewingRecipes();
             Naturalist.registerCompostables();
             Naturalist.registerSpawnPlacements();
+            Naturalist.registerDispenserBehaviors();
         });
     }
 

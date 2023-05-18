@@ -1,17 +1,25 @@
 package com.starfish_studios.naturalist;
 
 import com.starfish_studios.naturalist.entity.*;
+import com.starfish_studios.naturalist.entity.projectile.ThrownDuckEgg;
 import com.starfish_studios.naturalist.platform.CommonPlatformHelper;
 import com.starfish_studios.naturalist.registry.*;
+import net.minecraft.Util;
+import net.minecraft.core.Position;
+import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.WaterAnimal;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.ThrownEgg;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.levelgen.Heightmap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,6 +45,16 @@ public class Naturalist {
         CommonPlatformHelper.registerBrewingRecipe(NaturalistPotions.FOREST_DASHER.get(), Items.GLOWSTONE_DUST, NaturalistPotions.STRONG_FOREST_DASHER.get());
         CommonPlatformHelper.registerBrewingRecipe(Potions.AWKWARD, NaturalistRegistry.GLOW_GOOP.get(), NaturalistPotions.GLOWING.get());
         CommonPlatformHelper.registerBrewingRecipe(NaturalistPotions.GLOWING.get(), Items.REDSTONE, NaturalistPotions.LONG_GLOWING.get());
+    }
+
+    public static void registerDispenserBehaviors() {
+        DispenserBlock.registerBehavior(NaturalistRegistry.DUCK_EGG.get(), new AbstractProjectileDispenseBehavior() {
+            protected Projectile getProjectile(Level level, Position position, ItemStack stack) {
+                return Util.make(new ThrownDuckEgg(level, position.x(), position.y(), position.z()), (thrownDuckEgg) -> {
+                    thrownDuckEgg.setItem(stack);
+                });
+            }
+        });
     }
 
     public static void registerSpawnPlacements() {

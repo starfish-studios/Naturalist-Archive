@@ -279,13 +279,14 @@ public class Bird extends ShoulderRidingEntity implements FlyingAnimal, IAnimata
         return NaturalistSoundEvents.BIRD_DEATH.get();
     }
 
-    /*
     @Override
     public void playAmbientSound() {
         super.playAmbientSound();
-        level.addParticle(ParticleTypes.NOTE, this.getX() + 0.0, this.getY() + 1.0, this.getZ() + 0.0, 10, 0.0, 0.0);
+        if (this.level instanceof ServerLevel serverLevel) {
+            float f = (float)level.getRandom().nextInt(4) / 24.0f;
+            serverLevel.sendParticles(ParticleTypes.NOTE, this.getX(), this.getY() + 1, this.getZ(), 0, f, 0.0, 0.0, 1.0);
+        }
     }
-    */
 
     @Nullable
     @Override
