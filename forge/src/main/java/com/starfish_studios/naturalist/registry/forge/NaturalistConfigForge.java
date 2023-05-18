@@ -88,7 +88,7 @@ public class NaturalistConfigForge {
 
         // SWAMPLANDS SPAWN WEIGHTS
         
-        DRAGONFLY_SPAWN_WEIGHT = COMMON_BUILDER.comment("Dragonfly Spawn Weight").defineInRange("dragonflySpawnWeight", 1, 0, 1000);
+        DRAGONFLY_SPAWN_WEIGHT = COMMON_BUILDER.comment("Dragonfly Spawn Weight").defineInRange("dragonflySpawnWeight", 8, 0, 1000);
         CATFISH_SPAWN_WEIGHT = COMMON_BUILDER.comment("Catfish Spawn Weight").defineInRange("catfishSpawnWeight", 8, 0, 1000);
         ALLIGATOR_SPAWN_WEIGHT = COMMON_BUILDER.comment("Alligator Spawn Weight").defineInRange("alligatorSpawnWeight", 15, 0, 1000);
         BASS_SPAWN_WEIGHT = COMMON_BUILDER.comment("Bass Spawn Weight").defineInRange("bassSpawnWeight", 8, 0, 1000);

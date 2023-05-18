@@ -30,7 +30,7 @@ public abstract class MobCategoryMixin {
     MobCategory[] $VALUES;
 
     @Inject(method = "<clinit>", at = @At(value = "FIELD", opcode = Opcodes.PUTSTATIC, target = "Lnet/minecraft/world/entity/MobCategory;$VALUES:[Lnet/minecraft/world/entity/MobCategory;", shift = At.Shift.AFTER))
-    private static void addCustomSpawnGroup(CallbackInfo ci) {
+    private static void addFireflySpawnGroup(CallbackInfo ci) {
 
         var mobCategories = new ArrayList<>(Arrays.asList($VALUES));
         var last = mobCategories.get(mobCategories.size() - 1);
@@ -41,9 +41,16 @@ public abstract class MobCategoryMixin {
         NaturalistMobCategoriesImpl.FIREFLIES = firefliesCategory;
         mobCategories.add(firefliesCategory);
         $VALUES = mobCategories.toArray(new MobCategory[0]);
+    }
+    @Inject(method = "<clinit>", at = @At(value = "FIELD", opcode = Opcodes.PUTSTATIC, target = "Lnet/minecraft/world/entity/MobCategory;$VALUES:[Lnet/minecraft/world/entity/MobCategory;", shift = At.Shift.AFTER))
+    private static void addDragonflySpawnGroup(CallbackInfo ci) {
 
-        // Dragonfly Category
-        var dragonfliesCategory = newMobCategory("DRAGONFLIES", last.ordinal() + 1, "dragonflies", 10, true, false, 128);
+        var mobCategories = new ArrayList<>(Arrays.asList($VALUES));
+        var last = mobCategories.get(mobCategories.size() - 1);
+
+        // This means our code will still work if other mods or Mojang add more spawn groups!
+        // Firefly Category
+        var dragonfliesCategory = newMobCategory("DRAGONFLIES", last.ordinal() + 1, "dragonflies", 5, true, false, 128);
         NaturalistMobCategoriesImpl.DRAGONFLIES = dragonfliesCategory;
         mobCategories.add(dragonfliesCategory);
         $VALUES = mobCategories.toArray(new MobCategory[0]);
