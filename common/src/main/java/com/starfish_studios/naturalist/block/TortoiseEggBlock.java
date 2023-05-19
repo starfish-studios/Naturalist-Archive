@@ -54,7 +54,7 @@ public class TortoiseEggBlock extends TurtleEggBlock {
     }
 
     private boolean shouldUpdateHatchLevel(Level level) {
-        return level.random.nextInt(500) == 0;
+        return level.random.nextInt(50) == 0;
     }
 
     @Override
