@@ -209,23 +209,28 @@ public class Lion extends Animal implements IAnimatable, SleepingAnimal {
         return NaturalistSoundEvents.LION_AMBIENT.get();
     }
 
+    @Override
+    public int getAmbientSoundInterval() {
+        return 900;
+    }
+
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.isSleeping()) {
             event.getController().setAnimation(new AnimationBuilder().loop(this.hasMane() || this.isBaby() ? "lion.sleep2" : "lion.sleep"));
             event.getController().setAnimationSpeed(1.0F);
         } else if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
             if (this.isSprinting()) {
-                event.getController().setAnimation(new AnimationBuilder().loop("lion.run"));
+                event.getController().setAnimation(new AnimationBuilder().loop("run"));
                 event.getController().setAnimationSpeed(2.5F);
             } else if (this.isCrouching()) {
-                event.getController().setAnimation(new AnimationBuilder().loop("lion.prey"));
+                event.getController().setAnimation(new AnimationBuilder().loop("prey"));
                 event.getController().setAnimationSpeed(0.8F);
             } else {
-                event.getController().setAnimation(new AnimationBuilder().loop("lion.walk"));
+                event.getController().setAnimation(new AnimationBuilder().loop("walk"));
                 event.getController().setAnimationSpeed(1.0F);
             }
         } else {
-            event.getController().setAnimation(new AnimationBuilder().loop("lion.idle"));
+            event.getController().setAnimation(new AnimationBuilder().loop("idle"));
             event.getController().setAnimationSpeed(1.0F);
         }
         return PlayState.CONTINUE;
@@ -234,7 +239,7 @@ public class Lion extends Animal implements IAnimatable, SleepingAnimal {
     private <E extends IAnimatable> PlayState attackPredicate(AnimationEvent<E> event) {
         if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
             event.getController().markNeedsReload();
-            event.getController().setAnimation(new AnimationBuilder().playOnce("lion.swing"));
+            event.getController().setAnimation(new AnimationBuilder().playOnce("attack"));
             this.swinging = false;
         }
         return PlayState.CONTINUE;
@@ -242,8 +247,8 @@ public class Lion extends Animal implements IAnimatable, SleepingAnimal {
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.setResetSpeedInTicks(10);
-        data.addAnimationController(new AnimationController<>(this, "controller", 10, this::predicate));
+        data.setResetSpeedInTicks(5);
+        data.addAnimationController(new AnimationController<>(this, "controller", 5, this::predicate));
         data.addAnimationController(new AnimationController<>(this, "attackController", 0, this::attackPredicate));
     }
 
@@ -404,7 +409,7 @@ public class Lion extends Animal implements IAnimatable, SleepingAnimal {
             if (target == null) {
                 return;
             }
-            this.speedModifier = this.mob.distanceTo(target) > 12 ? 0.5D : 1.7D;
+            this.speedModifier = this.mob.distanceTo(target) > 12 ? 0.5D : 1.5D;
             this.mob.getNavigation().moveTo(this.path, this.speedModifier);
             this.mob.setAggressive(true);
             this.mob.playSound(NaturalistSoundEvents.LION_ROAR.get());
@@ -433,7 +438,7 @@ public class Lion extends Animal implements IAnimatable, SleepingAnimal {
             if (target == null) {
                 return;
             }
-            this.speedModifier = this.mob.distanceTo(target) > 12 ? 0.5D : 1.7D;
+            this.speedModifier = this.mob.distanceTo(target) > 12 ? 0.5D : 1.5D;
             this.mob.getLookControl().setLookAt(target, 30.0f, 30.0f);
             double d = this.mob.distanceToSqr(target.getX(), target.getY(), target.getZ());
             this.ticksUntilNextPathRecalculation = Math.max(this.ticksUntilNextPathRecalculation - 1, 0);
@@ -470,7 +475,7 @@ public class Lion extends Animal implements IAnimatable, SleepingAnimal {
         }
 
         protected double getAttackReachSqr(LivingEntity attackTarget) {
-            return this.mob.getBbWidth() * 2.0f * (this.mob.getBbWidth() * 2.0f) + attackTarget.getBbWidth();
+            return this.mob.getBbWidth() * 1.3f * (this.mob.getBbWidth() * 1.3f) + attackTarget.getBbWidth();
         }
     }
 

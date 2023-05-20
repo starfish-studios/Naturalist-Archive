@@ -23,7 +23,20 @@ public class LionModel extends AnimatedGeoModel<Lion> {
 
     @Override
     public ResourceLocation getTextureResource(Lion lion) {
-        return lion.isSleeping() ? new ResourceLocation(Naturalist.MOD_ID, "textures/entity/lion_sleep.png") : new ResourceLocation(Naturalist.MOD_ID, "textures/entity/lion.png");
+
+        // Sleeping
+    return lion.isSleeping() ? new ResourceLocation(Naturalist.MOD_ID, "textures/entity/lion_sleep.png") :
+    !lion.hasMane() && lion.isSleeping() || lion.isBaby() &&lion.isSleeping() ? new ResourceLocation(Naturalist.MOD_ID, "textures/entity/lioness_sleep.png") :
+
+        // Lioness & Baby
+    !lion.hasMane() && !lion.isAggressive() || lion.isBaby() ? new ResourceLocation(Naturalist.MOD_ID, "textures/entity/lioness.png") :
+
+        // Angry
+    lion.isAggressive() ? new ResourceLocation(Naturalist.MOD_ID, "textures/entity/lion_angry.png") :
+    !lion.hasMane() && lion.isAggressive() ? new ResourceLocation(Naturalist.MOD_ID, "textures/entity/lioness_angry.png") :
+
+    new ResourceLocation(Naturalist.MOD_ID, "textures/entity/lion.png");
+
     }
 
     @Override
@@ -42,9 +55,9 @@ public class LionModel extends AnimatedGeoModel<Lion> {
         IBone mane = this.getAnimationProcessor().getBone("mane");
 
         if (lion.isBaby()) {
-            head.setScaleX(1.75F);
-            head.setScaleY(1.75F);
-            head.setScaleZ(1.75F);
+            head.setScaleX(1.4F);
+            head.setScaleY(1.4F);
+            head.setScaleZ(1.4F);
         }
 
         mane.setHidden(!lion.hasMane() || lion.isBaby());

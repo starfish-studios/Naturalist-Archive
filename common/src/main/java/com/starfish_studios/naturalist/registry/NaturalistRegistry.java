@@ -106,6 +106,8 @@ public class NaturalistRegistry {
         public static final Supplier<SpawnEggItem> LIZARD_SPAWN_EGG = CommonPlatformHelper.registerSpawnEggItem("lizard_spawn_egg", NaturalistEntityTypes.LIZARD, 10853166, 15724462);
         public static final Supplier<SpawnEggItem> TORTOISE_SPAWN_EGG = CommonPlatformHelper.registerSpawnEggItem("tortoise_spawn_egg", NaturalistEntityTypes.TORTOISE, 15724462, 11765582);
         public static final Supplier<SpawnEggItem> DUCK_SPAWN_EGG = CommonPlatformHelper.registerSpawnEggItem("duck_spawn_egg", NaturalistEntityTypes.DUCK, 13286315, 2333491);
+        public static final Supplier<SpawnEggItem> HYENA_SPAWN_EGG = CommonPlatformHelper.registerSpawnEggItem("hyena_spawn_egg", NaturalistEntityTypes.HYENA, 15116640, 11103550);
+        public static final Supplier<SpawnEggItem> OSTRICH_SPAWN_EGG = CommonPlatformHelper.registerSpawnEggItem("ostrich_spawn_egg", NaturalistEntityTypes.OSTRICH, 15116640, 11103550);
 
         public static <T extends Block> Supplier<T> registerBlock(String name, Supplier<T> block) {
                 Supplier<T> supplier = CommonPlatformHelper.registerBlock(name, block);

@@ -32,6 +32,9 @@ public class NaturalistTags {
     }
 
     public static class ItemTags {
+
+        public static final TagKey<Item> HYENA_FOOD_ITEMS = tag("hyena_food_items");
+
         public static final TagKey<Item> BEAR_TEMPT_ITEMS = tag("bear_tempt_items");
         public static final TagKey<Item> SNAKE_TEMPT_ITEMS = tag("snake_tempt_items");
         public static final TagKey<Item> SNAKE_TAME_ITEMS = tag("snake_tame_items");
@@ -49,6 +52,7 @@ public class NaturalistTags {
     }
 
     public static class EntityTypes {
+        public static final TagKey<EntityType<?>> OSTRICH_PREDATORS = tag("ostrich_predators");
         public static final TagKey<EntityType<?>> BEAR_HOSTILES = tag("bear_hostiles");
         public static final TagKey<EntityType<?>> SNAKE_HOSTILES = tag("snake_hostiles");
         public static final TagKey<EntityType<?>> DEER_PREDATORS = tag("deer_predators");

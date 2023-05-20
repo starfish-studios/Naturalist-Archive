@@ -29,6 +29,8 @@
   "entity.naturalist.lizard_tail": "Lizard Tail",
   "entity.naturalist.tortoise": "Tortoise",
   "entity.naturalist.duck": "Duck",
+  "entity.naturalist.hyena": "Hyena",
+  "entity.naturalist.ostrich": "Ostrich",
 
 
   "item.naturalist.bluejay_spawn_egg": "Bluejay Spawn Egg",
@@ -59,6 +61,8 @@
   "item.naturalist.lizard_spawn_egg": "Lizard Spawn Egg",
   "item.naturalist.tortoise_spawn_egg": "Tortoise Spawn Egg",
   "item.naturalist.duck_spawn_egg": "Duck Spawn Egg",
+  "item.naturalist.hyena_spawn_egg": "Hyena Spawn Egg",
+  "item.naturalist.ostrich_spawn_egg": "Ostrich Spawn Egg",
 
 
   "item.naturalist.antler": "Antler",

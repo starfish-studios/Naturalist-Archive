@@ -51,6 +51,8 @@ public class NaturalistClient {
         ClientPlatformHelper.registerEntityRenderers(NaturalistEntityTypes.LIZARD_TAIL, LizardTailRenderer::new);
         ClientPlatformHelper.registerEntityRenderers(NaturalistEntityTypes.TORTOISE, TortoiseRenderer::new);
         ClientPlatformHelper.registerEntityRenderers(NaturalistEntityTypes.DUCK, DuckRenderer::new);
+        ClientPlatformHelper.registerEntityRenderers(NaturalistEntityTypes.HYENA, HyenaRenderer::new);
+        ClientPlatformHelper.registerEntityRenderers(NaturalistEntityTypes.OSTRICH, OstrichRenderer::new);
         copyOldModelsResources();
 
     }

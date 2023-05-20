@@ -50,6 +50,8 @@ public class NaturalistEntityTypes {
     public static final Supplier<EntityType<LizardTail>> LIZARD_TAIL = CommonPlatformHelper.registerEntityType("lizard_tail", LizardTail::new, MobCategory.CREATURE, 0.7f, 0.5f, 10);
     public static final Supplier<EntityType<Tortoise>> TORTOISE = CommonPlatformHelper.registerEntityType("tortoise", Tortoise::new, MobCategory.CREATURE, 1.2F, 0.875F, 10);
     public static final Supplier<EntityType<Duck>> DUCK = CommonPlatformHelper.registerEntityType("duck", Duck::new, MobCategory.CREATURE, 0.6F, 1.0F, 10);
+    public static final Supplier<EntityType<Hyena>> HYENA = CommonPlatformHelper.registerEntityType("hyena", Hyena::new, MobCategory.CREATURE, 1.1F, 1.3F, 10);
+    public static final Supplier<EntityType<Ostrich>> OSTRICH = CommonPlatformHelper.registerEntityType("ostrich", Ostrich::new, MobCategory.CREATURE, 1.1F, 1.3F, 10);
 
 
     public static void init() {}

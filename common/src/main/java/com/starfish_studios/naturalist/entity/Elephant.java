@@ -65,7 +65,7 @@ public class Elephant extends Animal implements IAnimatable {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 80/.0D).add(Attributes.MOVEMENT_SPEED, 0.25D).add(Attributes.ATTACK_DAMAGE, 10.0D).add(Attributes.ATTACK_KNOCKBACK, 1.2).add(Attributes.KNOCKBACK_RESISTANCE, 0.75D).add(Attributes.FOLLOW_RANGE, 20.0D);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 80.0D).add(Attributes.MOVEMENT_SPEED, 0.3D).add(Attributes.ATTACK_DAMAGE, 10.0D).add(Attributes.ATTACK_KNOCKBACK, 1.2).add(Attributes.KNOCKBACK_RESISTANCE, 0.75D).add(Attributes.FOLLOW_RANGE, 20.0D);
     }
 
     @Override
@@ -95,11 +95,21 @@ public class Elephant extends Animal implements IAnimatable {
     }
 
     @Override
+    public void customServerAiStep() {
+        if (this.getMoveControl().hasWanted()) {
+            this.setSprinting(this.getMoveControl().getSpeedModifier() >= 1.2D);
+        } else {
+            this.setSprinting(false);
+        }
+        super.customServerAiStep();
+    }
+
+    @Override
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Bee.class, 8.0f, 1.5, 1.5));
-        this.goalSelector.addGoal(2, new ElephantMeleeAttackGoal(this, 1.2D, false));
+        this.goalSelector.addGoal(2, new ElephantMeleeAttackGoal(this, 1.3D, false));
         this.goalSelector.addGoal(3, new BabyPanicGoal(this, 2.0D));
         this.goalSelector.addGoal(4, new DistancedFollowParentGoal(this, 1.25D, 24.0D, 6.0D, 12.0D));
         this.goalSelector.addGoal(5, new ElephantDrinkWaterGoal(this));
@@ -200,11 +210,13 @@ public class Elephant extends Animal implements IAnimatable {
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
-            if (this.isBaby() || this.getSpeed() > 1.1) {
-                event.getController().setAnimationSpeed(0.8F);
+            if (this.isSprinting()) {
+                event.getController().setAnimation(new AnimationBuilder().loop("run"));
+                event.getController().setAnimationSpeed(1.2F);
+            } else {
+                event.getController().setAnimation(new AnimationBuilder().loop("walk"));
+                event.getController().setAnimationSpeed(0.7F);
             }
-            event.getController().setAnimation(new AnimationBuilder().loop("walk"));
-            event.getController().setAnimationSpeed(0.6F);
         } else if (this.isDrinking()) {
             event.getController().setAnimation(new AnimationBuilder().loop("elephant.water"));
         } else {
