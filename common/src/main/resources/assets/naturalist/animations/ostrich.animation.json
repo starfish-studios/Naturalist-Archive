@@ -151,7 +151,7 @@
 				},
 				"body": {
 					"rotation": {
-						"vector": ["Math.sin((query.anim_time - 0.0) * 360) * 4", 0, 0]
+						"vector": [0, 0, 0]
 					}
 				},
 				"head": {
@@ -708,6 +708,43 @@
 						"1.0": {
 							"vector": [0, -0.1, 1.5]
 						}
+					}
+				}
+			}
+		},
+		"dance": {
+			"loop": true,
+			"animation_length": 1,
+			"bones": {
+				"body": {
+					"rotation": {
+						"vector": ["7.5 + Math.cos((query.anim_time - 0.0) * 360) * 4", 0, "Math.sin((query.anim_time - 0.0) * 360) * 8"]
+					},
+					"position": {
+						"vector": ["Math.cos((query.anim_time - 0.0) * 360) * 0.5", -4, 0]
+					}
+				},
+				"head": {
+					"rotation": {
+						"vector": ["-7.5 + Math.cos((query.anim_time - 0.) * 360) * -4", 0, "Math.sin((query.anim_time - 0.1) * 360) * -8"]
+					},
+					"position": {
+						"vector": [0, 0, "0.75 + Math.sin((query.anim_time - 0.0) * 360) * 0.25"]
+					}
+				},
+				"tail": {
+					"rotation": {
+						"vector": [0, 0, 0]
+					}
+				},
+				"left_wing": {
+					"rotation": {
+						"vector": [-22.5, 0, "-45 + Math.cos((query.anim_time - 0.4) * 360) * 45"]
+					}
+				},
+				"right_wing": {
+					"rotation": {
+						"vector": [-22.5, 0, "45 + Math.cos((query.anim_time - 0.4) * 360) * 45"]
 					}
 				}
 			}

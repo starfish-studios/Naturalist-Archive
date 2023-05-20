@@ -126,15 +126,19 @@
   "naturalist.subtitles.entity.bird.ambient_canary": "Canary chirps",
   "naturalist.subtitles.entity.bird.ambient_cardinal": "Cardinal chirps",
   "naturalist.subtitles.entity.bird.ambient_robin": "Robin chirps",
+
   "naturalist.subtitles.entity.deer.hurt": "Deer hurts",
   "naturalist.subtitles.entity.deer.ambient": "Deer grunts",
   "naturalist.subtitles.entity.deer.hurt_baby": "Fawn hurts",
   "naturalist.subtitles.entity.deer.ambient_baby": "Fawn bleats",
+
   "naturalist.subtitles.entity.elephant.hurt": "Elephant hurts",
   "naturalist.subtitles.entity.elephant.ambient": "Elephant trumpets",
+
   "naturalist.subtitles.entity.firefly.hurt": "Firefly hurts",
   "naturalist.subtitles.entity.firefly.death": "Firefly dies",
   "naturalist.subtitles.entity.firefly.hide": "Firefly hides",
+
   "naturalist.subtitles.entity.bear.hurt": "Brown Bear hurts",
   "naturalist.subtitles.entity.bear.death": "Brown Bear dies",
   "naturalist.subtitles.entity.bear.ambient": "Brown Bear groans",
@@ -144,19 +148,24 @@
   "naturalist.subtitles.entity.bear.sniff": "Brown Bear sniffs",
   "naturalist.subtitles.entity.bear.spit": "Brown Bear spits",
   "naturalist.subtitles.entity.bear.eat": "Brown Bear eats",
+
   "naturalist.subtitles.entity.lion.hurt": "Lion hurts",
   "naturalist.subtitles.entity.lion.ambient": "Lion growls",
   "naturalist.subtitles.entity.lion.roar": "Lion roars",
+
   "naturalist.subtitles.entity.rhino.scrape": "Rhino scrapes foot",
   "naturalist.subtitles.entity.rhino.ambient": "Rhino growls",
   "naturalist.subtitles.entity.rhino.ambient_baby": "Rhino baby coos",
+
   "naturalist.subtitles.entity.snail.crush": "Snail crushes",
   "naturalist.subtitles.entity.snail.move": "Snail inches",
   "naturalist.subtitles.item.bucket.fill_snail": "Snail scooped",
   "naturalist.subtitles.item.bucket.empty_snail": "Bucket empties snail",
+
   "naturalist.subtitles.entity.snake.hiss": "Snake hisses",
   "naturalist.subtitles.entity.snake.hurt": "Snake hurts",
   "naturalist.subtitles.entity.snake.rattle": "Snake rattles",
+
   "naturalist.subtitles.entity.zebra.ambient": "Zebra brays",
   "naturalist.subtitles.entity.zebra.hurt": "Zebra hurts",
   "naturalist.subtitles.entity.zebra.death": "Zebra dies",
@@ -164,21 +173,28 @@
   "naturalist.subtitles.entity.zebra.breathe": "Zebra breathes",
   "naturalist.subtitles.entity.zebra.jump": "Zebra jumps",
   "naturalist.subtitles.entity.zebra.angry": "Zebra whinnies",
+
   "naturalist.subtitles.entity.vulture.ambient": "Vulture squawks",
   "naturalist.subtitles.entity.vulture.hurt": "Vulture hurts",
   "naturalist.subtitles.entity.vulture.death": "Vulture dies",
+
   "naturalist.subtitles.entity.giraffe.ambient": "Giraffe breathes",
+
   "naturalist.subtitles.entity.hippo.ambient": "Hippo growls",
   "naturalist.subtitles.entity.hippo.hurt": "Hippo hurts",
+
   "naturalist.subtitles.entity.alligator.hurt": "Alligator hurts",
   "naturalist.subtitles.entity.alligator.death": "Alligator dies",
   "naturalist.subtitles.entity.alligator.ambient": "Alligator bellows",
   "naturalist.subtitles.entity.alligator.ambient_baby": "Alligator baby chirps",
+
   "naturalist.subtitles.entity.boar.ambient": "Boar grunts",
   "naturalist.subtitles.entity.boar.hurt": "Boar hurts",
   "naturalist.subtitles.entity.boar.death": "Boar dies",
+
   "naturalist.subtitles.entity.catfish.flop": "Catfish flops",
   "naturalist.subtitles.entity.bass.flop": "Bass flops",
+
   "naturalist.subtitles.entity.dragonfly.loop": "Dragonfly buzzes",
 
   "naturalist.subtitles.entity.duck.ambient": "Duck quacks",
@@ -188,6 +204,15 @@
   "naturalist.subtitles.entity.duck.ambient_baby": "Duckling quacks",
   "naturalist.subtitles.entity.duck.hurt_baby": "Duckling hurts",
   "naturalist.subtitles.entity.duck.death_baby": "Duckling dies",
+
+  "naturalist.subtitles.entity.hyena.ambient": "Hyena laughs",
+  "naturalist.subtitles.entity.hyena.hurt": "Hyena hurts",
+  "naturalist.subtitles.entity.hyena.death": "Hyena dies",
+
+  "naturalist.subtitles.entity.ostrich.ambient": "Ostrich warbles",
+  "naturalist.subtitles.entity.ostrich.ambient": "Ostrich warbles",
+  "naturalist.subtitles.entity.ostrich.hurt": "Ostrich hurts",
+  "naturalist.subtitles.entity.ostrich.death": "Ostrich dies",
 
   "advancements.husbandry.ride_giraffe_with_map.title": "I can show you the world!",
   "advancements.husbandry.ride_giraffe_with_map.description": "Use a map while riding a giraffe to increase its range",

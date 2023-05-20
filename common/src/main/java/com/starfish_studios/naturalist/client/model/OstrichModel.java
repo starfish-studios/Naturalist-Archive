@@ -44,11 +44,19 @@ public class OstrichModel extends AnimatedGeoModel<Ostrich> {
         IBone head = this.getAnimationProcessor().getBone("head");
         IBone leftWing = this.getAnimationProcessor().getBone("left_wing");
         IBone rightWing = this.getAnimationProcessor().getBone("right_wing");
+        IBone saddle = this.getAnimationProcessor().getBone("saddle");
+
+        saddle.setHidden(!ostrich.isSaddled());
+
 
         if (ostrich.isBaby()) {
             head.setScaleX(1.5F); head.setScaleY(1.5F); head.setScaleZ(1.5F);
             leftWing.setScaleX(1.2F); leftWing.setScaleY(1.2F); leftWing.setScaleZ(1.2F);
             rightWing.setScaleX(1.2F); rightWing.setScaleY(1.2F); rightWing.setScaleZ(1.2F);
+        } else {
+            head.setScaleY(1.0F); head.setScaleZ(1.0F); head.setScaleX(1.0F);
+            leftWing.setScaleX(1.0F); leftWing.setScaleY(1.0F); leftWing.setScaleZ(1.0F);
+            rightWing.setScaleX(1.0F); rightWing.setScaleY(1.0F); rightWing.setScaleZ(1.0F);
         }
 
         head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD);

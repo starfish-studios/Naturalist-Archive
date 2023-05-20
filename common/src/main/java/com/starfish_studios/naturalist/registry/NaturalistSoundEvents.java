@@ -77,6 +77,12 @@ public class NaturalistSoundEvents {
     public static final Supplier<SoundEvent> BOAR_AMBIENT = CommonPlatformHelper.registerSoundEvent("boar_ambient", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.boar.ambient")));
     public static final Supplier<SoundEvent> BOAR_HURT = CommonPlatformHelper.registerSoundEvent("boar_hurt", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.boar.hurt")));
     public static final Supplier<SoundEvent> BOAR_DEATH = CommonPlatformHelper.registerSoundEvent("boar_death", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.boar.death")));
+    public static final Supplier<SoundEvent> HYENA_AMBIENT = CommonPlatformHelper.registerSoundEvent("hyena_ambient", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.hyena.ambient")));
+    public static final Supplier<SoundEvent> HYENA_HURT = CommonPlatformHelper.registerSoundEvent("hyena_hurt", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.hyena.hurt")));
+
+    public static final Supplier<SoundEvent> OSTRICH_AMBIENT = CommonPlatformHelper.registerSoundEvent("ostrich_ambient", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.ostrich.ambient")));
+    public static final Supplier<SoundEvent> OSTRICH_HURT = CommonPlatformHelper.registerSoundEvent("ostrich_hurt", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.ostrich.hurt")));
+    public static final Supplier<SoundEvent> OSTRICH_DEATH = CommonPlatformHelper.registerSoundEvent("ostrich_death", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.ostrich.death")));
 
 
 

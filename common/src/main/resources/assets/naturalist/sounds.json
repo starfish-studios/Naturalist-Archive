@@ -545,5 +545,41 @@
         "naturalist:entity/duck/rubber_ducky/hurt2"
         ],
         "subtitle": "naturalist.subtitles.entity.duck.hurt"
+    },
+  "entity.hyena.ambient": {
+    "sounds": [
+      "naturalist:entity/hyena/idle1",
+      "naturalist:entity/hyena/idle2"
+    ],
+    "subtitle": "naturalist.subtitles.entity.hyena.ambient"
+  },
+    "entity.hyena.hurt": {
+        "sounds": [
+        "naturalist:entity/hyena/hurt1"
+        ],
+        "subtitle": "naturalist.subtitles.entity.hyena.hurt"
+    },
+  "entity.ostrich.ambient": {
+    "sounds": [
+      "naturalist:entity/ostrich/idle1",
+      "naturalist:entity/ostrich/idle2",
+      "naturalist:entity/ostrich/idle3",
+      "naturalist:entity/ostrich/idle4"
+    ],
+    "subtitle": "naturalist.subtitles.entity.ostrich.ambient"
+  },
+    "entity.ostrich.hurt": {
+        "sounds": [
+        "naturalist:entity/ostrich/hurt1",
+        "naturalist:entity/ostrich/hurt2"
+        ],
+        "subtitle": "naturalist.subtitles.entity.ostrich.hurt"
+    },
+    "entity.ostrich.death": {
+        "sounds": [
+        "naturalist:entity/ostrich/hurt1",
+        "naturalist:entity/ostrich/hurt2"
+        ],
+        "subtitle": "naturalist.subtitles.entity.ostrich.death"
     }
 }
