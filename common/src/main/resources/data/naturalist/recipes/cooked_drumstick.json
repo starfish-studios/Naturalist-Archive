@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "naturalist:drumstick"
+  },
+  "result": "naturalist:cooked_drumstick",
+  "experience": 0.35,
+  "cookingtime": 200
+}

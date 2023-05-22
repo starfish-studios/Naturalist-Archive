@@ -53,6 +53,7 @@ public class NaturalistClient {
         ClientPlatformHelper.registerEntityRenderers(NaturalistEntityTypes.DUCK, DuckRenderer::new);
         ClientPlatformHelper.registerEntityRenderers(NaturalistEntityTypes.HYENA, HyenaRenderer::new);
         ClientPlatformHelper.registerEntityRenderers(NaturalistEntityTypes.OSTRICH, OstrichRenderer::new);
+        ClientPlatformHelper.registerEntityRenderers(NaturalistEntityTypes.TERMITE, TermiteRenderer::new);
         copyOldModelsResources();
 
     }

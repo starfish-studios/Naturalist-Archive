@@ -34,6 +34,7 @@ public class NaturalistTags {
     public static class ItemTags {
 
         public static final TagKey<Item> HYENA_FOOD_ITEMS = tag("hyena_food_items");
+        public static final TagKey<Item> OSTRICH_FOOD_ITEMS = tag("ostrich_food_items");
 
         public static final TagKey<Item> BEAR_TEMPT_ITEMS = tag("bear_tempt_items");
         public static final TagKey<Item> SNAKE_TEMPT_ITEMS = tag("snake_tempt_items");

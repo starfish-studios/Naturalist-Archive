@@ -44,13 +44,20 @@ public class ElephantModel extends AnimatedGeoModel<Elephant> {
         IBone babyTrunk = this.getAnimationProcessor().getBone("trunk4");
         IBone leftEar = this.getAnimationProcessor().getBone("left_ear");
         IBone rightEar = this.getAnimationProcessor().getBone("right_ear");
-
+        IBone chests = this.getAnimationProcessor().getBone("chests");
+        IBone bodyCarpet = this.getAnimationProcessor().getBone("body_carpet");
+        IBone headCarpet = this.getAnimationProcessor().getBone("head_carpet");
 
         if (elephant.isBaby()) {
             head.setScaleX(1.3F); head.setScaleY(1.3F); head.setScaleZ(1.3F);
             leftEar.setScaleX(1.2F); leftEar.setScaleY(1.2F); leftEar.setScaleZ(1.2F);
             rightEar.setScaleX(1.2F); rightEar.setScaleY(1.2F); rightEar.setScaleZ(1.2F);
         }
+
+        chests.setHidden(elephant.isBaby() || !elephant.isBaby());
+        bodyCarpet.setHidden(elephant.isBaby() || !elephant.isBaby());
+        headCarpet.setHidden(elephant.isBaby() || !elephant.isBaby());
+
 
         bigTusks.setHidden(elephant.isBaby());
         smallTusks.setHidden(elephant.isBaby());

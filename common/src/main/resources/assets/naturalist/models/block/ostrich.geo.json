@@ -71,7 +71,7 @@
 				{
 					"name": "legs",
 					"parent": "root",
-					"pivot": [0, 10, 3]
+					"pivot": [2.75, 14.5, 3]
 				},
 				{
 					"name": "left_leg",

@@ -581,5 +581,30 @@
         "naturalist:entity/ostrich/hurt2"
         ],
         "subtitle": "naturalist.subtitles.entity.ostrich.death"
-    }
+    },
+  "entity.ostrich.egg_break": {
+    "sounds": [
+      "mob/turtle/egg/egg_break1",
+      "mob/turtle/egg/egg_break2"
+    ],
+    "subtitle": "naturalist.subtitles.entity.ostrich.egg_break"
+  },
+  "entity.ostrich.egg_crack": {
+    "sounds": [
+      "mob/turtle/egg/egg_crack1",
+      "mob/turtle/egg/egg_crack2",
+      "mob/turtle/egg/egg_crack3",
+      "mob/turtle/egg/egg_crack4",
+      "mob/turtle/egg/egg_crack5"
+    ],
+    "subtitle": "naturalist.subtitles.entity.ostrich.egg_crack"
+  },
+  "entity.ostrich.egg_hatch": {
+    "sounds": [
+      "mob/turtle/baby/egg_hatched1",
+      "mob/turtle/baby/egg_hatched2",
+      "mob/turtle/baby/egg_hatched3"
+    ],
+    "subtitle": "naturalist.subtitles.entity.ostrich.egg_hatch"
+  }
 }

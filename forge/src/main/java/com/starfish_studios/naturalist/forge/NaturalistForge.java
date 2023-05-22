@@ -82,5 +82,6 @@ public class NaturalistForge {
         event.put(NaturalistEntityTypes.DUCK.get(), Duck.createAttributes().build());
         event.put(NaturalistEntityTypes.HYENA.get(), Hyena.createAttributes().build());
         event.put(NaturalistEntityTypes.OSTRICH.get(), Ostrich.createAttributes().build());
+        event.put(NaturalistEntityTypes.TERMITE.get(), Termite.createAttributes().build());
     }
 }

@@ -721,7 +721,7 @@
 						"vector": ["7.5 + Math.cos((query.anim_time - 0.0) * 360) * 4", 0, "Math.sin((query.anim_time - 0.0) * 360) * 8"]
 					},
 					"position": {
-						"vector": ["Math.cos((query.anim_time - 0.0) * 360) * 0.5", -4, 0]
+						"vector": ["Math.cos((query.anim_time - 0.0) * 360) * 0.5", -12, 0]
 					}
 				},
 				"head": {
@@ -745,6 +745,71 @@
 				"right_wing": {
 					"rotation": {
 						"vector": [-22.5, 0, "45 + Math.cos((query.anim_time - 0.4) * 360) * 45"]
+					}
+				}
+			}
+		},
+		"lay_egg": {
+			"loop": true,
+			"animation_length": 1,
+			"bones": {
+				"body": {
+					"rotation": {
+						"vector": [0, 0, "Math.sin((query.anim_time - 0.0) * 360) * 8"]
+					},
+					"position": {
+						"vector": [0, -15, 0]
+					}
+				},
+				"head": {
+					"rotation": {
+						"vector": [0, 0, "Math.sin((query.anim_time - 0.1) * 360) * -8"]
+					},
+					"position": {
+						"vector": [0, 0, 1]
+					}
+				},
+				"left_wing": {
+					"rotation": {
+						"vector": [-22.5, 0, "-45 + Math.cos((query.anim_time - 0.4) * 360) * 45"]
+					},
+					"position": {
+						"vector": [0, 2, 0]
+					}
+				},
+				"right_wing": {
+					"rotation": {
+						"vector": [-22.5, 0, "45 + Math.cos((query.anim_time - 0.4) * 360) * 45"]
+					},
+					"position": {
+						"vector": [0, 2, 0]
+					}
+				},
+				"right_leg": {
+					"rotation": {
+						"vector": [35, 0, 0]
+					},
+					"position": {
+						"vector": [0, -2, -7]
+					}
+				},
+				"left_leg": {
+					"rotation": {
+						"vector": [35, 0, 0]
+					},
+					"position": {
+						"vector": [0, -2, -7]
+					}
+				},
+				"legs": {
+					"rotation": {
+						"vector": [5, 0, 0]
+					},
+					"position": {
+						"vector": [0, -1.5, 0]
+					},
+					"scale": {
+						"vector": [0.9, 0.9, 0.9]
 					}
 				}
 			}

@@ -1,7 +1,8 @@
 package com.starfish_studios.naturalist.block;
 
-import com.starfish_studios.naturalist.entity.Alligator;
+import com.starfish_studios.naturalist.entity.Ostrich;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
+import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -13,6 +14,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Turtle;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -20,9 +23,13 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.TurtleEggBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class AlligatorEggBlock extends TurtleEggBlock {
-    public AlligatorEggBlock(Properties properties) {
+public class OstrichEggBlock extends TurtleEggBlock {
+
+    private static final VoxelShape EGG_AABB = Block.box(5.0, 0.0, 5.0, 11.0, 8.0, 11.0);
+    public OstrichEggBlock(Properties properties) {
         super(properties);
     }
 
@@ -31,17 +38,17 @@ public class AlligatorEggBlock extends TurtleEggBlock {
         if (this.shouldUpdateHatchLevel(level)) {
             int i = state.getValue(HATCH);
             if (i < 2) {
-                level.playSound(null, pos, SoundEvents.TURTLE_EGG_CRACK, SoundSource.BLOCKS, 0.7f, 0.9f + random.nextFloat() * 0.2f);
+                level.playSound(null, pos, NaturalistSoundEvents.OSTRICH_EGG_CRACK.get(), SoundSource.BLOCKS, 0.7f, 0.9f + random.nextFloat() * 0.2f);
                 level.setBlock(pos, state.setValue(HATCH, i + 1), 2);
             } else {
-                level.playSound(null, pos, SoundEvents.TURTLE_EGG_HATCH, SoundSource.BLOCKS, 0.7f, 0.9f + random.nextFloat() * 0.2f);
+                level.playSound(null, pos, NaturalistSoundEvents.OSTRICH_EGG_HATCH.get(), SoundSource.BLOCKS, 0.7f, 0.9f + random.nextFloat() * 0.2f);
                 level.removeBlock(pos, false);
                 for (int j = 0; j < state.getValue(EGGS); ++j) {
                     level.levelEvent(2001, pos, Block.getId(state));
-                    Alligator alligator = NaturalistEntityTypes.ALLIGATOR.get().create(level);
-                    alligator.setAge(-24000);
-                    alligator.moveTo((double)pos.getX() + 0.3 + (double)j * 0.2, pos.getY(), (double)pos.getZ() + 0.3, 0.0f, 0.0f);
-                    level.addFreshEntity(alligator);
+                    Ostrich ostrich = NaturalistEntityTypes.OSTRICH.get().create(level);
+                    ostrich.setAge(-24000);
+                    ostrich.moveTo((double)pos.getX() + 0.3 + (double)j * 0.2, pos.getY(), (double)pos.getZ() + 0.3, 0.0f, 0.0f);
+                    level.addFreshEntity(ostrich);
                 }
             }
         }
@@ -84,7 +91,7 @@ public class AlligatorEggBlock extends TurtleEggBlock {
     }
 
     private boolean canDestroyEgg(Level level, Entity entity) {
-        if (entity instanceof Alligator) {
+        if (entity instanceof Ostrich) {
             return false;
         }
         if (entity instanceof LivingEntity) {
@@ -94,7 +101,7 @@ public class AlligatorEggBlock extends TurtleEggBlock {
     }
 
     private void decreaseEggs(Level level, BlockPos pos, BlockState state) {
-        level.playSound(null, pos, SoundEvents.TURTLE_EGG_BREAK, SoundSource.BLOCKS, 0.7f, 0.9f + level.random.nextFloat() * 0.2f);
+        level.playSound(null, pos, NaturalistSoundEvents.OSTRICH_EGG_BREAK.get(), SoundSource.BLOCKS, 0.7f, 0.9f + level.random.nextFloat() * 0.2f);
         int i = state.getValue(EGGS);
         if (i <= 1) {
             level.destroyBlock(pos, false);
@@ -103,5 +110,15 @@ public class AlligatorEggBlock extends TurtleEggBlock {
             level.gameEvent(GameEvent.BLOCK_DESTROY, pos, GameEvent.Context.of(state));
             level.levelEvent(2001, pos, Block.getId(state));
         }
+    }
+
+    @Override
+    public boolean canBeReplaced(BlockState state, BlockPlaceContext useContext) {
+        return false;
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return EGG_AABB;
     }
 }

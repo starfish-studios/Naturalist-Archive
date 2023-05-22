@@ -31,6 +31,7 @@
   "entity.naturalist.duck": "Duck",
   "entity.naturalist.hyena": "Hyena",
   "entity.naturalist.ostrich": "Ostrich",
+  "entity.naturalist.termite": "Termite",
 
 
   "item.naturalist.bluejay_spawn_egg": "Bluejay Spawn Egg",
@@ -63,6 +64,7 @@
   "item.naturalist.duck_spawn_egg": "Duck Spawn Egg",
   "item.naturalist.hyena_spawn_egg": "Hyena Spawn Egg",
   "item.naturalist.ostrich_spawn_egg": "Ostrich Spawn Egg",
+  "item.naturalist.termite_spawn_egg": "Termite Spawn Egg",
 
 
   "item.naturalist.antler": "Antler",
@@ -90,6 +92,12 @@
   "item.naturalist.cooked_lizard_tail": "Cooked Lizard Tail",
   "block.naturalist.tortoise_egg": "Tortoise Egg",
   "item.naturalist.worm": "Worm",
+
+  "item.naturalist.grub": "Grub",
+  "item.naturalist.grub_on_a_stick": "Grub on a Stick",
+  "block.naturalist.ostrich_egg": "Ostrich Egg",
+  "item.naturalist.drumstick": "Raw Drumstick",
+  "item.naturalist.cooked_drumstick": "Cooked Drumstick",
 
   "item.naturalist.duck": "Raw Duck",
   "item.naturalist.cooked_duck": "Cooked Duck",
@@ -210,9 +218,11 @@
   "naturalist.subtitles.entity.hyena.death": "Hyena dies",
 
   "naturalist.subtitles.entity.ostrich.ambient": "Ostrich warbles",
-  "naturalist.subtitles.entity.ostrich.ambient": "Ostrich warbles",
   "naturalist.subtitles.entity.ostrich.hurt": "Ostrich hurts",
   "naturalist.subtitles.entity.ostrich.death": "Ostrich dies",
+  "naturalist.subtitles.entity.ostrich.egg_break": "Ostrich Egg breaks",
+  "naturalist.subtitles.entity.ostrich.egg_crack": "Ostrich Egg cracks",
+  "naturalist.subtitles.entity.ostrich.egg_hatch": "Ostrich Egg hatches",
 
   "advancements.husbandry.ride_giraffe_with_map.title": "I can show you the world!",
   "advancements.husbandry.ride_giraffe_with_map.description": "Use a map while riding a giraffe to increase its range",

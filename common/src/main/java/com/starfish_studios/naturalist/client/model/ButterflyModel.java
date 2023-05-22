@@ -16,7 +16,7 @@ public class ButterflyModel extends AnimatedGeoModel<Butterfly> {
 
     @Override
     public ResourceLocation getTextureResource(Butterfly butterfly) {
-        return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/butterfly.png");
+        return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/butterfly/monarch.png");
     }
 
     @Override

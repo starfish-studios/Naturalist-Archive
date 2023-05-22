@@ -83,6 +83,10 @@ public class NaturalistSoundEvents {
     public static final Supplier<SoundEvent> OSTRICH_AMBIENT = CommonPlatformHelper.registerSoundEvent("ostrich_ambient", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.ostrich.ambient")));
     public static final Supplier<SoundEvent> OSTRICH_HURT = CommonPlatformHelper.registerSoundEvent("ostrich_hurt", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.ostrich.hurt")));
     public static final Supplier<SoundEvent> OSTRICH_DEATH = CommonPlatformHelper.registerSoundEvent("ostrich_death", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.ostrich.death")));
+    // Ostrich Eggs
+    public static final Supplier<SoundEvent> OSTRICH_EGG_BREAK = CommonPlatformHelper.registerSoundEvent("ostrich_egg_break", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.ostrich.egg_break")));
+    public static final Supplier<SoundEvent> OSTRICH_EGG_CRACK = CommonPlatformHelper.registerSoundEvent("ostrich_egg_crack", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.ostrich.egg_crack")));
+    public static final Supplier<SoundEvent> OSTRICH_EGG_HATCH = CommonPlatformHelper.registerSoundEvent("ostrich_egg_hatch", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.ostrich.egg_hatch")));
 
 
 

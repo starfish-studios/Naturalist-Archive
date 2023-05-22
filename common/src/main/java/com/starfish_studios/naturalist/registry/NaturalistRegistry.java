@@ -60,6 +60,15 @@ public class NaturalistRegistry {
         // LINE 3
         public static final Supplier<Item> SNAIL_BUCKET = CommonPlatformHelper.registerNoFluidMobBucketItem("snail_bucket", NaturalistEntityTypes.SNAIL, () -> Fluids.EMPTY, NaturalistSoundEvents.BUCKET_EMPTY_SNAIL);
         public static final Supplier<Item> SNAIL_SHELL = CommonPlatformHelper.registerItem("snail_shell", () -> new Item(new Item.Properties().tab(Naturalist.TAB)));
+
+        public static final Supplier<Item> GRUB = CommonPlatformHelper.registerItem("grub", () -> new Item(new Item.Properties().tab(Naturalist.TAB).food(new FoodProperties.Builder().nutrition(1).saturationMod(0.1F).effect(new MobEffectInstance(MobEffects.CONFUSION, 100, 0), 1.0f).build())));
+
+        public static final Supplier<Item> GRUB_ON_A_STICK = CommonPlatformHelper.registerItem("grub_on_a_stick", () -> new FoodOnAStickItem((new Item.Properties()).durability(25).tab(Naturalist.TAB), NaturalistEntityTypes.OSTRICH.get(), 7));
+
+        public static final Supplier<Block> OSTRICH_EGG = registerBlock("ostrich_egg", () -> new OstrichEggBlock(BlockBehaviour.Properties.copy(Blocks.TURTLE_EGG)));
+        public static final Supplier<Item> DRUMSTICK = CommonPlatformHelper.registerItem("drumstick", () -> new Item(new Item.Properties().tab(Naturalist.TAB).food(new FoodProperties.Builder().nutrition(1).saturationMod(0.1F).meat().build())));
+        public static final Supplier<Item> COOKED_DRUMSTICK = CommonPlatformHelper.registerItem("cooked_drumstick", () -> new Item(new Item.Properties().tab(Naturalist.TAB).food(Foods.COOKED_CHICKEN)));
+
         public static final Supplier<Item> CATFISH_BUCKET = CommonPlatformHelper.registerMobBucketItem("catfish_bucket", NaturalistEntityTypes.CATFISH, () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH);
         public static final Supplier<Item> CATFISH = CommonPlatformHelper.registerItem("catfish", () -> new Item(new Item.Properties().tab(Naturalist.TAB).food(Foods.SALMON)));
         public static final Supplier<Item> COOKED_CATFISH = CommonPlatformHelper.registerItem("cooked_catfish", () -> new Item(new Item.Properties().tab(Naturalist.TAB).food(Foods.COOKED_SALMON)));
@@ -108,6 +117,7 @@ public class NaturalistRegistry {
         public static final Supplier<SpawnEggItem> DUCK_SPAWN_EGG = CommonPlatformHelper.registerSpawnEggItem("duck_spawn_egg", NaturalistEntityTypes.DUCK, 13286315, 2333491);
         public static final Supplier<SpawnEggItem> HYENA_SPAWN_EGG = CommonPlatformHelper.registerSpawnEggItem("hyena_spawn_egg", NaturalistEntityTypes.HYENA, 15116640, 11103550);
         public static final Supplier<SpawnEggItem> OSTRICH_SPAWN_EGG = CommonPlatformHelper.registerSpawnEggItem("ostrich_spawn_egg", NaturalistEntityTypes.OSTRICH, 15116640, 11103550);
+        public static final Supplier<SpawnEggItem> TERMITE_SPAWN_EGG = CommonPlatformHelper.registerSpawnEggItem("termite_spawn_egg", NaturalistEntityTypes.TERMITE, 15116640, 11103550);
 
         public static <T extends Block> Supplier<T> registerBlock(String name, Supplier<T> block) {
                 Supplier<T> supplier = CommonPlatformHelper.registerBlock(name, block);
