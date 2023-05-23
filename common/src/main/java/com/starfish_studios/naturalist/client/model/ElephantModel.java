@@ -23,7 +23,7 @@ public class ElephantModel extends AnimatedGeoModel<Elephant> {
 
     @Override
     public ResourceLocation getTextureResource(Elephant elephant) {
-        return new ResourceLocation(Naturalist.MOD_ID, elephant.isDirty() ? "textures/entity/elephant_dirt.png" : "textures/entity/elephant.png");
+        return new ResourceLocation(Naturalist.MOD_ID, /*elephant.isDirty() ? "textures/entity/elephant_dirt.png" :*/ "textures/entity/elephant.png");
     }
 
     @Override
@@ -45,8 +45,7 @@ public class ElephantModel extends AnimatedGeoModel<Elephant> {
         IBone leftEar = this.getAnimationProcessor().getBone("left_ear");
         IBone rightEar = this.getAnimationProcessor().getBone("right_ear");
         IBone chests = this.getAnimationProcessor().getBone("chests");
-        IBone bodyCarpet = this.getAnimationProcessor().getBone("body_carpet");
-        IBone headCarpet = this.getAnimationProcessor().getBone("head_carpet");
+        IBone saddle = this.getAnimationProcessor().getBone("saddle");
 
         if (elephant.isBaby()) {
             head.setScaleX(1.3F); head.setScaleY(1.3F); head.setScaleZ(1.3F);
@@ -54,10 +53,8 @@ public class ElephantModel extends AnimatedGeoModel<Elephant> {
             rightEar.setScaleX(1.2F); rightEar.setScaleY(1.2F); rightEar.setScaleZ(1.2F);
         }
 
-        chests.setHidden(elephant.isBaby() || !elephant.isBaby());
-        bodyCarpet.setHidden(elephant.isBaby() || !elephant.isBaby());
-        headCarpet.setHidden(elephant.isBaby() || !elephant.isBaby());
-
+        chests.setHidden(!elephant.hasChest() || elephant.isBaby());
+        saddle.setHidden(!elephant.isSaddled() || elephant.isBaby());
 
         bigTusks.setHidden(elephant.isBaby());
         smallTusks.setHidden(elephant.isBaby());

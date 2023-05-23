@@ -28,14 +28,6 @@
 					]
 				},
 				{
-					"name": "body_carpet",
-					"parent": "body",
-					"pivot": [0, 0, -3],
-					"cubes": [
-						{"origin": [-14, 25, -24], "size": [28, 30, 48], "inflate": 0.5, "uv": [104, 178]}
-					]
-				},
-				{
 					"name": "chests",
 					"parent": "body",
 					"pivot": [7, 67, 5],
@@ -79,14 +71,6 @@
 					"pivot": [0, 45, -22.33333],
 					"cubes": [
 						{"origin": [-10, 39, -38], "size": [20, 23, 18], "uv": [0, 79]}
-					]
-				},
-				{
-					"name": "head_carpet",
-					"parent": "head",
-					"pivot": [0, 5, -3],
-					"cubes": [
-						{"origin": [-10, 39, -38], "size": [20, 23, 18], "inflate": 0.5, "uv": [180, 78]}
 					]
 				},
 				{

@@ -20,8 +20,10 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.Container;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -32,7 +34,9 @@ import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Bee;
+import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -52,14 +56,16 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 
-public class Elephant extends Animal implements IAnimatable {
+public class Elephant extends AbstractChestedHorse implements IAnimatable {
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
-    private static final EntityDataAccessor<Integer> DIRTY_TICKS = SynchedEntityData.defineId(Elephant.class, EntityDataSerializers.INT);
+    // private static final EntityDataAccessor<Integer> DIRTY_TICKS = SynchedEntityData.defineId(Elephant.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DRINKING = SynchedEntityData.defineId(Elephant.class, EntityDataSerializers.BOOLEAN);
+
+    protected ElephantContainer inventory;
     @Nullable
     protected BlockPos waterPos;
 
-    public Elephant(EntityType<? extends Animal> entityType, Level level) {
+    public Elephant(EntityType<? extends AbstractChestedHorse> entityType, Level level) {
         super(entityType, level);
         this.maxUpStep = 1.0f;
     }
@@ -154,33 +160,34 @@ public class Elephant extends Animal implements IAnimatable {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(DIRTY_TICKS, 0);
+        // this.entityData.define(DIRTY_TICKS, 0);
         this.entityData.define(DRINKING, false);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
-        pCompound.putInt("DirtyTicks", this.getDirtyTicks());
+        // pCompound.putInt("DirtyTicks", this.getDirtyTicks());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
-        this.setDirtyTicks(pCompound.getInt("DirtyTicks"));
+        // this.setDirtyTicks(pCompound.getInt("DirtyTicks"));
+        this.updateContainerEquipment();
     }
 
-    public void setDirtyTicks(int ticks) {
-        this.entityData.set(DIRTY_TICKS, ticks);
-    }
+    // public void setDirtyTicks(int ticks) {
+    //     this.entityData.set(DIRTY_TICKS, ticks);
+    //  }
 
-    public int getDirtyTicks() {
-        return this.entityData.get(DIRTY_TICKS);
-    }
+    // public int getDirtyTicks() {
+    //     return this.entityData.get(DIRTY_TICKS);
+    // }
 
-    public boolean isDirty() {
-        return this.getDirtyTicks() > 0;
-    }
+    // public boolean isDirty() {
+    //     return this.getDirtyTicks() > 0;
+    // }
 
     public void setDrinking(boolean drinking) {
         this.entityData.set(DRINKING, drinking);
@@ -190,10 +197,51 @@ public class Elephant extends Animal implements IAnimatable {
         return this.entityData.get(DRINKING);
     }
 
+
+
+    public void positionRider(Entity passenger) {
+        super.positionRider(passenger);
+        if (passenger instanceof Mob mob) {
+            this.yBodyRot = mob.yBodyRot;
+        }
+        passenger.setPos(this.getX(), this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset(), this.getZ());
+        if (passenger instanceof LivingEntity livingEntity) {
+            livingEntity.yBodyRot = this.yBodyRot;
+        }
+    }
+
+    public double getPassengersRidingOffset() {
+        return 3.2;
+    }
+
+    protected void playChestEquipsSound() {
+        this.playSound(SoundEvents.LLAMA_CHEST, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
+    }
+
+    public int getInventoryColumns() {
+        return 5;
+    }
+
+    protected int getInventorySize() {
+        return this.hasChest() ? 17 : super.getInventorySize();
+    }
+
+    public boolean isSaddleable() {
+        return true;
+    }
+
+    public void containerChanged(Container container) {
+        super.containerChanged(container);
+    }
+
+    public boolean canEatGrass() {
+        return false;
+    }
+
     @Override
     public void aiStep() {
         super.aiStep();
-        if (this.level instanceof ServerLevel serverLevel) {
+        /* if (this.level instanceof ServerLevel serverLevel) {
             if (this.isDirty()) {
                 this.setDirtyTicks(this.isInWater() ? 0 : Math.max(0, this.getDirtyTicks() - 1));
             } else {
@@ -205,7 +253,7 @@ public class Elephant extends Animal implements IAnimatable {
                             200, 0.5, 3.0, 0.5, 10);
                 }
             }
-        }
+        } */
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
