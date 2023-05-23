@@ -6,6 +6,8 @@ import com.starfish_studios.naturalist.entity.ai.goal.BabyPanicGoal;
 import com.starfish_studios.naturalist.entity.ai.goal.DistancedFollowParentGoal;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
+import com.starfish_studios.naturalist.world.inventory.ElephantInventoryMenu;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -223,7 +225,14 @@ public class Elephant extends AbstractChestedHorse implements IAnimatable {
     }
 
     protected int getInventorySize() {
-        return this.hasChest() ? 17 : super.getInventorySize();
+        return this.hasChest() ? 27 : super.getInventorySize();
+    }
+
+    public void openCustomInventoryScreen(Player player) {
+        if (!this.level.isClientSide && (!this.isVehicle() || this.hasPassenger(player)) && this.isTamed()) {
+            player.openHorseInventory(this, this.inventory);
+        }
+
     }
 
     public boolean isSaddleable() {

@@ -1,11 +1,16 @@
 package com.starfish_studios.naturalist.platform;
 
+import com.starfish_studios.naturalist.registry.NaturalistMenus;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -51,6 +56,21 @@ public class CommonPlatformHelper {
 
     @ExpectPlatform
     public static <T extends Entity> Supplier<EntityType<T>> registerEntityType(String name, EntityType.EntityFactory<T> factory, MobCategory category, float width, float height, int clientTrackingRange) {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static <T extends AbstractContainerMenu> MenuType<T> registerMenuType(String name, Supplier<MenuType<T>> supplier) {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static <T extends AbstractContainerMenu> MenuType<T> createMenuType(NaturalistMenus.MenuFactory<T> factory) {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static void openMenu(ServerPlayer player, MenuProvider provider) {
         throw new AssertionError();
     }
 

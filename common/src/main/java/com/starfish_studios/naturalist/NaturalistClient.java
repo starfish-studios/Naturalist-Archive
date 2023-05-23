@@ -1,10 +1,13 @@
 package com.starfish_studios.naturalist;
 
 import com.starfish_studios.naturalist.client.renderer.*;
+import com.starfish_studios.naturalist.client.screens.ElephantInventoryScreen;
 import com.starfish_studios.naturalist.platform.ClientPlatformHelper;
 import com.starfish_studios.naturalist.registry.NaturalistBlocks;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
+import com.starfish_studios.naturalist.registry.NaturalistMenus;
 import com.starfish_studios.naturalist.registry.NaturalistRegistry;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.RenderType;
 
 import java.io.File;
@@ -54,8 +57,11 @@ public class NaturalistClient {
         ClientPlatformHelper.registerEntityRenderers(NaturalistEntityTypes.HYENA, HyenaRenderer::new);
         ClientPlatformHelper.registerEntityRenderers(NaturalistEntityTypes.OSTRICH, OstrichRenderer::new);
         ClientPlatformHelper.registerEntityRenderers(NaturalistEntityTypes.TERMITE, TermiteRenderer::new);
-        copyOldModelsResources();
 
+
+        //MenuScreens.register(NaturalistMenus.ELEPHANT_INVENTORY.get(), ElephantInventoryScreen::new);
+
+        copyOldModelsResources();
     }
 
     private static void copyOldModelsResources() {
