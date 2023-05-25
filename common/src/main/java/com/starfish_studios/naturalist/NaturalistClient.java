@@ -9,6 +9,9 @@ import com.starfish_studios.naturalist.registry.NaturalistMenus;
 import com.starfish_studios.naturalist.registry.NaturalistRegistry;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -63,6 +66,7 @@ public class NaturalistClient {
 
         copyOldModelsResources();
     }
+
 
     private static void copyOldModelsResources() {
         File dir = new File(".", "resourcepacks");

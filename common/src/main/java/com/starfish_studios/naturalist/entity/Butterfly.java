@@ -1,11 +1,15 @@
 package com.starfish_studios.naturalist.entity;
 
+import com.mojang.logging.LogUtils;
 import com.starfish_studios.naturalist.entity.ai.goal.FlyingWanderGoal;
+import com.starfish_studios.naturalist.entity.animal.Catchable;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import com.starfish_studios.naturalist.registry.NaturalistRegistry;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -13,24 +17,32 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.FlyingAnimal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -41,10 +53,16 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class Butterfly extends Animal implements IAnimatable, FlyingAnimal {
+    private static final Logger LOGGER = LogUtils.getLogger();
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private static final EntityDataAccessor<Boolean> HAS_NECTAR = SynchedEntityData.defineId(Butterfly.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> DATA_VARIANT;
+    private static final EntityDataAccessor<Boolean> FROM_HAND;
+    public static final String VARIANT_TAG = "Variant";
     private int numCropsGrownSincePollination;
 
     @Override
@@ -83,7 +101,37 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
+        this.entityData.define(DATA_VARIANT, 0);
+        this.entityData.define(FROM_HAND, false);
         this.entityData.define(HAS_NECTAR, false);
+    }
+
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putInt("Variant", getVariant().getId());
+        compound.putBoolean("FromHand", this.fromHand());
+    }
+
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.setVariant(Butterfly.Variant.BY_ID[compound.getInt("Variant")]);
+        this.setFromHand(compound.getBoolean("FromHand"));
+    }
+
+    public Butterfly.Variant getVariant() {
+        return Butterfly.Variant.BY_ID[this.entityData.get(DATA_VARIANT)];
+    }
+
+    private void setVariant(Butterfly.Variant variant) {
+        this.entityData.set(DATA_VARIANT, variant.getId());
+    }
+
+    public boolean fromHand() {
+        return this.entityData.get(FROM_HAND);
+    }
+
+    public void setFromHand(boolean fromHand) {
+        this.entityData.set(FROM_HAND, fromHand);
     }
 
     public boolean hasNectar() {
@@ -127,6 +175,69 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal {
         this.goalSelector.addGoal(7, new FloatGoal(this));
     }
 
+    @Override
+    @Nullable
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @org.jetbrains.annotations.Nullable SpawnGroupData spawnData, @org.jetbrains.annotations.Nullable CompoundTag dataTag) {
+        boolean bl = false;
+        if (reason == MobSpawnType.BUCKET) {
+            return spawnData;
+        } else {
+            RandomSource randomSource = level.getRandom();
+            if (spawnData instanceof Butterfly.ButterflyGroupData) {
+                if (((Butterfly.ButterflyGroupData)spawnData).getGroupSize() >= 2) {
+                    bl = true;
+                }
+            } else {
+                spawnData = new Butterfly.ButterflyGroupData(Variant.getCommonSpawnVariant(randomSource), Variant.getCommonSpawnVariant(randomSource));
+            }
+
+            this.setVariant(((Butterfly.ButterflyGroupData)spawnData).getVariant(randomSource));
+            if (bl) {
+                this.setAge(-24000);
+            }
+
+            return super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
+        }
+    }
+
+    // BUTTERFLY CATCHING
+
+    public @NotNull InteractionResult mobInteract(Player player, InteractionHand hand) {
+        return Catchable.handMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
+    }
+
+    public void saveToHandTag(ItemStack stack) {
+        Catchable.saveDefaultDataToHandTag(this, stack);
+        CompoundTag compoundTag = stack.getOrCreateTag();
+        compoundTag.putInt("Variant", this.getVariant().getId());
+        compoundTag.putInt("Age", this.getAge());
+
+    }
+
+    public void loadFromHandTag(CompoundTag tag) {
+        Catchable.loadDefaultDataFromHandTag(this, tag);
+        int i = tag.getInt("Variant");
+        if (i >= 0 && i < Butterfly.Variant.BY_ID.length) {
+            this.setVariant(Butterfly.Variant.BY_ID[i]);
+        } else {
+            LOGGER.error("Invalid variant: {}", i);
+        }
+
+        if (tag.contains("Age")) {
+            this.setAge(tag.getInt("Age"));
+        }
+
+        if (tag.contains("HuntingCooldown")) {
+            this.getBrain().setMemoryWithExpiry(MemoryModuleType.HAS_HUNTING_COOLDOWN, true, tag.getLong("HuntingCooldown"));
+        }
+
+    }
+
+    public ItemStack getHandItemStack() {
+        return new ItemStack(NaturalistRegistry.BUTTERFLY.get());
+    }
+    
+    
     @Override
     public void aiStep() {
         super.aiStep();
@@ -305,6 +416,68 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal {
         public boolean canContinueToUse() {
             return butterfly.hasNectar() && super.canContinueToUse();
         }
+    }
+
+
+    public enum Variant {
+        MONARCH(0, "monarch", true),
+        BLUE_MORPHO(1, "blue_morpho", true),
+        SWALLOWTAIL(2, "swallowtail", true);
+
+        public static final Butterfly.Variant[] BY_ID = Arrays.stream(values()).sorted(Comparator.comparingInt(Variant::getId)).toArray(Variant[]::new);
+        private final int id;
+        private final String name;
+        private final boolean common;
+
+        private Variant(int j, String string2, boolean bl) {
+            this.id = j;
+            this.name = string2;
+            this.common = bl;
+        }
+
+        public int getId() {
+            return this.id;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public static Variant getTypeById(int id) {
+            for (Variant type : values()) {
+                if (type.id == id) return type;
+            }
+            return Variant.MONARCH;
+        }
+
+        public static Butterfly.Variant getCommonSpawnVariant(RandomSource random) {
+            return getSpawnVariant(random, true);
+        }
+
+        private static Butterfly.Variant getSpawnVariant(RandomSource random, boolean common) {
+            Butterfly.Variant[] variants = Arrays.stream(BY_ID).filter((variant) -> {
+                return variant.common == common;
+            }).toArray(Variant[]::new);
+            return Util.getRandom(variants, random);
+        }
+    }
+
+    public static class ButterflyGroupData extends AgeableMob.AgeableMobGroupData {
+        public final Butterfly.Variant[] types;
+
+        public ButterflyGroupData(Butterfly.Variant... variants) {
+            super(false);
+            this.types = variants;
+        }
+
+        public Butterfly.Variant getVariant(RandomSource random) {
+            return this.types[random.nextInt(this.types.length)];
+        }
+    }
+
+    static {
+        DATA_VARIANT = SynchedEntityData.defineId(Butterfly.class, EntityDataSerializers.INT);
+        FROM_HAND = SynchedEntityData.defineId(Butterfly.class, EntityDataSerializers.BOOLEAN);
     }
 
 }

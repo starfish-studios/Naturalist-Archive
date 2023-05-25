@@ -1,11 +1,17 @@
 package com.starfish_studios.naturalist.client.model;
 
+import com.google.common.collect.Maps;
 import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.entity.Butterfly;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
+
+import java.util.Locale;
+import java.util.Map;
 
 @Environment(EnvType.CLIENT)
 public class ButterflyModel extends AnimatedGeoModel<Butterfly> {
@@ -16,8 +22,17 @@ public class ButterflyModel extends AnimatedGeoModel<Butterfly> {
 
     @Override
     public ResourceLocation getTextureResource(Butterfly butterfly) {
-        return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/butterfly/monarch.png");
+        if (butterfly.getVariant().getName().equals("monarch")) {
+            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/butterfly/monarch.png");
+        } else if (butterfly.getVariant().getName().equals("swallowtail")) {
+            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/butterfly/swallowtail.png");
+        } else if (butterfly.getVariant().getName().equals("blue_morpho")) {
+            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/butterfly/blue_morpho.png");
+        } else {
+            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/butterfly/monarch.png");
+        }
     }
+
 
     @Override
     public ResourceLocation getAnimationResource(Butterfly butterfly) {

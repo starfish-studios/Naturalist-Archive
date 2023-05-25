@@ -2,11 +2,16 @@ package com.starfish_studios.naturalist.registry;
 
 import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.block.*;
+import com.starfish_studios.naturalist.entity.Butterfly;
 import com.starfish_studios.naturalist.item.DuckEggItem;
 import com.starfish_studios.naturalist.platform.CommonPlatformHelper;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.*;
@@ -19,6 +24,9 @@ import net.minecraft.world.level.material.MaterialColor;
 import java.util.function.Supplier;
 
 public class NaturalistRegistry {
+
+
+
         public static final Supplier<Block> AZURE_FROGLASS = registerBlock("azure_froglass", () -> new GlassBlock(BlockBehaviour.Properties.copy(Blocks.GLASS)));
         public static final Supplier<Block> VERDANT_FROGLASS = registerBlock("verdant_froglass", () -> new GlassBlock(BlockBehaviour.Properties.copy(Blocks.GLASS)));
         public static final Supplier<Block> CRIMSON_FROGLASS = registerBlock("crimson_froglass", () -> new GlassBlock(BlockBehaviour.Properties.copy(Blocks.GLASS)));
@@ -44,6 +52,9 @@ public class NaturalistRegistry {
         public static final Supplier<Item> ANTLER = CommonPlatformHelper.registerItem("antler", () -> new Item(new Item.Properties().tab(Naturalist.TAB)));
         public static final Supplier<Item> GLOW_GOOP = CommonPlatformHelper.registerItem("glow_goop", () -> new Item(new Item.Properties().tab(Naturalist.TAB)));
 
+
+
+
         // LINE 2
 
         public static final Supplier<Item> DUCK = CommonPlatformHelper.registerItem("duck", () -> new Item(new Item.Properties().tab(Naturalist.TAB).food(Foods.CHICKEN)));
@@ -57,7 +68,11 @@ public class NaturalistRegistry {
         public static final Supplier<Item> REPTILE_HIDE = CommonPlatformHelper.registerItem("reptile_hide", () -> new Item(new Item.Properties().tab(Naturalist.TAB)));
 
 
+        public static final Supplier<Item> BUTTERFLY = CommonPlatformHelper.registerCaughtMobItem("butterfly", NaturalistEntityTypes.BUTTERFLY, () -> Fluids.EMPTY, NaturalistSoundEvents.BIRD_FLY);
+
+
         // LINE 3
+
         public static final Supplier<Item> SNAIL_BUCKET = CommonPlatformHelper.registerNoFluidMobBucketItem("snail_bucket", NaturalistEntityTypes.SNAIL, () -> Fluids.EMPTY, NaturalistSoundEvents.BUCKET_EMPTY_SNAIL);
         public static final Supplier<Item> SNAIL_SHELL = CommonPlatformHelper.registerItem("snail_shell", () -> new Item(new Item.Properties().tab(Naturalist.TAB)));
 
@@ -124,6 +139,11 @@ public class NaturalistRegistry {
                 CommonPlatformHelper.registerItem(name, () -> new BlockItem(supplier.get(), new Item.Properties().tab(Naturalist.TAB)));
                 return supplier;
         }
+
+        private static Item registerItem(String key, Item item) {
+                return registerItem(String.valueOf(new ResourceLocation(key)), item);
+        }
+
 
         //  ARMOR
 

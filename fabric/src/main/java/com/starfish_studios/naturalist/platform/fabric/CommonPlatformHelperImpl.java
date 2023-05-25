@@ -1,6 +1,7 @@
 package com.starfish_studios.naturalist.platform.fabric;
 
 import com.starfish_studios.naturalist.Naturalist;
+import com.starfish_studios.naturalist.item.fabric.CaughtMobItem;
 import com.starfish_studios.naturalist.item.fabric.NoFluidMobBucketItem;
 import com.starfish_studios.naturalist.mixin.fabric.PotionBrewingInvoker;
 import com.starfish_studios.naturalist.mixin.fabric.SpawnPlacementsInvoker;
@@ -52,6 +53,10 @@ public class CommonPlatformHelperImpl {
 
     public static Supplier<Item> registerMobBucketItem(String name, Supplier<? extends EntityType<?>> entitySupplier, Supplier<? extends Fluid> fluidSupplier, Supplier<? extends SoundEvent> soundSupplier) {
         return registerItem(name, () ->  new MobBucketItem(entitySupplier.get(), fluidSupplier.get(), soundSupplier.get(), new Item.Properties().tab(Naturalist.TAB).stacksTo(1)));
+    }
+
+    public static Supplier<Item> registerCaughtMobItem(String name, Supplier<? extends EntityType<?>> entitySupplier, Supplier<? extends Fluid> fluidSupplier, Supplier<? extends SoundEvent> soundSupplier) {
+        return registerItem(name, () ->  new CaughtMobItem(entitySupplier.get(), fluidSupplier.get(), soundSupplier.get(), new Item.Properties().tab(Naturalist.TAB).stacksTo(1)));
     }
 
     public static <T extends SoundEvent> Supplier<T> registerSoundEvent(String name, Supplier<T> soundEvent) {
