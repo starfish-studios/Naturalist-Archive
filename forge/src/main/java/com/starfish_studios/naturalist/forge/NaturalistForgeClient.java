@@ -28,10 +28,10 @@ public class NaturalistForgeClient {
 
         ItemProperties.register(NaturalistRegistry.BUTTERFLY.get(), new ResourceLocation("variant"), (stack, world, entity, num) -> {
             CompoundTag compoundTag = stack.getTag();
-            if (compoundTag != null && compoundTag.contains("Variant", 3)) {
-                return compoundTag.getInt("Variant");
+            if (compoundTag != null && compoundTag.contains("Variant")) {
+                return (float)compoundTag.getInt("Variant") / 3;
             }
-            return 2;
+            return 0;
         });
     }
 

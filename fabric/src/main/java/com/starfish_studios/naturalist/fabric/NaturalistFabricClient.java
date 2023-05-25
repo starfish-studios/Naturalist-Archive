@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
 import net.fabricmc.fabric.mixin.object.builder.client.ModelPredicateProviderRegistryAccessor;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.nbt.CompoundTag;
@@ -31,10 +32,10 @@ public class NaturalistFabricClient implements ClientModInitializer {
     public void registerItemProperties() {
         ItemProperties.register(NaturalistRegistry.BUTTERFLY.get(), new ResourceLocation("variant"), (stack, world, entity, num) -> {
             CompoundTag compoundTag = stack.getTag();
-            if (compoundTag != null && compoundTag.contains("Variant", 3)) {
-                return compoundTag.getInt("Variant");
+            if (compoundTag != null && compoundTag.contains("Variant")) {
+                return (float)compoundTag.getInt("Variant") / 3;
             }
-            return 2;
+            return 0;
         });
     }
 }
