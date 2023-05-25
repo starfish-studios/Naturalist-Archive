@@ -2,5 +2,24 @@
   "parent": "item/generated",
   "textures": {
     "layer0": "naturalist:item/monarch"
-  }
+  },
+  "overrides": [{
+    "predicate": {
+      "variant": 0
+    },
+    "model": "naturalist:item/monarch"
+  },
+    {
+      "predicate": {
+        "variant": 1
+      },
+        "model": "naturalist:item/blue_morpho"
+    },
+    {
+      "predicate": {
+        "variant": 2
+      },
+      "model": "naturalist:item/swallowtail"
+    }
+  ]
 }
