@@ -8,19 +8,31 @@
 			"predicate": {
 				"variant": 0
 			},
+			"model": "naturalist:item/cabbage_white"
+		},
+		{
+			"predicate": {
+				"variant": 0.2
+			},
 			"model": "naturalist:item/monarch"
 		},
 		{
 			"predicate": {
-				"variant": 0.3333
+				"variant": 0.4
 			},
-			"model": "naturalist:item/blue_morpho"
+			"model": "naturalist:item/clouded_yellow"
 		},
 		{
 			"predicate": {
-				"variant": 0.6666
+				"variant": 0.6
 			},
 			"model": "naturalist:item/swallowtail"
+		},
+		{
+			"predicate": {
+				"variant": 0.8
+			},
+			"model": "naturalist:item/blue_morpho"
 		}
 	]
 }

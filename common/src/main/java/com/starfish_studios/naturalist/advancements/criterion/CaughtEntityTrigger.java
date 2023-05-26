@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class CaughtEntityTrigger extends SimpleCriterionTrigger<CaughtEntityTrigger.TriggerInstance> {
-    static final ResourceLocation ID = new ResourceLocation("filled_bucket");
+    static final ResourceLocation ID = new ResourceLocation("caught_entity");
 
     public CaughtEntityTrigger() {
     }
@@ -42,9 +42,11 @@ public class CaughtEntityTrigger extends SimpleCriterionTrigger<CaughtEntityTrig
             this.item = itemPredicate;
         }
 
-        public static TriggerInstance filledBucket(ItemPredicate item) {
+        /*
+        public static TriggerInstance caughtMob(ItemPredicate item) {
             return new TriggerInstance(Composite.ANY, item);
         }
+        */
 
         public boolean matches(ItemStack stack) {
             return this.item.matches(stack);

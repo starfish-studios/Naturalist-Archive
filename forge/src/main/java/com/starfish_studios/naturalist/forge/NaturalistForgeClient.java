@@ -25,14 +25,6 @@ public class NaturalistForgeClient {
         NaturalistClient.init();
         registerEntityRenderers();
 
-
-        ItemProperties.register(NaturalistRegistry.BUTTERFLY.get(), new ResourceLocation("variant"), (stack, world, entity, num) -> {
-            CompoundTag compoundTag = stack.getTag();
-            if (compoundTag != null && compoundTag.contains("Variant")) {
-                return (float)compoundTag.getInt("Variant") / 3;
-            }
-            return 0;
-        });
     }
 
     @SubscribeEvent

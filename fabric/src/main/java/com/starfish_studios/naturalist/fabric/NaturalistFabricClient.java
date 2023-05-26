@@ -21,21 +21,10 @@ public class NaturalistFabricClient implements ClientModInitializer {
     public void onInitializeClient() {
         NaturalistClient.init();
         registerEntityRenders();
-        registerItemProperties();
         EntityModelLayerRegistry.registerModelLayer(ZebraRenderer.LAYER_LOCATION, ZebraModel::createBodyLayer);
     }
 
     private void registerEntityRenders() {
         EntityRendererRegistry.register(NaturalistEntityTypes.DUCK_EGG.get(), (context) -> new ThrownItemRenderer<>(context, 1.0F, false));
-    }
-
-    public void registerItemProperties() {
-        ItemProperties.register(NaturalistRegistry.BUTTERFLY.get(), new ResourceLocation("variant"), (stack, world, entity, num) -> {
-            CompoundTag compoundTag = stack.getTag();
-            if (compoundTag != null && compoundTag.contains("Variant")) {
-                return (float)compoundTag.getInt("Variant") / 3;
-            }
-            return 0;
-        });
     }
 }

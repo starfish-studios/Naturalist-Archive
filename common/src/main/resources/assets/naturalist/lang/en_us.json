@@ -1,10 +1,14 @@
 {
   "itemGroup.naturalist.tab": "Naturalist",
 
+  "item.naturalist.bug_net": "Bug Net",
+
   "entity.naturalist.butterfly": "Butterfly",
   "item.naturalist.butterfly_spawn_egg": "Butterfly Spawn Egg",
   "item.naturalist.butterfly": "Butterfly",
+  "tooltip.naturalist.cabbage_white": "Cabbage White",
   "tooltip.naturalist.monarch": "Monarch",
+  "tooltip.naturalist.clouded_yellow": "Clouded Yellow",
   "tooltip.naturalist.swallowtail": "Swallowtail",
   "tooltip.naturalist.blue_morpho": "Blue Morpho",
 

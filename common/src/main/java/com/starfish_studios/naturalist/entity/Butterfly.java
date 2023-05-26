@@ -203,7 +203,7 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal {
     // BUTTERFLY CATCHING
 
     public @NotNull InteractionResult mobInteract(Player player, InteractionHand hand) {
-        return Catchable.handMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
+        return Catchable.netMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
     }
 
     public void saveToHandTag(ItemStack stack) {
@@ -420,9 +420,11 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal {
 
 
     public enum Variant {
-        MONARCH(0, "monarch", true),
-        BLUE_MORPHO(1, "blue_morpho", true),
-        SWALLOWTAIL(2, "swallowtail", true);
+        CABBAGE_WHITE(0, "cabbage_white", true),
+        MONARCH(1, "monarch", true),
+        CLOUDED_YELLOW(2, "clouded_yellow", true),
+        SWALLOWTAIL(3, "swallowtail", true),
+        BLUE_MORPHO(4, "blue_morpho", true);
 
         public static final Butterfly.Variant[] BY_ID = Arrays.stream(values()).sorted(Comparator.comparingInt(Variant::getId)).toArray(Variant[]::new);
         private final int id;
