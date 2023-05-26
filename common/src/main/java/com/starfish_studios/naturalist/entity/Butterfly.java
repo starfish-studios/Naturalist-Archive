@@ -14,6 +14,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
@@ -32,6 +33,7 @@ import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.FlyingAnimal;
+import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -56,13 +58,12 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Comparator;
 
-public class Butterfly extends Animal implements IAnimatable, FlyingAnimal {
+public class Butterfly extends Animal implements IAnimatable, FlyingAnimal, Catchable {
     private static final Logger LOGGER = LogUtils.getLogger();
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private static final EntityDataAccessor<Boolean> HAS_NECTAR = SynchedEntityData.defineId(Butterfly.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> DATA_VARIANT;
     private static final EntityDataAccessor<Boolean> FROM_HAND;
-    public static final String VARIANT_TAG = "Variant";
     private int numCropsGrownSincePollination;
 
     @Override
@@ -101,7 +102,7 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(DATA_VARIANT, 0);
+        this.entityData.define(DATA_VARIANT, 1);
         this.entityData.define(FROM_HAND, false);
         this.entityData.define(HAS_NECTAR, false);
     }
@@ -125,6 +126,7 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal {
     private void setVariant(Butterfly.Variant variant) {
         this.entityData.set(DATA_VARIANT, variant.getId());
     }
+
 
     public boolean fromHand() {
         return this.entityData.get(FROM_HAND);
@@ -233,11 +235,24 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal {
 
     }
 
+    public boolean requiresCustomPersistence() {
+        return super.requiresCustomPersistence() || this.fromHand();
+    }
+
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return !this.fromHand() && !this.hasCustomName();
+    }
+
     public ItemStack getHandItemStack() {
         return new ItemStack(NaturalistRegistry.BUTTERFLY.get());
     }
-    
-    
+
+    @Override
+    public SoundEvent getPickupSound() {
+        return null;
+    }
+
+
     @Override
     public void aiStep() {
         super.aiStep();

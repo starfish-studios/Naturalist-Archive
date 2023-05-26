@@ -1,6 +1,7 @@
 package com.starfish_studios.naturalist.item.fabric;
 
 import com.starfish_studios.naturalist.entity.Butterfly;
+import com.starfish_studios.naturalist.entity.animal.Catchable;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -9,19 +10,25 @@ import net.minecraft.core.Direction;
 import net.minecraft.data.models.blockstates.Variant;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -33,8 +40,9 @@ public class CaughtMobItem extends MobBucketItem {
         this.type = entitySupplier;
     }
 
+
     @Override
-    public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flagIn) {
         if (this.type == NaturalistEntityTypes.BUTTERFLY.get()) {
             CompoundTag compoundnbt = stack.getTag();
             if (compoundnbt != null && compoundnbt.contains("Variant", 3)) {
@@ -42,6 +50,24 @@ public class CaughtMobItem extends MobBucketItem {
                 tooltip.add((Component.translatable(String.format("tooltip.naturalist.%s", variant.toString().toLowerCase())).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY)));
             }
         }
+    }
+
+    private void spawn(ServerLevel serverLevel, ItemStack itemStack, BlockPos pos) {
+        Entity entity = this.type.spawn(serverLevel, itemStack, null, pos, MobSpawnType.BUCKET, true, false);
+        if (entity instanceof Catchable catchable) {
+            catchable.loadFromHandTag(itemStack.getOrCreateTag());
+            catchable.setFromHand(true);
+        }
+
+    }
+
+    @Override
+    public void checkExtraContent(@Nullable Player player, Level level, ItemStack containerStack, BlockPos pos) {
+        if (level instanceof ServerLevel) {
+            this.spawn((ServerLevel)level, containerStack, pos);
+            level.gameEvent(player, GameEvent.ENTITY_PLACE, pos);
+        }
+
     }
 
 

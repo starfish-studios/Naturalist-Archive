@@ -62,16 +62,6 @@ public class NaturalistClient {
         ClientPlatformHelper.registerEntityRenderers(NaturalistEntityTypes.TERMITE, TermiteRenderer::new);
 
 
-
-        ItemProperties.register(NaturalistRegistry.BUTTERFLY.get(), new ResourceLocation("variant"), (stack, world, entity, num) -> {
-            CompoundTag compoundTag = stack.getTag();
-            if (compoundTag != null && compoundTag.contains("Variant")) {
-                return (float)compoundTag.getInt("Variant") / 5;
-            }
-            return 0.2F;
-        });
-
-
         //MenuScreens.register(NaturalistMenus.ELEPHANT_INVENTORY.get(), ElephantInventoryScreen::new);
 
         copyOldModelsResources();
