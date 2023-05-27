@@ -12,6 +12,12 @@
   "tooltip.naturalist.swallowtail": "Swallowtail",
   "tooltip.naturalist.blue_morpho": "Blue Morpho",
 
+  "entity.naturalist.moth": "Moth",
+  "item.naturalist.moth_spawn_egg": "Moth Spawn Egg",
+  "item.naturalist.moth": "Moth",
+  "tooltip.naturalist.domestic_silk": "Domestic Silk",
+  "tooltip.naturalist.polyphemus": "Polyphemus",
+
   "entity.naturalist.caterpillar": "Caterpillar",
   "item.naturalist.caterpillar_spawn_egg": "Caterpillar Spawn Egg",
   "entity.naturalist.dragonfly": "Dragonfly",

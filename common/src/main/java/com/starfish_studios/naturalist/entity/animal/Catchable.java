@@ -8,6 +8,7 @@ package com.starfish_studios.naturalist.entity.animal;
 import java.util.Optional;
 
 import com.starfish_studios.naturalist.entity.Butterfly;
+import com.starfish_studios.naturalist.entity.Moth;
 import com.starfish_studios.naturalist.registry.NaturalistRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.nbt.CompoundTag;
@@ -116,7 +117,26 @@ public interface Catchable {
         }
     }
 
-    static <T extends LivingEntity & Catchable> Optional<InteractionResult> netMobPickup(Player player, InteractionHand hand, Butterfly entity) {
+    static <T extends LivingEntity & Catchable> Optional<InteractionResult> netButterflyPickup(Player player, InteractionHand hand, Butterfly entity) {
+        ItemStack itemStack = player.getItemInHand(hand);
+        if (itemStack.getItem() == NaturalistRegistry.BUG_NET.get() && entity.isAlive()) {
+            ItemStack itemStack2 = entity.getHandItemStack();
+            entity.saveToHandTag(itemStack2);
+            ItemStack itemStack3 = ItemUtils.createFilledResult(itemStack, player, itemStack2, false);
+            player.setItemInHand(hand, itemStack3);
+            player.playSound(SoundEvents.ITEM_PICKUP, 0.3F, 1.0F);
+            Level level = entity.level;
+            if (!level.isClientSide) {
+                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer)player, itemStack2);
+            }
+            entity.discard();
+            return Optional.of(InteractionResult.sidedSuccess(level.isClientSide));
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    static <T extends LivingEntity & Catchable> Optional<InteractionResult> netMothPickup(Player player, InteractionHand hand, Moth entity) {
         ItemStack itemStack = player.getItemInHand(hand);
         if (itemStack.getItem() == NaturalistRegistry.BUG_NET.get() && entity.isAlive()) {
             ItemStack itemStack2 = entity.getHandItemStack();

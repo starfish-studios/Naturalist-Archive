@@ -11,6 +11,9 @@ import net.minecraft.world.level.block.Block;
 
 public class NaturalistTags {
     public static class BlockTags {
+
+        public static final TagKey<Block> MOTHS_ATTRACTED_TO = tag("moths_attracted_to");
+
         public static final TagKey<Block> FIREFLIES_SPAWNABLE_ON = tag("fireflies_spawnable_on");
         public static final TagKey<Block> DRAGONFLIES_SPAWNABLE_ON = tag("dragonflies_spawnable_on");
         public static final TagKey<Block> VULTURES_SPAWNABLE_ON = tag("vultures_spawnable_on");

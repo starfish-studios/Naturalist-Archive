@@ -34,6 +34,14 @@ public class NaturalistForgeClient {
             return 0.2F;
         });
 
+        ItemProperties.register(NaturalistRegistry.MOTH.get(), new ResourceLocation("variant"), (stack, world, entity, num) -> {
+            CompoundTag compoundTag = stack.getTag();
+            if (compoundTag != null && compoundTag.contains("Variant")) {
+                return (float)compoundTag.getInt("Variant") / 2;
+            }
+            return 0;
+        });
+
     }
 
     @SubscribeEvent

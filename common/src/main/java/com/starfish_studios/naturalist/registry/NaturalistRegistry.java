@@ -69,6 +69,7 @@ public class NaturalistRegistry {
 
 
         public static final Supplier<Item> BUTTERFLY = CommonPlatformHelper.registerCaughtMobItem("butterfly", NaturalistEntityTypes.BUTTERFLY, () -> Fluids.EMPTY, NaturalistSoundEvents.BIRD_FLY);
+        public static final Supplier<Item> MOTH = CommonPlatformHelper.registerCaughtMobItem("moth", NaturalistEntityTypes.MOTH, () -> Fluids.EMPTY, NaturalistSoundEvents.BIRD_FLY);
         public static final Supplier<Item> BUG_NET = CommonPlatformHelper.registerItem("bug_net", () -> new Item(new Item.Properties().durability(64).tab(Naturalist.TAB)));
 
 

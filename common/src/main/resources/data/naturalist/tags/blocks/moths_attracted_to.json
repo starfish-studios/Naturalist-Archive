@@ -1,0 +1,15 @@
+{
+  "values": [
+    "minecraft:torch",
+    "minecraft:glowstone",
+    "minecraft:sea_lantern",
+    "minecraft:jack_o_lantern",
+    "minecraft:beacon",
+    "minecraft:end_rod",
+    "minecraft:shroomlight",
+    "minecraft:campfire",
+    "minecraft:soul_campfire",
+    "minecraft:lantern",
+    "minecraft:soul_lantern"
+  ]
+}

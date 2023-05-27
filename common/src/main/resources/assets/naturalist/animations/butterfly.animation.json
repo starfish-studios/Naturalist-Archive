@@ -7,7 +7,7 @@
 			"bones": {
 				"main": {
 					"rotation": {
-						"vector": ["Math.cos((query.anim_time - 0.5) * 720) * 4", 0, 0]
+						"vector": ["Math.cos((query.anim_time - 0.4) * 720) * 4", 0, 0]
 					},
 					"position": {
 						"vector": [0, "Math.cos((query.anim_time - 0.5) * 720) * -1", 0]
@@ -23,11 +23,6 @@
 						"vector": ["Math.cos((query.anim_time - 0.1) * 720) * 15", 0, "Math.cos((query.anim_time - 0.2) * 720) * 60"]
 					}
 				},
-				"antennae": {
-					"rotation": {
-						"vector": ["Math.cos((query.anim_time - 0.5) * 720) * -16", 0, 0]
-					}
-				},
 				"front_legs": {
 					"rotation": {
 						"vector": ["Math.cos((query.anim_time - 0.5) * 720) * -8", 0, 0]
@@ -41,6 +36,11 @@
 				"back_legs": {
 					"rotation": {
 						"vector": ["Math.cos((query.anim_time - 0.1) * 720) * -8", 0, 0]
+					}
+				},
+				"antennae": {
+					"rotation": {
+						"vector": ["Math.sin((query.anim_time - 0.0) * 720) * 8", 0, 0]
 					}
 				}
 			}

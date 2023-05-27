@@ -5,6 +5,7 @@ import com.starfish_studios.naturalist.entity.ai.goal.FlyingWanderGoal;
 import com.starfish_studios.naturalist.entity.animal.Catchable;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import com.starfish_studios.naturalist.registry.NaturalistRegistry;
+import com.starfish_studios.naturalist.registry.NaturalistTags;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
@@ -33,7 +34,6 @@ import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.FlyingAnimal;
-import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -58,13 +58,11 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Comparator;
 
-public class Butterfly extends Animal implements IAnimatable, FlyingAnimal, Catchable {
+public class Moth extends Animal implements IAnimatable, FlyingAnimal, Catchable {
     private static final Logger LOGGER = LogUtils.getLogger();
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
-    private static final EntityDataAccessor<Boolean> HAS_NECTAR = SynchedEntityData.defineId(Butterfly.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> DATA_VARIANT;
     private static final EntityDataAccessor<Boolean> FROM_HAND;
-    private int numCropsGrownSincePollination;
 
     @Override
     @NotNull
@@ -72,7 +70,7 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal, Catc
         return MobType.ARTHROPOD;
     }
 
-    public Butterfly(EntityType<? extends Animal> entityType, Level level) {
+    public Moth(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
         this.moveControl = new FlyingMoveControl(this, 20, true);
         this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
@@ -104,7 +102,6 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal, Catc
         super.defineSynchedData();
         this.entityData.define(DATA_VARIANT, 1);
         this.entityData.define(FROM_HAND, false);
-        this.entityData.define(HAS_NECTAR, false);
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
@@ -115,15 +112,15 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal, Catc
 
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        this.setVariant(Butterfly.Variant.BY_ID[compound.getInt("Variant")]);
+        this.setVariant(Moth.Variant.BY_ID[compound.getInt("Variant")]);
         this.setFromHand(compound.getBoolean("FromHand"));
     }
 
-    public Butterfly.Variant getVariant() {
-        return Butterfly.Variant.BY_ID[this.entityData.get(DATA_VARIANT)];
+    public Moth.Variant getVariant() {
+        return Moth.Variant.BY_ID[this.entityData.get(DATA_VARIANT)];
     }
 
-    private void setVariant(Butterfly.Variant variant) {
+    private void setVariant(Moth.Variant variant) {
         this.entityData.set(DATA_VARIANT, variant.getId());
     }
 
@@ -136,14 +133,6 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal, Catc
         this.entityData.set(FROM_HAND, fromHand);
     }
 
-    public boolean hasNectar() {
-        return this.entityData.get(HAS_NECTAR);
-    }
-
-    void setHasNectar(boolean hasNectar) {
-        this.entityData.set(HAS_NECTAR, hasNectar);
-    }
-
     @Override
     public float getWalkTargetValue(BlockPos pPos, LevelReader pLevel) {
         return pLevel.getBlockState(pPos).isAir() ? 10.0F : 0.0F;
@@ -154,25 +143,12 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal, Catc
         return pStack.is(ItemTags.FLOWERS);
     }
 
-    int getCropsGrownSincePollination() {
-        return this.numCropsGrownSincePollination;
-    }
-
-    private void resetNumCropsGrownSincePollination() {
-        this.numCropsGrownSincePollination = 0;
-    }
-
-    void incrementNumCropsGrownSincePollination() {
-        ++this.numCropsGrownSincePollination;
-    }
-
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(2, new TemptGoal(this, 1.25D, Ingredient.of(ItemTags.FLOWERS), false));
         this.goalSelector.addGoal(3, new FollowParentGoal(this, 1.25D));
-        this.goalSelector.addGoal(4, new ButterflyGrowCropGoal(this, 1.0D, 16, 4));
-        this.goalSelector.addGoal(5, new ButterflyPollinateGoal(this, 1.0D, 16, 4));
+        this.goalSelector.addGoal(5, new MothAttractionGoal(this, 1.0D, 16, 16));
         this.goalSelector.addGoal(6, new FlyingWanderGoal(this));
         this.goalSelector.addGoal(7, new FloatGoal(this));
     }
@@ -185,15 +161,15 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal, Catc
             return spawnData;
         } else {
             RandomSource randomSource = level.getRandom();
-            if (spawnData instanceof Butterfly.ButterflyGroupData) {
-                if (((Butterfly.ButterflyGroupData)spawnData).getGroupSize() >= 2) {
+            if (spawnData instanceof Moth.MothGroupData) {
+                if (((Moth.MothGroupData)spawnData).getGroupSize() >= 2) {
                     bl = true;
                 }
             } else {
-                spawnData = new Butterfly.ButterflyGroupData(Variant.getCommonSpawnVariant(randomSource), Variant.getCommonSpawnVariant(randomSource));
+                spawnData = new Moth.MothGroupData(Variant.getCommonSpawnVariant(randomSource), Variant.getCommonSpawnVariant(randomSource));
             }
 
-            this.setVariant(((Butterfly.ButterflyGroupData)spawnData).getVariant(randomSource));
+            this.setVariant(((Moth.MothGroupData)spawnData).getVariant(randomSource));
             if (bl) {
                 this.setAge(-24000);
             }
@@ -205,7 +181,7 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal, Catc
     // BUTTERFLY CATCHING
 
     public @NotNull InteractionResult mobInteract(Player player, InteractionHand hand) {
-        return Catchable.netButterflyPickup(player, hand, this).orElse(super.mobInteract(player, hand));
+        return Catchable.netMothPickup(player, hand, this).orElse(super.mobInteract(player, hand));
     }
 
     public void saveToHandTag(ItemStack stack) {
@@ -219,8 +195,8 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal, Catc
     public void loadFromHandTag(CompoundTag tag) {
         Catchable.loadDefaultDataFromHandTag(this, tag);
         int i = tag.getInt("Variant");
-        if (i >= 0 && i < Butterfly.Variant.BY_ID.length) {
-            this.setVariant(Butterfly.Variant.BY_ID[i]);
+        if (i >= 0 && i < Moth.Variant.BY_ID.length) {
+            this.setVariant(Moth.Variant.BY_ID[i]);
         } else {
             LOGGER.error("Invalid variant: {}", i);
         }
@@ -244,7 +220,7 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal, Catc
     }
 
     public ItemStack getHandItemStack() {
-        return new ItemStack(NaturalistRegistry.BUTTERFLY.get());
+        return new ItemStack(NaturalistRegistry.MOTH.get());
     }
 
     @Override
@@ -256,24 +232,11 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal, Catc
     @Override
     public void aiStep() {
         super.aiStep();
-        if (this.getCropsGrownSincePollination() >= 10) {
-            this.resetNumCropsGrownSincePollination();
-            this.setHasNectar(false);
-        }
     }
 
     @Override
     public void tick() {
         super.tick();
-        if (this.hasNectar() && this.getCropsGrownSincePollination() < 10 && this.random.nextFloat() < 0.05F) {
-            for(int i = 0; i < this.random.nextInt(2) + 1; ++i) {
-                this.spawnFluidParticle(this.level, this.getX() - 0.3F, this.getX() + 0.3F, this.getZ() - 0.3F, this.getZ() + 0.3F, this.getY(0.5D), ParticleTypes.FALLING_NECTAR);
-            }
-        }
-    }
-
-    private void spawnFluidParticle(Level level, double x1, double x2, double z1, double z2, double y, ParticleOptions particleOptions) {
-        level.addParticle(particleOptions, Mth.lerp(level.random.nextDouble(), x1, x2), y, Mth.lerp(level.random.nextDouble(), z1, z2), 0.0D, 0.0D, 0.0D);
     }
 
     @Nullable
@@ -335,18 +298,18 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal, Catc
     protected void playStepSound(BlockPos pPos, BlockState pState) {
     }
 
-    static class ButterflyPollinateGoal extends MoveToBlockGoal {
+    static class MothAttractionGoal extends MoveToBlockGoal {
         protected int ticksWaited;
-        private final Butterfly butterfly;
+        private final Moth moth;
 
-        public ButterflyPollinateGoal(Butterfly pMob, double pSpeedModifier, int pSearchRange, int pVerticalSearchRange) {
+        public MothAttractionGoal(Moth pMob, double pSpeedModifier, int pSearchRange, int pVerticalSearchRange) {
             super(pMob, pSpeedModifier, pSearchRange, pVerticalSearchRange);
-            this.butterfly = pMob;
+            this.moth = pMob;
         }
 
         @Override
         protected boolean isValidTarget(LevelReader pLevel, BlockPos pPos) {
-            return pLevel.getBlockState(pPos).is(BlockTags.FLOWERS) || pLevel.getBlockState(pPos).is(NaturalistRegistry.CATTAIL.get());
+            return pLevel.getBlockState(pPos).is(NaturalistTags.BlockTags.MOTHS_ATTRACTED_TO);
         }
 
         @Override
@@ -362,21 +325,16 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal, Catc
         }
 
         protected void onReachedTarget() {
-            BlockState state = butterfly.level.getBlockState(blockPos);
-            if (state.is(BlockTags.FLOWERS)) {
-                butterfly.setHasNectar(true);
-                this.stop();
-            }
         }
 
         @Override
         public boolean canUse() {
-            return !butterfly.hasNectar() && super.canUse();
+            return super.canUse();
         }
 
         @Override
         public boolean canContinueToUse() {
-            return !butterfly.hasNectar() && super.canContinueToUse();
+            return super.canContinueToUse();
         }
 
         @Override
@@ -385,63 +343,13 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal, Catc
             super.start();
         }
     }
-
-    static class ButterflyGrowCropGoal extends MoveToBlockGoal {
-        private final Butterfly butterfly;
-
-        public ButterflyGrowCropGoal(Butterfly pMob, double pSpeedModifier, int pSearchRange, int pVerticalSearchRange) {
-            super(pMob, pSpeedModifier, pSearchRange, pVerticalSearchRange);
-            this.butterfly = pMob;
-        }
-
-        @Override
-        protected boolean isValidTarget(LevelReader pLevel, BlockPos pPos) {
-            BlockState state = pLevel.getBlockState(pPos);
-            return state.getBlock() instanceof CropBlock cropBlock && state.getValue(cropBlock.getAgeProperty()) < cropBlock.getMaxAge();
-        }
-
-        public void tick() {
-            BlockPos blockpos = this.getMoveToTarget();
-            if (!blockpos.closerToCenterThan(this.mob.position(), this.acceptedDistance())) {
-                ++this.tryTicks;
-                if (this.shouldRecalculatePath()) {
-                    this.mob.getNavigation().moveTo((double)((float)blockpos.getX()) + 0.5D, blockpos.getY(), (double)((float)blockpos.getZ()) + 0.5D, this.speedModifier);
-                }
-            } else {
-                this.onReachedTarget();
-            }
-
-        }
-
-        protected void onReachedTarget() {
-            BlockState state = butterfly.level.getBlockState(blockPos);
-            if (state.getBlock() instanceof CropBlock cropBlock) {
-                cropBlock.growCrops(butterfly.level, blockPos, state);
-                butterfly.incrementNumCropsGrownSincePollination();
-                this.stop();
-            }
-        }
-
-        @Override
-        public boolean canUse() {
-            return butterfly.hasNectar() && super.canUse();
-        }
-
-        @Override
-        public boolean canContinueToUse() {
-            return butterfly.hasNectar() && super.canContinueToUse();
-        }
-    }
-
+    
 
     public enum Variant {
-        CABBAGE_WHITE(0, "cabbage_white", true),
-        MONARCH(1, "monarch", true),
-        CLOUDED_YELLOW(2, "clouded_yellow", true),
-        SWALLOWTAIL(3, "swallowtail", true),
-        BLUE_MORPHO(4, "blue_morpho", true);
+        POLYPHEMUS(0, "polyphemus", true),
+        DOMESTIC_SILK(1, "domestic_silk", true);
 
-        public static final Butterfly.Variant[] BY_ID = Arrays.stream(values()).sorted(Comparator.comparingInt(Variant::getId)).toArray(Variant[]::new);
+        public static final Moth.Variant[] BY_ID = Arrays.stream(values()).sorted(Comparator.comparingInt(Variant::getId)).toArray(Variant[]::new);
         private final int id;
         private final String name;
         private final boolean common;
@@ -464,37 +372,37 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal, Catc
             for (Variant type : values()) {
                 if (type.id == id) return type;
             }
-            return Variant.MONARCH;
+            return Variant.POLYPHEMUS;
         }
 
-        public static Butterfly.Variant getCommonSpawnVariant(RandomSource random) {
+        public static Moth.Variant getCommonSpawnVariant(RandomSource random) {
             return getSpawnVariant(random, true);
         }
 
-        private static Butterfly.Variant getSpawnVariant(RandomSource random, boolean common) {
-            Butterfly.Variant[] variants = Arrays.stream(BY_ID).filter((variant) -> {
+        private static Moth.Variant getSpawnVariant(RandomSource random, boolean common) {
+            Moth.Variant[] variants = Arrays.stream(BY_ID).filter((variant) -> {
                 return variant.common == common;
             }).toArray(Variant[]::new);
             return Util.getRandom(variants, random);
         }
     }
 
-    public static class ButterflyGroupData extends AgeableMob.AgeableMobGroupData {
-        public final Butterfly.Variant[] types;
+    public static class MothGroupData extends AgeableMobGroupData {
+        public final Moth.Variant[] types;
 
-        public ButterflyGroupData(Butterfly.Variant... variants) {
+        public MothGroupData(Moth.Variant... variants) {
             super(false);
             this.types = variants;
         }
 
-        public Butterfly.Variant getVariant(RandomSource random) {
+        public Moth.Variant getVariant(RandomSource random) {
             return this.types[random.nextInt(this.types.length)];
         }
     }
 
     static {
-        DATA_VARIANT = SynchedEntityData.defineId(Butterfly.class, EntityDataSerializers.INT);
-        FROM_HAND = SynchedEntityData.defineId(Butterfly.class, EntityDataSerializers.BOOLEAN);
+        DATA_VARIANT = SynchedEntityData.defineId(Moth.class, EntityDataSerializers.INT);
+        FROM_HAND = SynchedEntityData.defineId(Moth.class, EntityDataSerializers.BOOLEAN);
     }
 
 }

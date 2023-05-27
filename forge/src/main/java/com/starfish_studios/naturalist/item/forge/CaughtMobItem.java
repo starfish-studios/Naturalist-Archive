@@ -1,6 +1,7 @@
 package com.starfish_studios.naturalist.item.forge;
 
 import com.starfish_studios.naturalist.entity.Butterfly;
+import com.starfish_studios.naturalist.entity.Moth;
 import com.starfish_studios.naturalist.entity.animal.Catchable;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
 import net.minecraft.ChatFormatting;
@@ -47,6 +48,12 @@ public class CaughtMobItem extends NoFluidMobBucketItem {
             CompoundTag compoundnbt = stack.getTag();
             if (compoundnbt != null && compoundnbt.contains("Variant", 3)) {
                 Butterfly.Variant variant = Butterfly.Variant.getTypeById(compoundnbt.getInt("Variant"));
+                tooltip.add((Component.translatable(String.format("tooltip.naturalist.%s", variant.toString().toLowerCase())).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY)));
+            }
+        } else if (this.type == NaturalistEntityTypes.MOTH.get()) {
+            CompoundTag compoundnbt = stack.getTag();
+            if (compoundnbt != null && compoundnbt.contains("Variant", 3)) {
+                Moth.Variant variant = Moth.Variant.getTypeById(compoundnbt.getInt("Variant"));
                 tooltip.add((Component.translatable(String.format("tooltip.naturalist.%s", variant.toString().toLowerCase())).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY)));
             }
         }
