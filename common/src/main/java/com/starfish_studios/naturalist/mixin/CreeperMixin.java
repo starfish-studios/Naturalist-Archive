@@ -1,6 +1,6 @@
 package com.starfish_studios.naturalist.mixin;
 
-import com.starfish_studios.naturalist.entity.Lion;
+import com.starfish_studios.naturalist.common.entity.Lion;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.monster.Creeper;

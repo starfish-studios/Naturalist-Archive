@@ -1,14 +1,12 @@
 package com.starfish_studios.naturalist.mixin;
 
-import com.starfish_studios.naturalist.entity.Firefly;
+import com.starfish_studios.naturalist.common.entity.Firefly;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.goal.GoalSelector;
 import net.minecraft.world.entity.animal.frog.Frog;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;

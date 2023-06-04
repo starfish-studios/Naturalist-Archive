@@ -1,9 +1,10 @@
 package com.starfish_studios.naturalist.forge;
 
 import com.starfish_studios.naturalist.Naturalist;
+import com.starfish_studios.naturalist.common.entity.*;
 import com.starfish_studios.naturalist.entity.*;
-import com.starfish_studios.naturalist.platform.forge.CommonPlatformHelperImpl;
-import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
+import com.starfish_studios.naturalist.core.platform.forge.CommonPlatformHelperImpl;
+import com.starfish_studios.naturalist.core.registry.NaturalistEntityTypes;
 import com.starfish_studios.naturalist.registry.forge.NaturalistBiomeModifiers;
 import com.starfish_studios.naturalist.registry.forge.NaturalistConfigForge;
 import net.minecraft.world.entity.animal.AbstractFish;

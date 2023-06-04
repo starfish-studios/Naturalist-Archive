@@ -2,20 +2,18 @@ package com.starfish_studios.naturalist.fabric;
 
 import com.google.common.base.Preconditions;
 import com.starfish_studios.naturalist.Naturalist;
-import com.starfish_studios.naturalist.entity.*;
-import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
-import com.starfish_studios.naturalist.registry.NaturalistMobCategories;
-import com.starfish_studios.naturalist.registry.NaturalistTags;
-import com.starfish_studios.naturalist.registry.fabric.NaturalistConfigFabric;
+import com.starfish_studios.naturalist.common.entity.*;
+import com.starfish_studios.naturalist.core.registry.NaturalistEntityTypes;
+import com.starfish_studios.naturalist.core.registry.NaturalistMobCategories;
+import com.starfish_studios.naturalist.core.registry.NaturalistTags;
+import com.starfish_studios.naturalist.core.registry.fabric.NaturalistConfigFabric;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
-import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
-import net.fabricmc.fabric.impl.biome.modification.BuiltInRegistryKeys;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -31,9 +29,6 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 import java.util.List;
-
-import static com.starfish_studios.naturalist.Naturalist.MOD_ID;
-import static com.starfish_studios.naturalist.Naturalist.registerSpawnPlacements;
 
 public class NaturalistFabric implements ModInitializer {
     @Override

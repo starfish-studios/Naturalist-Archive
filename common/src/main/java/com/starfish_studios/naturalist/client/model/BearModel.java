@@ -1,7 +1,7 @@
 package com.starfish_studios.naturalist.client.model;
 
 import com.starfish_studios.naturalist.Naturalist;
-import com.starfish_studios.naturalist.entity.Bear;
+import com.starfish_studios.naturalist.common.entity.Bear;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
@@ -14,7 +14,6 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.model.provider.data.EntityModelData;
 
 import java.util.List;
-import java.util.Locale;
 
 @Environment(EnvType.CLIENT)
 public class BearModel extends AnimatedGeoModel<Bear> {

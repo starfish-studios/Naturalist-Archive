@@ -1,8 +1,8 @@
 package com.starfish_studios.naturalist;
 
-import com.starfish_studios.naturalist.entity.*;
-import com.starfish_studios.naturalist.platform.CommonPlatformHelper;
-import com.starfish_studios.naturalist.registry.*;
+import com.starfish_studios.naturalist.common.entity.*;
+import com.starfish_studios.naturalist.core.registry.*;
+import com.starfish_studios.naturalist.core.platform.CommonPlatformHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacements;

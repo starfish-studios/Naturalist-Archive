@@ -1,22 +1,28 @@
 package com.starfish_studios.naturalist;
 
 import com.starfish_studios.naturalist.client.renderer.*;
-import com.starfish_studios.naturalist.client.screens.ElephantInventoryScreen;
-import com.starfish_studios.naturalist.platform.ClientPlatformHelper;
-import com.starfish_studios.naturalist.registry.NaturalistBlocks;
-import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
-import com.starfish_studios.naturalist.registry.NaturalistMenus;
-import com.starfish_studios.naturalist.registry.NaturalistRegistry;
-import net.minecraft.client.gui.screens.MenuScreens;
+import com.starfish_studios.naturalist.core.platform.ClientPlatformHelper;
+import com.starfish_studios.naturalist.core.registry.NaturalistBlocks;
+import com.starfish_studios.naturalist.core.registry.NaturalistEntityTypes;
+import com.starfish_studios.naturalist.core.registry.NaturalistRegistry;
+import com.starfish_studios.naturalist.mixin.ClientLevelMixin;
+import net.fabricmc.fabric.mixin.networking.accessor.MinecraftClientAccessor;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashSet;
+import java.util.Set;
 
 public class NaturalistClient {
     public static void init() {
@@ -66,7 +72,12 @@ public class NaturalistClient {
         //MenuScreens.register(NaturalistMenus.ELEPHANT_INVENTORY.get(), ElephantInventoryScreen::new);
 
         copyOldModelsResources();
+
+        Set<Item> particleMarkerBlocks = new HashSet<>(ClientLevelMixin.getMARKER_PARTICLE_ITEMS());
+        particleMarkerBlocks.add(NaturalistRegistry.GLOW_GOOP.get());
+        ClientLevelMixin.setMARKER_PARTICLE_ITEMS(particleMarkerBlocks);
     }
+
 
 
     private static void copyOldModelsResources() {

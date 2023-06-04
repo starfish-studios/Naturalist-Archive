@@ -1,8 +1,8 @@
 package com.starfish_studios.naturalist.world.forge;
 
 import com.mojang.serialization.Codec;
-import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
-import com.starfish_studios.naturalist.registry.NaturalistTags;
+import com.starfish_studios.naturalist.core.registry.NaturalistEntityTypes;
+import com.starfish_studios.naturalist.core.registry.NaturalistTags;
 import com.starfish_studios.naturalist.registry.forge.NaturalistBiomeModifiers;
 import com.starfish_studios.naturalist.registry.forge.NaturalistConfigForge;
 import com.starfish_studios.naturalist.registry.forge.NaturalistMobCategoriesImpl;

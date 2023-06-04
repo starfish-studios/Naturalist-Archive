@@ -5,8 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import com.starfish_studios.naturalist.client.model.BearModel;
 import com.starfish_studios.naturalist.client.renderer.layers.BearShearedLayer;
-import com.starfish_studios.naturalist.entity.Bear;
-import com.starfish_studios.naturalist.platform.ClientPlatformHelper;
+import com.starfish_studios.naturalist.common.entity.Bear;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -14,7 +13,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.geo.render.built.GeoBone;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 

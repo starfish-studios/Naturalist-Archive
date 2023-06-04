@@ -4,19 +4,21 @@ import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.NaturalistClient;
 import com.starfish_studios.naturalist.client.model.ZebraModel;
 import com.starfish_studios.naturalist.client.renderer.ZebraRenderer;
-import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
-import com.starfish_studios.naturalist.registry.NaturalistRegistry;
+import com.starfish_studios.naturalist.core.registry.NaturalistEntityTypes;
+import com.starfish_studios.naturalist.core.registry.NaturalistRegistry;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Mod.EventBusSubscriber(modid = Naturalist.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class NaturalistForgeClient {
@@ -24,7 +26,6 @@ public class NaturalistForgeClient {
     public static void init(FMLClientSetupEvent event) {
         NaturalistClient.init();
         registerEntityRenderers();
-
 
         ItemProperties.register(NaturalistRegistry.BUTTERFLY.get(), new ResourceLocation("variant"), (stack, world, entity, num) -> {
             CompoundTag compoundTag = stack.getTag();

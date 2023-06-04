@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.client.model.TortoiseModel;
 import com.starfish_studios.naturalist.client.renderer.layers.TortoiseSkinLayer;
-import com.starfish_studios.naturalist.entity.Tortoise;
+import com.starfish_studios.naturalist.common.entity.Tortoise;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;

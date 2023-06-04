@@ -1,7 +1,7 @@
 package com.starfish_studios.naturalist.mixin;
 
 import com.starfish_studios.naturalist.client.sound.DragonflySoundInstance;
-import com.starfish_studios.naturalist.entity.Dragonfly;
+import com.starfish_studios.naturalist.common.entity.Dragonfly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.world.entity.Entity;

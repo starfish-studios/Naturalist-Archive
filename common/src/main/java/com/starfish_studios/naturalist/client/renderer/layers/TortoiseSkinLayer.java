@@ -2,7 +2,7 @@ package com.starfish_studios.naturalist.client.renderer.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.starfish_studios.naturalist.Naturalist;
-import com.starfish_studios.naturalist.entity.Tortoise;
+import com.starfish_studios.naturalist.common.entity.Tortoise;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -10,8 +10,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.renderers.geo.GeoLayerRenderer;
 import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
-
-import java.util.Objects;
 
 public class TortoiseSkinLayer extends GeoLayerRenderer<Tortoise> {
     private final ResourceLocation model;

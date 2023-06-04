@@ -1,10 +1,9 @@
 package com.starfish_studios.naturalist.client.model;
 
 import com.starfish_studios.naturalist.Naturalist;
-import com.starfish_studios.naturalist.entity.Tortoise;
+import com.starfish_studios.naturalist.common.entity.Tortoise;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.ChatFormatting;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;

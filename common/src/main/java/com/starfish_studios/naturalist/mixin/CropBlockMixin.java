@@ -1,6 +1,6 @@
 package com.starfish_studios.naturalist.mixin;
 
-import com.starfish_studios.naturalist.entity.Snail;
+import com.starfish_studios.naturalist.common.entity.Snail;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;

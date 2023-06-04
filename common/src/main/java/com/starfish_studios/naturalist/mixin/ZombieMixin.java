@@ -1,7 +1,7 @@
 package com.starfish_studios.naturalist.mixin;
 
-import com.starfish_studios.naturalist.entity.ai.goal.AttackAlligatorEggGoal;
-import com.starfish_studios.naturalist.registry.NaturalistRegistry;
+import com.starfish_studios.naturalist.common.entity.core.ai.goal.AttackAlligatorEggGoal;
+import com.starfish_studios.naturalist.core.registry.NaturalistRegistry;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Zombie;

@@ -1,17 +1,11 @@
 package com.starfish_studios.naturalist.client.model;
 
-import com.google.common.collect.Maps;
 import com.starfish_studios.naturalist.Naturalist;
-import com.starfish_studios.naturalist.entity.Butterfly;
+import com.starfish_studios.naturalist.common.entity.Butterfly;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
-
-import java.util.Locale;
-import java.util.Map;
 
 @Environment(EnvType.CLIENT)
 public class ButterflyModel extends AnimatedGeoModel<Butterfly> {

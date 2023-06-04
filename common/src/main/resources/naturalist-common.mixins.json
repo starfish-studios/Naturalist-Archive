@@ -4,6 +4,7 @@
   "package": "com.starfish_studios.naturalist.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "ClientLevelMixin",
     "ClientPacketListenerMixin"
   ],
   "mixins": [

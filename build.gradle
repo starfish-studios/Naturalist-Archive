@@ -34,7 +34,9 @@ allprojects {
     group = rootProject.maven_group
 
     repositories {
+        // Parchment
         maven { url "https://maven.parchmentmc.org" }
+        // GeckoLib
         maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
         maven { url "https://maven.shedaniel.me/" }
     }

@@ -2,7 +2,7 @@ package com.starfish_studios.naturalist.client.renderer;
 
 import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.client.model.ZebraModel;
-import com.starfish_studios.naturalist.entity.Zebra;
+import com.starfish_studios.naturalist.common.entity.Zebra;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelLayerLocation;

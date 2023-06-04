@@ -1,9 +1,9 @@
 package com.starfish_studios.naturalist.item.forge;
 
-import com.starfish_studios.naturalist.entity.Butterfly;
-import com.starfish_studios.naturalist.entity.Moth;
-import com.starfish_studios.naturalist.entity.animal.Catchable;
-import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
+import com.starfish_studios.naturalist.common.entity.Butterfly;
+import com.starfish_studios.naturalist.common.entity.Moth;
+import com.starfish_studios.naturalist.common.entity.core.Catchable;
+import com.starfish_studios.naturalist.core.registry.NaturalistEntityTypes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,7 +20,6 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.MobBucketItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;

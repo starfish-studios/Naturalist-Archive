@@ -1,6 +1,6 @@
 package com.starfish_studios.naturalist.mixin;
 
-import com.starfish_studios.naturalist.entity.Giraffe;
+import com.starfish_studios.naturalist.common.entity.Giraffe;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.Level;

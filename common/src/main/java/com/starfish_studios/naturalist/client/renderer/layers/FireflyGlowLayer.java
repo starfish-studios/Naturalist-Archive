@@ -2,7 +2,7 @@ package com.starfish_studios.naturalist.client.renderer.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.starfish_studios.naturalist.Naturalist;
-import com.starfish_studios.naturalist.entity.Firefly;
+import com.starfish_studios.naturalist.common.entity.Firefly;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;

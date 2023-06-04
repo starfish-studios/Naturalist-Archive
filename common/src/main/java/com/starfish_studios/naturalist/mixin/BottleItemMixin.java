@@ -1,6 +1,6 @@
 package com.starfish_studios.naturalist.mixin;
 
-import com.starfish_studios.naturalist.entity.Dragonfly;
+import com.starfish_studios.naturalist.common.entity.Dragonfly;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;

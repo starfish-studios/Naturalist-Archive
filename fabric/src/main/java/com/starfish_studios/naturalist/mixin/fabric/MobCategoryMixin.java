@@ -1,6 +1,6 @@
 package com.starfish_studios.naturalist.mixin.fabric;
 
-import com.starfish_studios.naturalist.registry.fabric.NaturalistMobCategoriesImpl;
+import com.starfish_studios.naturalist.core.registry.fabric.NaturalistMobCategoriesImpl;
 import net.minecraft.world.entity.MobCategory;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;

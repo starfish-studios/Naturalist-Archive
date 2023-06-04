@@ -1,7 +1,7 @@
 package com.starfish_studios.naturalist.client.model;
 
 import com.starfish_studios.naturalist.Naturalist;
-import com.starfish_studios.naturalist.entity.Termite;
+import com.starfish_studios.naturalist.common.entity.Termite;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
