@@ -1,34 +1,36 @@
 {
   "parent": "minecraft:recipes/root",
-  "rewards": {
-    "recipes": [
-      "naturalist:cooked_venison"
-    ]
-  },
   "criteria": {
-    "has_venison": {
+    "has_duck": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "naturalist:venison"
+              "naturalist:duck"
             ]
           }
         ]
       }
     },
     "has_the_recipe": {
-      "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "naturalist:cooked_venison_from_smoking"
-      }
+        "recipe": "naturalist:cooked_duck"
+      },
+      "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_venison",
+      "has_duck",
       "has_the_recipe"
     ]
-  ]
+  ],
+  "rewards": {
+    "recipes": [
+      "naturalist:cooked_duck",
+      "naturalist:cooked_duck_from_smoking",
+      "naturalist:cooked_duck_from_campfire_cooking"
+    ]
+  }
 }

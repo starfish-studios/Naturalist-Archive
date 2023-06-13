@@ -1,36 +1,34 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_venison": {
+    "has_glow_goop": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "naturalist:venison"
+              "naturalist:glow_goop"
             ]
           }
         ]
       }
     },
     "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "naturalist:cooked_venison"
-      },
-      "trigger": "minecraft:recipe_unlocked"
+        "recipe": "naturalist:spectral_arrow_from_glow_goop"
+      }
     }
   },
   "requirements": [
     [
-      "has_venison",
+      "has_glow_goop",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "naturalist:cooked_venison",
-      "naturalist:cooked_venison_from_smoking",
-      "naturalist:cooked_venison_from_campfire_cooking"
+      "naturalist:spectral_arrow_from_glow_goop"
     ]
   }
 }

@@ -38,11 +38,6 @@ public class GlowGoopBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(GOOP, WATERLOGGED);
-    }
-
-    @Override
     public @NotNull ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
         return NaturalistItems.GLOW_GOOP.get().asItem().getDefaultInstance();
     }
@@ -59,15 +54,9 @@ public class GlowGoopBlock extends Block implements SimpleWaterloggedBlock {
         }
     }
 
-
     @Override
     public @NotNull FluidState getFluidState(BlockState state) {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
-    }
-
-    @Override
-    public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type) {
-        return true;
     }
 
     @Override
@@ -77,16 +66,29 @@ public class GlowGoopBlock extends Block implements SimpleWaterloggedBlock {
 
 
 
+    /** MISCELLANEOUS THINGS */
+    // These are tidbits that are used around the class but not super prominent or frequently touched individually.
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(GOOP, WATERLOGGED);
+    }
+
+    public RenderShape getRenderShape(BlockState state) {
+        return RenderShape.INVISIBLE;
+    }
+
+    @Override
+    public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type) {
+        return true;
+    }
+
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return context.isHoldingItem(NaturalistItems.GLOW_GOOP.get()) ? Shapes.block() : Shapes.empty();
     }
 
     public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
         return true;
-    }
-
-    public RenderShape getRenderShape(BlockState state) {
-        return RenderShape.INVISIBLE;
     }
 
     public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos) {

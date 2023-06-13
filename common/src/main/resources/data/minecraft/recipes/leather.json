@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "naturalist:leather",
+  "key": {
+    "#": {
+      "item": "minecraft:rabbit_hide"
+    }
+  },
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "result": {
+    "item": "minecraft:leather"
+  }
+}

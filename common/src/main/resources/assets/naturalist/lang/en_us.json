@@ -62,6 +62,15 @@
 
 
 
+  "advancements.husbandry.ride_giraffe_with_map.title": "A Whole New World",
+  "advancements.husbandry.ride_giraffe_with_map.description": "Use a Map while riding a Giraffe",
+  "advancements.husbandry.feed_hippo_melon.title": "Hungry Hungry Hippos",
+  "advancements.husbandry.feed_hippo_melon.description": "Feed a Melon to a Hippo",
+  "advancements.husbandry.feed_bear_honeycomb.title": "Oh Bother",
+  "advancements.husbandry.feed_bear_honeycomb.description": "Feed a Honeycomb to a Bear",
+
+
+
   "item.naturalist.bluejay_spawn_egg": "Bluejay Spawn Egg",
   "item.naturalist.canary_spawn_egg": "Canary Spawn Egg",
   "item.naturalist.cardinal_spawn_egg": "Cardinal Spawn Egg",
@@ -250,11 +259,6 @@
   "naturalist.subtitles.entity.ostrich.egg_break": "Ostrich Egg breaks",
   "naturalist.subtitles.entity.ostrich.egg_crack": "Ostrich Egg cracks",
   "naturalist.subtitles.entity.ostrich.egg_hatch": "Ostrich Egg hatches",
-
-  "advancements.husbandry.ride_giraffe_with_map.title": "I can show you the world!",
-  "advancements.husbandry.ride_giraffe_with_map.description": "Use a map while riding a giraffe to increase its range",
-  "advancements.husbandry.feed_hippo_melon.title": "Hungry Hungry Hippos",
-  "advancements.husbandry.feed_hippo_melon.description": "Feed a melon block to a hippo to breed it when in water",
 
 
   "text.autoconfig.naturalist.title": "Naturalist Config",

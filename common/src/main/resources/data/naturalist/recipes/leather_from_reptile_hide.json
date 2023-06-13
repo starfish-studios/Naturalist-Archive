@@ -1,6 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "group": "wooden_button",
+  "group": "naturalist:leather",
   "ingredients": [
     {
       "item": "naturalist:reptile_hide"
