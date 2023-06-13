@@ -19,23 +19,24 @@ import software.bernie.geckolib3.GeckoLib;
 
 public class Naturalist {
     public static final String MOD_ID = "naturalist";
-    public static final CreativeModeTab TAB = CommonPlatformHelper.registerCreativeModeTab(new ResourceLocation(MOD_ID, "tab"), () -> new ItemStack(NaturalistRegistry.TEDDY_BEAR.get()));
+    public static final CreativeModeTab TAB = CommonPlatformHelper.registerCreativeModeTab(new ResourceLocation(MOD_ID, "tab"), () -> new ItemStack(NaturalistBlocks.TEDDY_BEAR.get()));
     public static final Logger LOGGER = LogManager.getLogger();
 
     public static void init() {
         GeckoLib.initialize();
         NaturalistBlocks.init();
-        NaturalistRegistry.init();
+        NaturalistItems.init();
+        NaturalistBlockEntities.init();
         NaturalistSoundEvents.init();
         NaturalistEntityTypes.init();
         NaturalistPotions.init();
     }
     
     public static void registerBrewingRecipes() {
-        CommonPlatformHelper.registerBrewingRecipe(Potions.AWKWARD, NaturalistRegistry.ANTLER.get(), NaturalistPotions.FOREST_DASHER.get());
+        CommonPlatformHelper.registerBrewingRecipe(Potions.AWKWARD, NaturalistItems.ANTLER.get(), NaturalistPotions.FOREST_DASHER.get());
         CommonPlatformHelper.registerBrewingRecipe(NaturalistPotions.FOREST_DASHER.get(), Items.REDSTONE, NaturalistPotions.LONG_FOREST_DASHER.get());
         CommonPlatformHelper.registerBrewingRecipe(NaturalistPotions.FOREST_DASHER.get(), Items.GLOWSTONE_DUST, NaturalistPotions.STRONG_FOREST_DASHER.get());
-        CommonPlatformHelper.registerBrewingRecipe(Potions.AWKWARD, NaturalistRegistry.GLOW_GOOP.get(), NaturalistPotions.GLOWING.get());
+        CommonPlatformHelper.registerBrewingRecipe(Potions.AWKWARD, NaturalistItems.GLOW_GOOP.get(), NaturalistPotions.GLOWING.get());
         CommonPlatformHelper.registerBrewingRecipe(NaturalistPotions.GLOWING.get(), Items.REDSTONE, NaturalistPotions.LONG_GLOWING.get());
     }
 
@@ -71,6 +72,6 @@ public class Naturalist {
 
 
     public static void registerCompostables() {
-        CommonPlatformHelper.registerCompostable(0.65F, NaturalistRegistry.SNAIL_SHELL.get());
+        CommonPlatformHelper.registerCompostable(0.65F, NaturalistItems.SNAIL_SHELL.get());
     }
 }

@@ -1,9 +1,6 @@
 package com.starfish_studios.naturalist.common.entity;
 
-import com.starfish_studios.naturalist.core.registry.NaturalistEntityTypes;
-import com.starfish_studios.naturalist.core.registry.NaturalistRegistry;
-import com.starfish_studios.naturalist.core.registry.NaturalistSoundEvents;
-import com.starfish_studios.naturalist.core.registry.NaturalistTags;
+import com.starfish_studios.naturalist.core.registry.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -168,7 +165,7 @@ public class Duck extends Animal implements IAnimatable {
         this.flap += this.flapping * 2.0F;
         if (!this.level.isClientSide && this.isAlive() && !this.isBaby() && --this.eggTime <= 0) {
             this.playSound(SoundEvents.CHICKEN_EGG, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
-            this.spawnAtLocation(NaturalistRegistry.DUCK_EGG.get());
+            this.spawnAtLocation(NaturalistItems.DUCK_EGG.get());
             this.gameEvent(GameEvent.ENTITY_PLACE);
             this.eggTime = this.random.nextInt(6000) + 6000;
         }

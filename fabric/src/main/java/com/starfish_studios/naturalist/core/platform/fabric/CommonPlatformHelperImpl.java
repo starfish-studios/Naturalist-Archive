@@ -22,6 +22,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.*;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Fluid;
 
@@ -31,6 +32,11 @@ public class CommonPlatformHelperImpl {
 
     public static <T extends Block> Supplier<T> registerBlock(String name, Supplier<T> block) {
         T registry = Registry.register(Registry.BLOCK, new ResourceLocation(Naturalist.MOD_ID, name), block.get());
+        return () -> registry;
+    }
+
+    public static <T extends BlockEntity> Supplier<BlockEntityType<T>> registerBlockEntityType(String name, Supplier<BlockEntityType<T>> factory) {
+        BlockEntityType<T> registry = Registry.register(Registry.BLOCK_ENTITY_TYPE, new ResourceLocation(Naturalist.MOD_ID, name), factory.get());
         return () -> registry;
     }
 

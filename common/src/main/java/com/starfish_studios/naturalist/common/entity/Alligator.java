@@ -3,10 +3,7 @@ package com.starfish_studios.naturalist.common.entity;
 import com.starfish_studios.naturalist.common.entity.core.Animal;
 import com.starfish_studios.naturalist.common.entity.core.EggLayingAnimal;
 import com.starfish_studios.naturalist.common.entity.core.ai.goal.*;
-import com.starfish_studios.naturalist.core.registry.NaturalistEntityTypes;
-import com.starfish_studios.naturalist.core.registry.NaturalistRegistry;
-import com.starfish_studios.naturalist.core.registry.NaturalistSoundEvents;
-import com.starfish_studios.naturalist.core.registry.NaturalistTags;
+import com.starfish_studios.naturalist.core.registry.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -39,8 +36,6 @@ import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class Alligator extends Animal implements IAnimatable, EggLayingAnimal {
     private static final Ingredient FOOD_ITEMS = Ingredient.of(NaturalistTags.ItemTags.ALLIGATOR_FOOD_ITEMS);
@@ -123,7 +118,7 @@ public class Alligator extends Animal implements IAnimatable, EggLayingAnimal {
             Iterable<BlockPos> list = BlockPos.betweenClosed(entity.blockPosition().offset(-2, -2, -2), entity.blockPosition().offset(2, 2, 2));
             boolean isEntityNearAlligatorEggs = false;
             for (BlockPos pos : list) {
-                if (level.getBlockState(pos).is(NaturalistRegistry.ALLIGATOR_EGG.get())) {
+                if (level.getBlockState(pos).is(NaturalistBlocks.ALLIGATOR_EGG.get())) {
                     isEntityNearAlligatorEggs = true;
                     break;
                 }
@@ -166,7 +161,7 @@ public class Alligator extends Animal implements IAnimatable, EggLayingAnimal {
 
     @Override
     public Block getEggBlock() {
-        return NaturalistRegistry.ALLIGATOR_EGG.get();
+        return NaturalistBlocks.ALLIGATOR_EGG.get();
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.starfish_studios.naturalist.common.block;
 
-import com.starfish_studios.naturalist.core.registry.NaturalistRegistry;
+import com.starfish_studios.naturalist.core.registry.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -44,7 +44,7 @@ public class GlowGoopBlock extends Block implements SimpleWaterloggedBlock {
 
     @Override
     public @NotNull ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
-        return NaturalistRegistry.GLOW_GOOP.get().asItem().getDefaultInstance();
+        return NaturalistItems.GLOW_GOOP.get().asItem().getDefaultInstance();
     }
 
     @Override
@@ -78,7 +78,7 @@ public class GlowGoopBlock extends Block implements SimpleWaterloggedBlock {
 
 
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return context.isHoldingItem(NaturalistRegistry.GLOW_GOOP.get()) ? Shapes.block() : Shapes.empty();
+        return context.isHoldingItem(NaturalistItems.GLOW_GOOP.get()) ? Shapes.block() : Shapes.empty();
     }
 
     public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {

@@ -1,7 +1,6 @@
 package com.starfish_studios.naturalist.common.entity;
 
-import com.starfish_studios.naturalist.core.registry.NaturalistRegistry;
-import com.starfish_studios.naturalist.core.registry.NaturalistSoundEvents;
+import com.starfish_studios.naturalist.core.registry.*;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
@@ -32,7 +31,7 @@ public class Bass extends AbstractSchoolingFish implements IAnimatable {
 
     @Override
     public ItemStack getBucketItemStack() {
-        return new ItemStack(NaturalistRegistry.BASS_BUCKET.get());
+        return new ItemStack(NaturalistItems.BASS_BUCKET.get());
     }
 
     @Override

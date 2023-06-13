@@ -3,8 +3,7 @@ package com.starfish_studios.naturalist.common.entity;
 import com.starfish_studios.naturalist.common.block.ChrysalisBlock;
 import com.starfish_studios.naturalist.common.entity.core.Catchable;
 import com.starfish_studios.naturalist.common.entity.core.ClimbingAnimal;
-import com.starfish_studios.naturalist.core.registry.NaturalistBlocks;
-import com.starfish_studios.naturalist.core.registry.NaturalistRegistry;
+import com.starfish_studios.naturalist.core.registry.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -124,7 +123,7 @@ public class Caterpillar extends ClimbingAnimal implements IAnimatable {
 
 
     public ItemStack getHandItemStack() {
-        return new ItemStack(NaturalistRegistry.CATERPILLAR.get());
+        return new ItemStack(NaturalistItems.CATERPILLAR.get());
     }
 
     public @NotNull InteractionResult mobInteract(Player player, InteractionHand hand) {

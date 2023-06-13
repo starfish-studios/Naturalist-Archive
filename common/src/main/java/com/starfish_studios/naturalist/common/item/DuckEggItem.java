@@ -1,7 +1,7 @@
 package com.starfish_studios.naturalist.common.item;
 
 import com.starfish_studios.naturalist.common.entity.core.projectile.ThrownDuckEgg;
-import com.starfish_studios.naturalist.core.registry.NaturalistRegistry;
+import com.starfish_studios.naturalist.core.registry.*;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -23,7 +23,7 @@ public class DuckEggItem extends EggItem {
         level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.EGG_THROW, SoundSource.PLAYERS, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
         if (!level.isClientSide) {
             ThrownDuckEgg thrownEgg = new ThrownDuckEgg(level, player);
-            thrownEgg.setItem(new ItemStack(NaturalistRegistry.DUCK_EGG.get()));
+            thrownEgg.setItem(new ItemStack(NaturalistItems.DUCK_EGG.get()));
             thrownEgg.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
             level.addFreshEntity(thrownEgg);
         }

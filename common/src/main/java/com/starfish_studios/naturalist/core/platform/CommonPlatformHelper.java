@@ -16,6 +16,7 @@ import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.*;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Fluid;
 
@@ -25,6 +26,11 @@ public class CommonPlatformHelper {
 
     @ExpectPlatform
     public static <T extends Block> Supplier<T> registerBlock(String name, Supplier<T> block) {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static <T extends BlockEntity> Supplier<BlockEntityType<T>> registerBlockEntityType(String name, Supplier<BlockEntityType<T>> factory) {
         throw new AssertionError();
     }
 

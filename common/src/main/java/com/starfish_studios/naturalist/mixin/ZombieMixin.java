@@ -1,7 +1,7 @@
 package com.starfish_studios.naturalist.mixin;
 
 import com.starfish_studios.naturalist.common.entity.core.ai.goal.AttackAlligatorEggGoal;
-import com.starfish_studios.naturalist.core.registry.NaturalistRegistry;
+import com.starfish_studios.naturalist.core.registry.*;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Zombie;
@@ -20,6 +20,6 @@ public class ZombieMixin extends Monster {
 
     @Inject(at = @At("HEAD"), method = "registerGoals")
     private void registerGoals(CallbackInfo info) {
-        this.goalSelector.addGoal(2, new AttackAlligatorEggGoal(NaturalistRegistry.ALLIGATOR_EGG.get(), this, 1.0D, 3));
+        this.goalSelector.addGoal(2, new AttackAlligatorEggGoal(NaturalistBlocks.ALLIGATOR_EGG.get(), this, 1.0D, 3));
     }
 }

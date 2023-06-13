@@ -3,8 +3,7 @@ package com.starfish_studios.naturalist.fabric;
 import com.starfish_studios.naturalist.NaturalistClient;
 import com.starfish_studios.naturalist.client.model.ZebraModel;
 import com.starfish_studios.naturalist.client.renderer.ZebraRenderer;
-import com.starfish_studios.naturalist.core.registry.NaturalistEntityTypes;
-import com.starfish_studios.naturalist.core.registry.NaturalistRegistry;
+import com.starfish_studios.naturalist.core.registry.*;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -20,7 +19,7 @@ public class NaturalistFabricClient implements ClientModInitializer {
         registerEntityRenders();
         EntityModelLayerRegistry.registerModelLayer(ZebraRenderer.LAYER_LOCATION, ZebraModel::createBodyLayer);
 
-        ItemProperties.register(NaturalistRegistry.BUTTERFLY.get(), new ResourceLocation("variant"), (stack, world, entity, num) -> {
+        ItemProperties.register(NaturalistItems.BUTTERFLY.get(), new ResourceLocation("variant"), (stack, world, entity, num) -> {
             CompoundTag compoundTag = stack.getTag();
             if (compoundTag != null && compoundTag.contains("Variant")) {
                 return (float)compoundTag.getInt("Variant") / 5;
@@ -28,7 +27,7 @@ public class NaturalistFabricClient implements ClientModInitializer {
             return 0.2F;
         });
 
-        ItemProperties.register(NaturalistRegistry.MOTH.get(), new ResourceLocation("variant"), (stack, world, entity, num) -> {
+        ItemProperties.register(NaturalistItems.MOTH.get(), new ResourceLocation("variant"), (stack, world, entity, num) -> {
             CompoundTag compoundTag = stack.getTag();
             if (compoundTag != null && compoundTag.contains("Variant")) {
                 return (float)compoundTag.getInt("Variant") / 2;

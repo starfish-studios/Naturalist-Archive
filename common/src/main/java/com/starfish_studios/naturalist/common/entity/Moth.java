@@ -3,9 +3,7 @@ package com.starfish_studios.naturalist.common.entity;
 import com.mojang.logging.LogUtils;
 import com.starfish_studios.naturalist.common.entity.core.ai.goal.FlyingWanderGoal;
 import com.starfish_studios.naturalist.common.entity.core.Catchable;
-import com.starfish_studios.naturalist.core.registry.NaturalistEntityTypes;
-import com.starfish_studios.naturalist.core.registry.NaturalistRegistry;
-import com.starfish_studios.naturalist.core.registry.NaturalistTags;
+import com.starfish_studios.naturalist.core.registry.*;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -216,7 +214,7 @@ public class Moth extends Animal implements IAnimatable, FlyingAnimal, Catchable
     }
 
     public ItemStack getHandItemStack() {
-        return new ItemStack(NaturalistRegistry.MOTH.get());
+        return new ItemStack(NaturalistItems.MOTH.get());
     }
 
     @Override

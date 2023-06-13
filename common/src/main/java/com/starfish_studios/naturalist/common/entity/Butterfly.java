@@ -3,8 +3,7 @@ package com.starfish_studios.naturalist.common.entity;
 import com.mojang.logging.LogUtils;
 import com.starfish_studios.naturalist.common.entity.core.ai.goal.FlyingWanderGoal;
 import com.starfish_studios.naturalist.common.entity.core.Catchable;
-import com.starfish_studios.naturalist.core.registry.NaturalistEntityTypes;
-import com.starfish_studios.naturalist.core.registry.NaturalistRegistry;
+import com.starfish_studios.naturalist.core.registry.*;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
@@ -243,7 +242,7 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal, Catc
     }
 
     public ItemStack getHandItemStack() {
-        return new ItemStack(NaturalistRegistry.BUTTERFLY.get());
+        return new ItemStack(NaturalistItems.BUTTERFLY.get());
     }
 
     @Override
@@ -345,7 +344,7 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal, Catc
 
         @Override
         protected boolean isValidTarget(LevelReader pLevel, BlockPos pPos) {
-            return pLevel.getBlockState(pPos).is(BlockTags.FLOWERS) || pLevel.getBlockState(pPos).is(NaturalistRegistry.CATTAIL.get());
+            return pLevel.getBlockState(pPos).is(BlockTags.FLOWERS) || pLevel.getBlockState(pPos).is(NaturalistBlocks.CATTAIL.get());
         }
 
         @Override

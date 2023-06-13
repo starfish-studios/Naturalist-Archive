@@ -4,10 +4,7 @@ import com.starfish_studios.naturalist.common.entity.core.EggLayingAnimal;
 import com.starfish_studios.naturalist.common.entity.core.ai.goal.AlertOthersPanicGoal;
 import com.starfish_studios.naturalist.common.entity.core.ai.goal.EggLayingBreedGoal;
 import com.starfish_studios.naturalist.common.entity.core.ai.goal.LaySingleEggGoal;
-import com.starfish_studios.naturalist.core.registry.NaturalistEntityTypes;
-import com.starfish_studios.naturalist.core.registry.NaturalistRegistry;
-import com.starfish_studios.naturalist.core.registry.NaturalistSoundEvents;
-import com.starfish_studios.naturalist.core.registry.NaturalistTags;
+import com.starfish_studios.naturalist.core.registry.*;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
@@ -105,7 +102,7 @@ public class Ostrich extends Animal implements IAnimatable, ItemSteerable, Saddl
         this.goalSelector.addGoal(3, new EggLayingBreedGoal<>(this, 1.0));
         this.goalSelector.addGoal(3, new LaySingleEggGoal<>(this, 1.0));
         this.goalSelector.addGoal(4, new OstrichAttackGoal(this, 1.4D, true));
-        this.goalSelector.addGoal(5, new TemptGoal(this, 1.3D, Ingredient.of(NaturalistRegistry.GRUB_ON_A_STICK.get()), false));
+        this.goalSelector.addGoal(5, new TemptGoal(this, 1.3D, Ingredient.of(NaturalistItems.GRUB_ON_A_STICK.get()), false));
         this.goalSelector.addGoal(5, new TemptGoal(this, 1.3D, Ingredient.of(Items.BEETROOT), false));
         this.goalSelector.addGoal(6, new FollowParentGoal(this, 1.3D));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
@@ -117,7 +114,7 @@ public class Ostrich extends Animal implements IAnimatable, ItemSteerable, Saddl
             Iterable<BlockPos> list = BlockPos.betweenClosed(entity.blockPosition().offset(-2, -2, -2), entity.blockPosition().offset(2, 2, 2));
             boolean isEntityNearOstrichEggs = false;
             for (BlockPos pos : list) {
-                if (level.getBlockState(pos).is(NaturalistRegistry.OSTRICH_EGG.get())) {
+                if (level.getBlockState(pos).is(NaturalistBlocks.OSTRICH_EGG.get())) {
                     isEntityNearOstrichEggs = true;
                     break;
                 }
@@ -126,10 +123,10 @@ public class Ostrich extends Animal implements IAnimatable, ItemSteerable, Saddl
         }));
 
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 0, false, false, (p_213619_0_) -> p_213619_0_
-                .getItemBySlot(EquipmentSlot.MAINHAND).getItem() == NaturalistRegistry.OSTRICH_EGG));
+                .getItemBySlot(EquipmentSlot.MAINHAND).getItem() == NaturalistBlocks.OSTRICH_EGG));
 
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 0, false, false, (p_213619_0_) -> p_213619_0_
-                .getItemBySlot(EquipmentSlot.OFFHAND).getItem() == NaturalistRegistry.OSTRICH_EGG));
+                .getItemBySlot(EquipmentSlot.OFFHAND).getItem() == NaturalistBlocks.OSTRICH_EGG));
     }
 
     public float getEyeHeight(Pose pose) {
@@ -309,7 +306,7 @@ public class Ostrich extends Animal implements IAnimatable, ItemSteerable, Saddl
 
     private boolean canBeControlledBy(Entity entity) {
         if (this.isSaddled() && entity instanceof Player player) {
-            return player.getMainHandItem().is(NaturalistRegistry.GRUB_ON_A_STICK.get()) || player.getOffhandItem().is(NaturalistRegistry.GRUB_ON_A_STICK.get());
+            return player.getMainHandItem().is(NaturalistItems.GRUB_ON_A_STICK.get()) || player.getOffhandItem().is(NaturalistItems.GRUB_ON_A_STICK.get());
         } else {
             return false;
         }
@@ -423,7 +420,7 @@ public class Ostrich extends Animal implements IAnimatable, ItemSteerable, Saddl
 
     @Override
     public Block getEggBlock() {
-        return NaturalistRegistry.OSTRICH_EGG.get();
+        return NaturalistBlocks.OSTRICH_EGG.get();
     }
 
     @Override

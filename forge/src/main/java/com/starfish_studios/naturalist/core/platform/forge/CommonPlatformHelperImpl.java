@@ -17,6 +17,7 @@ import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ComposterBlock;
+import net.minecraft.world.level.block.entity.*;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.ForgeSpawnEggItem;
@@ -30,6 +31,7 @@ import java.util.function.Supplier;
 
 public class CommonPlatformHelperImpl {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Naturalist.MOD_ID);
+    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Naturalist.MOD_ID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Naturalist.MOD_ID);
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Naturalist.MOD_ID);
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Naturalist.MOD_ID);
@@ -38,6 +40,10 @@ public class CommonPlatformHelperImpl {
 
     public static <T extends Block> Supplier<T> registerBlock(String name, Supplier<T> block) {
         return BLOCKS.register(name, block);
+    }
+
+    public static <T extends BlockEntity> Supplier<BlockEntityType<T>> registerBlockEntityType(String name, Supplier<BlockEntityType<T>> factory) {
+        return BLOCK_ENTITY_TYPES.register(name, factory);
     }
 
     public static <T extends Item> Supplier<T> registerItem(String name, Supplier<T> item) {
