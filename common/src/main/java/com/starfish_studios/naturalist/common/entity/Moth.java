@@ -176,7 +176,7 @@ public class Moth extends Animal implements IAnimatable, FlyingAnimal, Catchable
     // BUTTERFLY CATCHING
 
     public @NotNull InteractionResult mobInteract(Player player, InteractionHand hand) {
-        return Catchable.catchAnimal(player, hand, this).orElse(super.mobInteract(player, hand));
+        return Catchable.catchAnimal(player, hand, this, false).orElse(super.mobInteract(player, hand));
     }
 
     public void saveToHandTag(ItemStack stack) {

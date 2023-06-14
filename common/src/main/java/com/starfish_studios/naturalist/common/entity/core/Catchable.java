@@ -117,20 +117,19 @@ public interface Catchable {
         }
     }
 
-    static <T extends LivingEntity & Catchable> Optional<InteractionResult> catchAnimal(Player player, InteractionHand hand, T entity) {
+    static <T extends LivingEntity & Catchable> Optional<InteractionResult> catchAnimal(Player player, InteractionHand hand, T entity, boolean needsNet) {
         ItemStack itemStack = player.getItemInHand(hand);
-        if (itemStack.getItem() == Items.AIR && entity.isAlive()) {
-            ItemStack itemStack2 = entity.getCaughtItemStack();
-            entity.saveToHandTag(itemStack2);
-            ItemStack itemStack3 = ItemUtils.createFilledResult(itemStack, player, itemStack2, false);
-            player.setItemInHand(hand, itemStack3);
+        if ((needsNet ? itemStack.getItem().equals(NaturalistItems.BUG_NET.get()) : itemStack.isEmpty()) && entity.isAlive()) {
+            ItemStack caughtItemStack = entity.getCaughtItemStack();
+            entity.saveToHandTag(caughtItemStack);
+            ItemStack filledResult = ItemUtils.createFilledResult(itemStack, player, caughtItemStack, false);
+            player.setItemInHand(hand, filledResult);
             player.playSound(SoundEvents.ITEM_PICKUP, 0.3F, 1.0F);
-            Level level = entity.level;
-            if (!level.isClientSide) {
-                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer)player, itemStack2);
+            if (!entity.level.isClientSide) {
+                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer)player, caughtItemStack);
             }
             entity.discard();
-            return Optional.of(InteractionResult.sidedSuccess(level.isClientSide));
+            return Optional.of(InteractionResult.sidedSuccess(entity.level.isClientSide));
         } else {
             return Optional.empty();
         }
