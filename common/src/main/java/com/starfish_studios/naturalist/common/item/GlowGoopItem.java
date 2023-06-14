@@ -24,7 +24,7 @@ public class GlowGoopItem extends ItemNameBlockItem {
 
     @Override
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flagIn) {
-        // Have a normal tooltip, but if shift is held, use a different tooltip.
+        // This makes it so that there's a different tooltip when the Player is holding Shift.
         if (Screen.hasShiftDown()) {
             tooltip.add(Component.literal("Place up to 3").withStyle(ChatFormatting.GRAY));
             tooltip.add(Component.literal("in one space!").withStyle(ChatFormatting.GRAY));

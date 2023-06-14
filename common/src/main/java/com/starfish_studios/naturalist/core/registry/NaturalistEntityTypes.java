@@ -17,7 +17,7 @@ public class NaturalistEntityTypes {
 
     // MOBS
 
-    public static final Supplier<EntityType<Snail>> SNAIL = CommonPlatformHelper.registerEntityType("snail", Snail::new, MobCategory.CREATURE, 0.4F, 0.4F, 10);
+    public static final Supplier<EntityType<Snail>> SNAIL = CommonPlatformHelper.registerEntityType("snail", Snail::new, MobCategory.CREATURE, 0.7F, 0.7F, 10);
     public static final Supplier<EntityType<Bear>> BEAR = CommonPlatformHelper.registerEntityType("bear", Bear::new, MobCategory.CREATURE, 1.4F, 1.7F, 10);
     public static final Supplier<EntityType<Butterfly>> BUTTERFLY = CommonPlatformHelper.registerEntityType("butterfly", Butterfly::new, MobCategory.CREATURE, 0.7F, 0.6F, 8);
     public static final Supplier<EntityType<Moth>> MOTH = CommonPlatformHelper.registerEntityType("moth", Moth::new, MobCategory.CREATURE, 0.7F, 0.6F, 8);

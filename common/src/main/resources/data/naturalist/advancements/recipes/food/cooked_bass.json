@@ -1,34 +1,36 @@
 {
   "parent": "minecraft:recipes/root",
-  "rewards": {
-    "recipes": [
-      "naturalist:cooked_venison"
-    ]
-  },
   "criteria": {
-    "has_venison": {
+    "has_bass": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "naturalist:venison"
+              "naturalist:bass"
             ]
           }
         ]
       }
     },
     "has_the_recipe": {
-      "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "naturalist:cooked_venison_from_campfire_cooking"
-      }
+        "recipe": "naturalist:cooked_bass"
+      },
+      "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_venison",
+      "has_bass",
       "has_the_recipe"
     ]
-  ]
+  ],
+  "rewards": {
+    "recipes": [
+      "naturalist:cooked_bass",
+      "naturalist:cooked_bass_from_smoking",
+      "naturalist:cooked_bass_from_campfire_cooking"
+    ]
+  }
 }

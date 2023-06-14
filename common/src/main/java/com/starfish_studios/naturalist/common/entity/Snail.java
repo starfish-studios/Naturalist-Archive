@@ -1,5 +1,6 @@
 package com.starfish_studios.naturalist.common.entity;
 
+import com.starfish_studios.naturalist.common.entity.core.ClimbingAnimal;
 import com.starfish_studios.naturalist.common.entity.core.HidingAnimal;
 import com.starfish_studios.naturalist.common.entity.core.ai.goal.HideGoal;
 import com.starfish_studios.naturalist.core.registry.*;
@@ -17,6 +18,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Animal;
@@ -42,7 +45,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 import java.util.List;
 import java.util.Optional;
 
-public class Snail extends Animal implements IAnimatable, Bucketable, HidingAnimal {
+public class Snail extends ClimbingAnimal implements IAnimatable, Bucketable, HidingAnimal {
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(Snail.class, EntityDataSerializers.BOOLEAN);
 
@@ -53,14 +56,41 @@ public class Snail extends Animal implements IAnimatable, Bucketable, HidingAnim
     // ATTRIBUTES/BREEDING/AI
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 2.0D).add(Attributes.MOVEMENT_SPEED, 0.06F);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 2.0D).add(Attributes.MOVEMENT_SPEED, 0.1F);
     }
 
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(0, new HideGoal(this));
-        this.goalSelector.addGoal(1, new SnailStrollGoal(this, 1.0D, 0.0F));
+        this.goalSelector.addGoal(0, new HideGoal<>(this));
+        this.goalSelector.addGoal(1, new SnailStrollGoal(this, 0.9D, 0.0F));
+        this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
+    }
+
+    @Override
+    public void knockback(double strength, double x, double z) {
+        super.knockback(this.canHide() ? strength / 4 : strength, x, z);
+    }
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        return super.hurt(source, this.canHide() ? amount * 0.8F : amount);
+    }
+
+    @Override
+    public boolean canBreatheUnderwater() {
+        return true;
+    }
+
+    @Override
+    public float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return 0.3F;
+    }
+
+    @Override
+    protected float getClimbSpeedMultiplier() {
+        return 0.5F;
     }
 
     @Nullable
@@ -77,11 +107,6 @@ public class Snail extends Animal implements IAnimatable, Bucketable, HidingAnim
     @Override
     public void aiStep() {
         super.aiStep();
-        for (Player player : level.getEntitiesOfClass(Player.class, this.getBoundingBox())) {
-            if (!player.isOnGround() && EnchantmentHelper.getEnchantmentLevel(Enchantments.FALL_PROTECTION, player) == 0 && !this.hasCustomName()) {
-                this.hurt(DamageSource.playerAttack(player), 5.0F);
-            }
-        }
     }
 
     // BUCKETING
@@ -177,9 +202,16 @@ public class Snail extends Animal implements IAnimatable, Bucketable, HidingAnim
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.canHide()) {
-            event.getController().setAnimation(new AnimationBuilder().loop("snail.retreat"));
+            event.getController().setAnimation(new AnimationBuilder().loop("retreat"));
+        } else if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
+            event.getController().setAnimation(new AnimationBuilder().loop("crawl"));
+            event.getController().setAnimationSpeed(0.6F);
+        } else if (this.isClimbing()){
+            event.getController().setAnimation(new AnimationBuilder().loop("climb"));
+            event.getController().setAnimationSpeed(0.6F);
         } else {
-            event.getController().setAnimation(new AnimationBuilder().loop("snail.move"));
+            event.getController().setAnimation(new AnimationBuilder().loop("idle"));
+            event.getController().setAnimationSpeed(0.4F);
         }
         return PlayState.CONTINUE;
     }
@@ -198,8 +230,8 @@ public class Snail extends Animal implements IAnimatable, Bucketable, HidingAnim
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.setResetSpeedInTicks(10);
-        AnimationController<Snail> controller = new AnimationController<>(this, "controller", 10, this::predicate);
+        data.setResetSpeedInTicks(5);
+        AnimationController<Snail> controller = new AnimationController<>(this, "controller", 5, this::predicate);
         controller.registerSoundListener(this::soundListener);
         data.addAnimationController(controller);
     }

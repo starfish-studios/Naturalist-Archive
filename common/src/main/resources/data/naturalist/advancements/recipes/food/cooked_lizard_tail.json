@@ -1,13 +1,13 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_venison": {
+    "has_lizard_tail": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "naturalist:venison"
+              "naturalist:lizard_tail"
             ]
           }
         ]
@@ -15,22 +15,22 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "naturalist:cooked_venison"
+        "recipe": "naturalist:cooked_lizard_tail"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_venison",
+      "has_lizard_tail",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "naturalist:cooked_venison",
-      "naturalist:cooked_venison_from_smoking",
-      "naturalist:cooked_venison_from_campfire_cooking"
+      "naturalist:cooked_lizard_tail",
+      "naturalist:cooked_lizard_tail_from_smoking",
+      "naturalist:cooked_lizard_tail_from_campfire_cooking"
     ]
   }
 }

@@ -1,13 +1,13 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_venison": {
+    "has_drumstick": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "naturalist:venison"
+              "naturalist:drumstick"
             ]
           }
         ]
@@ -15,22 +15,22 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "naturalist:cooked_venison"
+        "recipe": "naturalist:cooked_drumstick"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_venison",
+      "has_drumstick",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "naturalist:cooked_venison",
-      "naturalist:cooked_venison_from_smoking",
-      "naturalist:cooked_venison_from_campfire_cooking"
+      "naturalist:cooked_drumstick",
+      "naturalist:cooked_drumstick_from_smoking",
+      "naturalist:cooked_drumstick_from_campfire_cooking"
     ]
   }
 }
