@@ -60,6 +60,11 @@ public class CommonPlatformHelper {
     }
 
     @ExpectPlatform
+    public static Supplier<Item> registerCaughtMobItem(String name, Supplier<? extends EntityType<?>> entitySupplier, Supplier<? extends Fluid> fluidSupplier, Supplier<? extends SoundEvent> soundSupplier, int variantAmount) {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
     public static <T extends SoundEvent> Supplier<T> registerSoundEvent(String name, Supplier<T> soundEvent) {
         throw new AssertionError();
     }

@@ -2,6 +2,7 @@ package com.starfish_studios.naturalist.core.registry;
 
 import com.starfish_studios.naturalist.*;
 import com.starfish_studios.naturalist.common.block.crate.*;
+import com.starfish_studios.naturalist.common.entity.*;
 import com.starfish_studios.naturalist.common.item.*;
 import com.starfish_studios.naturalist.core.platform.*;
 import net.minecraft.sounds.*;
@@ -31,8 +32,8 @@ public class NaturalistItems {
     public static final Supplier<Item> COOKED_LIZARD_TAIL = CommonPlatformHelper.registerItem("cooked_lizard_tail", () -> new Item(new Item.Properties().tab(Naturalist.TAB).food(Foods.BAKED_POTATO)));
     public static final Supplier<Item> BEAR_FUR = CommonPlatformHelper.registerItem("bear_fur", () -> new Item(new Item.Properties().tab(Naturalist.TAB)));
     public static final Supplier<Item> REPTILE_HIDE = CommonPlatformHelper.registerItem("reptile_hide", () -> new Item(new Item.Properties().tab(Naturalist.TAB)));
-    public static final Supplier<Item> BUTTERFLY = CommonPlatformHelper.registerCaughtMobItem("butterfly", NaturalistEntityTypes.BUTTERFLY, () -> Fluids.EMPTY, NaturalistSoundEvents.BIRD_FLY);
-    public static final Supplier<Item> MOTH = CommonPlatformHelper.registerCaughtMobItem("moth", NaturalistEntityTypes.MOTH, () -> Fluids.EMPTY, NaturalistSoundEvents.BIRD_FLY);
+    public static final Supplier<Item> BUTTERFLY = CommonPlatformHelper.registerCaughtMobItem("butterfly", NaturalistEntityTypes.BUTTERFLY, () -> Fluids.EMPTY, NaturalistSoundEvents.BIRD_FLY, Butterfly.Variant.values().length);
+    public static final Supplier<Item> MOTH = CommonPlatformHelper.registerCaughtMobItem("moth", NaturalistEntityTypes.MOTH, () -> Fluids.EMPTY, NaturalistSoundEvents.BIRD_FLY, Moth.Variant.values().length);
     public static final Supplier<Item> CATERPILLAR = CommonPlatformHelper.registerCaughtMobItem("caterpillar", NaturalistEntityTypes.CATERPILLAR, () -> Fluids.EMPTY, NaturalistSoundEvents.BIRD_FLY);
     public static final Supplier<Item> BUG_NET = CommonPlatformHelper.registerItem("bug_net", () -> new Item(new Item.Properties().durability(64).tab(Naturalist.TAB)));
     public static final Supplier<Item> SNAIL_BUCKET = CommonPlatformHelper.registerNoFluidMobBucketItem("snail_bucket", NaturalistEntityTypes.SNAIL, () -> Fluids.EMPTY, NaturalistSoundEvents.BUCKET_EMPTY_SNAIL);

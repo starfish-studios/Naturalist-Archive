@@ -1,8 +1,7 @@
 package com.starfish_studios.naturalist.core.platform.forge;
 
 import com.starfish_studios.naturalist.Naturalist;
-import com.starfish_studios.naturalist.item.forge.CaughtMobItem;
-import com.starfish_studios.naturalist.item.forge.NoFluidMobBucketItem;
+import com.starfish_studios.naturalist.item.forge.*;
 import com.starfish_studios.naturalist.core.registry.NaturalistMenus;
 import com.starfish_studios.naturalist.util.forge.NaturalistBrewingRecipe;
 import net.minecraft.resources.ResourceLocation;
@@ -64,6 +63,10 @@ public class CommonPlatformHelperImpl {
 
     public static Supplier<Item> registerCaughtMobItem(String name, Supplier<? extends EntityType<?>> entitySupplier, Supplier<? extends Fluid> fluidSupplier, Supplier<? extends SoundEvent> soundSupplier) {
         return ITEMS.register(name, () -> new CaughtMobItem(entitySupplier, fluidSupplier, soundSupplier, new Item.Properties().tab(Naturalist.TAB).stacksTo(1)));
+    }
+
+    public static Supplier<Item> registerCaughtMobItem(String name, Supplier<? extends EntityType<?>> entitySupplier, Supplier<? extends Fluid> fluidSupplier, Supplier<? extends SoundEvent> soundSupplier, int variantAmount) {
+        return ITEMS.register(name, () -> new CaughtMobWithVariantsItem(entitySupplier, fluidSupplier, soundSupplier, variantAmount, new Item.Properties().tab(Naturalist.TAB).stacksTo(1)));
     }
 
     public static <T extends SoundEvent> Supplier<T> registerSoundEvent(String name, Supplier<T> soundEvent) {
