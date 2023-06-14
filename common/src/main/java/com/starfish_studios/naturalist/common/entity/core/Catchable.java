@@ -8,6 +8,7 @@ package com.starfish_studios.naturalist.common.entity.core;
 import java.util.Optional;
 
 import com.starfish_studios.naturalist.common.entity.*;
+import com.starfish_studios.naturalist.common.helper.*;
 import com.starfish_studios.naturalist.core.registry.*;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.nbt.CompoundTag;
@@ -118,18 +119,23 @@ public interface Catchable {
     }
 
     static <T extends LivingEntity & Catchable> Optional<InteractionResult> catchAnimal(Player player, InteractionHand hand, T entity, boolean needsNet) {
+        InteractionHand otherHand = hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
         ItemStack itemStack = player.getItemInHand(hand);
         if ((needsNet ? itemStack.getItem().equals(NaturalistItems.BUG_NET.get()) : itemStack.isEmpty()) && entity.isAlive()) {
             ItemStack caughtItemStack = entity.getCaughtItemStack();
             entity.saveToHandTag(caughtItemStack);
-            ItemStack filledResult = ItemUtils.createFilledResult(itemStack, player, caughtItemStack, false);
-            player.setItemInHand(hand, filledResult);
+            if (player.getItemInHand(otherHand).isEmpty()) {
+                player.setItemInHand(otherHand, caughtItemStack);
+            }
+            else {
+                ItemHelper.spawnItemOnEntity(player, caughtItemStack);
+            }
             player.playSound(SoundEvents.ITEM_PICKUP, 0.3F, 1.0F);
             if (!entity.level.isClientSide) {
                 CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer)player, caughtItemStack);
             }
             entity.discard();
-            return Optional.of(InteractionResult.sidedSuccess(entity.level.isClientSide));
+            return Optional.of(InteractionResult.SUCCESS);
         } else {
             return Optional.empty();
         }
