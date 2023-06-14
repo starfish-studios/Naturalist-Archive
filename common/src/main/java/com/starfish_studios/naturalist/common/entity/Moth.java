@@ -58,11 +58,6 @@ public class Moth extends Animal implements IAnimatable, FlyingAnimal, Catchable
     private static final EntityDataAccessor<Integer> DATA_VARIANT;
     private static final EntityDataAccessor<Boolean> FROM_HAND;
 
-    @Override
-    @NotNull
-    public MobType getMobType() {
-        return MobType.ARTHROPOD;
-    }
 
     public Moth(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
@@ -76,6 +71,12 @@ public class Moth extends Animal implements IAnimatable, FlyingAnimal, Catchable
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.FLYING_SPEED, 0.6F).add(Attributes.MOVEMENT_SPEED, 0.3F);
+    }
+
+    @Override
+    @NotNull
+    public MobType getMobType() {
+        return MobType.ARTHROPOD;
     }
 
     @Override
@@ -175,7 +176,7 @@ public class Moth extends Animal implements IAnimatable, FlyingAnimal, Catchable
     // BUTTERFLY CATCHING
 
     public @NotNull InteractionResult mobInteract(Player player, InteractionHand hand) {
-        return Catchable.netMothPickup(player, hand, this).orElse(super.mobInteract(player, hand));
+        return Catchable.catchAnimal(player, hand, this).orElse(super.mobInteract(player, hand));
     }
 
     public void saveToHandTag(ItemStack stack) {
@@ -213,7 +214,7 @@ public class Moth extends Animal implements IAnimatable, FlyingAnimal, Catchable
         return !this.fromHand() && !this.hasCustomName();
     }
 
-    public ItemStack getHandItemStack() {
+    public ItemStack getCaughtItemStack() {
         return new ItemStack(NaturalistItems.MOTH.get());
     }
 

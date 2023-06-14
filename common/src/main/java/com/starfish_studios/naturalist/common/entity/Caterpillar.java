@@ -195,7 +195,7 @@ public class Caterpillar extends ClimbingAnimal implements IAnimatable {
             Level level = caterpillar.level;
             if (this.isValidTarget(level, caterpillar.blockPosition())) {
                 if (!level.isClientSide) {
-                    ((ServerLevel)level).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, NaturalistBlocks.CHRYSALIS.get().defaultBlockState()), caterpillar.getX(), caterpillar.getY(), caterpillar.getZ(), 50, caterpillar.getBbWidth() / 4.0F, caterpillar.getBbHeight() / 4.0F, caterpillar.getBbWidth() / 4.0F, 0.05D);
+                    ((ServerLevel) level).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, NaturalistBlocks.CHRYSALIS.get().defaultBlockState()), caterpillar.getX(), caterpillar.getY(), caterpillar.getZ(), 50, caterpillar.getBbWidth() / 4.0F, caterpillar.getBbHeight() / 4.0F, caterpillar.getBbWidth() / 4.0F, 0.05D);
                 }
                 caterpillar.discard();
                 level.setBlockAndUpdate(caterpillar.blockPosition(), NaturalistBlocks.CHRYSALIS.get().defaultBlockState().setValue(ChrysalisBlock.FACING, facing));

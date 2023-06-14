@@ -1,6 +1,6 @@
 package com.starfish_studios.naturalist.common.entity;
 
-import com.starfish_studios.naturalist.common.entity.core.Animal;
+import com.starfish_studios.naturalist.common.entity.core.NaturalistAnimal;
 import com.starfish_studios.naturalist.common.entity.core.EggLayingAnimal;
 import com.starfish_studios.naturalist.common.entity.core.ai.goal.*;
 import com.starfish_studios.naturalist.core.registry.*;
@@ -37,7 +37,7 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 
-public class Alligator extends Animal implements IAnimatable, EggLayingAnimal {
+public class Alligator extends NaturalistAnimal implements IAnimatable, EggLayingAnimal {
     private static final Ingredient FOOD_ITEMS = Ingredient.of(NaturalistTags.ItemTags.ALLIGATOR_FOOD_ITEMS);
     private static final EntityDataAccessor<Boolean> HAS_EGG = SynchedEntityData.defineId(Alligator.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> LAYING_EGG = SynchedEntityData.defineId(Alligator.class, EntityDataSerializers.BOOLEAN);
@@ -46,7 +46,7 @@ public class Alligator extends Animal implements IAnimatable, EggLayingAnimal {
     int layEggCounter;
     boolean isDigging;
 
-    public Alligator(EntityType<? extends com.starfish_studios.naturalist.common.entity.core.Animal> entityType, Level level) {
+    public Alligator(EntityType<? extends NaturalistAnimal> entityType, Level level) {
         super(entityType, level);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0f);
         this.maxUpStep = 1.0f;
@@ -269,8 +269,8 @@ public class Alligator extends Animal implements IAnimatable, EggLayingAnimal {
 
     static class AlligatorBreedGoal extends BreedGoal {
 
-        public AlligatorBreedGoal(Animal animal, double d) {
-            super(animal, d);
+        public AlligatorBreedGoal(NaturalistAnimal naturalistAnimal, double d) {
+            super(naturalistAnimal, d);
         }
 
         @Override

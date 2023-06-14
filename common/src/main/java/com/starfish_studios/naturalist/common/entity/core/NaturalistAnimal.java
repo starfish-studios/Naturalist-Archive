@@ -1,6 +1,5 @@
 package com.starfish_studios.naturalist.common.entity.core;
 
-import com.starfish_studios.naturalist.core.registry.NaturalistTags;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.AgeableMob;
@@ -11,9 +10,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,14 +25,14 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 // This is the class that acts as the heart for all of our animals.
 // It allows us to reduce the amount of code present in each animal's class for better organization.
-/** It is also JAM-PACKED with notes so I can remember how things work or for other people to learn. */
+/** It is also JAM-PACKED with notes, so I can remember how things work or for other people to learn. */
 
-public class Animal extends net.minecraft.world.entity.animal.Animal implements IAnimatable {
+public class NaturalistAnimal extends net.minecraft.world.entity.animal.Animal implements IAnimatable {
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private static final Ingredient FOOD_ITEMS = Ingredient.of(ItemTags.PIGLIN_FOOD);
     /** Food items are defined here. I used "PIGLIN_FOOD" as an example, but any tag or even a list of items can be used. */
 
-    protected Animal(EntityType<? extends net.minecraft.world.entity.animal.Animal> entityType, Level level) {
+    protected NaturalistAnimal(EntityType<? extends net.minecraft.world.entity.animal.Animal> entityType, Level level) {
         super(entityType, level);
     }
     public static AttributeSupplier.Builder createAttributes() {

@@ -203,7 +203,7 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal, Catc
     // BUTTERFLY CATCHING
 
     public @NotNull InteractionResult mobInteract(Player player, InteractionHand hand) {
-        return Catchable.netButterflyPickup(player, hand, this).orElse(super.mobInteract(player, hand));
+        return Catchable.catchAnimal(player, hand, this).orElse(super.mobInteract(player, hand));
     }
 
     public void saveToHandTag(ItemStack stack) {
@@ -241,7 +241,7 @@ public class Butterfly extends Animal implements IAnimatable, FlyingAnimal, Catc
         return !this.fromHand() && !this.hasCustomName();
     }
 
-    public ItemStack getHandItemStack() {
+    public ItemStack getCaughtItemStack() {
         return new ItemStack(NaturalistItems.BUTTERFLY.get());
     }
 
