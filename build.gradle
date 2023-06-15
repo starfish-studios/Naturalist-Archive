@@ -39,6 +39,7 @@ allprojects {
         // GeckoLib
         maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
         maven { url "https://maven.shedaniel.me/" }
+        maven { url "https://cursemaven.com" }
     }
 
     tasks.withType(JavaCompile) {

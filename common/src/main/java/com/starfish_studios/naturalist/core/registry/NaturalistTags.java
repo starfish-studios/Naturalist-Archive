@@ -65,6 +65,7 @@ public class NaturalistTags {
         public static final TagKey<EntityType<?>> CATFISH_HOSTILES = tag("catfish_hostiles");
         public static final TagKey<EntityType<?>> ALLIGATOR_HOSTILES = tag("alligator_hostiles");
         public static final TagKey<EntityType<?>> BOAR_HOSTILES = tag("boar_hostiles");
+        public static final TagKey<EntityType<?>> ANIMAL_CRATE_BLACKLISTED = tag("animal_crate_blacklist");
 
         private static TagKey<EntityType<?>> tag(String name) {
             return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation(Naturalist.MOD_ID, name));
