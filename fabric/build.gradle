@@ -31,6 +31,9 @@ dependencies {
     modImplementation "com.terraformersmc:modmenu:${rootProject.mod_menu_version}"
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
+
+    runtimeOnly "curse.maven:fabric-disable-custom-worlds-advice-401978:3677546"
+
 }
 
 processResources {

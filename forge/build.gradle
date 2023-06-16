@@ -29,6 +29,8 @@ dependencies {
     modImplementation ("software.bernie.geckolib:geckolib-forge-1.19:${rootProject.geckolib_forge_version}")
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
+
+    runtimeOnly "curse.maven:shutup-experimental-settings-407174:3759881"
 }
 
 processResources {
