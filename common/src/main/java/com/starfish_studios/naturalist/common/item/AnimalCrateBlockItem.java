@@ -5,12 +5,16 @@ import com.starfish_studios.naturalist.common.block.crate.*;
 import com.starfish_studios.naturalist.core.registry.*;
 import net.minecraft.core.*;
 import net.minecraft.nbt.*;
+import net.minecraft.sounds.*;
 import net.minecraft.world.*;
 import net.minecraft.world.effect.*;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.animal.*;
+import net.minecraft.world.entity.animal.allay.*;
 import net.minecraft.world.entity.player.*;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.*;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.phys.*;
 
@@ -21,16 +25,31 @@ public class AnimalCrateBlockItem extends BlockItem {
 
     @Override
     public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity interactionTarget, InteractionHand usedHand) {
-        if (!player.level.isClientSide) {
-            final boolean b = !isHoldingLivingEntity(stack);
-            final boolean b1 = canCaptureLivingEntity(interactionTarget);
-            if (b && b1) {
+        if (player.getAbilities().instabuild) {
+            stack = player.getItemInHand(usedHand);
+        }
+        final boolean b = !isHoldingLivingEntity(stack);
+        final boolean b1 = canCaptureLivingEntity(interactionTarget);
+        if (b && b1) {
+            if (!player.level.isClientSide) {
                 CompoundTag compoundTag = new CompoundTag();
+
+                if (interactionTarget.isPassenger()) {
+                    interactionTarget.getVehicle().ejectPassengers();
+                }
+                if (interactionTarget instanceof Mob mob && !(mob instanceof Allay)) {
+                    mob.setPersistenceRequired();
+                }
+                if (interactionTarget instanceof Bucketable bucketable) {
+                    bucketable.setFromBucket(true);
+                }
+
                 interactionTarget.save(compoundTag);
                 stack.getOrCreateTag().put(AnimalCrateBlockEntity.ANIMAL_CRATE_DATA, compoundTag);
                 interactionTarget.remove(Entity.RemovalReason.DISCARDED);
-                return InteractionResult.SUCCESS;
+                playCaptureSound(player.level, interactionTarget.blockPosition());
             }
+            return InteractionResult.SUCCESS;
         }
         return super.interactLivingEntity(stack, player, interactionTarget, usedHand);
     }
@@ -46,6 +65,7 @@ public class AnimalCrateBlockItem extends BlockItem {
             entity.absMoveTo(position.x(), position.y(), position.z(), context.getRotation(), 0);
             player.level.addFreshEntity(entity);
             stack.getTag().remove(AnimalCrateBlockEntity.ANIMAL_CRATE_DATA);
+            playReleaseSound(player.level, entity.blockPosition());
             return InteractionResult.SUCCESS;
         }
         return result;
@@ -57,6 +77,15 @@ public class AnimalCrateBlockItem extends BlockItem {
             return InteractionResult.FAIL;
         }
         return super.place(context);
+    }
+
+    public static void playCaptureSound(Level level, BlockPos pos) {
+        level.playSound(null, pos, SoundEvents.CHICKEN_EGG, SoundSource.PLAYERS, 1, 1.2f);
+        level.playSound(null, pos, SoundEvents.CHAIN_FALL, SoundSource.PLAYERS, 1, 0.7f);
+    }
+
+    public static void playReleaseSound(Level level, BlockPos pos) {
+        level.playSound(null, pos, SoundEvents.CHICKEN_EGG, SoundSource.PLAYERS, 1, 0.7f);
     }
 
     public boolean isHoldingLivingEntity(ItemStack stack) {
