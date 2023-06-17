@@ -34,7 +34,7 @@ public class AnimalCrateBlock extends Block implements EntityBlock {
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult ray) {
         if (level.getBlockEntity(pos) instanceof AnimalCrateBlockEntity animalCrateBlockEntity) {
-            animalCrateBlockEntity.onUse(player, hand);
+            return animalCrateBlockEntity.onUse(player, hand);
         }
         return super.use(state, level, pos, player, hand, ray);
     }
