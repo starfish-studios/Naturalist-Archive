@@ -221,6 +221,6 @@
   "text.autoconfig.naturalist.option.lizardSpawnWeight": "Вероятность появления ящерицы",
   "text.autoconfig.naturalist.option.tortoiseSpawnWeight": "Вероятность появления черепахи",
   "text.autoconfig.naturalist.option.duckSpawnWeight": "Вероятность появления утки",
-  "text.autoconfig.naturalist.option.removeSavannaFarmAnimals": "Удаление животных на фермах в биомах саванны"
+  "text.autoconfig.naturalist.option.removeSavannaFarmAnimals": "Удаление животных на фермах в биомах саванны",
   "text.autoconfig.naturalist.option.removeSwampFarmAnimals": "Удаление животных на фермах в биомах болота"
 }
