@@ -32,7 +32,7 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 
-    runtimeOnly "curse.maven:fabric-disable-custom-worlds-advice-401978:3677546"
+    runtimeOnly "curse.maven:fabric-disable-custom-worlds-advice-401978:3827588"
 
 }
 

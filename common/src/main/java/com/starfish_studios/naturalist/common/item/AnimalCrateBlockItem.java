@@ -45,6 +45,9 @@ public class AnimalCrateBlockItem extends BlockItem {
                 }
 
                 interactionTarget.save(compoundTag);
+                compoundTag.remove("Passengers");
+                compoundTag.remove("Leash");
+                compoundTag.remove("UUID");
                 stack.getOrCreateTag().put(AnimalCrateBlockEntity.ANIMAL_CRATE_DATA, compoundTag);
                 interactionTarget.remove(Entity.RemovalReason.DISCARDED);
                 playCaptureSound(player.level, interactionTarget.blockPosition());
@@ -61,12 +64,14 @@ public class AnimalCrateBlockItem extends BlockItem {
         Player player = context.getPlayer();
         if (!player.isShiftKeyDown() && isHoldingLivingEntity(stack)) {
             Vec3 position = new Vec3(Math.floor(context.getClickLocation().x)+0.5f, Math.floor(context.getClickLocation().y)+0.5f, Math.floor(context.getClickLocation().z)+0.5f);
-            Entity entity = EntityType.loadEntityRecursive(stack.getTag().getCompound(AnimalCrateBlockEntity.ANIMAL_CRATE_DATA), player.level, e -> e);
-            entity.absMoveTo(position.x(), position.y(), position.z(), context.getRotation(), 0);
-            player.level.addFreshEntity(entity);
-            stack.getTag().remove(AnimalCrateBlockEntity.ANIMAL_CRATE_DATA);
-            playReleaseSound(player.level, entity.blockPosition());
-            return InteractionResult.SUCCESS;
+            Entity entity = createEntityFromNBT(player.level, stack.getTag().getCompound(AnimalCrateBlockEntity.ANIMAL_CRATE_DATA));
+            if (entity != null) {
+                entity.absMoveTo(position.x(), position.y(), position.z(), context.getRotation(), 0);
+                player.level.addFreshEntity(entity);
+                stack.getTag().remove(AnimalCrateBlockEntity.ANIMAL_CRATE_DATA);
+                playReleaseSound(player.level, entity.blockPosition());
+                return InteractionResult.SUCCESS;
+            }
         }
         return result;
     }
@@ -77,6 +82,10 @@ public class AnimalCrateBlockItem extends BlockItem {
             return InteractionResult.FAIL;
         }
         return super.place(context);
+    }
+
+    public static Entity createEntityFromNBT(Level level, CompoundTag nbt) {
+        return EntityType.loadEntityRecursive(nbt, level, e -> e);
     }
 
     public static void playCaptureSound(Level level, BlockPos pos) {
