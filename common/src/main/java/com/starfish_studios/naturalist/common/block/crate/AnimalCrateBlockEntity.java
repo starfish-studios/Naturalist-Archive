@@ -49,9 +49,8 @@ public class AnimalCrateBlockEntity extends BlockEntity {
             if (releasedEntity != null) {
                 if (!player.level.isClientSide) {
                     Vec3 position = new Vec3(getBlockPos().getX() + 0.5f, getBlockPos().getY() + 1.5f, getBlockPos().getZ() + 0.5f);
-                    Vec3 motion = new Vec3(0, 0.25f, 0);
                     releasedEntity.absMoveTo(position.x, position.y, position.z, level.random.nextFloat() * 360f, 0);
-                    releasedEntity.setDeltaMovement(motion);
+                    releasedEntity.setDeltaMovement(new Vec3(0, 0.25f, 0));
                     level.addFreshEntity(releasedEntity);
                     entityData = null;
                     AnimalCrateBlockItem.playReleaseSound(level, worldPosition);

@@ -63,13 +63,15 @@ public class AnimalCrateBlockItem extends BlockItem {
         ItemStack stack = context.getItemInHand();
         Player player = context.getPlayer();
         if (!player.isShiftKeyDown() && isHoldingLivingEntity(stack)) {
+            Level level = player.level;
             Vec3 position = new Vec3(Math.floor(context.getClickLocation().x)+0.5f, Math.floor(context.getClickLocation().y)+0.5f, Math.floor(context.getClickLocation().z)+0.5f);
-            Entity entity = createEntityFromNBT(player.level, stack.getTag().getCompound(AnimalCrateBlockEntity.ANIMAL_CRATE_DATA));
+            Entity entity = createEntityFromNBT(level, stack.getTag().getCompound(AnimalCrateBlockEntity.ANIMAL_CRATE_DATA));
             if (entity != null) {
-                entity.absMoveTo(position.x(), position.y(), position.z(), context.getRotation(), 0);
-                player.level.addFreshEntity(entity);
+                entity.absMoveTo(position.x(), position.y(), position.z(), level.random.nextFloat() * 360f, 0);
+                entity.setDeltaMovement(new Vec3(0, 0.25f, 0));
+                level.addFreshEntity(entity);
                 stack.getTag().remove(AnimalCrateBlockEntity.ANIMAL_CRATE_DATA);
-                playReleaseSound(player.level, entity.blockPosition());
+                playReleaseSound(level, entity.blockPosition());
                 return InteractionResult.SUCCESS;
             }
         }
