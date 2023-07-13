@@ -123,7 +123,7 @@ public class NaturalistAnimal extends net.minecraft.world.entity.animal.Animal i
     @Override
     public void customServerAiStep() {
         if (this.getMoveControl().hasWanted()) {
-            this.setSprinting(this.getMoveControl().getSpeedModifier() >= 1.2D);
+            this.setSprinting(this.getMoveControl().getSpeedModifier() >= 1.25D);
         } else {
             this.setSprinting(false);
         }

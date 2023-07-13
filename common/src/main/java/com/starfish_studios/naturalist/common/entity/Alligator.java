@@ -106,8 +106,8 @@ public class Alligator extends NaturalistAnimal implements IAnimatable, EggLayin
                 setKillCooldown(2400);
             }
         });
-        this.goalSelector.addGoal(3, new BabyPanicGoal(this, 2.0D));
-        this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
+        this.goalSelector.addGoal(3, new BabyPanicGoal(this, 1.25D));
+        this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.2D));
         this.goalSelector.addGoal(5, new RandomSwimmingGoal(this, 1.0D, 10));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
@@ -239,20 +239,20 @@ public class Alligator extends NaturalistAnimal implements IAnimatable, EggLayin
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
             if (this.isInWater()) {
-                event.getController().setAnimation(new AnimationBuilder().loop("alligator.swim"));
+                event.getController().setAnimation(new AnimationBuilder().loop("swim"));
             } else {
-                event.getController().setAnimation(new AnimationBuilder().loop("alligator.walk"));
+                event.getController().setAnimation(new AnimationBuilder().loop("walk"));
                 event.getController().setAnimationSpeed(1.5D);
             }
         } else {
-            event.getController().setAnimation(new AnimationBuilder().loop("alligator.idle"));
+            event.getController().setAnimation(new AnimationBuilder().loop("idle"));
         }
         return PlayState.CONTINUE;
     }
 
     private <E extends IAnimatable> PlayState attackPredicate(AnimationEvent<E> event) {
         if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
-            event.getController().setAnimation(new AnimationBuilder().playOnce("alligator.bite"));
+            event.getController().setAnimation(new AnimationBuilder().playOnce("bite"));
             event.getController().markNeedsReload();
             this.swinging = false;
         }
