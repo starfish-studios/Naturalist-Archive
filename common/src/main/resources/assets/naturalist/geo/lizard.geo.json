@@ -20,35 +20,81 @@
 					"parent": "root",
 					"pivot": [0, 3, 0],
 					"cubes": [
-						{"origin": [-3, 1, -5], "size": [6, 4, 10], "uv": [0, 0]},
-						{"origin": [0, 5, -5], "size": [0, 4, 10], "uv": [33, 0]},
-						{"origin": [3, 3, -5], "size": [1, 0, 10], "uv": [13, 0]},
-						{"origin": [-4, 3, -5], "size": [1, 0, 10], "uv": [13, 0], "mirror": true}
+						{"origin": [-3, 1, -5], "size": [6, 4, 10], "uv": [0, 0]}
 					]
 				},
 				{
-					"name": "head_rot",
+					"name": "beardie_body",
 					"parent": "body",
-					"pivot": [0, 3, -5]
+					"pivot": [0, -3, 0],
+					"cubes": [
+						{"origin": [-5, 3, -5], "size": [10, 0, 10], "uv": [28, 20]}
+					]
+				},
+				{
+					"name": "basilisk_body",
+					"parent": "body",
+					"pivot": [0, -3, 0],
+					"cubes": [
+						{"origin": [0, 5, -5], "size": [0, 4, 10], "uv": [33, 0]}
+					]
+				},
+				{
+					"name": "headRot",
+					"parent": "body",
+					"pivot": [0, 2, -5]
 				},
 				{
 					"name": "head",
-					"parent": "head_rot",
-					"pivot": [0, 3, -5],
+					"parent": "headRot",
+					"pivot": [0, 2, -5],
 					"cubes": [
-						{"origin": [-3, 2, -11], "size": [6, 5, 6], "uv": [8, 19]},
-						{"origin": [-3, 7, -6], "size": [6, 1, 0], "pivot": [0, 7, -6], "rotation": [-45, 0, 0], "uv": [20, 31]},
-						{"origin": [3, 3, -6], "size": [2, 3, 0], "pivot": [3, 4.5, -6], "rotation": [0, -45, 0], "uv": [0, 0]},
-						{"origin": [-5, 3, -6], "size": [2, 3, 0], "pivot": [-3, 4.5, -6], "rotation": [0, 45, 0], "uv": [0, 0], "mirror": true}
+						{"origin": [-3, 4, -11], "size": [6, 2, 6], "uv": [8, 19]},
+						{"origin": [3, 2, -6], "size": [2, 2, 0], "pivot": [3, 3.5, -6], "rotation": [0, -45, 0], "uv": [0, 0]},
+						{"origin": [-5, 2, -6], "size": [2, 2, 0], "pivot": [-3, 3.5, -6], "rotation": [0, 45, 0], "uv": [0, 0], "mirror": true}
+					]
+				},
+				{
+					"name": "lower_jaw",
+					"parent": "head",
+					"pivot": [0, 4, -7],
+					"cubes": [
+						{"origin": [-3, 2, -11], "size": [6, 2, 6], "uv": [33, 54]}
+					]
+				},
+				{
+					"name": "beardie_head",
+					"parent": "head",
+					"pivot": [0, -4, 0],
+					"cubes": [
+						{"origin": [-3, 6, -11], "size": [1, 1, 3], "uv": [49, 1], "mirror": true},
+						{"origin": [2, 6, -11], "size": [1, 1, 3], "uv": [49, 1]},
+						{"origin": [-5, 0, -7], "size": [10, 8, 0], "uv": [8, 31]}
+					]
+				},
+				{
+					"name": "gecko",
+					"parent": "head",
+					"pivot": [0, -4, 0],
+					"cubes": [
+						{"origin": [2, 4, -10], "size": [2, 3, 3], "uv": [22, 3]},
+						{"origin": [-4, 4, -10], "size": [2, 3, 3], "uv": [22, 3], "mirror": true}
 					]
 				},
 				{
 					"name": "tail",
 					"parent": "body",
-					"pivot": [0, 3, 5],
+					"pivot": [0, 2, 5],
 					"cubes": [
-						{"origin": [-1.5, 0, 5], "size": [3, 3, 10], "uv": [28, 35]},
-						{"origin": [0, 3, 5], "size": [0, 4, 10], "uv": [33, 0]}
+						{"origin": [-1.5, 0, 5], "size": [3, 3, 10], "uv": [28, 35]}
+					]
+				},
+				{
+					"name": "basilisk_tail",
+					"parent": "tail",
+					"pivot": [0, -4, 0],
+					"cubes": [
+						{"origin": [0, 2, 5], "size": [0, 4, 10], "uv": [32, 5]}
 					]
 				},
 				{

@@ -142,7 +142,7 @@ public class Lizard extends TamableAnimal implements IAnimatable {
     }
 
     public int getVariant() {
-        return Mth.clamp(this.entityData.get(VARIANT_ID), 0, 2);
+        return Mth.clamp(this.entityData.get(VARIANT_ID), 0, 3);
     }
 
     public void setVariant(int variant) {
@@ -214,7 +214,9 @@ public class Lizard extends TamableAnimal implements IAnimatable {
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @javax.annotation.Nullable SpawnGroupData spawnData, @javax.annotation.Nullable CompoundTag dataTag) {
         Holder<Biome> holder = level.getBiome(this.blockPosition());
-        if (holder.is(BiomeTags.IS_JUNGLE)) {
+        if (holder.is(Biomes.SAVANNA)) {
+            this.setVariant(3);
+        } else if (holder.is(BiomeTags.IS_JUNGLE)) {
             this.setVariant(0);
         } else if (holder.is(Biomes.DESERT)) {
             this.setVariant(2);
@@ -226,10 +228,10 @@ public class Lizard extends TamableAnimal implements IAnimatable {
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.isInSittingPose()) {
-            event.getController().setAnimation(new AnimationBuilder().loop("lizard.sit"));
+            event.getController().setAnimation(new AnimationBuilder().loop("sit"));
             return PlayState.CONTINUE;
         } else if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
-            event.getController().setAnimation(new AnimationBuilder().loop("lizard.walk"));
+            event.getController().setAnimation(new AnimationBuilder().loop("walk"));
             event.getController().setAnimationSpeed(2.0D);
             return PlayState.CONTINUE;
         }

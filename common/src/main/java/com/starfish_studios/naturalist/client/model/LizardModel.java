@@ -19,7 +19,8 @@ public class LizardModel extends AnimatedGeoModel<Lizard> {
     public static final ResourceLocation[] TEXTURE_LOCATIONS = new ResourceLocation[]{
             new ResourceLocation(Naturalist.MOD_ID, "textures/entity/lizard/green.png"),
             new ResourceLocation(Naturalist.MOD_ID, "textures/entity/lizard/brown.png"),
-            new ResourceLocation(Naturalist.MOD_ID, "textures/entity/lizard/pink.png")
+            new ResourceLocation(Naturalist.MOD_ID, "textures/entity/lizard/beardie.png"),
+            new ResourceLocation(Naturalist.MOD_ID, "textures/entity/lizard/leopard_gecko.png")
     };
 
     @Override
@@ -29,7 +30,17 @@ public class LizardModel extends AnimatedGeoModel<Lizard> {
 
     @Override
     public ResourceLocation getTextureResource(Lizard lizard) {
-        return TEXTURE_LOCATIONS[lizard.getVariant()];
+        if (lizard.getVariant() == 0) {
+            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/lizard/green.png");
+        } else if (lizard.getVariant() == 1) {
+            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/lizard/brown.png");
+        } else if (lizard.getVariant() == 2) {
+            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/lizard/beardie.png");
+        } else if (lizard.getVariant() == 3) {
+            return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/lizard/leopard_gecko.png");
+        } else {
+        return new ResourceLocation(Naturalist.MOD_ID, "textures/entity/lizard/brown.png");
+        }
     }
 
     @Override
@@ -46,6 +57,14 @@ public class LizardModel extends AnimatedGeoModel<Lizard> {
         List<EntityModelData> extraDataOfType = customPredicate.getExtraDataOfType(EntityModelData.class);
         IBone head = this.getAnimationProcessor().getBone("head");
         IBone tail = this.getAnimationProcessor().getBone("tail");
+
+        IBone basiliskBody = this.getAnimationProcessor().getBone("basilisk_body");
+        IBone basiliskTail = this.getAnimationProcessor().getBone("basilisk_tail");
+
+        IBone beardieHead = this.getAnimationProcessor().getBone("beardie_head");
+        IBone beardieBody = this.getAnimationProcessor().getBone("beardie_body");
+
+        IBone gecko = this.getAnimationProcessor().getBone("gecko");
 
         head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD);
         head.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD);
