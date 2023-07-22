@@ -24,7 +24,7 @@ public class NaturalistEntityTypes {
     public static final Supplier<EntityType<Snail>> SNAIL = CommonPlatformHelper.registerEntityType("snail", Snail::new, MobCategory.CREATURE, 0.4F, 0.4F, 10);
     public static final Supplier<EntityType<Bear>> BEAR = CommonPlatformHelper.registerEntityType("bear", Bear::new, MobCategory.CREATURE, 1.4F, 1.7F, 10);
     public static final Supplier<EntityType<Butterfly>> BUTTERFLY = CommonPlatformHelper.registerEntityType("butterfly", Butterfly::new, MobCategory.CREATURE, 0.7F, 0.6F, 8);
-    public static final Supplier<EntityType<Firefly>> FIREFLY = CommonPlatformHelper.registerEntityType("firefly", Firefly::new, NaturalistMobCategories.getFireflyCategory(), 0.7F, 0.6F, 8);
+    public static final Supplier<EntityType<Firefly>> FIREFLY = CommonPlatformHelper.registerEntityType("firefly", Firefly::new, MobCategory.AMBIENT, 0.7F, 0.6F, 8);
     public static final Supplier<EntityType<Snake>> SNAKE = CommonPlatformHelper.registerEntityType("snake", Snake::new, MobCategory.CREATURE, 0.6F, 0.7F, 8);
     public static final Supplier<EntityType<Snake>> CORAL_SNAKE = CommonPlatformHelper.registerEntityType("coral_snake", Snake::new, MobCategory.CREATURE, 0.6F, 0.7F, 8);
     public static final Supplier<EntityType<Snake>> RATTLESNAKE = CommonPlatformHelper.registerEntityType("rattlesnake", Snake::new, MobCategory.CREATURE, 0.6F, 0.7F, 8);
@@ -42,7 +42,7 @@ public class NaturalistEntityTypes {
     public static final Supplier<EntityType<Hippo>> HIPPO = CommonPlatformHelper.registerEntityType("hippo", Hippo::new, MobCategory.CREATURE, 1.8F, 1.8F, 10);
     public static final Supplier<EntityType<Vulture>> VULTURE = CommonPlatformHelper.registerEntityType("vulture", Vulture::new, MobCategory.CREATURE, 0.9f, 0.5f, 10);
     public static final Supplier<EntityType<Boar>> BOAR = CommonPlatformHelper.registerEntityType("boar", Boar::new, MobCategory.CREATURE, 0.9f, 0.9f, 10);
-    public static final Supplier<EntityType<Dragonfly>> DRAGONFLY = CommonPlatformHelper.registerEntityType("dragonfly", Dragonfly::new, NaturalistMobCategories.getDragonflyCategory(), 0.9F, 0.7F, 8);
+    public static final Supplier<EntityType<Dragonfly>> DRAGONFLY = CommonPlatformHelper.registerEntityType("dragonfly", Dragonfly::new, MobCategory.AMBIENT, 0.9F, 0.7F, 8);
     public static final Supplier<EntityType<Catfish>> CATFISH = CommonPlatformHelper.registerEntityType("catfish", Catfish::new, MobCategory.WATER_AMBIENT, 1.0F, 0.7F, 8);
     public static final Supplier<EntityType<Alligator>> ALLIGATOR = CommonPlatformHelper.registerEntityType("alligator", Alligator::new, MobCategory.CREATURE, 1.8F, 0.8F, 10);
     public static final Supplier<EntityType<Bass>> BASS = CommonPlatformHelper.registerEntityType("bass", Bass::new, MobCategory.WATER_AMBIENT, 0.7f, 0.4f, 4);

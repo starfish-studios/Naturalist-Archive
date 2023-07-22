@@ -4,18 +4,16 @@ import com.google.common.base.Preconditions;
 import com.starfish_studios.naturalist.Naturalist;
 import com.starfish_studios.naturalist.entity.*;
 import com.starfish_studios.naturalist.registry.NaturalistEntityTypes;
-import com.starfish_studios.naturalist.registry.NaturalistMobCategories;
 import com.starfish_studios.naturalist.registry.NaturalistTags;
 import com.starfish_studios.naturalist.registry.fabric.NaturalistConfigFabric;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.biome.v1.BiomeModificationContext;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
-import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
-import net.fabricmc.fabric.impl.biome.modification.BuiltInRegistryKeys;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -31,9 +29,6 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 import java.util.List;
-
-import static com.starfish_studios.naturalist.Naturalist.MOD_ID;
-import static com.starfish_studios.naturalist.Naturalist.registerSpawnPlacements;
 
 public class NaturalistFabric implements ModInitializer {
     @Override
@@ -116,7 +111,10 @@ public class NaturalistFabric implements ModInitializer {
         addMobSpawn(NaturalistTags.Biomes.HAS_BEAR, MobCategory.CREATURE, NaturalistEntityTypes.BEAR.get(), config.bearSpawnWeight, 1, 2);
         addMobSpawn(NaturalistTags.Biomes.HAS_DEER, MobCategory.CREATURE, NaturalistEntityTypes.DEER.get(), config.deerSpawnWeight, 1, 3);
         addMobSpawn(NaturalistTags.Biomes.HAS_SNAIL, MobCategory.CREATURE, NaturalistEntityTypes.SNAIL.get(), config.snailSpawnWeight, 1, 3);
-        addMobSpawn(NaturalistTags.Biomes.HAS_FIREFLY, NaturalistMobCategories.getFireflyCategory(), NaturalistEntityTypes.FIREFLY.get(), config.fireflySpawnWeight, 2, 3);
+
+        addMobSpawn(NaturalistTags.Biomes.HAS_FIREFLY, MobCategory.AMBIENT, NaturalistEntityTypes.FIREFLY.get(), config.fireflySpawnWeight, 2, 3);
+
+
         addMobSpawn(NaturalistTags.Biomes.HAS_BUTTERFLY, MobCategory.CREATURE, NaturalistEntityTypes.BUTTERFLY.get(), config.butterflySpawnWeight, 1, 3);
         addMobSpawn(NaturalistTags.Biomes.HAS_SNAKE, MobCategory.CREATURE, NaturalistEntityTypes.SNAKE.get(), config.snakeSpawnWeight, 1, 1);
         addMobSpawn(NaturalistTags.Biomes.HAS_RATTLESNAKE, MobCategory.CREATURE, NaturalistEntityTypes.RATTLESNAKE.get(), config.rattlesnakeSpawnWeight, 1, 1);
@@ -135,7 +133,7 @@ public class NaturalistFabric implements ModInitializer {
         addMobSpawn(NaturalistTags.Biomes.HAS_HIPPO, MobCategory.CREATURE, NaturalistEntityTypes.HIPPO.get(), config.hippoSpawnWeight, 3, 4);
         addMobSpawn(NaturalistTags.Biomes.HAS_VULTURE, MobCategory.CREATURE, NaturalistEntityTypes.VULTURE.get(), config.vultureSpawnWeight, 2, 4);
         addMobSpawn(NaturalistTags.Biomes.HAS_BOAR, MobCategory.CREATURE, NaturalistEntityTypes.BOAR.get(), config.boarSpawnWeight, 4, 4);
-        addMobSpawn(NaturalistTags.Biomes.HAS_DRAGONFLY, NaturalistMobCategories.getDragonflyCategory(), NaturalistEntityTypes.DRAGONFLY.get(), config.dragonflySpawnWeight, 2, 3);
+        addMobSpawn(NaturalistTags.Biomes.HAS_DRAGONFLY, MobCategory.AMBIENT, NaturalistEntityTypes.DRAGONFLY.get(), config.dragonflySpawnWeight, 2, 3);
         addMobSpawn(NaturalistTags.Biomes.HAS_CATFISH, MobCategory.WATER_AMBIENT, NaturalistEntityTypes.CATFISH.get(), config.catfishSpawnWeight, 1, 1);
         addMobSpawn(NaturalistTags.Biomes.HAS_ALLIGATOR, MobCategory.CREATURE, NaturalistEntityTypes.ALLIGATOR.get(), config.alligatorSpawnWeight, 1, 2);
         addMobSpawn(NaturalistTags.Biomes.HAS_BASS, MobCategory.WATER_AMBIENT, NaturalistEntityTypes.BASS.get(), config.bassSpawnWeight, 4, 4);
