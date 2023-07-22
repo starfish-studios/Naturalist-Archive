@@ -62,6 +62,10 @@ public class BearModel extends AnimatedGeoModel<Bear> {
             head.setScaleX(1.8F);
             head.setScaleY(1.8F);
             head.setScaleZ(1.8F);
+        } else {
+            head.setScaleX(1.0F);
+            head.setScaleY(1.0F);
+            head.setScaleZ(1.0F);
         }
 
         if (!bear.isSleeping() && !bear.isEating() && !bear.isSitting()) {

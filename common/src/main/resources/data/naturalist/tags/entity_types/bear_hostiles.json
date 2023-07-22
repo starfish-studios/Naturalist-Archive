@@ -1,8 +1,10 @@
 {
   "values": [
     "minecraft:salmon",
-    "minecraft:cod",
-    "naturalist:bass",
-    "naturalist:deer"
+    "naturalist:deer",
+    {
+      "id": "alexsmobs:moose",
+      "required": false
+    }
   ]
 }

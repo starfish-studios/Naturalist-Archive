@@ -67,6 +67,13 @@ public class RhinoModel extends AnimatedGeoModel<Rhino> {
             rightEar.setScaleX(1.0F);
             rightEar.setScaleY(1.0F);
             rightEar.setScaleZ(1.0F);
+            head.setScaleX(1.75F);
+            head.setScaleY(1.75F);
+            head.setScaleZ(1.75F);
+        } else {
+            head.setScaleX(1.0F);
+            head.setScaleY(1.0F);
+            head.setScaleZ(1.0F);
         }
 
         if (!rhino.isSprinting()) {

@@ -51,6 +51,13 @@ public class ElephantModel extends AnimatedGeoModel<Elephant> {
             head.setScaleX(1.3F); head.setScaleY(1.3F); head.setScaleZ(1.3F);
             leftEar.setScaleX(1.2F); leftEar.setScaleY(1.2F); leftEar.setScaleZ(1.2F);
             rightEar.setScaleX(1.2F); rightEar.setScaleY(1.2F); rightEar.setScaleZ(1.2F);
+            head.setScaleX(1.5F);
+            head.setScaleY(1.5F);
+            head.setScaleZ(1.5F);
+        } else {
+            head.setScaleX(1.0F);
+            head.setScaleY(1.0F);
+            head.setScaleZ(1.0F);
         }
 
         chests.setHidden(!elephant.hasChest() || elephant.isBaby());

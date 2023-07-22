@@ -51,6 +51,10 @@ public class TortoiseModel extends AnimatedGeoModel<Tortoise> {
             head.setScaleX(1.4F);
             head.setScaleY(1.4F);
             head.setScaleZ(1.4F);
+        } else {
+            head.setScaleX(1.0F);
+            head.setScaleY(1.0F);
+            head.setScaleZ(1.0F);
         }
 
         head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD);

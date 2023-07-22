@@ -1,7 +1,11 @@
 {
   "replace": false,
   "values": [
-    "#forge:raw_fishes/catfish",
-    "#forge:raw_fishes/bass"
+    "minecraft:cod",
+    "minecraft:salmon",
+    "minecraft:tropical_fish",
+    "minecraft:pufferfish",
+    "naturalist:bass",
+    "naturalist:catfish"
   ]
 }

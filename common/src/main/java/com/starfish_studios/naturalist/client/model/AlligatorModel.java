@@ -47,6 +47,10 @@ public class AlligatorModel extends AnimatedGeoModel<Alligator> {
             head.setScaleX(1.5F);
             head.setScaleY(1.5F);
             head.setScaleZ(1.5F);
+        } else {
+            head.setScaleX(1.0F);
+            head.setScaleY(1.0F);
+            head.setScaleZ(1.0F);
         }
 
         head.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD);

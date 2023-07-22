@@ -42,6 +42,7 @@
   "entity.naturalist.boar": "Boar",
   "entity.naturalist.elephant": "Elephant",
   "entity.naturalist.giraffe": "Giraffe",
+  "entity.naturalist.bear": "Brown Bear",
   "entity.naturalist.hippo": "Hippo",
   "entity.naturalist.lion": "Lion",
   "entity.naturalist.rhino": "Rhino",
@@ -182,7 +183,6 @@
   "naturalist.subtitles.entity.firefly.hurt": "Firefly hurts",
   "naturalist.subtitles.entity.firefly.death": "Firefly dies",
   "naturalist.subtitles.entity.firefly.hide": "Firefly hides",
-
   "naturalist.subtitles.entity.bear.hurt": "Brown Bear hurts",
   "naturalist.subtitles.entity.bear.death": "Brown Bear dies",
   "naturalist.subtitles.entity.bear.ambient": "Brown Bear groans",
@@ -192,7 +192,6 @@
   "naturalist.subtitles.entity.bear.sniff": "Brown Bear sniffs",
   "naturalist.subtitles.entity.bear.spit": "Brown Bear spits",
   "naturalist.subtitles.entity.bear.eat": "Brown Bear eats",
-
   "naturalist.subtitles.entity.lion.hurt": "Lion hurts",
   "naturalist.subtitles.entity.lion.ambient": "Lion growls",
   "naturalist.subtitles.entity.lion.roar": "Lion roars",
