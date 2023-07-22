@@ -50,6 +50,10 @@ public class DeerModel extends AnimatedGeoModel<Deer> {
             head.setScaleX(1.6F);
             head.setScaleY(1.6F);
             head.setScaleZ(1.6F);
+        } else {
+            head.setScaleX(1.0F);
+            head.setScaleY(1.0F);
+            head.setScaleZ(1.0F);
         }
 
         left_antler.setHidden(deer.isBaby());

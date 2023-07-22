@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "naturalist:deer",
+    "naturalist:duck",
+    "naturalist:lizard",
+    "naturalist:tortoise",
+    "naturalist:zebra"
+  ]
+}

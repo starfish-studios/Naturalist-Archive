@@ -82,6 +82,11 @@ public class NaturalistSoundEvents {
 
     // SWAMP SOUNDS
 
+    // Gator Eggs
+    public static final Supplier<SoundEvent> GATOR_EGG_BREAK = CommonPlatformHelper.registerSoundEvent("alligator_egg_break", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.alligator.egg_break")));
+    public static final Supplier<SoundEvent> GATOR_EGG_CRACK = CommonPlatformHelper.registerSoundEvent("alligator_egg_crack", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.alligator.egg_crack")));
+    public static final Supplier<SoundEvent> GATOR_EGG_HATCH = CommonPlatformHelper.registerSoundEvent("alligator_egg_hatch", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.alligator.egg_hatch")));
+
     public static final Supplier<SoundEvent> GATOR_AMBIENT = CommonPlatformHelper.registerSoundEvent("alligator_ambient", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.alligator.ambient")));
     public static final Supplier<SoundEvent> GATOR_AMBIENT_BABY = CommonPlatformHelper.registerSoundEvent("alligator_ambient_baby", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.alligator.ambient_baby")));
     public static final Supplier<SoundEvent> GATOR_HURT = CommonPlatformHelper.registerSoundEvent("alligator_hurt", () -> new SoundEvent(new ResourceLocation(Naturalist.MOD_ID, "entity.alligator.hurt")));

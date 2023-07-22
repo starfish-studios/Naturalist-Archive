@@ -51,6 +51,10 @@ public class DuckModel extends AnimatedGeoModel<Duck> {
             head.setScaleX(1.7F);
             head.setScaleY(1.7F);
             head.setScaleZ(1.7F);
+        } else {
+            head.setScaleX(1.0F);
+            head.setScaleY(1.0F);
+            head.setScaleZ(1.0F);
         }
 
         

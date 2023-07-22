@@ -45,6 +45,10 @@ public class LionModel extends AnimatedGeoModel<Lion> {
             head.setScaleX(1.75F);
             head.setScaleY(1.75F);
             head.setScaleZ(1.75F);
+        } else {
+            head.setScaleX(1.0F);
+            head.setScaleY(1.0F);
+            head.setScaleZ(1.0F);
         }
 
         mane.setHidden(!lion.hasMane() || lion.isBaby());

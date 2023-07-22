@@ -44,6 +44,10 @@ public class BoarModel extends AnimatedGeoModel<Boar> {
             head.setScaleX(1.75F);
             head.setScaleY(1.75F);
             head.setScaleZ(1.75F);
+        } else {
+            head.setScaleX(1.0F);
+            head.setScaleY(1.0F);
+            head.setScaleZ(1.0F);
         }
 
         head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD);

@@ -44,6 +44,10 @@ public class GiraffeModel extends AnimatedGeoModel<Giraffe> {
             head.setScaleX(1.3F);
             head.setScaleY(1.3F);
             head.setScaleZ(1.3F);
+        } else {
+            head.setScaleX(1.0F);
+            head.setScaleY(1.0F);
+            head.setScaleZ(1.0F);
         }
 
         head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD);
