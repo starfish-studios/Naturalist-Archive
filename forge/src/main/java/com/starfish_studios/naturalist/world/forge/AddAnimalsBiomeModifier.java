@@ -5,7 +5,6 @@ import com.starfish_studios.naturalist.core.registry.NaturalistEntityTypes;
 import com.starfish_studios.naturalist.core.registry.NaturalistTags;
 import com.starfish_studios.naturalist.registry.forge.NaturalistBiomeModifiers;
 import com.starfish_studios.naturalist.registry.forge.NaturalistConfigForge;
-import com.starfish_studios.naturalist.registry.forge.NaturalistMobCategoriesImpl;
 import net.minecraft.core.Holder;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
@@ -26,7 +25,7 @@ public class AddAnimalsBiomeModifier implements BiomeModifier {
             addMobSpawn(builder, biome, NaturalistTags.Biomes.HAS_RATTLESNAKE, MobCategory.CREATURE, NaturalistEntityTypes.RATTLESNAKE.get(), NaturalistConfigForge.RATTLESNAKE_SPAWN_WEIGHT.get(), 1, 1);
             addMobSpawn(builder, biome, NaturalistTags.Biomes.HAS_BEAR, MobCategory.CREATURE, NaturalistEntityTypes.BEAR.get(), NaturalistConfigForge.BEAR_SPAWN_WEIGHT.get(), 1, 2);
             addMobSpawn(builder, biome, NaturalistTags.Biomes.HAS_DEER, MobCategory.CREATURE, NaturalistEntityTypes.DEER.get(), NaturalistConfigForge.DEER_SPAWN_WEIGHT.get(), 1, 3);
-            addMobSpawn(builder, biome, NaturalistTags.Biomes.HAS_FIREFLY, NaturalistMobCategoriesImpl.getFireflyCategory(), NaturalistEntityTypes.FIREFLY.get(), NaturalistConfigForge.FIREFLY_SPAWN_WEIGHT.get(), 2, 3);
+            addMobSpawn(builder, biome, NaturalistTags.Biomes.HAS_FIREFLY, MobCategory.AMBIENT, NaturalistEntityTypes.FIREFLY.get(), NaturalistConfigForge.FIREFLY_SPAWN_WEIGHT.get(), 2, 3);
             addMobSpawn(builder, biome, NaturalistTags.Biomes.HAS_BLUEJAY, MobCategory.CREATURE, NaturalistEntityTypes.BLUEJAY.get(), NaturalistConfigForge.BLUEJAY_SPAWN_WEIGHT.get(), 1, 4);
             addMobSpawn(builder, biome, NaturalistTags.Biomes.HAS_CANARY, MobCategory.CREATURE, NaturalistEntityTypes.CANARY.get(), NaturalistConfigForge.CANARY_SPAWN_WEIGHT.get(), 1, 4);
             addMobSpawn(builder, biome, NaturalistTags.Biomes.HAS_CARDINAL, MobCategory.CREATURE, NaturalistEntityTypes.CARDINAL.get(), NaturalistConfigForge.CARDINAL_SPAWN_WEIGHT.get(), 1, 4);
@@ -41,7 +40,7 @@ public class AddAnimalsBiomeModifier implements BiomeModifier {
             addMobSpawn(builder, biome, NaturalistTags.Biomes.HAS_GIRAFFE, MobCategory.CREATURE, NaturalistEntityTypes.GIRAFFE.get(), NaturalistConfigForge.GIRAFFE_SPAWN_WEIGHT.get(), 1, 3);
             addMobSpawn(builder, biome, NaturalistTags.Biomes.HAS_HIPPO, MobCategory.CREATURE, NaturalistEntityTypes.HIPPO.get(), NaturalistConfigForge.HIPPO_SPAWN_WEIGHT.get(), 3, 4);
             addMobSpawn(builder, biome, NaturalistTags.Biomes.HAS_VULTURE, MobCategory.CREATURE, NaturalistEntityTypes.VULTURE.get(), NaturalistConfigForge.VULTURE_SPAWN_WEIGHT.get(), 2, 4);
-            addMobSpawn(builder, biome, NaturalistTags.Biomes.HAS_DRAGONFLY, NaturalistMobCategoriesImpl.getDragonflyCategory(), NaturalistEntityTypes.DRAGONFLY.get(), NaturalistConfigForge.DRAGONFLY_SPAWN_WEIGHT.get(), 2, 3);
+            addMobSpawn(builder, biome, NaturalistTags.Biomes.HAS_DRAGONFLY, MobCategory.AMBIENT, NaturalistEntityTypes.DRAGONFLY.get(), NaturalistConfigForge.DRAGONFLY_SPAWN_WEIGHT.get(), 2, 3);
             addMobSpawn(builder, biome, NaturalistTags.Biomes.HAS_CATFISH, MobCategory.WATER_AMBIENT, NaturalistEntityTypes.CATFISH.get(), NaturalistConfigForge.CATFISH_SPAWN_WEIGHT.get(), 1, 1);
             addMobSpawn(builder, biome, NaturalistTags.Biomes.HAS_ALLIGATOR, MobCategory.CREATURE, NaturalistEntityTypes.ALLIGATOR.get(), NaturalistConfigForge.ALLIGATOR_SPAWN_WEIGHT.get(), 1, 2);
             addMobSpawn(builder, biome, NaturalistTags.Biomes.HAS_BASS, MobCategory.WATER_AMBIENT, NaturalistEntityTypes.BASS.get(), NaturalistConfigForge.BASS_SPAWN_WEIGHT.get(), 2, 4);

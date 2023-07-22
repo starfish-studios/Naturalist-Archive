@@ -6,7 +6,6 @@
   "client": [
   ],
   "mixins": [
-    "MobCategoryMixin",
     "PotionBrewingInvoker",
     "SpawnPlacementsInvoker"
   ],
