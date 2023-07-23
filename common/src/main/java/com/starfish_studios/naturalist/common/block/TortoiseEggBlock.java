@@ -3,6 +3,7 @@ package com.starfish_studios.naturalist.common.block;
 import com.starfish_studios.naturalist.common.entity.Alligator;
 import com.starfish_studios.naturalist.common.entity.Tortoise;
 import com.starfish_studios.naturalist.core.registry.NaturalistEntityTypes;
+import com.starfish_studios.naturalist.core.registry.NaturalistSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -30,10 +31,10 @@ public class TortoiseEggBlock extends TurtleEggBlock {
         if (this.shouldUpdateHatchLevel(level)) {
             int i = state.getValue(HATCH);
             if (i < 2) {
-                level.playSound(null, pos, SoundEvents.TURTLE_EGG_CRACK, SoundSource.BLOCKS, 0.7f, 0.9f + random.nextFloat() * 0.2f);
+                level.playSound(null, pos, NaturalistSoundEvents.TORTOISE_EGG_CRACK.get(), SoundSource.BLOCKS, 0.7f, 0.9f + random.nextFloat() * 0.2f);
                 level.setBlock(pos, (BlockState)state.setValue(HATCH, i + 1), 2);
             } else {
-                level.playSound(null, pos, SoundEvents.TURTLE_EGG_HATCH, SoundSource.BLOCKS, 0.7f, 0.9f + random.nextFloat() * 0.2f);
+                level.playSound(null, pos, NaturalistSoundEvents.TORTOISE_EGG_HATCH.get(), SoundSource.BLOCKS, 0.7f, 0.9f + random.nextFloat() * 0.2f);
                 level.removeBlock(pos, false);
                 for (int j = 0; j < state.getValue(EGGS); ++j) {
                     level.levelEvent(2001, pos, Block.getId(state));
@@ -93,7 +94,7 @@ public class TortoiseEggBlock extends TurtleEggBlock {
     }
 
     private void decreaseEggs(Level level, BlockPos pos, BlockState state) {
-        level.playSound(null, pos, SoundEvents.TURTLE_EGG_BREAK, SoundSource.BLOCKS, 0.7f, 0.9f + level.random.nextFloat() * 0.2f);
+        level.playSound(null, pos, NaturalistSoundEvents.TORTOISE_EGG_BREAK.get(), SoundSource.BLOCKS, 0.7f, 0.9f + level.random.nextFloat() * 0.2f);
         int i = state.getValue(EGGS);
         if (i <= 1) {
             level.destroyBlock(pos, false);

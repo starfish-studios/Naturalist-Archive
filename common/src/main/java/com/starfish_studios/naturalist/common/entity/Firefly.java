@@ -105,7 +105,7 @@ public class Firefly extends Animal implements FlyingAnimal, IAnimatable {
     }
 
     public static boolean checkFireflySpawnRules(EntityType<? extends Firefly> pType, ServerLevelAccessor pLevel, MobSpawnType pReason, BlockPos pPos, RandomSource pRandom) {
-        return Monster.isDarkEnoughToSpawn(pLevel, pPos, pRandom) && pLevel.getBlockState(pPos.below()).is(NaturalistTags.BlockTags.FLYING_SPAWNABLE_ON);
+        return Monster.isDarkEnoughToSpawn(pLevel, pPos, pRandom) && pLevel.getBlockState(pPos.below()).is(NaturalistTags.BlockTags.FIREFLIES_SPAWNABLE_ON);
     }
 
     @Nullable
