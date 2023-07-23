@@ -188,6 +188,14 @@
   "naturalist.subtitles.entity.duck.hurt_baby": "Duckling hurts",
   "naturalist.subtitles.entity.duck.death_baby": "Duckling dies",
 
+  "naturalist.subtitles.entity.tortoise.egg_break": "Tortoise egg breaks",
+  "naturalist.subtitles.entity.tortoise.egg_crack": "Tortoise egg cracks",
+  "naturalist.subtitles.entity.tortoise.egg_hatch": "Tortoise egg hatches",
+
+  "naturalist.subtitles.entity.alligator.egg_break": "Alligator egg breaks",
+  "naturalist.subtitles.entity.alligator.egg_crack": "Alligator egg cracks",
+  "naturalist.subtitles.entity.alligator.egg_hatch": "Alligator egg hatches",
+
   "advancements.husbandry.ride_giraffe_with_map.title": "I can show you the world!",
   "advancements.husbandry.ride_giraffe_with_map.description": "Use a map while riding a giraffe to increase its range",
   "advancements.husbandry.feed_hippo_melon.title": "Hungry Hungry Hippos",

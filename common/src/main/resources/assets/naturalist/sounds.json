@@ -1,4 +1,56 @@
 {
+  "entity.tortoise.egg_break": {
+    "sounds": [
+      "mob/turtle/egg/egg_break1",
+      "mob/turtle/egg/egg_break2"
+    ],
+    "subtitle": "naturalist.subtitles.entity.tortoise.egg_break"
+  },
+  "entity.tortoise.egg_crack": {
+    "sounds": [
+      "mob/turtle/egg/egg_crack1",
+      "mob/turtle/egg/egg_crack2",
+      "mob/turtle/egg/egg_crack3",
+      "mob/turtle/egg/egg_crack4",
+      "mob/turtle/egg/egg_crack5"
+    ],
+    "subtitle": "naturalist.subtitles.entity.tortoise.egg_crack"
+  },
+  "entity.tortoise.egg_hatch": {
+    "sounds": [
+      "mob/turtle/baby/egg_hatched1",
+      "mob/turtle/baby/egg_hatched2",
+      "mob/turtle/baby/egg_hatched3"
+    ],
+    "subtitle": "naturalist.subtitles.entity.tortoise.egg_hatch"
+  },
+
+  "entity.alligator.egg_break": {
+    "sounds": [
+      "mob/turtle/egg/egg_break1",
+      "mob/turtle/egg/egg_break2"
+    ],
+    "subtitle": "naturalist.subtitles.entity.alligator.egg_break"
+  },
+  "entity.alligator.egg_crack": {
+    "sounds": [
+      "mob/turtle/egg/egg_crack1",
+      "mob/turtle/egg/egg_crack2",
+      "mob/turtle/egg/egg_crack3",
+      "mob/turtle/egg/egg_crack4",
+      "mob/turtle/egg/egg_crack5"
+    ],
+    "subtitle": "naturalist.subtitles.entity.alligator.egg_crack"
+  },
+  "entity.alligator.egg_hatch": {
+    "sounds": [
+      "mob/turtle/baby/egg_hatched1",
+      "mob/turtle/baby/egg_hatched2",
+      "mob/turtle/baby/egg_hatched3"
+    ],
+    "subtitle": "naturalist.subtitles.entity.alligator.egg_hatch"
+  },
+
   "entity.snake.hiss": {
     "sounds": [
       "naturalist:snake_hiss"

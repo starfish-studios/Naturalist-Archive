@@ -65,9 +65,29 @@ public class Hippo extends Animal implements IAnimatable {
     }
 
     public static boolean checkHippoSpawnRules(EntityType<? extends Animal> entityType, LevelAccessor levelAccessor, MobSpawnType mobSpawnType, BlockPos blockPos, RandomSource randomSource) {
-        if (levelAccessor.getBlockState(blockPos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON) && Animal.isBrightEnoughToSpawn(levelAccessor, blockPos)) {
+        /* if (levelAccessor.getBlockState(blockPos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON) && Animal.isBrightEnoughToSpawn(levelAccessor, blockPos)) {
             for (Direction direction : Direction.Plane.HORIZONTAL) {
                 return levelAccessor.getFluidState(blockPos.below().relative(direction)).is(FluidTags.WATER);
+            }
+        }
+        return false; */
+
+        // THIS CRASHES
+
+        BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
+        if (levelAccessor.getBlockState(blockPos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON) && Animal.isBrightEnoughToSpawn(levelAccessor, blockPos)) {
+            for (int x = -16; x <= 16; x++) {
+                for (int y = -1; y <= 1; y++) {
+                    for (int z = -16; z <= 16; z++) {
+                        mutableBlockPos.setWithOffset(blockPos, x, y, z);
+                        if (!levelAccessor.hasChunkAt(mutableBlockPos)) {
+                            continue;
+                        }
+                        if (levelAccessor.getFluidState(mutableBlockPos).is(FluidTags.WATER)) {
+                            return true;
+                        }
+                    }
+                }
             }
         }
         return false;
