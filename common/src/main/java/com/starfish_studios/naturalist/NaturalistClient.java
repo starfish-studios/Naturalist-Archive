@@ -63,9 +63,9 @@ public class NaturalistClient {
 
         copyOldModelsResources();
 
-        Set<Item> particleMarkerBlocks = new HashSet<>(ClientLevelMixin.getMARKER_PARTICLE_ITEMS());
-        particleMarkerBlocks.add(NaturalistItems.GLOW_GOOP.get());
-        ClientLevelMixin.setMARKER_PARTICLE_ITEMS(particleMarkerBlocks);
+        // Set<Item> particleMarkerBlocks = new HashSet<>(ClientLevelMixin.getMARKER_PARTICLE_ITEMS());
+        // particleMarkerBlocks.add(NaturalistItems.GLOW_GOOP.get());
+        // ClientLevelMixin.setMARKER_PARTICLE_ITEMS(particleMarkerBlocks);
     }
 
 
