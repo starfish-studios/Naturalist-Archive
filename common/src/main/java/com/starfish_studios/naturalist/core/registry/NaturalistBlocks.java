@@ -12,9 +12,6 @@ import net.minecraft.world.level.material.*;
 import java.util.function.Supplier;
 
 public class NaturalistBlocks {
-    public static final Supplier<Block> BEAR_HEAD = CommonPlatformHelper.registerBlock("bear_head", () -> new NaturalistSkullBlock(NaturalistSkullBlock.Types.BEAR, BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL)));
-    public static final Supplier<Block> BEAR_WALL_HEAD = CommonPlatformHelper.registerBlock("bear_wall_head", () -> new WallSkullBlock(NaturalistSkullBlock.Types.BEAR, BlockBehaviour.Properties.copy(Blocks.SKELETON_WALL_SKULL).dropsLike(NaturalistBlocks.BEAR_HEAD.get())));
-
     public static final Supplier<Block> CHRYSALIS = CommonPlatformHelper.registerBlock("chrysalis", () -> new ChrysalisBlock(BlockBehaviour.Properties.of(Material.PLANT).randomTicks().strength(0.2F, 3.0F).sound(SoundType.GRASS).noOcclusion().noCollission()));
     public static final Supplier<Block> DUCKWEED = CommonPlatformHelper.registerBlock("duckweed", () -> new WaterlilyBlock(BlockBehaviour.Properties.of(Material.REPLACEABLE_PLANT).noCollission().randomTicks().instabreak().sound(SoundType.SMALL_DRIPLEAF)));
     public static final Supplier<Block> GLOW_GOOP = CommonPlatformHelper.registerBlock("glow_goop", () -> new GlowGoopBlock(BlockBehaviour.Properties.of(Material.AIR).strength(0.5F).noOcclusion().lightLevel(GlowGoopBlock.LIGHT_EMISSION).sound(SoundType.HONEY_BLOCK)));
