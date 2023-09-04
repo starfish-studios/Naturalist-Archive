@@ -17,6 +17,9 @@ import java.util.function.*;
 
 public class NaturalistItems {
 
+    // BEAR HEAD
+    public static final Supplier<Item> BEAR_HEAD = CommonPlatformHelper.registerItem("bear_head", () -> new StandingAndWallBlockItem(NaturalistBlocks.BEAR_HEAD.get(), NaturalistBlocks.BEAR_WALL_HEAD.get(), new Item.Properties().tab(Naturalist.TAB).rarity(Rarity.UNCOMMON)));
+
     public static final Supplier<Item> ANIMAL_CRATE = CommonPlatformHelper.registerItem("animal_crate", () -> new AnimalCrateBlockItem(NaturalistBlocks.ANIMAL_CRATE.get(), new Item.Properties().tab(Naturalist.TAB)));
     public static final Supplier<Item> DUCKWEED = CommonPlatformHelper.registerItem("duckweed", () -> new PlaceOnWaterBlockItem(NaturalistBlocks.DUCKWEED.get(), new Item.Properties().tab(Naturalist.TAB)));
     public static final Supplier<Item> CATTAIL_FLUFF = CommonPlatformHelper.registerItem("cattail_fluff", () -> new Item(new Item.Properties().tab(Naturalist.TAB)));
