@@ -254,7 +254,13 @@ public class Vulture extends PathfinderMob implements IAnimatable, FlyingAnimal 
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (this.isFlying()) {
+        // If the entity is flying and is moving upwards, play the fly animation.
+        if (this.isFlying() && this.getDeltaMovement().y > 0) {
+            event.getController().setAnimation(new AnimationBuilder().loop("fly2"));
+            event.getController().setAnimationSpeed(1.5F);
+        } else if (this.isFlying() && this.getDeltaMovement().y < 0) {
+            event.getController().setAnimation(new AnimationBuilder().loop("glide2"));
+        } else if (this.isFlying()) {
             event.getController().setAnimation(new AnimationBuilder().loop("fly"));
         } else {
             event.getController().setAnimation(new AnimationBuilder().loop("vulture.idle"));

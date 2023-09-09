@@ -51,6 +51,6 @@ public class BoarModel extends AnimatedGeoModel<Boar> {
         }
 
         head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD);
-        head.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD);
+        head.setRotationZ(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD);
     }
 }
